@@ -1,26 +1,24 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { NextResponse } from "next/server";
+// firebase.js
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
-export async function POST(req, res) {
-    try {
-        //retrieve API key from environmnet variable
-        const genAI = new GoogleGenerativeAI(process.env.API_KEY)
-        //set gemini model to use
-        const model = genAI.getGenerativeModel({
-            model: "gemini-1.5-flash",
-            systemInstruction: "You are a customer service chat bot."
-        })
-        //receive "prompt" from request
-        const data = await req.json()
-        //set actual prompt from request
-        const prompt = data.body
-        //generate ai response from the model
-        const result = await model.generateContent(prompt)
-        const response = await result.response;
-        const output = await response.text()
-        //return response as json
-        return NextResponse.json({output:output})
-    } catch (error) {
-        console.log("GenAI request error: %s", error)
-    }
-}
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: "your-app.firebaseapp.com",
+  projectId: "your-app-id",
+  storageBucket: "your-app.appspot.com",
+  messagingSenderId: "your-sender-id",
+  appId: "your-app-id",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const firestore = getFirestore(app); // Initialize Firestore
+const auth = getAuth(app);
+
+// Google Auth Provider
+const googleProvider = new GoogleAuthProvider();
+
+export { app, firestore, auth, googleProvider };
