@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import { Box, Stack, TextField, Button, Paper, CircularProgress, Typography, IconButton } from '@mui/material';
-import { auth, db } from '../firebase'; // Ensure these imports are correct
+import { auth, db } from '../firebase';
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
@@ -20,7 +20,6 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const user = auth.currentUser;
-
 
   useEffect(() => {
     const loadChatHistory = async () => {
@@ -42,7 +41,6 @@ export default function Home() {
   
     loadChatHistory();
   }, [user]);
-
 
   const sendMessage = async () => {
     if (!message.trim() || isLoading) return; 
@@ -121,26 +119,29 @@ export default function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      sx={{ bgcolor: 'background.default' }}
+      sx={{ bgcolor: '#f5f5f5' }}
     >
       <Paper
-        elevation={3}
+        elevation={4}
         sx={{
-          width: { xs: '90%', sm: '80%', md: '500px' },
+          width: { xs: '95%', sm: '85%', md: '600px' },
           height: '700px',
-          p: 2,
+          p: 3,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          position: 'relative'
+          position: 'relative',
+          borderRadius: '12px',
+          boxShadow: '0 6px 18px rgba(0,0,0,0.1)',
         }}
       >
         <IconButton
           onClick={handleLogout}
           sx={{
             position: 'absolute',
-            top: 8,
-            right: 8,
+            top: 16,
+            right: 16,
+            color: '#333',
           }}
         >
           <LogoutIcon />
@@ -150,7 +151,7 @@ export default function Home() {
           direction="column"
           spacing={2}
           flexGrow={1}
-          sx={{ overflow: 'auto', maxHeight: '100%', mb: 2 }}
+          sx={{ overflowY: 'auto', maxHeight: '100%', mb: 2 }}
         >
           {messages.map((message, index) => (
             <Box
@@ -163,14 +164,15 @@ export default function Home() {
             >
               <Box
                 sx={{
-                  bgcolor: message.role === 'assistant' ? 'primary.main' : 'secondary.main',
+                  bgcolor: message.role === 'assistant' ? '#1976d2' : '#673ab7',
                   color: 'white',
-                  borderRadius: 1,
+                  borderRadius: '12px',
                   p: 2,
-                  maxWidth: '75%',
+                  maxWidth: '70%',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
                 }}
               >
-                <Typography variant="body2">{message.content}</Typography>
+                <Typography variant="body1" sx={{ fontWeight: 500 }}>{message.content}</Typography>
               </Box>
             </Box>
           ))}
@@ -187,12 +189,24 @@ export default function Home() {
             disabled={isLoading}
             multiline
             maxRows={4}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '12px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+              },
+            }}
           />
           <Button
             variant="contained"
             onClick={sendMessage}
             disabled={isLoading}
-            sx={{ minWidth: '100px' }}
+            sx={{
+              minWidth: '120px',
+              bgcolor: '#1976d2',
+              '&:hover': { bgcolor: '#1565c0' },
+              borderRadius: '12px',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            }}
           >
             {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Send'}
           </Button>
