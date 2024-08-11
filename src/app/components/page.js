@@ -1,8 +1,8 @@
 'use client'
 
 import { useEffect, useState, useRef } from "react";
-import { Box, Stack, TextField, Button, Paper, CircularProgress, Typography, IconButton } from '@mui/material';
-import { auth, db } from '../firebase';
+import { Box, Stack, TextField, Button, Paper, Typography, IconButton, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
+import { auth, db } from '../firebase'; // Ensure these imports are correct
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
@@ -17,7 +17,7 @@ export default function Home() {
   ]);
 
   const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedModel, setSelectedModel] = useState('gemini'); // Default to Gemini
   const messagesEndRef = useRef(null);
   const user = auth.currentUser;
 
@@ -38,18 +38,20 @@ export default function Home() {
         }
       }
     };
-  
+
     loadChatHistory();
   }, [user]);
 
   const sendMessage = async () => {
-    if (!message.trim() || isLoading) return; 
-    setMessage('');  
-    setIsLoading(true);
-    setMessages((messages) => [
+    if (!message.trim()) return;
+
+    const newMessages = [
       ...messages,
-      { role: 'user', content: message },  
-    ]);
+      { role: 'user', content: message.trim() },
+    ];
+
+    setMessage(''); // Clear input field
+    setMessages(newMessages); // Optimistically update UI
 
     try {
       const response = await fetch('/api/chat', {
@@ -57,39 +59,29 @@ export default function Home() {
         headers: {
           'Content-type': 'application/json',
         },
-        body: JSON.stringify({ body: message }),
+        body: JSON.stringify({ body: message.trim(), type: selectedModel }),
       });
 
       const data = await response.json();
-      if (response.ok) {
-        setMessages((messages) => [
-          ...messages,
-          { role: 'assistant', content: data.output },
-        ]);
-      } else {
-        setMessages((messages) => [
-          ...messages,
-          { role: 'assistant', content: data.error || "Error occurred while processing your request." },
-        ]);
+
+      const updatedMessages = [
+        ...newMessages,
+        { role: 'assistant', content: response.ok ? data.output : data.error || "Error occurred while processing your request." },
+      ];
+
+      setMessages(updatedMessages);
+
+      if (user) {
+        await setDoc(doc(db, 'chats', user.uid), { messages: updatedMessages });
       }
 
     } catch (error) {
       console.log("Post request error: %s", error);
-      setMessages((messages) => [
-        ...messages,
+      setMessages((prevMessages) => [
+        ...prevMessages,
         { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
       ]);
     }
-
-    try {
-      if (user) {
-        await setDoc(doc(db, 'chats', user.uid), { messages });
-      }
-    } catch (err) {
-      console.log("Error saving chat history: %s", err);
-    }
-
-    setIsLoading(false);
   };
 
   const handleKeyPress = (event) => {
@@ -119,20 +111,20 @@ export default function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      sx={{ bgcolor: '#f5f5f5' }}
+      sx={{ bgcolor: 'background.default', p: 2 }}
     >
       <Paper
-        elevation={4}
+        elevation={6}
         sx={{
-          width: { xs: '95%', sm: '85%', md: '600px' },
-          height: '700px',
+          width: { xs: '100%', sm: '90%', md: '600px' },
+          height: '80vh',
           p: 3,
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
           position: 'relative',
-          borderRadius: '12px',
-          boxShadow: '0 6px 18px rgba(0,0,0,0.1)',
+          borderRadius: 2,
+          boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
         }}
       >
         <IconButton
@@ -141,17 +133,38 @@ export default function Home() {
             position: 'absolute',
             top: 16,
             right: 16,
-            color: '#333',
+            color: 'grey.600',
+            '&:hover': {
+              color: 'grey.900',
+            },
           }}
         >
           <LogoutIcon />
         </IconButton>
 
+        <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', color: 'text.primary' }}>
+          Chat with Support
+        </Typography>
+
+        {/* Model Selection Dropdown */}
+        <FormControl fullWidth sx={{ mb: 2 }}>
+          <InputLabel id="model-select-label">Select Model</InputLabel>
+          <Select
+            labelId="model-select-label"
+            value={selectedModel}
+            label="Select Model"
+            onChange={(e) => setSelectedModel(e.target.value)}
+          >
+            <MenuItem value="gemini">Gemini</MenuItem>
+            <MenuItem value="aws">Anthropic Claude</MenuItem>
+          </Select>
+        </FormControl>
+
         <Stack
           direction="column"
           spacing={2}
           flexGrow={1}
-          sx={{ overflowY: 'auto', maxHeight: '100%', mb: 2 }}
+          sx={{ overflowY: 'auto', maxHeight: 'calc(100% - 80px)', p: 1, bgcolor: 'background.paper', borderRadius: 1, boxShadow: 'inset 0 0 10px rgba(0,0,0,0.05)' }}
         >
           {messages.map((message, index) => (
             <Box
@@ -164,21 +177,23 @@ export default function Home() {
             >
               <Box
                 sx={{
-                  bgcolor: message.role === 'assistant' ? '#1976d2' : '#673ab7',
+                  bgcolor: message.role === 'assistant' ? 'primary.main' : 'secondary.main',
                   color: 'white',
-                  borderRadius: '12px',
+                  borderRadius: 2,
                   p: 2,
                   maxWidth: '70%',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                  wordWrap: 'break-word',
                 }}
               >
-                <Typography variant="body1" sx={{ fontWeight: 500 }}>{message.content}</Typography>
+                <Typography variant="body2">{message.content}</Typography>
               </Box>
             </Box>
           ))}
           <div ref={messagesEndRef} />
         </Stack>
-        <Stack direction="row" spacing={2}>
+
+        <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
           <TextField
             label="Type your message..."
             fullWidth
@@ -186,29 +201,23 @@ export default function Home() {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={handleKeyPress}
-            disabled={isLoading}
             multiline
             maxRows={4}
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '12px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-              },
-            }}
+            sx={{ bgcolor: 'background.default', borderRadius: 2 }}
           />
           <Button
             variant="contained"
             onClick={sendMessage}
-            disabled={isLoading}
             sx={{
-              minWidth: '120px',
-              bgcolor: '#1976d2',
-              '&:hover': { bgcolor: '#1565c0' },
-              borderRadius: '12px',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+              minWidth: '100px',
+              bgcolor: 'primary.main',
+              color: 'white',
+              '&:hover': {
+                bgcolor: 'primary.dark',
+              },
             }}
           >
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Send'}
+            Send
           </Button>
         </Stack>
       </Paper>
