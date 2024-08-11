@@ -1,7 +1,11 @@
 'use client'
 
 import { useEffect, useState, useRef } from "react";
-import { Box, Stack, TextField, Button, Paper, CircularProgress, Typography } from '@mui/material';
+import { Box, Stack, TextField, Button, Paper, CircularProgress, Typography, IconButton } from '@mui/material';
+import { auth, db } from '../firebase'; // Ensure these imports are correct
+import { signOut } from 'firebase/auth';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 
 export default function Home() {
 
@@ -15,6 +19,30 @@ export default function Home() {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const user = auth.currentUser;
+
+
+  useEffect(() => {
+    const loadChatHistory = async () => {
+      if (user) {
+        const chatDoc = doc(db, 'chats', user.uid);
+        const chatSnapshot = await getDoc(chatDoc);
+        if (chatSnapshot.exists()) {
+          setMessages(chatSnapshot.data().messages);
+        } else {
+          setMessages([
+            {
+              role: 'assistant',
+              content: "Hi! I'm the Headstarter support assistant. How can I help you today?",
+            },
+          ]);
+        }
+      }
+    };
+  
+    loadChatHistory();
+  }, [user]);
+
 
   const sendMessage = async () => {
     if (!message.trim() || isLoading) return; 
@@ -55,6 +83,14 @@ export default function Home() {
       ]);
     }
 
+    try {
+      if (user) {
+        await setDoc(doc(db, 'chats', user.uid), { messages });
+      }
+    } catch (err) {
+      console.log("Error saving chat history: %s", err);
+    }
+
     setIsLoading(false);
   };
 
@@ -73,6 +109,10 @@ export default function Home() {
     scrollToBottom();
   }, [messages]);
 
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
+
   return (
     <Box
       width="100vw"
@@ -81,7 +121,7 @@ export default function Home() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      sx={{ bgcolor: 'background.default' }} // Correct usage of bgcolor
+      sx={{ bgcolor: 'background.default' }}
     >
       <Paper
         elevation={3}
@@ -92,8 +132,20 @@ export default function Home() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          position: 'relative'
         }}
       >
+        <IconButton
+          onClick={handleLogout}
+          sx={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+          }}
+        >
+          <LogoutIcon />
+        </IconButton>
+
         <Stack
           direction="column"
           spacing={2}
@@ -136,8 +188,8 @@ export default function Home() {
             multiline
             maxRows={4}
           />
-          <Button 
-            variant="contained" 
+          <Button
+            variant="contained"
             onClick={sendMessage}
             disabled={isLoading}
             sx={{ minWidth: '100px' }}
