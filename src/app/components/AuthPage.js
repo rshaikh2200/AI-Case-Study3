@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { auth, googleProvider } from '../firebase';
+import { googleProvider, auth } from '../firebase';  // Ensure these imports are correct
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { Box, TextField, Button, Typography, Stack, CircularProgress } from '@mui/material';
 
@@ -43,56 +43,37 @@ export default function AuthPage() {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      height="100vh"
-    >
-      <Typography variant="h4" gutterBottom>
-        {isSignUp ? 'Sign Up' : 'Sign In'}
-      </Typography>
-      <Stack spacing={2} width="300px">
+    <Box>
+      <Stack spacing={2} alignItems="center">
+        <Typography variant="h4">{isSignUp ? 'Sign Up' : 'Sign In'}</Typography>
+
+        {error && <Typography color="error">{error}</Typography>}
+
         <TextField
           label="Email"
-          variant="outlined"
-          fullWidth
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          fullWidth
         />
         <TextField
           label="Password"
           type="password"
-          variant="outlined"
-          fullWidth
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          fullWidth
         />
-        {error && <Typography color="error">{error}</Typography>}
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={handleAuth}
-          disabled={loading}
-        >
-          {loading ? <CircularProgress size={24} color="inherit" /> : isSignUp ? 'Sign Up' : 'Sign In'}
+
+        <Button variant="contained" color="primary" onClick={handleAuth} disabled={loading} fullWidth>
+          {loading ? <CircularProgress size={24} /> : isSignUp ? 'Sign Up' : 'Sign In'}
         </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          fullWidth
-          onClick={handleGoogleSignIn}
-          disabled={loading}
-        >
-          {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign in with Google'}
+
+        <Button variant="outlined" color="primary" onClick={handleGoogleSignIn} disabled={loading} fullWidth>
+          {loading ? <CircularProgress size={24} /> : 'Sign in with Google'}
         </Button>
-        <Button
-          color="inherit"
-          onClick={() => setIsSignUp(!isSignUp)}
-        >
-          {isSignUp ? 'Already have an account? Sign In' : 'New user? Sign Up'}
+
+        <Button color="secondary" onClick={() => setIsSignUp(!isSignUp)}>
+          {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
         </Button>
       </Stack>
     </Box>

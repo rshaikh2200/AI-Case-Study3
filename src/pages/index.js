@@ -1,8 +1,8 @@
 // src/app/pages/index.js
 import React, { useEffect, useState } from 'react';
-import { auth } from '../firebase'; // Corrected the import path
-import AuthPage from '../components/AuthPage'; // Corrected the import path
-import Home from '../components/page'; // Ensure correct import path
+import { auth } from '../app/firebase'; // Corrected the import path
+import AuthPage from '../app/components/AuthPage'; // Corrected the import path
+import Home from '../app/components/page'; // Ensure correct import path
 
 export default function Index() {
   const [user, setUser] = useState(null);
