@@ -61,7 +61,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     },
     {
       headers: {
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY}`,
+        Authorization: `Bearer ${process.env.NEXT_API_KEY}`,
         "Content-Type": "application/json",
       },
     }
