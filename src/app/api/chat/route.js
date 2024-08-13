@@ -3,7 +3,7 @@ import axios from "axios";
 import { getRetriever } from "@/lib/retriever";
 
 // Custom function to generate RAG prompt
-function generateCustomRAGPrompt(context: string, question: string): string {
+function generateCustomRAGPrompt(context, question) {
   return `
   You are a helpful assistant. Below is some context that may help answer the user's question:
   Context:
@@ -21,17 +21,17 @@ function generateCustomRAGPrompt(context: string, question: string): string {
 }
 
 // Function to decide which model to use (if needed for different models)
-function decideModel(question: string): string {
+function decideModel(question) {
   // Add logic if there are different models to choose from
   return "gemini-1.5-flash";
 }
 
-export async function POST(req: Request): Promise<NextResponse> {
+export async function POST(req) {
   const retriever = await getRetriever();
 
   const data = await req.json();
   const question = data.findLast(
-    (msg: { role: string }) => msg.role === "user"
+    (msg) => msg.role === "user"
   )?.content;
 
   // Retrieve relevant documents based on the user's query
@@ -70,7 +70,7 @@ export async function POST(req: Request): Promise<NextResponse> {
   const stream = new ReadableStream({
     async start(controller) {
       let buffer = "";
-      response.data.on("data", (chunk: { toString: () => string }) => {
+      response.data.on("data", (chunk) => {
         buffer += chunk.toString();
         let boundaryIndex;
         while ((boundaryIndex = buffer.indexOf("\n")) !== -1) {
@@ -95,7 +95,7 @@ export async function POST(req: Request): Promise<NextResponse> {
       response.data.on("end", () => {
         controller.close();
       });
-      response.data.on("error", (err: any) => {
+      response.data.on("error", (err) => {
         controller.error(err);
       });
     },
