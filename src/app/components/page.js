@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState, useRef } from "react";
 import { Box, Stack, TextField, Button, Paper, Typography, IconButton, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
@@ -8,79 +8,67 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 
 export default function Home() {
-
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi! I'm the Headstarter support assistant. How can I help you today?",
+      content: "Hi! I'm the Crescent Cloud Log support assistant. How can I help you today?",
     },
   ]);
-
   const [message, setMessage] = useState('');
-  const [selectedModel, setSelectedModel] = useState('gemini'); // Default to Gemini
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const user = auth.currentUser;
 
-  useEffect(() => {
-    const loadChatHistory = async () => {
-      if (user) {
-        const chatDoc = doc(db, 'chats', user.uid);
-        const chatSnapshot = await getDoc(chatDoc);
-        if (chatSnapshot.exists()) {
-          setMessages(chatSnapshot.data().messages);
-        } else {
-          setMessages([
-            {
-              role: 'assistant',
-              content: "Hi! I'm the Headstarter support assistant. How can I help you today?",
-            },
-          ]);
-        }
-      }
-    };
-
-    loadChatHistory();
-  }, [user]);
-
   const sendMessage = async () => {
-    if (!message.trim()) return;
+    if (!message.trim()) return;  // Don't send empty messages
+    if (isLoading) return; // Prevent multiple simultaneous requests
 
-    const newMessages = [
-      ...messages,
-      { role: 'user', content: message.trim() },
-    ];
-
-    setMessage(''); // Clear input field
-    setMessages(newMessages); // Optimistically update UI
+    setIsLoading(true);
+    const newMessage = { role: 'user', content: message };
 
     try {
-      const response = await fetch('/api/chat', {
+      // Update messages state before sending to backend
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        newMessage,
+        { role: 'assistant', content: '...' },  // Placeholder for the assistant's response
+      ]);
+
+      const response = await fetch('/api/claude-bedrock', {  // Update this endpoint if necessary
         method: 'POST',
         headers: {
-          'Content-type': 'application/json',
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ body: message.trim(), type: selectedModel }),
+        body: JSON.stringify({ message: newMessage.content }),
       });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`Network response was not ok: ${response.status} ${errorMessage}`);
+      }
 
       const data = await response.json();
 
-      const updatedMessages = [
-        ...newMessages,
-        { role: 'assistant', content: response.ok ? data.output : data.error || "Error occurred while processing your request." },
-      ];
-
-      setMessages(updatedMessages);
-
-      if (user) {
-        await setDoc(doc(db, 'chats', user.uid), { messages: updatedMessages });
-      }
+      // Update the assistant's message with the actual response
+      setMessages((prevMessages) => {
+        const updatedMessages = [...prevMessages];
+        updatedMessages[updatedMessages.length - 1] = {
+          role: 'assistant',
+          content: data.response || "No response received.",
+        };
+        return updatedMessages;
+      });
 
     } catch (error) {
-      console.log("Post request error: %s", error);
+      console.error('Error:', error);
       setMessages((prevMessages) => [
         ...prevMessages,
         { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
       ]);
+    } finally {
+      setIsLoading(false);
+      setMessage('');
+      scrollToBottom();
     }
   };
 
@@ -145,20 +133,6 @@ export default function Home() {
         <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', color: 'text.primary' }}>
           Chat with Support
         </Typography>
-
-        {/* Model Selection Dropdown */}
-        <FormControl fullWidth sx={{ mb: 2 }}>
-          <InputLabel id="model-select-label">Select Model</InputLabel>
-          <Select
-            labelId="model-select-label"
-            value={selectedModel}
-            label="Select Model"
-            onChange={(e) => setSelectedModel(e.target.value)}
-          >
-            <MenuItem value="gemini">Gemini</MenuItem>
-            <MenuItem value="aws">Anthropic Claude</MenuItem>
-          </Select>
-        </FormControl>
 
         <Stack
           direction="column"
