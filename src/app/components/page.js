@@ -95,7 +95,7 @@ export default function Home() {
 
       if (!response.ok) {
         const errorMessage = await response.text();
-        throw new Error(`Network response was not ok: ${response.status} ${errorMessage}`);
+        throw new Error(Network response was not ok: ${response.status} ${errorMessage});
       }
 
       const data = await response.json();
@@ -237,7 +237,7 @@ export default function Home() {
                   }}
                 >
                   <ListItemText
-                    primary={`Chat ${chats.indexOf(chat) + 1}`}
+                    primary={Chat ${chats.indexOf(chat) + 1}}
                     secondary={chat.messages[0].content.substring(0, 20) + '...'}
                   />
                 </ListItem>
