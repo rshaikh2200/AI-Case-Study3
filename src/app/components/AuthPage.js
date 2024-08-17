@@ -66,7 +66,7 @@ export default function AuthPage() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url("src/app/images.jpeg")', // Update this path to your background image
+          backgroundImage: 'url("/src/app/images.jpeg")', // Update this path to your background image
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
           backgroundSize: 'cover',
