@@ -304,4 +304,47 @@ export default function Home() {
                     color: 'white',
                     borderRadius: 2,
                     p: 2,
-                    maxWidth: '70
+                    maxWidth: '70%',
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                    wordWrap: 'break-word',
+                  }}
+                >
+                  <Typography variant="body2">{message.content}</Typography>
+                </Box>
+              </Box>
+            ))}
+            <div ref={messagesEndRef} />
+          </Stack>
+
+          <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+            <TextField
+              label="Chat with AI Assistance"
+              fullWidth
+              variant="outlined"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              multiline
+              maxRows={4}
+              sx={{ bgcolor: 'background.default', borderRadius: 2 }}
+            />
+            <Button
+              variant="contained"
+              onClick={sendMessage}
+              sx={{
+                minWidth: '100px',
+                bgcolor: 'primary.main',
+                color: 'white',
+                '&:hover': {
+                  bgcolor: 'primary.dark',
+                },
+              }}
+            >
+              Send
+            </Button>
+          </Stack>
+        </Paper>
+      </Box>
+    </ThemeProvider>
+  );
+}
