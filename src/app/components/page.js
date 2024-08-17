@@ -2,9 +2,41 @@
 
 import { useEffect, useState, useRef } from "react";
 import { Box, Stack, TextField, Button, Paper, Typography, IconButton } from '@mui/material';
-import { auth } from '../firebase'; // Ensure these imports are correct
+import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+// Dark mode theme
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#1A73E8',
+    },
+    secondary: {
+      main: '#9C27B0',
+    },
+    background: {
+      default: '#121212',
+      paper: '#1D1D1D',
+    },
+    text: {
+      primary: '#E0E0E0',
+      secondary: '#B0B0B0',
+    },
+  },
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
+      },
+    },
+  },
+});
 
 export default function Home() {
   const [messages, setMessages] = useState([
@@ -19,21 +51,20 @@ export default function Home() {
   const user = auth.currentUser;
 
   const sendMessage = async () => {
-    if (!message.trim()) return;  // Don't send empty messages
-    if (isLoading) return; // Prevent multiple simultaneous requests
+    if (!message.trim()) return;
+    if (isLoading) return;
 
     setIsLoading(true);
     const newMessage = { role: 'user', content: message };
 
     try {
-      // Update messages state before sending to backend
       setMessages((prevMessages) => [
         ...prevMessages,
         newMessage,
-        { role: 'assistant', content: '...' },  // Placeholder for the assistant's response
+        { role: 'assistant', content: '...' },
       ]);
 
-      const response = await fetch('/api/claude-bedrock', {  // Update this endpoint if necessary
+      const response = await fetch('/api/claude-bedrock', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +79,6 @@ export default function Home() {
 
       const data = await response.json();
 
-      // Update the assistant's message with the actual response
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages];
         updatedMessages[updatedMessages.length - 1] = {
@@ -91,109 +121,113 @@ export default function Home() {
   };
 
   return (
-    <Box
-      width="100vw"
-      height="100vh"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-      sx={{ bgcolor: 'background.default', p: 2 }}
-    >
-      <Paper
-        elevation={6}
-        sx={{
-          width: { xs: '100%', sm: '90%', md: '600px' },
-          height: '80vh',
-          p: 3,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          position: 'relative',
-          borderRadius: 2,
-          boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
-        }}
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Box
+        width="100vw"
+        height="100vh"
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        sx={{ bgcolor: 'background.default', p: 2 }}
       >
-        <IconButton
-          onClick={handleLogout}
+        <Paper
+          elevation={6}
           sx={{
-            position: 'absolute',
-            top: 16,
-            right: 16,
-            color: 'grey.600',
-            '&:hover': {
-              color: 'grey.900',
-            },
+            width: { xs: '100%', sm: '90%', md: '600px' },
+            height: '80vh',
+            p: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            position: 'relative',
+            borderRadius: 2,
+            boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+            bgcolor: 'background.paper',
           }}
         >
-          <LogoutIcon />
-        </IconButton>
-
-        <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', color: 'text.primary' }}>
-          Chat with Support
-        </Typography>
-
-        <Stack
-          direction="column"
-          spacing={2}
-          flexGrow={1}
-          sx={{ overflowY: 'auto', maxHeight: 'calc(100% - 80px)', p: 1, bgcolor: 'background.paper', borderRadius: 1, boxShadow: 'inset 0 0 10px rgba(0,0,0,0.05)' }}
-        >
-          {messages.map((message, index) => (
-            <Box
-              key={index}
-              display="flex"
-              justifyContent={
-                message.role === 'assistant' ? 'flex-start' : 'flex-end'
-              }
-              sx={{ mb: 1 }}
-            >
-              <Box
-                sx={{
-                  bgcolor: message.role === 'assistant' ? 'primary.main' : 'secondary.main',
-                  color: 'white',
-                  borderRadius: 2,
-                  p: 2,
-                  maxWidth: '70%',
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                  wordWrap: 'break-word',
-                }}
-              >
-                <Typography variant="body2">{message.content}</Typography>
-              </Box>
-            </Box>
-          ))}
-          <div ref={messagesEndRef} />
-        </Stack>
-
-        <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-          <TextField
-            label="Type your message..."
-            fullWidth
-            variant="outlined"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
-            multiline
-            maxRows={4}
-            sx={{ bgcolor: 'background.default', borderRadius: 2 }}
-          />
-          <Button
-            variant="contained"
-            onClick={sendMessage}
+          <IconButton
+            onClick={handleLogout}
             sx={{
-              minWidth: '100px',
-              bgcolor: 'primary.main',
-              color: 'white',
+              position: 'absolute',
+              top: 16,
+              right: 16,
+              color: 'grey.400',
               '&:hover': {
-                bgcolor: 'primary.dark',
+                color: 'grey.100',
               },
             }}
           >
-            Send
-          </Button>
-        </Stack>
-      </Paper>
-    </Box>
+            <LogoutIcon />
+          </IconButton>
+
+          <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', color: 'text.primary' }}>
+            Chat with Support
+          </Typography>
+
+          <Stack
+            direction="column"
+            spacing={2}
+            flexGrow={1}
+            sx={{ overflowY: 'auto', maxHeight: 'calc(100% - 80px)', p: 1, bgcolor: 'background.paper', borderRadius: 1, boxShadow: 'inset 0 0 10px rgba(0,0,0,0.1)' }}
+          >
+            {messages.map((message, index) => (
+              <Box
+                key={index}
+                display="flex"
+                justifyContent={
+                  message.role === 'assistant' ? 'flex-start' : 'flex-end'
+                }
+                sx={{ mb: 1 }}
+              >
+                <Box
+                  sx={{
+                    bgcolor: message.role === 'assistant' ? 'primary.main' : 'secondary.main',
+                    color: 'white',
+                    borderRadius: 2,
+                    p: 2,
+                    maxWidth: '70%',
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                    wordWrap: 'break-word',
+                  }}
+                >
+                  <Typography variant="body2">{message.content}</Typography>
+                </Box>
+              </Box>
+            ))}
+            <div ref={messagesEndRef} />
+          </Stack>
+
+          <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+            <TextField
+              label="Type your message..."
+              fullWidth
+              variant="outlined"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              multiline
+              maxRows={4}
+              sx={{ bgcolor: 'background.default', borderRadius: 2 }}
+            />
+            <Button
+              variant="contained"
+              onClick={sendMessage}
+              sx={{
+                minWidth: '100px',
+                bgcolor: 'primary.main',
+                color: 'white',
+                '&:hover': {
+                  bgcolor: 'primary.dark',
+                },
+              }}
+            >
+              Send
+            </Button>
+          </Stack>
+        </Paper>
+      </Box>
+    </ThemeProvider>
   );
 }
