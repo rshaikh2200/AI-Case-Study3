@@ -170,7 +170,6 @@ export default function Home() {
           >
             <Avatar
               alt="AI Support Agent"
-              component="img"
               src={image1} // Replace with the actual image path
               sx={{ width: 56, height: 56 }}
             />
