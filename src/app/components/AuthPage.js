@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link,
-  Paper, Box, Grid, Typography, CircularProgress, Divider
+  Paper, Box, Grid, Typography, CircularProgress, Divider, AppBar, Toolbar
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -49,17 +49,28 @@ export default function AuthPage() {
   return (
     <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
+      
+      {/* Header */}
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            Welcome to Our App
+          </Typography>
+        </Toolbar>
+      </AppBar>
+
+      {/* Background Image */}
       <Grid
         item
         xs={false}
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url("/static/images/templates/templates-images/sign-in-side-bg.png")',
+          backgroundImage: 'url("/static/images/background.jpg")', // Update this path to your background image
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
           backgroundSize: 'cover',
-          backgroundPosition: 'left',
+          backgroundPosition: 'center',
         }}
       />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
