@@ -7,6 +7,7 @@ import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import image1 from '../../images/image1.jpg';
 
 // Dark mode theme
 const darkTheme = createTheme({
@@ -169,7 +170,7 @@ export default function Home() {
           >
             <Avatar
               alt="AI Support Agent"
-              src="../../images/image1.jpg" // Replace with the actual image path
+              src={image1} // Replace with the actual image path
               sx={{ width: 56, height: 56 }}
             />
             <Typography variant="h6" sx={{ mt: 1, color: 'text.primary' }}>
