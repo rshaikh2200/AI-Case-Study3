@@ -8,6 +8,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { CircularProgress } from '@mui/material';
+import CircleIcon from '@mui/icons-material/Circle';
 
 // Dark mode theme
 const darkTheme = createTheme({
