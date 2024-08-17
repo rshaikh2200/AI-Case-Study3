@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { googleProvider, auth } from '../firebase'; // Ensure these imports are correct
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
-import { Box, TextField, Button, Typography, Stack, CircularProgress, Paper, Divider, IconButton } from '@mui/material';
-import GoogleIcon from '@mui/icons-material/Google';
+import { 
+  Box, TextField, Button, Typography, Stack, CircularProgress, 
+  Paper, Divider, IconButton, ThemeProvider, Grid, CssBaseline, 
+  Avatar, FormControlLabel, Checkbox, Link 
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 export default function AuthPage() {
   const [email, setEmail] = useState('');
@@ -87,6 +91,8 @@ export default function AuthPage() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <TextField
                 margin="normal"
@@ -97,6 +103,8 @@ export default function AuthPage() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -107,6 +115,7 @@ export default function AuthPage() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                onClick={handleAuth}
               >
                 Sign In
               </Button>
