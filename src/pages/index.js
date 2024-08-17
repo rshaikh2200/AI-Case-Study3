@@ -8,5 +8,5 @@ import LandingPage from '../app/components/LandingPage'; // Import the LandingPa
 export default function Index() {
   const { user } = useAuthState();
 
-  return user ? <Home /> : 
+  return user ? <Home />
 }
