@@ -43,7 +43,7 @@ export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi! I'm Alex, A AI English Learning Assistance. How can I help you today?",
+      content: "Hi! I'm Alex, a AI English Learning Assistance.",
     },
   ]);
   const [message, setMessage] = useState('');
@@ -216,7 +216,7 @@ export default function Home() {
 
           <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
             <TextField
-              label="Type your message..."
+              label="Chat with AI Assistance"
               fullWidth
               variant="outlined"
               value={message}
