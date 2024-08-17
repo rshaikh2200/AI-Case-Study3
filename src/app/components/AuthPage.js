@@ -44,94 +44,89 @@ export default function AuthPage() {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#f5f5f5',
-        padding: 2,
-      }}
-    >
-      <Paper
-        elevation={6}
-        sx={{
-          padding: 4,
-          maxWidth: 400,
-          width: '100%',
-          borderRadius: 2,
-          backgroundColor: '#fff',
-        }}
-      >
-        <Stack spacing={3} alignItems="center">
-          <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
-            {isSignUp ? 'Create Account' : 'Welcome Back'}
-          </Typography>
-
-          {error && <Typography color="error" sx={{ textAlign: 'center' }}>{error}</Typography>}
-
-          <TextField
-            label="Email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            fullWidth
-            variant="outlined"
-          />
-          <TextField
-            label="Password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            fullWidth
-            variant="outlined"
-          />
-
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleAuth}
-            disabled={loading}
-            fullWidth
+    <ThemeProvider theme={defaultTheme}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage:
+              'url("/static/images/templates/templates-images/sign-in-side-bg.png")',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'left',
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
             sx={{
-              padding: '10px 0',
-              fontSize: '16px',
-              borderRadius: '8px',
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
             }}
           >
-            {loading ? <CircularProgress size={24} /> : isSignUp ? 'Sign Up' : 'Sign In'}
-          </Button>
-
-          <Divider sx={{ width: '100%' }}>or</Divider>
-
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={handleGoogleSignIn}
-            disabled={loading}
-            fullWidth
-            startIcon={<GoogleIcon />}
-            sx={{
-              padding: '10px 0',
-              fontSize: '16px',
-              borderRadius: '8px',
-              borderColor: '#1976d2',
-            }}
-          >
-            {loading ? <CircularProgress size={24} /> : 'Sign in with Google'}
-          </Button>
-
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            sx={{ cursor: 'pointer', mt: 2 }}
-            onClick={() => setIsSignUp(!isSignUp)}
-          >
-            {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
-          </Typography>
-        </Stack>
-      </Paper>
-    </Box>
+            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Sign In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="#" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+              <Copyright sx={{ mt: 5 }} />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
   );
 }
