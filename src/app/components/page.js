@@ -1,7 +1,7 @@
 'use client';
 
-import React,{ useEffect, useState, useRef } from "react";
-import { Box, Stack, TextField, Button, Paper, Typography, IconButton, Avatar, List, ListItem, ListItemText, Divider } from '@mui/material';
+import React, { useEffect, useState, useRef } from "react";
+import { Box, Stack, TextField, Button, Paper, Typography, Avatar, List, ListItem, ListItemText, Divider } from '@mui/material';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -95,7 +95,7 @@ export default function Home() {
 
       if (!response.ok) {
         const errorMessage = await response.text();
-        throw new Error(Network response was not ok: ${response.status} ${errorMessage});
+        throw new Error(`Network response was not ok: ${response.status} ${errorMessage}`);
       }
 
       const data = await response.json();
@@ -237,7 +237,7 @@ export default function Home() {
                   }}
                 >
                   <ListItemText
-                    primary={Chat ${chats.indexOf(chat) + 1}}
+                    primary={`Chat ${chats.indexOf(chat) + 1}`}
                     secondary={chat.messages[0].content.substring(0, 20) + '...'}
                   />
                 </ListItem>
