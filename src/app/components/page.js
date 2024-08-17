@@ -42,7 +42,7 @@ export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi! I'm the AI English Learning Assistance. How can I help you today?",
+      content: "Hi! I'm Alex, A AI English Learning Assistance. How can I help you today?",
     },
   ]);
   const [message, setMessage] = useState('');
@@ -169,11 +169,11 @@ export default function Home() {
           >
             <Avatar
               alt="AI Support Agent"
-              src="/path/to/your/image.jpg" // Replace with the actual image path
+              src="../app/images/image1.jpg" // Replace with the actual image path
               sx={{ width: 56, height: 56 }}
             />
             <Typography variant="h6" sx={{ mt: 1, color: 'text.primary' }}>
-              John Doe
+              Alex
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               AI Support Agent
