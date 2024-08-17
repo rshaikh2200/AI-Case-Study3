@@ -289,7 +289,7 @@ export default function Home() {
             <Box display="flex" alignItems="center">
               <Avatar
                 alt="AI Avatar"
-                src="/src/app/ai-avatar.png" // Adjust the path to your image file
+                src="/src/app/images/image1.jpg" // Adjust the path to your image file
                 sx={{ width: 32, height: 32, mr: 1 }}
               />
               <Typography variant="h6" sx={{ color: 'text.primary' }}>
