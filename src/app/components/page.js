@@ -7,11 +7,63 @@ import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 
+const translations = {
+  en: {
+    greeting: "Hi! I'm the AI English Learning Assistant. How can I help you today?",
+    chatWithSupport: "Chat with Support",
+    typeMessage: "Type your message...",
+    send: "Send",
+    error: "I'm sorry, but I encountered an error. Please try again later.",
+    noResponse: "No response received.",
+  },
+  hi: {
+    greeting: "नमस्ते! मैं एआई इंग्लिश लर्निंग असिस्टेंट हूं। मैं आज आपकी कैसे मदद कर सकता हूं?",
+    chatWithSupport: "सपोर्ट से चैट करें",
+    typeMessage: "अपना संदेश लिखें...",
+    send: "भेजें",
+    error: "मुझे खेद है, लेकिन मुझे एक त्रुटि का सामना करना पड़ा। कृपया बाद में पुनः प्रयास करें।",
+    noResponse: "कोई प्रतिक्रिया प्राप्त नहीं हुई।",
+  },
+  es: {
+    greeting: "¡Hola! Soy el Asistente de Aprendizaje de Inglés de IA. ¿Cómo puedo ayudarte hoy?",
+    chatWithSupport: "Chatear con Soporte",
+    typeMessage: "Escribe tu mensaje...",
+    send: "Enviar",
+    error: "Lo siento, pero encontré un error. Por favor, inténtalo de nuevo más tarde.",
+    noResponse: "No se recibió respuesta.",
+  },
+  fr: {
+    greeting: "Salut! Je suis l'Assistant d'apprentissage de l'anglais IA. Comment puis-je vous aider aujourd'hui?",
+    chatWithSupport: "Chat avec le Support",
+    typeMessage: "Tapez votre message...",
+    send: "Envoyer",
+    error: "Je suis désolé, mais j'ai rencontré une erreur. Veuillez réessayer plus tard.",
+    noResponse: "Aucune réponse reçue.",
+  },
+  de: {
+    greeting: "Hallo! Ich bin der KI-Englisch-Lernassistent. Wie kann ich Ihnen heute helfen?",
+    chatWithSupport: "Mit Support chatten",
+    typeMessage: "Geben Sie Ihre Nachricht ein...",
+    send: "Senden",
+    error: "Es tut mir leid, aber es gab einen Fehler. Bitte versuchen Sie es später noch einmal.",
+    noResponse: "Keine Antwort erhalten.",
+  },
+  ar: {
+    greeting: "مرحبًا! أنا مساعد تعلم اللغة الإنجليزية بالذكاء الاصطناعي. كيف يمكنني مساعدتك اليوم؟",
+    chatWithSupport: "الدردشة مع الدعم",
+    typeMessage: "اكتب رسالتك...",
+    send: "إرسال",
+    error: "عذرًا، واجهت خطأ. يرجى المحاولة مرة أخرى لاحقًا.",
+    noResponse: "لم يتم استلام أي رد.",
+  },
+};
+
 export default function Home() {
+  const [language, setLanguage] = useState('en');
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi! I'm the AI English Learning Assistanace. How can I help you today?",
+      content: translations[language].greeting,
     },
   ]);
   const [message, setMessage] = useState('');
@@ -39,7 +91,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: newMessage.content }),
+        body: JSON.stringify({ message: newMessage.content, language }),
       });
 
       if (!response.ok) {
@@ -54,7 +106,7 @@ export default function Home() {
         const updatedMessages = [...prevMessages];
         updatedMessages[updatedMessages.length - 1] = {
           role: 'assistant',
-          content: data.response || "No response received.",
+          content: data.response || translations[language].noResponse,
         };
         return updatedMessages;
       });
@@ -63,7 +115,7 @@ export default function Home() {
       console.error('Error:', error);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
+        { role: 'assistant', content: translations[language].error },
       ]);
     } finally {
       setIsLoading(false);
@@ -130,8 +182,25 @@ export default function Home() {
           <LogoutIcon />
         </IconButton>
 
+        <FormControl sx={{ mb: 2, minWidth: 120 }}>
+          <InputLabel id="language-select-label">Language</InputLabel>
+          <Select
+            labelId="language-select-label"
+            value={language}
+            label="Language"
+            onChange={(e) => setLanguage(e.target.value)}
+          >
+            <MenuItem value="en">English</MenuItem>
+            <MenuItem value="hi">Hindi</MenuItem>
+            <MenuItem value="es">Spanish</MenuItem>
+            <MenuItem value="fr">French</MenuItem>
+            <MenuItem value="de">German</MenuItem>
+            <MenuItem value="ar">Arabic</MenuItem>
+          </Select>
+        </FormControl>
+
         <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', color: 'text.primary' }}>
-          Chat with Support
+          {translations[language].chatWithSupport}
         </Typography>
 
         <Stack
@@ -169,7 +238,7 @@ export default function Home() {
 
         <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
           <TextField
-            label="Type your message..."
+            label={translations[language].typeMessage}
             fullWidth
             variant="outlined"
             value={message}
@@ -191,7 +260,7 @@ export default function Home() {
               },
             }}
           >
-            Send
+            {translations[language].send}
           </Button>
         </Stack>
       </Paper>
