@@ -7,8 +7,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import GoogleIcon from '@mui/icons-material/Google';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { googleProvider, auth } from '../firebase';
-import LoadingBar from './LoadingBar';  // Import LoadingBar component
-import TypingText from './TypingText';  // Import TypingText component
 
 export default function AuthPage() {
   const [email, setEmail] = useState('');
@@ -16,7 +14,6 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
-  const [response, setResponse] = useState('');
 
   const handleAuth = async (event) => {
     event.preventDefault();
@@ -29,8 +26,6 @@ export default function AuthPage() {
       } else {
         await signInWithEmailAndPassword(auth, email, password);
       }
-      // Simulate AI response after authentication
-      setResponse("Welcome! How can I assist you today?");
     } catch (err) {
       setError(err.message);
     } finally {
@@ -134,7 +129,7 @@ export default function AuthPage() {
               {loading ? <CircularProgress size={24} /> : 'Sign in with Google'}
             </Button>
             <Grid container sx={{ mt: 2 }}>
-              <Grid item>
+                <Grid item>
                 <Link
                   variant="body2"
                   onClick={() => setIsSignUp(!isSignUp)}
@@ -143,9 +138,6 @@ export default function AuthPage() {
                 </Link>
               </Grid>
             </Grid>
-          </Box>
-          <Box sx={{ mt: 4, width: '100%' }}>
-            {loading ? <LoadingBar /> : response && <TypingText text={response} />}
           </Box>
         </Box>
       </Grid>
