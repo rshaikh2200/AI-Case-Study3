@@ -1,350 +1,209 @@
-'use client';
+import React, { useState, useEffect } from 'react';
+import {
+  Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link,
+  Paper, Box, Grid, Typography, CircularProgress, Divider
+} from '@mui/material';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import GoogleIcon from '@mui/icons-material/Google';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { googleProvider, auth } from '../firebase';
 
-import { useEffect, useState, useRef } from "react";
-import { Box, Stack, TextField, Button, Paper, Typography, Avatar, List, ListItem, ListItemText, Divider } from '@mui/material';
-import { auth } from '../firebase';
-import { signOut } from 'firebase/auth';
-import AddIcon from '@mui/icons-material/Add';
-import CircleIcon from '@mui/icons-material/Circle';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import React from 'react';
+export default function AuthPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [aiResponse, setAiResponse] = useState('');
+  const [typedResponse, setTypedResponse] = useState('');
+  const [typing, setTyping] = useState(false);
 
-// Dark mode theme
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#1A73E8',
-    },
-    secondary: {
-      main: '#9C27B0',
-    },
-    background: {
-      default: '#121212',
-      paper: '#1D1D1D',
-    },
-    text: {
-      primary: '#E0E0E0',
-      secondary: '#B0B0B0',
-    },
-  },
-  components: {
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          backgroundImage: 'none',
-        },
-      },
-    },
-  },
-});
-
-export default function Home() {
-  const [chats, setChats] = useState([{
-    id: Date.now(),
-    messages: [
-      {
-        role: 'assistant',
-        content: "Hi! I'm Alex, an AI English Learning Assistant.",
-      },
-    ],
-  }]);
-  const [currentChatId, setCurrentChatId] = useState(chats[0].id);
-  const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef(null);
-  const user = auth.currentUser;
-
-  const sendMessage = async () => {
-    if (!message.trim()) return;
-    if (isLoading) return;
-
-    setIsLoading(true);
-    const newMessage = { role: 'user', content: message };
+  const handleAuth = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    setError('');
 
     try {
-      setChats(prevChats => {
-        const updatedChats = prevChats.map(chat => {
-          if (chat.id === currentChatId) {
-            return {
-              ...chat,
-              messages: [
-                ...chat.messages,
-                newMessage,
-                { role: 'assistant', content: '...' },
-              ],
-            };
-          }
-          return chat;
-        });
-        return updatedChats;
-      });
-
-      const response = await fetch('/api/claude-bedrock', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: newMessage.content }),
-      });
-
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(`Network response was not ok: ${response.status} ${errorMessage}`);
+      if (isSignUp) {
+        await createUserWithEmailAndPassword(auth, email, password);
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
       }
-
-      const data = await response.json();
-
-      setChats(prevChats => {
-        const updatedChats = prevChats.map(chat => {
-          if (chat.id === currentChatId) {
-            const newMessages = [...chat.messages];
-            newMessages[newMessages.length - 1] = {
-              role: 'assistant',
-              content: data.response || "No response received.",
-            };
-            return { ...chat, messages: newMessages };
-          }
-          return chat;
-        });
-        return updatedChats;
-      });
-
-    } catch (error) {
-      console.error('Error:', error);
-      setChats(prevChats => {
-        const updatedChats = prevChats.map(chat => {
-          if (chat.id === currentChatId) {
-            return {
-              ...chat,
-              messages: [
-                ...chat.messages,
-                { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
-              ],
-            };
-          }
-          return chat;
-        });
-        return updatedChats;
-      });
+    } catch (err) {
+      setError(err.message);
     } finally {
-      setIsLoading(false);
-      setMessage('');
-      scrollToBottom();
+      setLoading(false);
     }
   };
 
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      sendMessage();
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    setError('');
+
+    try {
+      await signInWithPopup(auth, googleProvider);
+      // Simulate AI response load and typing effect
+      simulateAiResponse('Welcome to the platform!');
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  const simulateAiResponse = (response) => {
+    setAiResponse(response);
+    setTypedResponse('');
+    setTyping(true);
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [chats, currentChatId]);
-
-  const handleLogout = async () => {
-    await signOut(auth);
-  };
-
-  const createNewChat = () => {
-    const newChat = {
-      id: Date.now(),
-      messages: [
-        {
-          role: 'assistant',
-          content: "Hi! How can I assist you today?",
-        },
-      ],
-    };
-    setChats([...chats, newChat]);
-    setCurrentChatId(newChat.id);
-  };
-
-  const selectChat = (id) => {
-    setCurrentChatId(id);
-  };
+    if (typing) {
+      let currentIndex = 0;
+      const typingInterval = setInterval(() => {
+        if (currentIndex < aiResponse.length) {
+          setTypedResponse((prev) => prev + aiResponse[currentIndex]);
+          currentIndex++;
+        } else {
+          clearInterval(typingInterval);
+          setTyping(false);
+        }
+      }, 50); // Adjust typing speed here
+    }
+  }, [typing, aiResponse]);
 
   return (
-    <ThemeProvider theme={darkTheme}>
+    <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
-      <Box
-        width="100vw"
-        height="100vh"
-        display="flex"
-      >
-        <Paper
-          elevation={6}
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
+        sx={{
+          backgroundImage: 'url("/static/images/templates/templates-images/sign-in-side-bg.png")',
+          backgroundColor: (t) =>
+            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+          backgroundSize: 'cover',
+          backgroundPosition: 'left',
+        }}
+      />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Box
           sx={{
-            width: '20%',
-            height: '100%',
-            p: 2,
+            my: 8,
+            mx: 4,
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'flex-start',
-            bgcolor: 'background.paper',
+            alignItems: 'center',
           }}
         >
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={createNewChat}
-            sx={{
-              mb: 2,
-              bgcolor: 'primary.main',
-              color: 'white',
-              '&:hover': {
-                bgcolor: 'primary.dark',
-              },
-            }}
-          >
-            New Chat
-          </Button>
-
-          <List sx={{ overflowY: 'auto', flexGrow: 1 }}>
-            {chats.map((chat) => (
-              <React.Fragment key={chat.id}>
-                <ListItem
-                  button
-                  selected={chat.id === currentChatId}
-                  onClick={() => selectChat(chat.id)}
-                  sx={{
-                    bgcolor: chat.id === currentChatId ? 'primary.dark' : 'inherit',
-                    '&:hover': {
-                      bgcolor: 'primary.light',
-                    },
-                  }}
-                >
-                  <ListItemText
-                    primary={`Chat ${chats.indexOf(chat) + 1}`}
-                    secondary={chat.messages[0].content.substring(0, 20) + '...'}
-                  />
-                </ListItem>
-                <Divider />
-              </React.Fragment>
-            ))}
-          </List>
-
-          <Button
-            variant="contained"
-            onClick={handleLogout}
-            sx={{
-              mt: 2,
-              bgcolor: 'secondary.main',
-              color: 'white',
-              '&:hover': {
-                bgcolor: 'secondary.dark',
-              },
-            }}
-          >
-            Logout
-          </Button>
-        </Paper>
-
-        <Paper
-          elevation={6}
-          sx={{
-            width: '80%',
-            height: '100%',
-            p: 3,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            position: 'relative',
-            borderRadius: 2,
-            boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
-            bgcolor: 'background.paper',
-          }}
-        >
-          {/* Header with AI Support Assistance and online status */}
-          <Box
-            sx={{
-              mb: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Typography variant="h6" sx={{ color: 'text.primary' }}>
-              AI Support Assistance
-            </Typography>
-            <Box display="flex" alignItems="center">
-              <CircleIcon sx={{ color: 'green', fontSize: 14, mr: 1 }} />
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                Online
-              </Typography>
-            </Box>
-          </Box>
-
-          <Stack
-            direction="column"
-            spacing={2}
-            flexGrow={1}
-            sx={{ overflowY: 'auto', maxHeight: 'calc(100% - 80px)', p: 1, bgcolor: 'background.paper', borderRadius: 1, boxShadow: 'inset 0 0 10px rgba(0,0,0,0.1)' }}
-          >
-            {chats.find(chat => chat.id === currentChatId)?.messages.map((message, index) => (
-              <Box
-                key={index}
-                display="flex"
-                justifyContent={
-                  message.role === 'assistant' ? 'flex-start' : 'flex-end'
-                }
-                sx={{ mb: 1 }}
-              >
-                <Box
-                  sx={{
-                    bgcolor: message.role === 'assistant' ? 'primary.main' : 'secondary.main',
-                    color: 'white',
-                    borderRadius: 2,
-                    p: 2,
-                    maxWidth: '70%',
-                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                    wordWrap: 'break-word',
-                  }}
-                >
-                  <Typography variant="body2">{message.content}</Typography>
-                </Box>
-              </Box>
-            ))}
-            <div ref={messagesEndRef} />
-          </Stack>
-
-          <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            {isSignUp ? 'Create Account' : 'Sign in'}
+          </Typography>
+          {error && <Typography color="error">{error}</Typography>}
+          <Box component="form" noValidate onSubmit={handleAuth} sx={{ mt: 1 }}>
             <TextField
-              label="Chat with AI Assistance"
+              margin="normal"
+              required
               fullWidth
-              variant="outlined"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              multiline
-              maxRows={4}
-              sx={{ bgcolor: 'background.default', borderRadius: 2 }}
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
             />
             <Button
+              type="submit"
+              fullWidth
               variant="contained"
-              onClick={sendMessage}
-              sx={{
-                minWidth: '100px',
-                bgcolor: 'primary.main',
-                color: 'white',
-                '&:hover': {
-                  bgcolor: 'primary.dark',
-                },
-              }}
+              sx={{ mt: 3, mb: 2 }}
+              disabled={loading}
             >
-              Send
+              {loading ? (
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box
+                    sx={{
+                      width: '50%',
+                      height: '4px',
+                      bgcolor: 'primary.main',
+                      animation: 'loadingBar 1.5s linear infinite',
+                      '@keyframes loadingBar': {
+                        '0%': { transform: 'scaleX(0)' },
+                        '50%': { transform: 'scaleX(0.5)' },
+                        '100%': { transform: 'scaleX(1)' },
+                      }
+                    }}
+                  />
+                </Box>
+              ) : isSignUp ? 'Sign Up' : 'Sign In'}
             </Button>
-          </Stack>
-        </Paper>
-      </Box>
-    </ThemeProvider>
+            <Divider sx={{ width: '100%' }}>or</Divider>
+            <Button
+              variant="outlined"
+              fullWidth
+              onClick={handleGoogleSignIn}
+              disabled={loading}
+              startIcon={<GoogleIcon />}
+              sx={{ mt: 2 }}
+            >
+              {loading ? (
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box
+                    sx={{
+                      width: '50%',
+                      height: '4px',
+                      bgcolor: 'primary.main',
+                      animation: 'loadingBar 1.5s linear infinite',
+                      '@keyframes loadingBar': {
+                        '0%': { transform: 'scaleX(0)' },
+                        '50%': { transform: 'scaleX(0.5)' },
+                        '100%': { transform: 'scaleX(1)' },
+                      }
+                    }}
+                  />
+                </Box>
+              ) : 'Sign in with Google'}
+            </Button>
+            <Grid container sx={{ mt: 2 }}>
+              <Grid item>
+                <Link
+                  variant="body2"
+                  onClick={() => setIsSignUp(!isSignUp)}
+                >
+                  {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="body1">
+              {typing ? typedResponse : aiResponse}
+            </Typography>
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }

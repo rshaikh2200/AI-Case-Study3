@@ -129,12 +129,7 @@ export default function AuthPage() {
               {loading ? <CircularProgress size={24} /> : 'Sign in with Google'}
             </Button>
             <Grid container sx={{ mt: 2 }}>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
+                <Grid item>
                 <Link
                   variant="body2"
                   onClick={() => setIsSignUp(!isSignUp)}
