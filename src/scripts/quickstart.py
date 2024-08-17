@@ -22,7 +22,7 @@ export async function POST(req: Request): Promise<Response> {
       retrieveAndGenerateConfiguration: {
         type: "KNOWLEDGE_BASE", // or "EXTERNAL_SOURCES"
         knowledgeBaseConfiguration: {
-          knowledgeBaseId: "TO2LMBBASW", // Replace with your actual Knowledge Base ID
+          knowledgeBaseId: "HU531GZBOX", // Replace with your actual Knowledge Base ID
           modelArn: "anthropic.claude-3-haiku-20240307-v1:0", // Replace with your model ARN
           retrievalConfiguration: {
             vectorSearchConfiguration: {
