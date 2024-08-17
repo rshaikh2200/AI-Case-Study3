@@ -9,7 +9,6 @@ import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
-
 // Dark mode theme
 const darkTheme = createTheme({
   palette: {
@@ -53,6 +52,7 @@ export default function Home() {
   const [currentChatId, setCurrentChatId] = useState(chats[0].id);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [typingMessage, setTypingMessage] = useState('');
   const messagesEndRef = useRef(null);
   const user = auth.currentUser;
 
@@ -61,26 +61,28 @@ export default function Home() {
     if (isLoading) return;
 
     setIsLoading(true);
+    setTypingMessage('');
+
     const newMessage = { role: 'user', content: message };
 
-    try {
-      setChats(prevChats => {
-        const updatedChats = prevChats.map(chat => {
-          if (chat.id === currentChatId) {
-            return {
-              ...chat,
-              messages: [
-                ...chat.messages,
-                newMessage,
-                { role: 'assistant', content: '...' },
-              ],
-            };
-          }
-          return chat;
-        });
-        return updatedChats;
+    setChats(prevChats => {
+      const updatedChats = prevChats.map(chat => {
+        if (chat.id === currentChatId) {
+          return {
+            ...chat,
+            messages: [
+              ...chat.messages,
+              newMessage,
+              { role: 'assistant', content: '...' },
+            ],
+          };
+        }
+        return chat;
       });
+      return updatedChats;
+    });
 
+    try {
       const response = await fetch('/api/claude-bedrock', {
         method: 'POST',
         headers: {
@@ -96,20 +98,33 @@ export default function Home() {
 
       const data = await response.json();
 
-      setChats(prevChats => {
-        const updatedChats = prevChats.map(chat => {
-          if (chat.id === currentChatId) {
-            const newMessages = [...chat.messages];
-            newMessages[newMessages.length - 1] = {
-              role: 'assistant',
-              content: data.response || "No response received.",
-            };
-            return { ...chat, messages: newMessages };
-          }
-          return chat;
-        });
-        return updatedChats;
-      });
+      // Slowly type out the AI response
+      const assistantMessage = data.response || "No response received.";
+      let currentMessage = '';
+      const typingInterval = setInterval(() => {
+        currentMessage += assistantMessage[currentMessage.length];
+        setTypingMessage(currentMessage);
+
+        if (currentMessage.length === assistantMessage.length) {
+          clearInterval(typingInterval);
+          setIsLoading(false);
+          setChats(prevChats => {
+            const updatedChats = prevChats.map(chat => {
+              if (chat.id === currentChatId) {
+                const newMessages = [...chat.messages];
+                newMessages[newMessages.length - 1] = {
+                  role: 'assistant',
+                  content: currentMessage,
+                };
+                return { ...chat, messages: newMessages };
+              }
+              return chat;
+            });
+            return updatedChats;
+          });
+          setMessage('');
+        }
+      }, 50); // Adjust speed as needed
 
     } catch (error) {
       console.error('Error:', error);
@@ -128,10 +143,7 @@ export default function Home() {
         });
         return updatedChats;
       });
-    } finally {
       setIsLoading(false);
-      setMessage('');
-      scrollToBottom();
     }
   };
 
@@ -232,18 +244,20 @@ export default function Home() {
             ))}
           </List>
 
-          <IconButton
+          <Button
+            variant="contained"
             onClick={handleLogout}
             sx={{
               mt: 2,
-              color: 'grey.400',
+              bgcolor: 'secondary.main',
+              color: 'white',
               '&:hover': {
-                color: 'grey.100',
+                bgcolor: 'secondary.dark',
               },
             }}
           >
-            <LogoutIcon />
-          </IconButton>
+            Logout
+          </Button>
         </Paper>
 
         <Paper
@@ -261,6 +275,26 @@ export default function Home() {
             bgcolor: 'background.paper',
           }}
         >
+          {/* Header with AI Support Assistance and online status */}
+          <Box
+            sx={{
+              mb: 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="h6" sx={{ color: 'text.primary' }}>
+              AI Support Assistance
+            </Typography>
+            <Box display="flex" alignItems="center">
+              <CircleIcon sx={{ color: 'green', fontSize: 14, mr: 1 }} />
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Online
+              </Typography>
+            </Box>
+          </Box>
+
           <Stack
             direction="column"
             spacing={2}
@@ -287,10 +321,35 @@ export default function Home() {
                     wordWrap: 'break-word',
                   }}
                 >
-                  <Typography variant="body2">{message.content}</Typography>
+                  <Typography variant="body2">
+                    {message.role === 'assistant' && isLoading && index === chats.find(chat => chat.id === currentChatId)?.messages.length - 1
+                      ? <CircularProgress size={14} sx={{ color: 'white' }} />
+                      : message.content}
+                  </Typography>
                 </Box>
               </Box>
             ))}
+            {isLoading && typingMessage && (
+              <Box
+                display="flex"
+                justifyContent="flex-start"
+                sx={{ mb: 1 }}
+              >
+                <Box
+                  sx={{
+                    bgcolor: 'primary.main',
+                    color: 'white',
+                    borderRadius: 2,
+                    p: 2,
+                    maxWidth: '70%',
+                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+                    wordWrap: 'break-word',
+                  }}
+                >
+                  <Typography variant="body2">{typingMessage}</Typography>
+                </Box>
+              </Box>
+            )}
             <div ref={messagesEndRef} />
           </Stack>
 
