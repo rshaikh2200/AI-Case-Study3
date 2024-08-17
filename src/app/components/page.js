@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from "react";
-import { Box, Stack, TextField, Button, Paper, Typography, IconButton } from '@mui/material';
+import { Box, Stack, TextField, Button, Paper, Typography, IconButton, Avatar } from '@mui/material';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -162,9 +162,23 @@ export default function Home() {
             <LogoutIcon />
           </IconButton>
 
-          <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', color: 'text.primary' }}>
-            Chat with Support
-          </Typography>
+          <Stack
+            direction="column"
+            alignItems="center"
+            sx={{ mb: 3 }}
+          >
+            <Avatar
+              alt="AI Support Agent"
+              src="/path/to/your/image.jpg" // Replace with the actual image path
+              sx={{ width: 56, height: 56 }}
+            />
+            <Typography variant="h6" sx={{ mt: 1, color: 'text.primary' }}>
+              John Doe
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              AI Support Agent
+            </Typography>
+          </Stack>
 
           <Stack
             direction="column"
