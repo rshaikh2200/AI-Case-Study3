@@ -54,7 +54,7 @@ export default function AuthPage() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Welcome to Our App
+            Smart AI Service Guaraunted!
           </Typography>
         </Toolbar>
       </AppBar>
