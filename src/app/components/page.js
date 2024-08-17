@@ -1,17 +1,16 @@
 'use client';
 
 import { useEffect, useState, useRef } from "react";
-import { Box, Stack, TextField, Button, Paper, Typography, IconButton, MenuItem, Select, FormControl, InputLabel } from '@mui/material';
-import { auth, db } from '../firebase'; // Ensure these imports are correct
+import { Box, Stack, TextField, Button, Paper, Typography, IconButton } from '@mui/material';
+import { auth } from '../firebase'; // Ensure these imports are correct
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 
 export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi! I'm the AI English Learning Assistanace. How can I help you today?",
+      content: "Hi! I'm the AI English Learning Assistance. How can I help you today?",
     },
   ]);
   const [message, setMessage] = useState('');
@@ -44,7 +43,7 @@ export default function Home() {
 
       if (!response.ok) {
         const errorMessage = await response.text();
-        throw new Error(Network response was not ok: ${response.status} ${errorMessage});
+        throw new Error(`Network response was not ok: ${response.status} ${errorMessage}`);
       }
 
       const data = await response.json();
