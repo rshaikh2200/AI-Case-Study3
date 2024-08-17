@@ -11,7 +11,7 @@ export default function Home() {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Hi! I'm the Crescent Cloud Log support assistant. How can I help you today?",
+      content: "Hi! I'm the AI English Learning Assistanace. How can I help you today?",
     },
   ]);
   const [message, setMessage] = useState('');
