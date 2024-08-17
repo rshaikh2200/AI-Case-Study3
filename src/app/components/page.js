@@ -7,7 +7,7 @@ import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import image1 from '../../images';
+import image1 from '../../images/image1.jpg';
 
 // Dark mode theme
 const darkTheme = createTheme({
