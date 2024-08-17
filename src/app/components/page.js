@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import {
   Avatar, Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link,
