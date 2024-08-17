@@ -7,6 +7,7 @@ import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { collection, doc, getDoc, setDoc } from 'firebase/firestore';
 
+
 const translations = {
   en: {
     greeting: "Hi! I'm the AI English Learning Assistant. How can I help you today?",
@@ -79,6 +80,18 @@ export default function Home() {
     const newMessage = { role: 'user', content: message };
 
     try {
+      // Translate the user's message to English before sending
+      const translationResponse = await fetch('/api/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: message, targetLanguage: 'en' }),
+      });
+
+      const translatedMessage = await translationResponse.json();
+      newMessage.content = translatedMessage.translatedText;
+
       // Update messages state before sending to backend
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -101,12 +114,23 @@ export default function Home() {
 
       const data = await response.json();
 
-      // Update the assistant's message with the actual response
+      // Translate the assistant's response back to the user's selected language
+      const translatedResponse = await fetch('/api/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: data.response, targetLanguage: language }),
+      });
+
+      const finalResponse = await translatedResponse.json();
+
+      // Update the assistant's message with the actual translated response
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages];
         updatedMessages[updatedMessages.length - 1] = {
           role: 'assistant',
-          content: data.response || translations[language].noResponse,
+          content: finalResponse.translatedText || translations[language].noResponse,
         };
         return updatedMessages;
       });
