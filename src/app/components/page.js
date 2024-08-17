@@ -8,7 +8,6 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
-
 // Dark mode theme
 const darkTheme = createTheme({
   palette: {
@@ -170,7 +169,6 @@ export default function Home() {
           >
             <Avatar
               alt="AI Support Agent"
-              src={image1} // Replace with the actual image path
               sx={{ width: 56, height: 56 }}
             />
             <Typography variant="h6" sx={{ mt: 1, color: 'text.primary' }}>
