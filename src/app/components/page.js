@@ -277,7 +277,7 @@ export default function Home() {
             bgcolor: 'background.paper',
           }}
         >
-          {/* Header with AI Support Assistance and online status */}
+          {/* Header with AI Support Assistance, image, and online status */}
           <Box
             sx={{
               mb: 2,
@@ -286,9 +286,16 @@ export default function Home() {
               justifyContent: 'space-between',
             }}
           >
-            <Typography variant="h6" sx={{ color: 'text.primary' }}>
-              AI Support Assistance
-            </Typography>
+            <Box display="flex" alignItems="center">
+              <Avatar
+                alt="AI Avatar"
+                src="/src/app/ai-avatar.png" // Adjust the path to your image file
+                sx={{ width: 32, height: 32, mr: 1 }}
+              />
+              <Typography variant="h6" sx={{ color: 'text.primary' }}>
+                AI Support Assistance
+              </Typography>
+            </Box>
             <Box display="flex" alignItems="center">
               <CircleIcon sx={{ color: 'green', fontSize: 14, mr: 1 }} />
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -312,6 +319,13 @@ export default function Home() {
                 }
                 sx={{ mb: 1 }}
               >
+                {message.role === 'assistant' && (
+                  <Avatar
+                    alt="AI Avatar"
+                    src="/src/app/ai-avatar.png" // Adjust the path to your image file
+                    sx={{ width: 24, height: 24, mr: 1 }}
+                  />
+                )}
                 <Box
                   sx={{
                     bgcolor: message.role === 'assistant' ? 'primary.main' : 'secondary.main',
@@ -337,6 +351,11 @@ export default function Home() {
                 justifyContent="flex-start"
                 sx={{ mb: 1 }}
               >
+                <Avatar
+                  alt="AI Avatar"
+                  src="/src/app/ai-avatar.png" // Adjust the path to your image file
+                  sx={{ width: 24, height: 24, mr: 1 }}
+                />
                 <Box
                   sx={{
                     bgcolor: 'primary.main',
