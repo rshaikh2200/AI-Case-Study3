@@ -7,7 +7,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import GoogleIcon from '@mui/icons-material/Google';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { googleProvider, auth } from '../firebase';
-import backgroundImage from '../app/images.jpeg'; // Import the image
+import backgroundImage from '/src/images.jpeg'; // Import the image
 
 
 export default function AuthPage() {
