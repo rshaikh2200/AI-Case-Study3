@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState, useRef } from "react";
-import { Box, Stack, TextField, Button, Paper, Typography, IconButton, Avatar, List, ListItem, ListItemText, Divider } from '@mui/material';
+import { Box, Stack, TextField, Button, Paper, Typography, Avatar, List, ListItem, ListItemText, Divider } from '@mui/material';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
-import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
+import CircleIcon from '@mui/icons-material/Circle';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import React from 'react';
@@ -232,18 +232,20 @@ export default function Home() {
             ))}
           </List>
 
-          <IconButton
+          <Button
+            variant="contained"
             onClick={handleLogout}
             sx={{
               mt: 2,
-              color: 'grey.400',
+              bgcolor: 'secondary.main',
+              color: 'white',
               '&:hover': {
-                color: 'grey.100',
+                bgcolor: 'secondary.dark',
               },
             }}
           >
-            <LogoutIcon />
-          </IconButton>
+            Logout
+          </Button>
         </Paper>
 
         <Paper
@@ -261,6 +263,26 @@ export default function Home() {
             bgcolor: 'background.paper',
           }}
         >
+          {/* Header with AI Support Assistance and online status */}
+          <Box
+            sx={{
+              mb: 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="h6" sx={{ color: 'text.primary' }}>
+              AI Support Assistance
+            </Typography>
+            <Box display="flex" alignItems="center">
+              <CircleIcon sx={{ color: 'green', fontSize: 14, mr: 1 }} />
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Online
+              </Typography>
+            </Box>
+          </Box>
+
           <Stack
             direction="column"
             spacing={2}
@@ -282,47 +304,4 @@ export default function Home() {
                     color: 'white',
                     borderRadius: 2,
                     p: 2,
-                    maxWidth: '70%',
-                    boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-                    wordWrap: 'break-word',
-                  }}
-                >
-                  <Typography variant="body2">{message.content}</Typography>
-                </Box>
-              </Box>
-            ))}
-            <div ref={messagesEndRef} />
-          </Stack>
-
-          <Stack direction="row" spacing={2} sx={{ mt: 2 }}>
-            <TextField
-              label="Chat with AI Assistance"
-              fullWidth
-              variant="outlined"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              multiline
-              maxRows={4}
-              sx={{ bgcolor: 'background.default', borderRadius: 2 }}
-            />
-            <Button
-              variant="contained"
-              onClick={sendMessage}
-              sx={{
-                minWidth: '100px',
-                bgcolor: 'primary.main',
-                color: 'white',
-                '&:hover': {
-                  bgcolor: 'primary.dark',
-                },
-              }}
-            >
-              Send
-            </Button>
-          </Stack>
-        </Paper>
-      </Box>
-    </ThemeProvider>
-  );
-}
+                    maxWidth: '70
