@@ -7,6 +7,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import GoogleIcon from '@mui/icons-material/Google';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { googleProvider, auth } from '../firebase';
+import backgroundImage from '../app/images.jpeg'; // Import the image
+
 
 export default function AuthPage() {
   const [email, setEmail] = useState('');
@@ -66,7 +68,7 @@ export default function AuthPage() {
         sm={4}
         md={7}
         sx={{
-          backgroundImage: 'url("/src/app/images.jpeg")', // Update this path to your background image
+          backgroundImage: 'url(${backgroundImage})', // Update this path to your background image
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
           backgroundSize: 'cover',
