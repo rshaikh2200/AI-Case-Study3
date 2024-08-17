@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState, useRef } from "react";
-import { Box, Stack, TextField, Button, Paper, Typography, IconButton, Avatar } from '@mui/material';
+import { Box, Stack, TextField, Button, Paper, Typography, IconButton, Avatar, List, ListItem, ListItemText, Divider } from '@mui/material';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AddIcon from '@mui/icons-material/Add';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
@@ -39,12 +40,16 @@ const darkTheme = createTheme({
 });
 
 export default function Home() {
-  const [messages, setMessages] = useState([
-    {
-      role: 'assistant',
-      content: "Hi! I'm Alex, a AI English Learning Assistance.",
-    },
-  ]);
+  const [chats, setChats] = useState([{
+    id: Date.now(),
+    messages: [
+      {
+        role: 'assistant',
+        content: "Hi! I'm Alex, an AI English Learning Assistant.",
+      },
+    ],
+  }]);
+  const [currentChatId, setCurrentChatId] = useState(chats[0].id);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
@@ -58,11 +63,22 @@ export default function Home() {
     const newMessage = { role: 'user', content: message };
 
     try {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        newMessage,
-        { role: 'assistant', content: '...' },
-      ]);
+      setChats(prevChats => {
+        const updatedChats = prevChats.map(chat => {
+          if (chat.id === currentChatId) {
+            return {
+              ...chat,
+              messages: [
+                ...chat.messages,
+                newMessage,
+                { role: 'assistant', content: '...' },
+              ],
+            };
+          }
+          return chat;
+        });
+        return updatedChats;
+      });
 
       const response = await fetch('/api/claude-bedrock', {
         method: 'POST',
@@ -79,21 +95,38 @@ export default function Home() {
 
       const data = await response.json();
 
-      setMessages((prevMessages) => {
-        const updatedMessages = [...prevMessages];
-        updatedMessages[updatedMessages.length - 1] = {
-          role: 'assistant',
-          content: data.response || "No response received.",
-        };
-        return updatedMessages;
+      setChats(prevChats => {
+        const updatedChats = prevChats.map(chat => {
+          if (chat.id === currentChatId) {
+            const newMessages = [...chat.messages];
+            newMessages[newMessages.length - 1] = {
+              role: 'assistant',
+              content: data.response || "No response received.",
+            };
+            return { ...chat, messages: newMessages };
+          }
+          return chat;
+        });
+        return updatedChats;
       });
 
     } catch (error) {
       console.error('Error:', error);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
-      ]);
+      setChats(prevChats => {
+        const updatedChats = prevChats.map(chat => {
+          if (chat.id === currentChatId) {
+            return {
+              ...chat,
+              messages: [
+                ...chat.messages,
+                { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
+              ],
+            };
+          }
+          return chat;
+        });
+        return updatedChats;
+      });
     } finally {
       setIsLoading(false);
       setMessage('');
@@ -114,10 +147,28 @@ export default function Home() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [chats, currentChatId]);
 
   const handleLogout = async () => {
     await signOut(auth);
+  };
+
+  const createNewChat = () => {
+    const newChat = {
+      id: Date.now(),
+      messages: [
+        {
+          role: 'assistant',
+          content: "Hi! How can I assist you today?",
+        },
+      ],
+    };
+    setChats([...chats, newChat]);
+    setCurrentChatId(newChat.id);
+  };
+
+  const selectChat = (id) => {
+    setCurrentChatId(id);
   };
 
   return (
@@ -127,16 +178,78 @@ export default function Home() {
         width="100vw"
         height="100vh"
         display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        sx={{ bgcolor: 'background.default', p: 2 }}
       >
         <Paper
           elevation={6}
           sx={{
-            width: { xs: '100%', sm: '90%', md: '600px' },
-            height: '80vh',
+            width: '20%',
+            height: '100%',
+            p: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            bgcolor: 'background.paper',
+          }}
+        >
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={createNewChat}
+            sx={{
+              mb: 2,
+              bgcolor: 'primary.main',
+              color: 'white',
+              '&:hover': {
+                bgcolor: 'primary.dark',
+              },
+            }}
+          >
+            New Chat
+          </Button>
+
+          <List sx={{ overflowY: 'auto', flexGrow: 1 }}>
+            {chats.map((chat) => (
+              <React.Fragment key={chat.id}>
+                <ListItem
+                  button
+                  selected={chat.id === currentChatId}
+                  onClick={() => selectChat(chat.id)}
+                  sx={{
+                    bgcolor: chat.id === currentChatId ? 'primary.dark' : 'inherit',
+                    '&:hover': {
+                      bgcolor: 'primary.light',
+                    },
+                  }}
+                >
+                  <ListItemText
+                    primary={`Chat ${chats.indexOf(chat) + 1}`}
+                    secondary={chat.messages[0].content.substring(0, 20) + '...'}
+                  />
+                </ListItem>
+                <Divider />
+              </React.Fragment>
+            ))}
+          </List>
+
+          <IconButton
+            onClick={handleLogout}
+            sx={{
+              mt: 2,
+              color: 'grey.400',
+              '&:hover': {
+                color: 'grey.100',
+              },
+            }}
+          >
+            <LogoutIcon />
+          </IconButton>
+        </Paper>
+
+        <Paper
+          elevation={6}
+          sx={{
+            width: '80%',
+            height: '100%',
             p: 3,
             display: 'flex',
             flexDirection: 'column',
@@ -147,45 +260,13 @@ export default function Home() {
             bgcolor: 'background.paper',
           }}
         >
-          <IconButton
-            onClick={handleLogout}
-            sx={{
-              position: 'absolute',
-              top: 16,
-              right: 16,
-              color: 'grey.400',
-              '&:hover': {
-                color: 'grey.100',
-              },
-            }}
-          >
-            <LogoutIcon />
-          </IconButton>
-
-          <Stack
-            direction="column"
-            alignItems="center"
-            sx={{ mb: 3 }}
-          >
-            <Avatar
-              alt="AI Support Agent"
-              sx={{ width: 56, height: 56 }}
-            />
-            <Typography variant="h6" sx={{ mt: 1, color: 'text.primary' }}>
-              Alex
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              AI Support Agent
-            </Typography>
-          </Stack>
-
           <Stack
             direction="column"
             spacing={2}
             flexGrow={1}
             sx={{ overflowY: 'auto', maxHeight: 'calc(100% - 80px)', p: 1, bgcolor: 'background.paper', borderRadius: 1, boxShadow: 'inset 0 0 10px rgba(0,0,0,0.1)' }}
           >
-            {messages.map((message, index) => (
+            {chats.find(chat => chat.id === currentChatId)?.messages.map((message, index) => (
               <Box
                 key={index}
                 display="flex"
