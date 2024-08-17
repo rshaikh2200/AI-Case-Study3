@@ -15,13 +15,13 @@ const LandingPage = () => {
               className="inline-block text-blue-300 no-underline hover:text-pink-500 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-125 duration-300 ease-in-out"
               href="https://twitter.com/intent/tweet?url=#"
             >
-              {/* Removed Twitter SVG */}
+              {/* Twitter link */}
             </a>
             <a
               className="inline-block text-blue-300 no-underline hover:text-pink-500 hover:text-underline text-center h-10 p-2 md:h-auto md:p-4 transform hover:scale-125 duration-300 ease-in-out"
               href="https://www.facebook.com/sharer/sharer.php?u=#"
             >
-              {/* Removed Facebook SVG */}
+              {/* Facebook link */}
             </a>
           </div>
         </div>
@@ -68,7 +68,7 @@ const LandingPage = () => {
 
         {/* Right Col */}
         <div className="w-full xl:w-3/5 p-12 overflow-hidden">
-          {/* Removed MacBook Image */}
+          {/* MacBook Image */}
         </div>
 
         <div className="mx-auto md:pt-16">
@@ -76,7 +76,7 @@ const LandingPage = () => {
             Download our app:
           </p>
           <div className="flex w-full justify-center md:justify-start pb-24 lg:pb-0 fade-in">
-            {/* Removed App Store and Play Store Images */}
+            {/* App Store and Play Store Images */}
           </div>
         </div>
 
