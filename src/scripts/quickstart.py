@@ -33,7 +33,7 @@ export async function POST(req: Request): Promise<Response> {
           generationConfiguration: {
             promptTemplate: {
               // Include $search_results$ to integrate the search results into the prompt
-              textPromptTemplate: "You are a helpful AI assistant for Get Hired. This is data you're given about Get Hired: $search_results$ Be concise and keep the message close to 250 words."
+              textPromptTemplate: "You are a helpful AI assistant for Get Hired. This is data you're given about Get Hired: $search_results$ Be concise and keep the message close to 1000 words."
             },
             inferenceConfig: {
               textInferenceConfig: {
