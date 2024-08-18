@@ -47,7 +47,7 @@ export default function AuthPage() {
   };
 
   return (
-    <Grid container component="main" sx={{ height: '50vh' }}>
+    <Grid container component="main" sx={{ height: '100vh' }}>
       <CssBaseline />
 
       {/* Header */}
@@ -63,12 +63,11 @@ export default function AuthPage() {
         container
         justifyContent="center"
         alignItems="center"
-        sx={{ flexGrow: 1 }}
       >
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 4,
+              my: 2,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
