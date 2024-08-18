@@ -48,7 +48,7 @@ export default function Home() {
     messages: [
       {
         role: 'assistant',
-        content: "Hi! I'm Alex, an AI English Learning Assistant.",
+        content: "Hi! I'm Alex, an AI assistance helping student land internship, and full-time jobs.",
       },
     ],
   }]);
