@@ -56,6 +56,7 @@ export default function Home() {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [typingMessage, setTypingMessage] = useState('');
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true); // Define the state for sidebar visibility
   const messagesEndRef = useRef(null);
   const user = auth.currentUser;
 
@@ -188,7 +189,7 @@ export default function Home() {
   };
 
   const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
+    setIsSidebarVisible(!isSidebarVisible);
   };
 
   return (
@@ -432,3 +433,4 @@ export default function Home() {
     </ThemeProvider>
   );
 }
+
