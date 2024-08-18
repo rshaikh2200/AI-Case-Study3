@@ -195,9 +195,9 @@ export default function Home() {
               position: 'absolute',
               top: 8,
               left: 8,
-              display: { sm: 'none' }, // Show only on small screens
               bgcolor: 'background.paper',
               color: 'primary.main',
+              zIndex: 2000, // Ensure the button is on top of all elements
             }}
           >
             <MenuIcon />
@@ -332,4 +332,3 @@ export default function Home() {
     </ThemeProvider>
   );
 }
-
