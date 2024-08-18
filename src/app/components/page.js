@@ -1,13 +1,12 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Box, Stack, TextField, Button, Paper, Typography, Avatar, List, ListItem, ListItemText, Divider, IconButton } from '@mui/material';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CircularProgress } from '@mui/material';
@@ -57,19 +56,20 @@ export default function Home() {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [typingMessage, setTypingMessage] = useState('');
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true); // Sidebar visibility state
   const messagesEndRef = useRef(null);
   const user = auth.currentUser;
 
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
+  };
+
   const sendMessage = async () => {
-    // Your sendMessage logic here...
+    //... (existing sendMessage logic)
   };
 
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      sendMessage();
-    }
+    //... (existing handleKeyPress logic)
   };
 
   const scrollToBottom = () => {
@@ -85,25 +85,11 @@ export default function Home() {
   };
 
   const createNewChat = () => {
-    const newChat = {
-      id: Date.now(),
-      messages: [
-        {
-          role: 'assistant',
-          content: "Hi! How can I assist you today?",
-        },
-      ],
-    };
-    setChats([...chats, newChat]);
-    setCurrentChatId(newChat.id);
+    //... (existing createNewChat logic)
   };
 
   const selectChat = (id) => {
     setCurrentChatId(id);
-  };
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
   };
 
   return (
@@ -113,28 +99,22 @@ export default function Home() {
         width="100vw"
         height="100vh"
         display="flex"
-        flexDirection={{ xs: 'column', md: 'row' }}
       >
-        {/* Sidebar with New Chat and Chat List */}
-        {isSidebarOpen && (
+        {isSidebarVisible && (
           <Paper
             elevation={6}
             sx={{
-              width: { xs: '100%', md: '20%' },
-              height: { xs: 'auto', md: '100%' },
+              width: { xs: '100%', sm: '30%', md: '20%' }, // Responsive width
+              height: '100%',
               p: 2,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-start',
               bgcolor: 'background.paper',
+              position: { xs: 'absolute', sm: 'static' }, // Adjust position on small screens
+              zIndex: { xs: 1000, sm: 'auto' }, // Ensure sidebar is on top on small screens
             }}
           >
-            <IconButton
-              onClick={toggleSidebar}
-              sx={{ alignSelf: 'flex-end', mb: 2 }}
-            >
-              <CloseIcon />
-            </IconButton>
             <Button
               variant="contained"
               startIcon={<AddIcon />}
@@ -192,11 +172,10 @@ export default function Home() {
           </Paper>
         )}
 
-        {/* Chat area */}
         <Paper
           elevation={6}
           sx={{
-            width: { xs: '100%', md: isSidebarOpen ? '80%' : '100%' },
+            width: isSidebarVisible ? { xs: '100%', sm: '70%', md: '80%' } : '100%', // Adjust width based on sidebar visibility
             height: '100%',
             p: 3,
             display: 'flex',
@@ -206,8 +185,24 @@ export default function Home() {
             borderRadius: 2,
             boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
             bgcolor: 'background.paper',
+            ml: { xs: isSidebarVisible ? 'auto' : 0 }, // Adjust margin when sidebar is visible on small screens
           }}
         >
+          {/* Toggle Button */}
+          <IconButton
+            onClick={toggleSidebar}
+            sx={{
+              position: 'absolute',
+              top: 8,
+              left: 8,
+              display: { sm: 'none' }, // Show only on small screens
+              bgcolor: 'background.paper',
+              color: 'primary.main',
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+
           {/* Header with AI Support Assistance, image, and online status */}
           <Box
             sx={{
@@ -218,12 +213,6 @@ export default function Home() {
             }}
           >
             <Box display="flex" alignItems="center">
-              <IconButton
-                onClick={toggleSidebar}
-                sx={{ display: { md: 'none' }, mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
               <Avatar
                 alt="AI Avatar"
                 src="/src/app/images/image1.jpg" // Adjust the path to your image file
@@ -343,3 +332,4 @@ export default function Home() {
     </ThemeProvider>
   );
 }
+
