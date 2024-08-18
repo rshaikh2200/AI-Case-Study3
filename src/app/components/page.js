@@ -1,12 +1,11 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from "react";
-import { Box, Stack, TextField, Button, Paper, Typography, Avatar, List, ListItem, ListItemText, Divider, IconButton } from '@mui/material';
+import { Box, Stack, TextField, Button, Paper, Typography, Avatar, List, ListItem, ListItemText, Divider } from '@mui/material';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
-import MenuIcon from '@mui/icons-material/Menu';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CircularProgress } from '@mui/material';
@@ -56,92 +55,99 @@ export default function Home() {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [typingMessage, setTypingMessage] = useState('');
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true); // Sidebar visibility state
   const messagesEndRef = useRef(null);
   const user = auth.currentUser;
 
-  const toggleSidebar = () => {
-    setIsSidebarVisible(!isSidebarVisible);
-  };
-
   const sendMessage = async () => {
-    if (message.trim() === '') return;
+    if (!message.trim()) return;
+    if (isLoading) return;
 
-    const updatedChats = chats.map(chat => {
-      if (chat.id === currentChatId) {
-        return {
-          ...chat,
-          messages: [...chat.messages, { role: 'user', content: message }]
-        };
-      }
-      return chat;
-    });
-
-    setChats(updatedChats);
-    setMessage('');
     setIsLoading(true);
+    setTypingMessage('');
 
-    // Simulate AI response
-    setTimeout(() => {
-      const aiResponse = {
-        role: 'assistant',
-        content: "I'm processing your request...",
-      };
+    const newMessage = { role: 'user', content: message };
 
-      const updatedChatsWithResponse = updatedChats.map(chat => {
+    setChats(prevChats => {
+      const updatedChats = prevChats.map(chat => {
         if (chat.id === currentChatId) {
           return {
             ...chat,
-            messages: [...chat.messages, aiResponse]
+            messages: [
+              ...chat.messages,
+              newMessage,
+              { role: 'assistant', content: '...' },
+            ],
           };
         }
         return chat;
       });
+      return updatedChats;
+    });
 
-      setChats(updatedChatsWithResponse);
+    try {
+      const response = await fetch('/api/claude-bedrock', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: newMessage.content }),
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(Network response was not ok: ${response.status} ${errorMessage});
+      }
+
+      const data = await response.json();
+
+      // Slowly type out the AI response
+      const assistantMessage = data.response || "No response received.";
+      let currentMessage = '';
+      const typingInterval = setInterval(() => {
+        currentMessage += assistantMessage[currentMessage.length];
+        setTypingMessage(currentMessage);
+
+        if (currentMessage.length === assistantMessage.length) {
+          clearInterval(typingInterval);
+          setIsLoading(false);
+          setChats(prevChats => {
+            const updatedChats = prevChats.map(chat => {
+              if (chat.id === currentChatId) {
+                const newMessages = [...chat.messages];
+                newMessages[newMessages.length - 1] = {
+                  role: 'assistant',
+                  content: currentMessage,
+                };
+                return { ...chat, messages: newMessages };
+              }
+              return chat;
+            });
+            return updatedChats;
+          });
+          setMessage('');
+        }
+      }, 50); // Adjust speed as needed
+
+    } catch (error) {
+      console.error('Error:', error);
+      setChats(prevChats => {
+        const updatedChats = prevChats.map(chat => {
+          if (chat.id === currentChatId) {
+            return {
+              ...chat,
+              messages: [
+                ...chat.messages,
+                { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
+              ],
+            };
+          }
+          return chat;
+        });
+        return updatedChats;
+      });
       setIsLoading(false);
-      scrollToBottom();
-    }, 1000);
-  };
-
-  const handleKeyPress = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      sendMessage();
     }
   };
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [chats, currentChatId]);
-
-  const handleLogout = async () => {
-    await signOut(auth);
-  };
-
-  const createNewChat = () => {
-    const newChat = {
-      id: Date.now(),
-      messages: [
-        {
-          role: 'assistant',
-          content: "New chat created! How can I assist you?",
-        },
-      ],
-    };
-
-    setChats([...chats, newChat]);
-    setCurrentChatId(newChat.id);
-  };
-
-  const selectChat = (id) => {
-    setCurrentChatId(id);
-  };
-
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
