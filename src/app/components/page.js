@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from "react";
-import { Box, Stack, TextField, Button, Paper, Typography, Avatar, List, ListItem, ListItemText, Divider } from '@mui/material';
+import { Box, Stack, TextField, Button, Paper, Typography, Avatar, List, ListItem, ListItemText, Divider, IconButton } from '@mui/material';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -10,6 +10,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CircularProgress } from '@mui/material';
 import CircleIcon from '@mui/icons-material/Circle';
+import MenuIcon from '@mui/icons-material/Menu';
 
 // Dark mode theme
 const darkTheme = createTheme({
@@ -95,7 +96,7 @@ export default function Home() {
 
       if (!response.ok) {
         const errorMessage = await response.text();
-        throw new Error(Network response was not ok: ${response.status} ${errorMessage});
+        throw new Error(`Network response was not ok: ${response.status} ${errorMessage}`);
       }
 
       const data = await response.json();
@@ -126,7 +127,7 @@ export default function Home() {
           });
           setMessage('');
         }
-      }, 50); // Adjust speed as needed
+      }, 100); // Adjust speed as needed
 
     } catch (error) {
       console.error('Error:', error);
@@ -148,6 +149,23 @@ export default function Home() {
       setIsLoading(false);
     }
   };
+
+  const toggleSidebar = () => {
+    // Logic to toggle sidebar visibility
+  };
+
+  const createNewChat = () => {
+    // Logic to create a new chat
+  };
+
+  const selectChat = (chatId) => {
+    setCurrentChatId(chatId);
+  };
+
+  const handleLogout = () => {
+    signOut(auth);
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
