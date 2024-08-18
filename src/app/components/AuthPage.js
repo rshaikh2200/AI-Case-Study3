@@ -47,7 +47,7 @@ export default function AuthPage() {
   };
 
   return (
-    <Grid container component="main" sx={{ height: '100vh' }}>
+    <Grid container component="main" sx={{ height: '50vh' }}>
       <CssBaseline />
 
       {/* Header */}
