@@ -63,7 +63,7 @@ export default function AuthPage() {
         container
         justifyContent="center"
         alignItems="center"
-        sx={{ mt: 4 }} {/* Adds space between header and form */}
+        sx={{ mt: 4 }} // Adds space between header and form
       >
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
@@ -115,7 +115,7 @@ export default function AuthPage() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 1 }} {/* Decreased space below the button */}
+                sx={{ mt: 3, mb: 1 }} // Decreased space below the button
                 disabled={loading}
               >
                 {loading ? <CircularProgress size={24} /> : isSignUp ? 'Sign Up' : 'Sign In'}
