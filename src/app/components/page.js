@@ -194,7 +194,7 @@ export default function Home() {
             sx={{
               position: 'absolute',
               top: 8,
-              left: 8,
+              left: isSidebarVisible ? 240 : 8, // Adjust the left position based on sidebar visibility
               bgcolor: 'background.paper',
               color: 'primary.main',
               zIndex: 2000, // Ensure the button is on top of all elements
@@ -210,6 +210,7 @@ export default function Home() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
+              pl: isSidebarVisible ? 56 : 8, // Adjust padding based on sidebar visibility
             }}
           >
             <Box display="flex" alignItems="center">
