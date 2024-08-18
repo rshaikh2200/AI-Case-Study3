@@ -128,7 +128,7 @@ export default function Home() {
           });
           setMessage('');
         }
-      }, 20); // Adjust speed as needed
+      }, 10); // Adjust speed as needed
 
     } catch (error) {
       console.error('Error:', error);

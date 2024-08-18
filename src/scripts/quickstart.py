@@ -26,18 +26,18 @@ export async function POST(req: Request): Promise<Response> {
           modelArn: "anthropic.claude-3-haiku-20240307-v1:0", // Replace with your model ARN
           retrievalConfiguration: {
             vectorSearchConfiguration: {
-              numberOfResults: 5, // Number of results to retrieve
+              numberOfResults: 10, // Number of results to retrieve
               overrideSearchType: "SEMANTIC"
             }
           },
           generationConfiguration: {
             promptTemplate: {
               // Include $search_results$ to integrate the search results into the prompt
-              textPromptTemplate: "You are a helpful AI assistant for Crescent Technology. This is data you're given about Crescent: $search_results$ Be concise and keep the message close to 20 words."
+              textPromptTemplate: "You are a helpful AI assistant for Get Hired. This is data you're given about Get Hired: $search_results$ Be concise and keep the message close to 250 words."
             },
             inferenceConfig: {
               textInferenceConfig: {
-                temperature: 0.7,
+                temperature: 1.0,
                 topP: 0.9,
                 maxTokens: 512,
                 // stopSequences: ["\n"] 
