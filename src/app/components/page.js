@@ -150,20 +150,45 @@ export default function Home() {
     }
   };
 
-  const toggleSidebar = () => {
-    // Logic to toggle sidebar visibility
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage();
+    }
+  };
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chats, currentChatId]);
+
+  const handleLogout = async () => {
+    await signOut(auth);
   };
 
   const createNewChat = () => {
-    // Logic to create a new chat
+    const newChat = {
+      id: Date.now(),
+      messages: [
+        {
+          role: 'assistant',
+          content: "Hi! How can I assist you today?",
+        },
+      ],
+    };
+    setChats([...chats, newChat]);
+    setCurrentChatId(newChat.id);
   };
 
-  const selectChat = (chatId) => {
-    setCurrentChatId(chatId);
+  const selectChat = (id) => {
+    setCurrentChatId(id);
   };
 
-  const handleLogout = () => {
-    signOut(auth);
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
   };
 
   return (
