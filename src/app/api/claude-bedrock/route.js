@@ -37,7 +37,7 @@ export async function POST(req) {
           generationConfiguration: {
             promptTemplate: {
               // Include $search_results$ to integrate the search results into the prompt
-              textPromptTemplate: "You are a helpful AI assistant for Crescent Technology. This is data you're given about Crescent: $search_results$. Be concise and keep the message close to 20 words."
+              textPromptTemplate: "You are a helpful AI assistant for Job Hunt Tech. This is data you're given about Job Hunt Tech: $search_results$. Be concise and keep the message close to 1000 words."
             },
             inferenceConfig: {
               textInferenceConfig: {
