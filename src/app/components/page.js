@@ -65,11 +65,50 @@ export default function Home() {
   };
 
   const sendMessage = async () => {
-    //... (existing sendMessage logic)
+    if (message.trim() === '') return;
+
+    const updatedChats = chats.map(chat => {
+      if (chat.id === currentChatId) {
+        return {
+          ...chat,
+          messages: [...chat.messages, { role: 'user', content: message }]
+        };
+      }
+      return chat;
+    });
+
+    setChats(updatedChats);
+    setMessage('');
+    setIsLoading(true);
+
+    // Simulate AI response
+    setTimeout(() => {
+      const aiResponse = {
+        role: 'assistant',
+        content: "I'm processing your request...",
+      };
+
+      const updatedChatsWithResponse = updatedChats.map(chat => {
+        if (chat.id === currentChatId) {
+          return {
+            ...chat,
+            messages: [...chat.messages, aiResponse]
+          };
+        }
+        return chat;
+      });
+
+      setChats(updatedChatsWithResponse);
+      setIsLoading(false);
+      scrollToBottom();
+    }, 1000);
   };
 
   const handleKeyPress = (event) => {
-    //... (existing handleKeyPress logic)
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage();
+    }
   };
 
   const scrollToBottom = () => {
@@ -85,7 +124,18 @@ export default function Home() {
   };
 
   const createNewChat = () => {
-    //... (existing createNewChat logic)
+    const newChat = {
+      id: Date.now(),
+      messages: [
+        {
+          role: 'assistant',
+          content: "New chat created! How can I assist you?",
+        },
+      ],
+    };
+
+    setChats([...chats, newChat]);
+    setCurrentChatId(newChat.id);
   };
 
   const selectChat = (id) => {
