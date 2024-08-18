@@ -61,7 +61,94 @@ export default function Home() {
   const user = auth.currentUser;
 
   const sendMessage = async () => {
-    // Existing sendMessage logic...
+    if (!message.trim()) return;
+    if (isLoading) return;
+
+    setIsLoading(true);
+    setTypingMessage('');
+
+    const newMessage = { role: 'user', content: message };
+
+    setChats(prevChats => {
+      const updatedChats = prevChats.map(chat => {
+        if (chat.id === currentChatId) {
+          return {
+            ...chat,
+            messages: [
+              ...chat.messages,
+              newMessage,
+              { role: 'assistant', content: '...' },
+            ],
+          };
+        }
+        return chat;
+      });
+      return updatedChats;
+    });
+
+    try {
+      const response = await fetch('/api/claude-bedrock', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: newMessage.content }),
+      });
+
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`Network response was not ok: ${response.status} ${errorMessage}`);
+      }
+
+      const data = await response.json();
+
+      // Slowly type out the AI response
+      const assistantMessage = data.response || "No response received.";
+      let currentMessage = '';
+      const typingInterval = setInterval(() => {
+        currentMessage += assistantMessage[currentMessage.length];
+        setTypingMessage(currentMessage);
+
+        if (currentMessage.length === assistantMessage.length) {
+          clearInterval(typingInterval);
+          setIsLoading(false);
+          setChats(prevChats => {
+            const updatedChats = prevChats.map(chat => {
+              if (chat.id === currentChatId) {
+                const newMessages = [...chat.messages];
+                newMessages[newMessages.length - 1] = {
+                  role: 'assistant',
+                  content: currentMessage,
+                };
+                return { ...chat, messages: newMessages };
+              }
+              return chat;
+            });
+            return updatedChats;
+          });
+          setMessage('');
+        }
+      }, 20); // Adjust speed as needed
+
+    } catch (error) {
+      console.error('Error:', error);
+      setChats(prevChats => {
+        const updatedChats = prevChats.map(chat => {
+          if (chat.id === currentChatId) {
+            return {
+              ...chat,
+              messages: [
+                ...chat.messages,
+                { role: 'assistant', content: "I'm sorry, but I encountered an error. Please try again later." },
+              ],
+            };
+          }
+          return chat;
+        });
+        return updatedChats;
+      });
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (event) => {
@@ -349,4 +436,3 @@ export default function Home() {
     </ThemeProvider>
   );
 }
-
