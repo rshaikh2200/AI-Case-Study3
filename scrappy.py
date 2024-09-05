@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import re
 
 API_KEY = 'olostep_beta_api_WlodlgVDr5103KtByUO0gCeeFBJrRWaYWLu2'  # Replace with your API key
-baseurl = "https://psnet.ahrq.gov/webmm-case-studies?items_per_page=100&page=6"  # The URL to scrape
+baseurl = "https://psnet.ahrq.gov/webmm-case-studies?items_per_page=100&page=3"  # The URL to scrape
 
 
 def sanitize_filename(filename):
@@ -37,7 +37,7 @@ def scrape_case_study(url):
     title = title_tag.get_text(strip=True)
 
     # Extract "The Case" section
-    case_section_header = soup.find('h2', string=["The Case", "The Cases"])
+    case_section_header = soup.find('h2',string=lambda text: text and ("case" in text.lower()))
     if not case_section_header:
         print("'The Case' section not found.")
         return None
@@ -80,7 +80,7 @@ def scrape_all_case_studies(baseurl):
     case_study_links = soup.find_all('div', class_='h5')
 
     # Open a single text file to save all case studies
-    with open('case_study_6.txt', 'w', encoding='utf-8') as file:
+    with open('case_study_3.txt', 'w', encoding='utf-8') as file:
         # Loop through each div and scrape the corresponding case study
         for div in case_study_links:
             link = div.find('a', href=True)

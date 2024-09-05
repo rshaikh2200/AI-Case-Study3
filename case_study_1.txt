@@ -1,29 +1,3 @@
-Title: A Fatal Twist in Pseudohyperkalemia
-
-The Case:
-A 54-year-old man with a history of tobacco use presented to the emergency department (ED) with a chief complaint of acute chest pain. The pain was intermittent, began 2-3 weeks prior, lasted several minutes to hours in duration, and radiated to his left arm. The patient thought the pain was related to his diet and put himself on a juice cleanse one week before his presentation. On arrival at the ED, he was afebrile, heart rate was 98 beats per minute (bpm), blood pressure was 103/87 mmHg, and oxygen saturation was normal on supplemental oxygen. On physical examination, the patient had bibasilar rales and 1+ bilateral lower extremity edema. His 12-lead electrocardiogram (ECG) demonstrated normal sinus rhythm and right bundle branch block (RBBB). There was also prolongation of the QT interval, flattened T waves, and small U waves that were not recognized by either the machine or the ED physician. Laboratory tests were notable for hyponatremia to 126 mEq/L, hyperkalemia to 5.9 mEq/L, elevated creatinine to 1.4 mg/dL, moderately elevated troponin, and normal serum magnesium and calcium. The lab sample was reported as hemolyzed, but this finding was not recognized by the treating physician. Chest x-ray revealed mild cardiomegaly and pulmonary vascular congestion.
-
-The patient subsequently developed atrial fibrillation with rapid ventricular response at approximately 120 bpm. Cardiology was consulted and recommended initiation of heparin, amiodarone, and metoprolol. The patient also received treatment for hyperkalemia with albuterol, intravenous calcium, insulin with 50% dextrose, sodium bicarbonate, and furosemide. Soon after receiving these medications, he became unresponsive and pulseless. Torsades de pointes (TdP) was present on telemetry, though this was interpreted as ventricular fibrillation (VF) and treated with epinephrine, amiodarone, and sodium bicarbonate. Despite routine resuscitative efforts, return of spontaneous circulation was not achieved. Autopsy confirmed sudden cardiac arrest without myocardial infarction as the cause of death.
-
-================================================================================
-
-Title: Don’t Wait to Collect an Accurate Weight: A Case of Subtherapeutic Insulin Therapy
-
-The Case:
-A 16-year-old girl with type 1 diabetes presented to the emergency department (ED) complaining of dizziness, fatigue and a “high” reading on her home blood glucose monitor. Initial laboratory tests suggested diabetic ketoacidosis (DKA), consistent with the clinician’s impression that the patient's insulin pump was malfunctioning. Despite aggressive treatment with insulin drip at a basal rate of 0.1 unit/kg, her blood glucose remained high and the anion gap closed much slower than expected, given that this patient had a history of DKA episodes that had previously responded rapidly to insulin infusion.
-
-Late on day 2 of the admission, it was discovered that the admitting nurse and resident in the pediatric intensive care unit (PICU) had used the patient weight recorded in the ED to calculate and verify the insulin drip rate. Their rationale was that it was late, and the patient was tired when she arrived to the PICU. Her actual weight was 30 kg more than the weight documented in two different electronic health record (EHR) systems. Root cause analysis revealed that the weight in the ED had been marked as "stated" by the patient, which the patient verified when asked, but she had simply guessed at what she might weigh. Once the patient's weight was corrected and her insulin dose was adjusted, she improved quickly and her DKA resolved within 12 hours.
-
-================================================================================
-
-Title: Infection After Carpal Tunnel Surgery
-
-The Case:
-A woman presented for surgery on her right wrist as a treatment for carpal tunnel syndrome. There were no reported complications during the operation, and the patient was discharged from the hospital the same day. Before discharge, the surgeon instructed her to return in 10 days for suture removal. The surgeon also told the patient not to soak her hand in water, which would reduce the risk of infection. A nurse provided written discharge instructions that stated, “Keep hand clean and dry until sutures removed; no soaking hand in water.” Within three or four days, the patient reported that her wrist felt “warm” to the touch, and the incision area was red. The patient contacted the surgeon’s office and spoke to the medical assistant (MA), but no action was taken. The patient called the surgeon’s office multiple times, asking for more or different pain medications, which were refused. The MA did not document each call but reportedly discussed each call with the surgeon. The MA stated that the patient never reported that the wound was red, hot, foul-smelling, swollen, or anything else suggesting an infection. Approximately 7 to 10 days after the operation, the patient returned for suture removal. The surgeon’s MA removed the patient’s sutures and noted that the wound was not infected or swollen. The surgeon’s physician assistant (PA) also examined the patient and did not find any remaining sutures, nor did she see any infection or redness. One day later, the patient called and asked to see the surgeon, but she was denied because the MA said her wrist was “fine.” The patient continued to report pain, swelling, and redness, noted that her wrist began to ooze at the incision, and reported an odd smell. She called several times, but no follow-up visit was scheduled. The MA claimed that the patient never mentioned redness or pain after the sutures were removed, and if she had reported such symptoms, the MA would have immediately brought the patient in and told the surgeon.
-
-Two weeks after surgery, the patient went to an emergency department (ED) seeking treatment for worsening wrist pain. ED physicians diagnosed an infection, prescribed antibiotics, and told the patient to schedule an appointment with her surgeon. Three days after the ED visit, the patient spoke to the surgeon’s office and made a follow-up appointment for the next day. At that appointment, the surgeon recommended immediate surgery to treat the infection. The patient remained in the hospital for 11 days, during which she underwent two additional operations. She eventually recovered but lost significant use of her right hand.
-
-================================================================================
 
 Title: Multiple Missed Opportunities for Suicide Risk Assessment in Emergency and Primary Care Settings
 
@@ -347,6 +321,17 @@ A thorough root-cause analysis subsequently determined that the positive test ru
 
 ================================================================================
 
+Title: A Sweet Case of Hidden Hydrogen Ions
+
+The Case:
+A 24-year-old, Arabic-speaking woman with a history of type 1 diabetes mellitus, gastroparesis, and severe erosive esophagitis presented to the emergency department (ED) with one day of worsening generalized abdominal pain, nausea, and vomiting. Her last dose of insulin was one day prior to presentation. She stopped taking her daily regimen of insulin because she was not tolerating any oral intake. Her past medical history was notable for a hospitalization two weeks earlier for the same complaints; at that time, her laboratory studies were normal, and she was diagnosed with severe erosive esophagitis by esophagogastroduodenoscopy.
+
+Upon admission to the hospital, the patient was tachycardic (heart rate in 110’s) and had diffuse abdominal tenderness. Laboratory studies were significant for hyperglycemia (blood sugar level of 387 mg/dL), an elevated serum beta-hydroxybutyrate, and mildly abnormal venous blood gases (pH 7.4, PCO2 37 mm Hg, HCO3 18 mmol/L), as well as an anion gap of 23 (anion gap=[Na+] - [Cl + CO3]), which was elevated and indicative of metabolic acidosis.
+
+The admitting team thought the patient did not meet criteria for diabetic ketoacidosis (DKA) because the pH of 7.4 on the venous blood gas (VBG) was normal. The working diagnoses upon admission were severe esophagitis due to gastroparesis and poorly controlled diabetes. Dextrose-containing fluids were started as the patient was not tolerating any oral intake and an insulin sliding scale was ordered. Despite administration of increasing doses of subcutaneous insulin, maximal doses of prokinetics, and mucosal protective agents, she had persistent hyperglycemia in the 300-400 mg/dL range, abdominal pain, and vomiting. During the third night of hospitalization, the patient had a point-of-care fingerstick glucose measurement of 438 mg/dL. She reported having blurry vision, “not feeling well,” and fell into the nurse’s arms. The following day, she had a near fall, blurry vision, and change in mental status. An endocrinologist was consulted due to her poorly controlled blood glucose; the consultant diagnosed DKA. The patient was transferred to the intensive care unit (ICU) and an insulin drip was started, after which the patient’s metabolic derangements normalized and her symptoms resolved.
+
+================================================================================
+
 Title: Delayed Diagnosis in the Setting of Virtual Care: Remembering the Physical Examination
 
 The Case:
@@ -395,12 +380,38 @@ A 50-year-old man with a history of cancer and previous airway operations was ad
 
 ================================================================================
 
+Title: Code Status vs. Care Status
+
+The Case:
+A 65-year-old African American man with metastatic squamous cell carcinoma (SCC of unknown primary site) was admitted to the hospital after developing increasing back pain. His work-up revealed a T10 burst fracture. In addition to his cancer, the patient had a past medical history of schizophrenia, developmental delay (not conserved), and COPD. He received neurosurgical treatment for the fracture, but had a complicated post-operative course: aspiration, respiratory failure, intubation, new deep vein thrombosis and pulmonary embolism, and infection. Eventually, the ICU team was able to extubate the patient, but he continued to require intermittent high flow oxygen or bilevel positive airway pressure (BIPAP) to maintain his oxygenation.
+
+The palliative care team, which included an expert in medical ethics, was consulted to discuss goals of care with the patient, particularly regarding further cancer treatment and the possibility of placing a permanent feeding tube. Prior to his admission to the hospital, the patient resided in a semi-independent living facility, where he was cared for by a devoted caregiver and received other supportive services for his developmental delay; he had no family involved in his life. The patient shared with the team that he had been in nursing home settings/institutions in the 1970s and that he would never want to go back to one. His ultimate goal was to go home. After multiple lengthy discussions with the patient, his caregiver, the agency managing his services, and the hospital teams involved in his care, the decision was made to transition the patient home with hospice care, honoring his wish to go home to live as well as possible for as long as possible, but without burdensome treatments such as chemotherapy. The palliative care team and discharge planner worked with the social services agency to coordinate the transfer home, including acquiring appropriate equipment, training the patient’s caregivers on use of the equipment, and arranging home hospice and caregiving services.
+
+The ICU team continued to optimize the patient’s respiratory status as they prepared for his eventual discharge home. On a Friday afternoon, his care teams felt that the patient would benefit from ICU care over the weekend to further improve his respiratory status and that he would likely be able to go home the following week with hospice. A timeline for the transition had not been established, given the complexity of the situation and the patient’s clinical status.  However, within hours of changing the patient’s code status to “Do Not Resuscitate” (DNR) and after the palliative care team had left for the day, the patient was transferred out of the ICU to a medical/surgical floor. It is unclear who made this decision or why. With the transfer, he was given a new medical team. The patient was not rounded on by his new team of providers over the weekend. It seemed these new providers noted the patient’s DNR code status and the plan to go home with hospice and felt no further interventions would be required.
+
+Once outside of the ICU over the weekend, the patient’s respiratory status deteriorated, reaching a level of severe oxygen desaturation. No one continued to emphasize to the patient the importance of BIPAP and other respiratory care to his ability to go home. In fact, the new medical team seemed to have not even ordered BIPAP or other non-invasive respiratory support measures for the patient. When a new medical team arrived Monday morning to receive sign-out report from the weekend team, they were unsure what to do about the patient’s respiratory distress. They called the palliative care team for clarification about the plan of care. Once they understood the intended care, the Monday team attempted to improve the patient’s respiratory status with all measures short of intubation. Unfortunately, they were not able to reverse the effect of the ineffective respiratory care from the weekend. The patient died in the hospital later that week; he was never able to go home as he had wished.
+
+After the patient’s death, a discussion was held between the neurosurgical teams(the patient’s primary assigned service) and various providers about what DNR means and does not mean. To many, it meant the healthcare team was no longer needed because the patient was imminently dying, and so the team was going to focus its limited time and energy on patients who were “full code” which they equated with “full treatment.”
+
+================================================================================
+
 Title: Delayed Breast Cancer Diagnosis: A False Sense of Security.
 
 The Case:
 A 60-year-old woman was seen for a routine visit by a physician assistant (PA) at a family medicine practice. A right breast mass was palpated and felt likely to be benign. However, the PA ordered a diagnostic mammogram and ultrasound examination. The radiologist reviewed the images, noting focal asymmetry in the right breast. The assessment was challenging due to dense breast tissue. Ultimately, the films were interpreted as “probably benign” findings (BI-RADS Category 3) and follow-up imaging at 6 months was recommended to ensure stability. The report noted that a biopsy should not be delayed if a “suspicious mass” is present on physical exam. Reassured by the report, the PA did not order a biopsy or refer the patient to a breast surgeon.
 
 When the patient returned 5 months later for a follow-up appointment, the mass was found to have increased in size. She was referred to a surgeon for a biopsy, but there was confusion about whether the patient herself was to schedule the appointment or whether the surgeon’s office would contact her. After an 8-week delay, the patient contacted the family medicine office. The PA was surprised that she had not yet seen the surgeon and arranged for an urgent surgical appointment and biopsy of the enlarging right breast mass. The biopsy showed invasive breast cancer, which, now 7 months after the initial presentation, was found to be metastatic to the axillary nodes and spine. It is unknown if an earlier diagnosis would have affected the outcome of this aggressive malignancy.
+
+================================================================================
+
+Title: Mitigating the Risk of Intrahospital Transport for Pediatric Patients at Risk of Physiologic Instability
+
+The Case:
+A 3-month-old twin male infant, born at 26 weeks’ gestation and with a history of bowel resection and anastomosis due to necrotizing enterocolitis, was re-admitted to a children’s hospital with abdominal distention and constipation three weeks after being discharged from the neonatal intensive care unit. Systemic inflammatory response syndrome developed with associated abdominal pain and worsening distention. The patient was transferred to the pediatric intensive care unit (PICU) for management of severe sepsis with fluid resuscitation and antibiotics. With an obstructive pathology highly suspected, an urgent exploratory laparotomy was scheduled.
+
+The pediatric anesthesiologist arrived in the PICU to assess the patient and assist with transport to the operating room (OR). A verbal report was received from the PICU intensivist via phone, which included a brief history, recent changes in respiratory status, discussion of resuscitation for sepsis, and mention of newly confirmed bacteremia and the antibiotic therapy to target it that had been initiated earlier in the day. On exam, the patient was alert, interactive, but uncomfortable with abdominal distention; his breathing was non-labored while receiving humidified high-flow nasal cannula respiratory support. Discussion by the care team included whether the patient would require intubation prior to transport to the OR, and all parties agreed that the patient’s clinical exam suggested he would be stable for brief transport from the PICU to the OR. Transport personnel included two PICU nurses and the pediatric anesthesiologist. During the intrahospital transport, the patient had a brief bradycardic episode without any changes to breathing or oxygen saturation, which self-resolved. At that time, a PICU nurse shared that similar and increasing numbers of bradycardic episodes had been occurring over the course of the day for this patient, sometimes associated with oxygen desaturation; these events had been brief and had resolved without specific intervention.
+
+Transport continued, but just prior to reaching the OR, bradycardia recurred, with accompanying loss of muscle tone and upward deviation of both eyes. Positive pressure ventilation with 100% FiO2 was started immediately, along with chest compressions and intravenous epinephrine. The infant was rapidly moved into an OR bed while continuing resuscitation and intubation. Return of spontaneous circulation occurred within five minutes, although the patient remained acidotic and required vasopressor infusions. Exploratory laparotomy revealed complete bowel obstruction at the ileo-transverse anastomosis site with severely dilated proximal bowel. The stricture was resected, the bowel was left in discontinuity with ileostomy drainage, and an abdominal wound vacuum was placed. The patient remained intubated, and was transported back to the PICU without incident, although still requiring vasoactive support.
 
 ================================================================================
 
@@ -432,10 +443,35 @@ Urgent consultations were obtained from Maternal-Fetal Medicine and Acute Care S
 
 ================================================================================
 
+Title: Inpatient Stroke Management in an Adolescent with Type 1 Diabetes and Home Insulin Pump
+
+The Case:
+A 14-year-old girl with a history of type 1 diabetes (T1D) presented to her local emergency department (ED) with two weeks of heavy menstrual bleeding. She was treated with tranexamic acid and oral contraceptive pills and was discharged from the ED. She presented the following day to a different ED with continued menorrhagia, as well as new blurred vision, headache, and left arm numbness. A head CT was normal, and she was transferred to an academic medical center for further management. Shortly after admission, she had worsening of her upper extremity symptoms and brain MRI revealed right middle cerebral artery (MCA) stroke. She was transferred to the pediatric intensive care unit. Further workup led to a diagnosis of antiphospholipid syndrome, and she was treated with aspirin, mycophenolate, hydroxychloroquine, and prednisone. The following week the patient developed new left upper extremity weakness and left upper extremity, chest, and facial paresthesia. Imaging identified a new MCA territory infarct, and enoxaparin treatment was initiated. Additional studies demonstrated splenic and bilateral renal infarcts. She was further treated with high dose steroids and three rounds of plasmapheresis and was discharged home three weeks later.
+
+Throughout her hospitalization, the patient’s T1D was managed using her home insulin pump and continuous glucose monitor (CGM). The patient’s blood glucose values were routinely above 180 mg/dL during the hospitalization, likely due to her underlying illness, and rose further after glucocorticoid therapy was initiated.  In addition, the patient had several instances of insulin pump infusion site leakage and multiple occurrences of incorrect management related to use of her home CGM for calculation of insulin doses. Despite the patient experiencing persistent hyperglycemia, her mother resisted recommendations by the neurology and intensive care services1,2to discontinue her pump and initiate intravenous insulin in order to optimize glycemic control.
+
+================================================================================
+
 Title: Preventing Complications during Aneurysm Clipping – the Role of Neuromonitoring.
 
 The Case:
 A 73-year-old female patient was transferred from an outside hospital to a tertiary center with subarachnoid hemorrhage due to a ruptured aneurysm.  At approximately 1000 on the date of transfer, the patient was scheduled for right frontotemporal craniotomy and aneurysm clipping with neuromonitoring to start at 1930.  Neuromonitoring was included on the booking slip, and the neurosurgery resident called the Operating Room (OR) front desk to confirm.  The attending neurosurgeon was not present for the huddle but arrived for positioning of the patient and realized that the neuromonitoring technician was not present.  The OR front desk stated that neuromonitoring had not been called, but the attending surgeon decided to proceed with the procedure.  No problems were identified during surgery, but the patient emerged from anesthesia with left-sided paralysis, and post-op imaging showed evidence of a new stroke.  Postoperative morbidity and mortality review suggested that this stroke may have been prevented if neuromonitoring had been performed during the surgery.
+
+================================================================================
+
+Title: When Looks Aren’t All They Appear to Be: A Medication Error in an Uncommon Indication
+
+The Case:
+A 58-year-old female patient with a history of liver cirrhosis and transformed lymphoma was admitted for inpatient administration of her chemotherapy with Rituximab, Ifosfamide, Carboplatin, and Etoposide Phosphate (R-ICE). She reported feeling well without any contacts with any sick individuals upon admission. After three days of her first cycle of therapy, she complained of diffuse abdominal pain that lasted all day with nausea and vomiting. She underwent extensive workup where she was found to have neutropenia, elevated lactic acid, leukopenia, elevated d-dimer, and low fibrinogen. An abdominal CT was consistent with inflammatory colitis with possible cholecystitis involvement. Computed tomography arterial portography (CTAP) was noted to have a neoplastic mass on the anterior abdominal wall. She became hypotensive with systolic blood pressures in the 80s and low oxygen saturations. She was determined to be experiencing septic shock and transferred to the intensive care unit (ICU). In the ICU, she was found to have E. coli bacteremia and colitis secondary to neutropenia. Her condition was made worse by the onset of ongoing hiccups of unknown etiology which lasted more than 48 hours. She was prescribed thioridazine (brand name Mellaril) 10 mg twice daily for the hiccups. The medication was verified, and she received four doses without resolution. This resulted in an increase in the thioridazine dose from 10 mg twice daily to 15 mg for one dose then again to 25 mg twice daily for an additional four doses.
+
+When she was transferred back to the inpatient floor, a pharmacist reviewed the medical record. This review confirmed that the patient had been started on thioridazine and that she had not received this medication before admission to the hospital. When questioned by the pharmacist, the resident physician confirmed that thioridazine had been prescribed to treat persistent hiccups when chlorpromazine (brand name Thorazine) had been intended. The medication was discontinued as a result of altered mental status possibly secondary to medications. Ultimately, no Thorazine was needed.
+
+================================================================================
+
+Title: When the Lytes Go Out: A Case of Inpatient Cardiac Arrest
+
+The Case:
+A 44-year-old man with hypertension and diabetes mellitus complicated by diabetic retinopathy presented to the emergency department with right foot pain five days after stepping on a nail. On initial evaluation, vital signs were within normal limits, and physical exam was notable for an open, purulent, draining wound on right third metatarsal head that could be probed to the bone. Initial labs showed leukocytosis, low potassium, anion gap metabolic acidosis, and hyperglycemia, consistent with diabetic ketoacidosis. The patient was admitted to the general medicine ward and managed with antibiotics, subcutaneous insulin, and intravenous fluids and the orthopedic service was consulted. Over the subsequent six days, he had frequent nausea, ongoing poor oral intake, and was twice kept NPO (nothing by mouth) after midnight in advance of operative debridements that occurred late the following day. He had ongoing hypokalemia, as low as 2.5 mmol/L, and was repleted with low doses of oral supplements. A magnesium level was first checked on hospital day 4 and was found to be low; an electrocardiogram the same day showed a prolonged QT interval. On hospital day 7, potassium and magnesium remained low; subsequently, the patient had a cardiac arrest due to torsades de pointes and ventricular fibrillation. Luckily, the arrest occurred in front of a staff who called a code blue.  He was transported to the cardiac intensive care with return of spontaneous circulation. He was discharged from the hospital a week later with an implanted cardioverter-defibrillator.
 
 ================================================================================
 
@@ -475,12 +511,12 @@ The patient was subsequently readmitted to the same hospital approximately five 
 
 ================================================================================
 
-Title: The NSTEMI Curbside Consultation
+Title: Nothing Called Small Surgery
 
 The Case:
-A 52-year-old woman with coronary artery disease (CAD) and a history of ST-segment-elevation myocardial infarction (STEMI) and drug-eluting stent placement in the left anterior descending artery (LAD) in 2013, complicated by ischemic cardiomyopathy, presented to the Emergency Department with dyspnea, cough and fever. She was found to have hypoxemia and her chest X-ray showed patchy consolidations bilaterally, confluent in the right upper lung. She had a positive troponin test without ischemic electrocardiographic changes. She was admitted and started on antibiotics for community-acquired pneumonia. Given her history of progressive dyspnea, a transthoracic echocardiogram was performed that showed her left ventricular systolic function had worsened from an ejection fraction (EF) of 50-55% to 25-30%, without new wall motion abnormalities. Her troponin continued to rise, from 0.09 to 0.15, without electrocardiographic (ECG) changes. The inpatient medicine team obtained a “curbside” cardiology consultation; the consultant felt that her condition was consistent with demand ischemia and that the worsening of her systolic function could be consistent with acute pulmonary edema. The patient was therefore diuresed and continued on antibiotics. Her hypoxemia improved with resolved infiltrates on chest radiography. She was discharged home after a four-day hospitalization to complete her antibiotic course; she was told to resume her home diuretic regimen and plan for cardiology follow-up within a week.
+A 56-year-old female presented to surgical clinic with pain and swelling in left great toe associated with progressive deformity of the toenail for past 6 months. On examination, she had a thick, brittle, deformed nail that was in-growing, and was diagnosed with onychogryphosis. The patient underwent ablation of the nail left great toe and wedge excision of the germinal layer of the nail edges on the medial and lateral sides under local anesthesia. The procedure was performed using a digital tourniquet made from the finger of a sterile surgical glove placed around the great toe base and clamped with an artery forceps. After the procedure, a dressing was applied, and the patient was discharged after 4 hours with instructions to follow up in clinic in 2 days.
 
-The patient’s follow-up with cardiology did not occur until two months after discharge. At that time, a nuclear stress test was ordered, which showed a large perfusion defect suggestive of infarction. Subsequent left heart catheterization with coronary angiography showed 100% mid-LAD occlusion and a hypokinetic scar in the distal anterior wall and apex. Cardiac magnetic resonance imaging (MRI) showed no viability of the mid-anterior wall of the left ventricle. A multidisciplinary conference with interventional cardiology and cardiothoracic surgery specialists concluded that there was no benefit to be gained by percutaneous or surgical coronary revascularization.
+Upon presentation to clinic two-days post-discharge, the dressing was removed and revealed that the glove tourniquet was still in place, causing a tight constriction ring at the base of the toe.  The toe appeared dusky and swollen and was warm. The tourniquet was immediately removed, and gentle massage of the toe was performed at the constriction site. The patient reported mild hypoesthesia and was able to move the toe. She was prescribed Aspirin 100mg daily and Pentoxifylline 400mg three times per day for 15 days. The dressings were changed daily and frequent follow up was performed. The bluish discoloration of the toe increased progressively followed by skin necrosis. The patient ultimately developed gangrene of the left great toe distal to the site of compression. The care team decided to proceed with amputation at the base of the left great toe.
 
 ================================================================================
 
@@ -516,6 +552,24 @@ An anesthesiologist administered a dose of intravenous fentanyl to Patient #1 at
 
 ================================================================================
 
+Title: Direct Oral Anticoagulants are High-Risk Medications with Potentially Complex Dosing
+
+The Case:
+A male patient with a history of right axillofemoral and right to left femoral-femoral bypasses in September 2018 presented to the hospital 4 months later with right calf pain and evidence of popliteal artery occlusion. He underwent thrombolysis and thrombectomy and was discharged five days later. He was instructed to take rivaroxaban 15 mg twice daily for 19 days, to complete the full 21 day loading phase, and then 20 mg daily thereafter. The prescription and written instructions on the After-Hospital Summary (AHS) were correct, but nurse-generated check marks used when educating the patient on discharge medications incorrectly indicated that the 20 mg daily dose was to be given twice daily. This visual aid was included in the AHS indicating that rivaroxaban was to be administered at 9am and 9pm for both the 15 mg and 20 mg strengths. Relying upon the easy visual instruction sheet included in the AHS, as opposed to the prescription label, the patient reported taking 15 mg twice daily for 19 days (as prescribed) and then took 20 mg twice daily from the end of January until mid-February. This resulted in a six-day lapse between the day he ran out of his rivaroxaban and the day he could refill the 20 mg maintenance dose. He was readmitted shortly thereafter and found to have developed recurrent right popliteal and posterior tibial occlusion.
+
+================================================================================
+
+Title: Wrong Catheter in the Right Patient
+
+The Case:
+A 55-year-old man with history of emphysema was admitted to the hospital for pneumonia. The patient had two peripheral intravenous (IV) lines that infiltrated while he was receiving intravenous antibiotics with high dose steroids. When a third IV line also infiltrated, the nurse caring for the patient that night called the attending physician and asked for permission for peripheral intravenous central venous catheter (PICC) placement. She received a telephone order to place an interventional radiology (IR) consult for PICC insertion to be scheduled as soon as possible.
+
+With the next shift change, a new team took over and after a few hours, the IR nurse called asking for a pre-procedure checklist. The IR nurse was given basic information including the patient’s vital signs and hemodynamic parameters. Within 30 minutes, the patient was wheeled down, the procedure was completed uneventfully, and the patient returned to his room. When the unit nurse came in to assess the patient, the physician walked in at the same time and both were surprised to see that a tunneled dialysis catheter (TDC) had been placed instead of a PICC line.
+
+On review of the electronic health record, it was found that the order had been entered for a TDC instead of a PICC by the night nurse who had taken the verbal order from the physician. During the shift change that morning, the sign-out to the day shift nurse indicated that PICC insertion had been arranged. The day shift nurse called to confirm the procedure without realizing that a wrong order had been placed. Unfortunately, since the pre-procedure checklist did not specify the need for a PICC, the physician placed a TDC instead. After the error was recognized, the IV team was called to place a midline catheter into the basilic or cephalic vein to give IV antibiotics. This plan was immediately explained to the patient as well. After all safety checks were completed, the dialysis catheter was removed without any untoward consequence to the patient.
+
+================================================================================
+
 Title: Delayed Management of Necrotizing Soft Tissue Infection – Who does the Patient Belong To?
 
 The Case:
@@ -528,7 +582,9 @@ The Plastic Surgery service was notified and evaluated the patient; the team rec
 Title: Some Patients Can't Wait: Improving Timeliness of Emergency Department Care
 
 The Case:
-A 46-year-old woman with a history of a stroke ten months prior, methamphetamine use, and remote endovascular repair of a thoracic aortic dissection, presented to the emergency department (ED) triage nurse at 12:38am with a chief complaint of abdominal pain and vomiting.  Her vital signs included: blood pressure 154/113 mmHg, heart rate 75 beats/minute, respiratory rate 16 breaths/minute, room air pulse oximetry 98%, and oral temperature 36.6˚C. The triage nurse assigned Emergency Severity Index (ESI) category 2. Because the ED was busy with no available beds, the patient remained in the waiting room. No further nursing assessments or vital signs were recorded until 5:40am when the patient became increasingly tachycardic, tachypneic, and pale, and began to scream in pain on the waiting room floor. She was taken immediately to the resuscitation room and was assessed by the Emergency Medicine attending and resident physicians. The ED care team obtained vascular access, sent a battery of laboratory tests, and ordered imaging studies. The lactic acid value was 10.2 mmol/L (normal 0.9 - 1.7 mmol/L). A contrast-enhanced CT scan of the abdomen and pelvis was performed at 7:00am and revealed a ruptured thoraco-abdominal aortic aneurysm. The emergency physicians immediately consulted the Vascular Surgery team, which evaluated the patient at 7:30am and agreed to take the patient to the operating room (OR). Surgery was scheduled at 7:54am as a 0-2 hour case while surgical staff prepared the specialized vascular OR. The patient’s ED nurse called the OR to arrange transport and was told someone would be down to transport the patient to surgery in 30 minutes when the room became available.  At 8:57am, while still in the ED waiting for the OR, the patient developed hypotension and agonal respirations. She then became unresponsive and pulseless. The team called a code blue, initiated cardiopulmonary resuscitation, and administered blood products. Unfortunately, she could not be resuscitated and died in the ED.
+
+
+
 
 ================================================================================
 
@@ -551,6 +607,22 @@ The Case:
 Multiple electrocardiograms (EKGs) were incorrectly documented at a large urban tertiary care hospital over three months. All of the cases involved the nurse or EKG technician either entering the wrong medical record number (MRN), or not clearing the previous patient’s MRN from in the machine, while entering a new patient’s name. The incorrect patient documentation on the EKG caused EKG results to be uploaded to the wrong patients’ charts.
 
 One case involved a female infant whose treating physician received an electronic medical record (EMR) message shortly after her discharge from the hospital with the electrocardiogram result of sinus bradycardia and/or sinus arrest. Upon this physician’s review, an EKG had never been ordered on this patient throughout her hospital stay, nor did the EKG diagnosis fit with the clinical history of the patient. Upon further review it was determined that the EKG recorded was from a patient in the medical intensive care unit (MICU) but had been recorded in the wrong patient chart.
+
+================================================================================
+
+Title: Discharged with IV antibiotics: When issues arise, who manages the complications?
+
+The Case:
+
+
+
+
+================================================================================
+
+Title: Timely diagnosis of esophageal perforation
+
+The Case:
+A man with mixed connective tissue disease on low-dose prednisone and methotrexate presented moribund with chest and left shoulder pain, a left hydropneumothorax, and progressive respiratory failure.  The initial diagnosis was community-acquired pneumonia (CAP) and treatment included ceftriaxone, azithromycin, and stress-dose hydrocortisone.  Over the ensuing days, the patient’s condition deteriorated with worsening respiratory failure, progressive encephalopathy, and septic shock requiring vasopressor medications.  Antibiotics were changed to vancomycin, levofloxacin, and—due to the presence of hyphae on thoracentesis—anidulafungin.  Blood and sputum cultures were negative, and pleural fluid cultures grew Candida albicans.  Based on a diagnosis of fungal empyema, the patient underwent a left thoracotomy with decortication on hospital day 11.  Postoperatively, a new right pleural effusion developed, and fluid from a second thoracentesis grew Candida albicans, Candida lusitaniae, Lactobacillus, and alpha-hemolytic Streptococcus.  Antibiotic and antifungal medications were continued.  On hospital day 26, the radiologist described an evolving mediastinal process with gas suggestive of an esophageal perforation.  A Gastrografin (diatrizoate meglumine/ditrizoate sodium) esophagram demonstrated a small outpouching of the distal esophagus, and a computed tomography esophagram confirmed extravasation of contrast into bilateral pleural spaces.  The patient underwent an urgent right thoracotomy with mediastinal debridement and wide drainage.
 
 ================================================================================
 
@@ -582,17 +654,6 @@ Event #4 was a 21-year-old female patient seen in the ED. While receiving an ele
 
 ================================================================================
 
-Title: “This is the wrong patient's blood!”: Evaluating a Near-Miss Wrong Transfusion Event
-
-The Case:
-A 74-year-old male with a history of hypertension, hyperlipidemia, paroxysmal atrial fibrillation, coronary artery disease, congestive heart failure with an ejection fraction of 45%, stage I chronic kidney disease and gout presented for a total hip replacement. His home medications included lisinopril, metoprolol, colchicine, sertraline, acetaminophen and oxycodone as needed, and warfarin, which was withheld appropriately prior to the surgery.
-
-The patient was seen by the surgical and anesthesia teams in the preoperative holding area the morning of surgery. An intravenous (IV) line was placed and a “type and cross for blood” request was sent along with baseline laboratory tests. At our institution, an initial blood sample is sent in a purple tube from the holding area and then the blood bank will request a second confirmatory sample in a pink tube. The anesthesiologist marks the first tube with a patient sticker, date, time, and initials. The blood bank then sends a pink tube with pre-made labels to the operating room (OR) for a second blood sample.
-
-Shortly into the case, the patient became hypotensive and vasopressors were initiated. During this time, the patient's pink tube for the confirmatory blood sample was delivered to the room. The anesthesiologist filled the tube with blood and sent it back to the blood bank. About an hour into the case significant bleeding was encountered and a blood transfusion was needed. The patient information on the blood bags was checked per institution policy, which requires a witness signature. It was quickly discovered that the blood delivered contained the wrong labels. The blood bank was notified, the blood returned, and a new blood sample sent. Because the patient was persistently hypotensive and still bleeding, a massive transfusion protocol was initiated to rapidly get blood to the room. Uncrossed universal donor blood was delivered and administered, and the patient's hemodynamic parameters recovered appropriately.
-
-================================================================================
-
 Title: A Mistaken Dose of Naloxone
 
 The Case:
@@ -612,44 +673,6 @@ The Case:
 A 62-year-old man with a history of Wernicke–Korsakoff encephalopathy – a degenerative brain disorder caused by the lack of vitamin B1 – was admitted for possible aspiration pneumonia complicated by empyema and coagulopathy. The patient was alert and oriented to his name, but not the date or location, on admission.  He became agitated and uncooperative during the hospitalization, with presumed delirium. Soft restraints with mitts were required tomaintain life-sustaining lines and chest tubes.Over the first 10 days of hospitalization, the patient refused most oral nutrition and medications. On day 11, he was taken to the operating room for video-assisted thoracoscopic (VATS) decortication of his pleural space due to his persistent empyema. After returning to the ward, his diet order was not restarted. The patient received maintenance intravenous fluids but had no other nutrition for four days postoperatively, until he finally expressed hunger and it was noted that he was not receiving meals.
 
 During this time, the nursing staff had also stopped offering oral medications because of the patient's numerous prior refusals. As a result, he did not receive any of his prescribed oral medications for hypertension or his metronidazole for the aspiration pneumonia. Once the patient expressed hunger, the diet order was restarted, and a feeding consultwas ordered. The patient was identified as having difficulty swallowing and ultimately a percutaneous endoscopic gastrostomy (PEG) tube was placed to deliver both nutrition and medications.
-
-================================================================================
-
-Title: "Do You Want Everything Done?": Clarifying Code Status
-
-The Case:
-A 63-year-old woman with a history of liver transplantation secondary to hepatitis C, low back pain, and depression presented to the emergency department with hematemesis. Despite her chronic conditions, she was generally quite healthy, working as an office manager and frequently traveling to see her children and grandchildren. She was admitted by a second-year medical resident who ordered the appropriate diagnostic and therapeutic interventions for her upper gastrointestinal (GI) bleeding.
-
-As asking about code status is a normal part of the admission process, the resident asked the patient if "she would want everything done" if she were to get sicker. The patient paused and replied, "You know, I don't think I'd want to be kept alive on machines, that's for sure." The resident interpreted this to mean the patient would not want resuscitation under any circumstances, and thus felt that her code status should be do not resuscitate and do not intubate (DNR/DNI). Unfortunately, the resident did not enter this order into the computer, although he mentioned it in his progress note. So, per the admission orders, the patient was listed as a "full code" by default.
-
-In the morning, the admitting resident presented the case to the daytime medical team, including the DNR/DNI code status. The team was somewhat surprised by the code status given the patient's general good health. Early in the afternoon, the attending physician and intern on the team met with the patient to discuss her wishes. In a longer conversation, the patient clarified that she would not want chest compressions (as she had seen her husband receive these in the past when he died) but would accept short-term mechanical ventilation for reversible causes. She repeated that she would not want prolonged mechanical ventilation. Based on this, they deemed her code status to be "partial code."
-
-The patient was taken for an endoscopy for the upper gastrointestinal bleeding about that same time and was intubated for the procedure. In parallel, the intern placed the order to change the patient's code status from "full" to "partial" code. Right after intubation in the endoscopy suite, the anesthesiologist and gastroenterologist noticed the change in code status. They were no longer comfortable proceeding with the endoscopy, because they lacked the ability to respond fully with resuscitation if something were to go wrong during the procedure. Yet, the patient was already intubated and sedated.
-
-They urgently contacted the daytime medical team, and the teams met briefly in the endoscopy suite. Under the circumstances, they realized they had three options: (a) proceed with the procedure without changing the code status and assume the risk that, if something went wrong with the procedure, the patient could not receive chest compressions and may die; (b) extubate without performing the procedure, discuss the decision with the patient, and potentially reintubate if that was consistent with her wishes; or (c) change the code status without the patient's explicit consent and proceed with the procedure.
-
-In the end, they believed the third option from above best respected the patient’s wishes and minimized harm, so they temporarily changed her code status to "full code," completed the procedure, and then discussed the situation with the patient afterward. The endoscopy was performed without any complications and the patient was extubated afterward.
-
-================================================================================
-
-Title: Missed Opportunities for Suicide Risk Assessment
-
-The Case:
-Patient 1
-
-A 46-year-old homeless male was found in the parking lot of the emergency department (ED) expressing suicidal ideation (SI) and was brought into the ED. The triage nurse entered a positive suicide screen in the flowsheet which triggered an evaluation by Psychiatric Emergency Services (PES).
-
-The patient’s medical record indicated he had multiple chronic diseases and, of note, a suspicious lesion (revealed by a recent CT scan) that the patient had been told may indicate lung cancer. This patient was a well-known “frequent flyer” with multiple ED visits associated with excessive alcohol consumption and SI. In fact, the patient had six ED visits in the previous three months and in half of those visits he had expressed SI. On one of those visits, he stated that he had tried to hang himself the day before. When seen by a social worker the next day, he denied having thoughts of suicide and was discharged; he did not qualify for a 5150 hold at that visit.
-
-During this current ED evaluation, prior to being seen by PES, the patient was intubated due to acute hypoxia; he was extubated within 12 hours. A suicide assessment by the ED physician was not noted in chart; however, the nursing flowsheet contained two documented assessments stating no SI. No psychiatric evaluation was carried out.
-
-The ED staff arranged for placement in a boarding home (licensed or unlicensed, short-term housing with limited care) and the patient was discharged after being prescribed Valium for delirium tremens, cardiac medications, and antibiotics for a respiratory infection. Two days later the hospital was notified by a relative that the patient was found deceased, of unknown cause, behind a retail store.
-
-Patient 2
-
-A 76-yr-old male with a history of hypertension and depression was brought into the hospital via ambulance after his wife reported that he was unconscious following three days of altered level of consciousness. Alcohol intoxication with possible withdrawal seizures was the admitting diagnosis. The patient was intubated and placed on continuous EEG monitoring and Neurology noted moderate to severe encephalopathy likely due to medications. The drug screen came back negative except for abnormal levels of Fluoxetine, Amitriptyline, and Nortriptyline. A social worker reviewed the case in the ED but did not see the patient after he was admitted.
-
-The patient was extubated on hospital day two and Internal Medicine noted that a social service evaluation for alcohol abuse intervention was considered but, for some reason, was not ordered. After extubation, the patient wanted to go home and became agitated, cursing and stating, “it is wasting time” and “I should not be here.” No suicide risk assessment was conducted by nursing or social services staff after the patient was extubated and able to communicate. The patient left the hospital against medical advice and was found dead by a neighbor the next day from a self-inflicted gunshot wound to head.
 
 ================================================================================
 
@@ -724,21 +747,6 @@ At that follow-up appointment, he was told he was "ready for surgery"—despite 
 
 ================================================================================
 
-Title: Anemia and Delayed Colon Cancer Diagnosis
-
-The Case:
-An 81-year-old man with a history of atrial fibrillation on rivaroxaban presented to his primary care physician (PCP) with a hemoglobin of 11.1 g/dL (normal range in men: 13.5 to 17.5 g/dL). His hemoglobin had been normal 6 months earlier. A colonoscopy for colorectal cancer screening was normal 2 years prior to this presentation.
-
-At this visit with his PCP, his vital signs were normal and physical examination was unremarkable. A fecal occult blood test was not performed. The patient was referred for an upper endoscopy, which showed mild gastritis. He was prescribed a proton-pump inhibitor and oral iron, and his dose of rivaroxaban was reduced. He was told that he would not need a repeat colonoscopy because his had not shown any lesions 2 years earlier. The patient had no family history of colon cancer.
-
-Two months later, the patient's hemoglobin was found to be 8.5 g/dL. He was given two doses of intravenous iron and continued taking oral iron. His hemoglobin subsequently improved to 12 g/dL over the next 2 months.
-
-Eight months later, the patient reported progressive fatigue and shortness of breath. A repeat hemoglobin was found to be 6.7 g/dL. A capsule endoscopy study and repeat upper endoscopy were performed and both were normal. He received a blood transfusion as well as additional iron infusions, resulting in an improvement in his hemoglobin to 10 g/dL.
-
-Four months later—2 years after his initial presentation—his hemoglobin fell again to 7.4 g/dL, and the patient received another blood and iron transfusion. Two days after this infusion, he presented to the emergency department with a bowel obstruction and was subsequently diagnosed with colon cancer. He underwent surgery to excise the mass and fortunately remains in remission.
-
-================================================================================
-
 Title: Spinal Epidural Abscess
 
 The Case:
@@ -762,19 +770,6 @@ An 86-year-old man with neurodegenerative dementia, epilepsy, type 2 diabetes, a
 The REMS-registered psychiatry attending entered the initial order (12.5 mg) per hospital protocol. However, during the hospitalization, the medicine intern, who was not registered with the REMS program, titrated the dose to 25 mg daily. The intern was able to modify the dose in the hospital without any alerts because he was not writing a new order or prescription (which would have required REMS registration). Moreover, despite having had no experience with or education about REMS, the intern also wrote the discharge prescription because he was unaware that he was ineligible to prescribe clozapine.
 
 Upon receipt of the prescription, the outpatient pharmacist checked the REMS registry and noted the medicine intern was not a registered prescriber. He contacted the attending psychiatrist, who then wrote a new prescription. However, the patient's family was unable to pick up the prescription for 3 days. During this gap in therapy, the patient experienced recurrence of paranoia and required readmission to the hospital for worsening psychiatric symptoms.
-
-================================================================================
-
-Title: Diuretics and Electrolyte Abnormalities
-
-The Case:
-A 62-year-old woman with morbid obesity and a past medical history of chronic obstructive pulmonary disease, hypertension, heart failure with preserved ejection fraction, diabetes mellitus, and a previous hospitalization for hyponatremia was seen by her primary care provider for a routine visit. At the visit, the patient complained of worsening lower extremity edema over the prior few weeks. She had no shortness of breath nor other new symptoms.
-
-On examination, her blood pressure was well controlled (128/55 mm Hg) on an angiotensin-converting enzyme inhibitor, and her other vital signs were normal. She did have 1–2+ pitting edema of the bilateral lower extremities, slightly worse than her usual. Her primary care provider decided to prescribe chlorthalidone 50 mg daily for the edema, thinking it might also help with the patient's blood pressure. Her baseline creatinine was normal.
-
-Ten days later, the patient presented to the emergency department (ED) with 3 days of worsening somnolence and confusion. Laboratory results revealed a serum sodium of 105 g/dL and a potassium of 2.3 g/dL. She had a seizure in the ED, which was treated with lorazepam, and she was admitted to the intensive care unit. The critical care provider consulted a nephrologist, and both agreed the severe symptomatic hyponatremia and hypokalemia had been caused by the chlorthalidone.
-
-The patient was treated with hypertonic (3%) normal saline, potassium repletion, and supportive care. She had gradual improvement in her serum sodium and mental status over the next few days, and she was discharged home on hospital day 5.
 
 ================================================================================
 
@@ -818,19 +813,6 @@ The patient remained hypotensive, and a lactate level returned at 3.5 mg/dL. A C
 Following the patient's prolonged ED course, he was admitted to the intensive care unit where his sepsis worsened. Antimicrobial therapy was broadened to meropenem, caspofungin, azithromycin, and vancomycin. The patient developed anuric renal failure necessitating continuous renal replacement therapy. Ultimately, he was transitioned to comfort care and died. Autopsy revealed the likely cause of death to be septic shock due to neutropenic enterocolitis.
 
 The cause of the patient's death was deemed to be multifactorial (i.e., high medical complexity, delayed sepsis recognition, unfamiliarity with antibiotic coverage, prolonged ED boarding time, and multiple involved services). However, given the data on relationship between time to antibiotic administration and sepsis mortality, the delayed antibiotic administration likely contributed to the death. Furthermore, the documented penicillin allergy may have contributed to this delay by preventing reflexive administration of empiric gram-negative antibiotic treatment with piperacillin-tazobactam or cefepime. Moreover, the lack of familiarity with the limited efficacy of aztreonam in anaerobic coverage led to a delay in the addition of appropriate anaerobic treatment.
-
-================================================================================
-
-Title: Speaking Up for Patient Safety: What They Don't Tell You in Training About Feedback and Burnout
-
-The Case:
-A 78-year-old man presented to the hospital with shortness of breath. He was admitted to the medicine service and chest radiograph revealed large bilateral pleural effusions. The bedside procedure service was consulted to perform a thoracentesis for both diagnostic and treatment purposes.
-
-The proceduralist received a page from the medicine team requesting the procedure. The page contained the last name and room number of the patient. The physician entered the patient's room, identified the patient by his last name, introduced himself, and asked the patient's permission to use the ultrasound machine to assess the effusions. A patient care assistant was sitting by the patient's bedside and watching the patient closely. The patient care assistant explained to the physician that the patient had underlying dementia and was frequently confused. The physician scanned the patient and noted a small effusion on the right side. He was a bit surprised that the effusion wasn't larger given what he had been told by the patient's primary medicine team. He then called the medicine team and mentioned that he found a very small effusion on the right side, which he could attempt to sample if the team still felt it was clinically indicated.
-
-The patient care assistant who overheard the phone exchange followed the physician out of the patient's room and politely informed him that he had in fact examined the incorrect patient. The proceduralist logged into the electronic health record to verify the patient information he had received in the page. He was shocked to find that the correct patient was in the next room and happened to have the same last name as the patient he had evaluated by mistake.
-
-The physician immediately apologized to the patient with dementia and thanked the patient care assistant for pointing out his mistake. He then went to examine the correct patient and found that large bilateral pleural effusions were indeed present, just as the medicine team had stated. The physician nominated the patient care assistant for the hospital's Stand Up for Safety Award, designed to recognize providers and staff for speaking up and making good catches in the name of patient safety.
 
 ================================================================================
 
@@ -910,21 +892,6 @@ The ICU decided to implement a standardized protocol for positive pressure weani
 
 ================================================================================
 
-Title: Which Line: Ordering Provider or Proceduralist?
-
-The Case:
-A 58-year-old woman with multiple myeloma required placement of a central venous catheter for apheresis, a blood-straining procedure to lower the level of abnormal proteins in her blood.
-
-In general, two types of central venous catheters may be used for apheresis, a tunneled central venous catheter and a nontunneled central venous catheter. (Tunneled catheters enter the skin and then go through a tunnel right beneath the skin before entering a large central vein. A nontunneled catheter goes directly through the skin into a large central vein [e.g., internal jugular lines and subclavian catheters].) Placing tunneled catheters involves a more specialized and high-risk procedure; however, they are associated with fewer infections than nontunneled catheters and can be used for longer periods of time.
-
-The outpatient hematology–oncology provider ordered the procedure via computerized provider order entry. The oncologist intended to order a nontunneled catheter, as a tunneled catheter was not necessary for this indication (although it would also work). But she accidentally ordered a tunneled central catheter to be placed by the interventional radiologist.
-
-Although interventional radiologist reviewed the order and thought it was somewhat unusual that a tunneled catheter was ordered for apheresis, she didn't contact the oncologist. The patient was consented for the procedure and a tunneled catheter was placed without complications.
-
-When the patient presented for apheresis treatment, providers recognized that the wrong catheter had been placed. The oncologist and interventional radiologist discussed the case and decided it would be safest and most appropriate to remove the tunneled catheter and replace it with a nontunneled catheter. The error was disclosed to the patient, the tunneled catheter was removed, and the appropriate catheter was placed. There were no complications but a slight delay in initiating apheresis. Moreover, the extra procedure placed the patient at risk for procedural complications.
-
-================================================================================
-
 Title: Diagnostic Failure: The Growing Deficit
 
 The Case:
@@ -950,21 +917,6 @@ A 4-year-old boy underwent surgery under general anesthesia for correction of a 
 The patient was deemed stable to leave the PACU and be transported to the regular floor. However, he was not placed on pulse oximetry during the transport itself, which took about 10 minutes. On arrival to the floor, the patient transporter brought the patient to the designated room and alerted nurses that he had placed a new patient from the PACU there. The transporter did not communicate any concerns about the patient to the nursing staff. The bedside nurse had received signout from the PACU that the procedure had been uncomplicated and the patient had done well, so she felt no urgency to assess the new arrival. A few minutes later, the nurse went to assess the patient. She placed him on pulse oximetry and immediately realized that he was markedly hypoxic. She immediately administered oxygen by face mask, but he quickly became bradycardic and hypotensive, and a Code Blue was called. The patient went into cardiac arrest. He was eventually resuscitated but was left with significant neurological injury as a result of hypoxic brain injury.
 
 The hospital performed a root cause analysis of the case. The investigation found that the PACU staff understood the order for "continuous pulse oximetry for 24 hours" was to begin when the patient arrived on the ward. The patient's oxygen saturation had probably started to drop shortly before he left the PACU and had progressively worsened during transport, while he was not monitored. Had the patient been monitored during the transport, his deterioration might have been detected earlier. The transport staff member stated that he thought the patient might be experiencing breathing difficulty during the transport but did not voice his concern as he had been assured the boy was stable and he did not trust his own judgment.
-
-================================================================================
-
-Title: Triaging Interhospital Transfers
-
-The Case:
-A 63-year-old man with a history of hypertension, coronary artery disease, and diabetes was evaluated by his primary care physician for a rash. The physician noted the presence of high fevers and headache, and so he sent the patient to the emergency department (ED) for further evaluation and possible admission. Repeat vital signs in the ED were notable for a slightly low blood pressure and elevated respiratory rate. His rash was worsening, with sloughing of his skin. Laboratory test results showed an elevated lactate and white blood cell count, both concerning for possible sepsis. Fluids and antibiotics were administered. The patient was started on IV norepinephrine through a peripheral IV to maintain his blood pressure, but no central line was placed.
-
-The admitting physician was concerned that the patient might require subspecialty care, including dermatology consultation and critical care interventions not available at the local hospital. The physician arranged to have the patient transferred to a large academic medical center that could provide these services, but he was not familiar with any formal process to do so. He called a colleague at the receiving hospital to make the request for transfer. The colleague secured a bed through the bed control department and suggested he send the patient over.
-
-The details of the patient's current clinical condition and clinical data were not formally transmitted to the receiving hospital. Not knowing that the patient required pressors to maintain his blood pressure and that he was likely developing worsening shock, the accepting physician booked a general ward bed for the patient rather than an intensive care unit (ICU) bed. He did not inform the hospital's transfer center.
-
-Four hours later, the patient arrived at the academic medical center and was placed on a telemetry floor. His mentation was altered and he was breathing rapidly. The bedside nurse realized that norepinephrine was infusing through a peripheral IV. He called the rapid response team and ICU fellow to arrange for transfer to the ICU. Unfortunately, in the interim, the patient went into cardiac arrest and was pronounced dead about an hour after transfer.
-
-In reviewing the case, the accepting physician was not aware of how critically ill the patient had become prior to transfer and did not have access to laboratory and imaging data from the referring institution. The ambulance transport team was not trained to provide critical care and did not recognize that the patient's condition was deteriorating quickly while en route.
 
 ================================================================================
 
@@ -998,23 +950,6 @@ As a result, the patient was inadequately anticoagulated. Twelve hours later, sh
 
 ================================================================================
 
-Title: Spotlight: Mistaken Attribution, Diagnostic Misstep
-
-The Case:
-A 45-year-old woman with history of bipolar disorder and schizophrenia presented to the emergency department (ED) with active paranoid hallucinations. In the ED, she was afebrile but had mild tachycardia and a few transient hypoxic episodes. Over the course of a few hours, the hypoxia resolved but the tachycardia persisted. Her agitation and hallucinations impaired her ability to communicate or answer review of systems questions.
-
-The on-call psychiatry resident evaluated the patient and felt she needed hospitalization in the inpatient psychiatric facility. He attributed the persistent tachycardia and the transient hypoxia to her underlying agitation.
-
-The patient was admitted to the inpatient psychiatric facility, and treatment was initiated for agitation and hallucinations. Over the next few days, she required multiple different medications, including benzodiazepines and mood stabilizers (olanzapine), to control her symptoms. These medications caused somnolence and drowsiness, so the patient was bedbound most of the day. She had persistent tachycardia over these few days that continued to be attributed to her agitation and psychiatric disease.
-
-On the morning of hospital day 5, the nurse found the patient to be unresponsive. She had a fever, worsening tachycardia (heart rate 140s), tachypnea, and more severe hypoxia (oxygen saturation 80% on room air). On examination, she had diffuse myoclonus and increased muscle tone. She was barely arousable and confused, and she was transferred to the intensive care unit (ICU) of the regular hospital.
-
-After an evaluation by the critical care provider, a CT scan of the chest revealed bilateral pulmonary emboli that were felt to explain the ongoing tachycardia and hypoxia. She was also diagnosed with neuroleptic malignant syndrome, a rare and life-threatening reaction to some psychiatric medications. It is characterized by fever, muscular rigidity, myoclonus, and altered mental status, all of which were present in this patient. She was treated with heparin for the pulmonary embolism and supportive care and she slowly improved. After 4 days in the ICU, she was transferred to a regular medical ward. A few days later, she was able to be transferred back to the inpatient psychiatric facility.
-
-A formal root cause analysis of the case found many errors that led to the adverse events. The director of the inpatient psychiatric unit used the case as an opportunity to broadly consider not only medical complications but all of the patient safety issues involving the unit.
-
-================================================================================
-
 Title: Inadequate Preanesthetic Evaluation, Airway Trouble
 
 The Case:
@@ -1040,21 +975,6 @@ Later that evening, the patient's sodium level test result returned at 144 mmol/
 The following morning, the primary team returned and received signout from the cross-cover intern. The primary team's senior resident expressed surprise when she was told that IV fluids had been started overnight and remarked, "He was getting volume overloaded yesterday, so we didn't want any fluids started unless he was definitely hypernatremic. A sodium of 144 mmol/L is fine—you shouldn't have done anything." The cross-cover intern was confused and pointed out that she had followed the written signout instructions. On reviewing the written signout, the primary intern realized that he had accidentally printed a copy of the previous day's signout—it had not been updated. The sodium management plan had actually been changed, but this was not reflected in the printed written signout.
 
 Fortunately, the patient did not experience any adverse consequences as a result of the error. After reviewing the incident, the residency program decided that a senior resident should review the written signout and should be present when interns sign out to each other for the first 3 months of the academic year.
-
-================================================================================
-
-Title: Supervision and Entrustment in Clinical Training: Protecting Patients, Protecting Trainees
-
-The Case:
-A 65-year-old man was admitted with head and spine trauma after falling from a tree while doing yard work. He presented with poor neurologic function requiring mechanical ventilation. A CT scan of the head and neck showed hemorrhage in his brainstem and cervical spinal cord, and he was admitted to the intensive care unit (ICU). In the ICU, his hemorrhage led to hemodynamic instability, including fluctuating blood pressures and intermittent bradycardia with heart rates as low as 20–30 beats per minute.
-
-The decision was made to obtain a brain and spine MRI. Given the patient's critical condition, hospital policy dictated that he be accompanied by a nurse and a physician to the MRI scanner, which was 10 floors below the ICU. The ICU attending assigned the intern to transport the patient with the bedside nurse. The intern was in his second month of internship, had never done an ICU rotation before, and had never been involved in the transport of a critically ill patient.
-
-The patient was transported to the MRI scanner. Due to some logistical challenges, he was in a holding area for more than an hour. During that time, on two occasions the patient's heart rate fell to 20 beats per minute, associated with severe hypotension. The intern, who had not been given instructions on how to manage such a scenario, did not know how to respond. Fortunately, the ICU nurse was quite experienced and appropriately administered atropine, with recovery of the heart rate and blood pressure.
-
-The patient was finally placed into the MRI machine safely. Shortly thereafter, a chief resident came down to the MRI scanner and informed the intern that he had to leave the patient to attend a mandatory conference. The intern was hesitant given the patient's severity of illness, but the chief resident insisted that he leave. The chief resident had identified a medical student to sit in the scanner with the patient. Fortunately, there were no other clinical issues, and the patient remained stable. The medical student remained for the 2-hour scan and helped transport the patient back upstairs. Ultimately, the patient was found to have catastrophic bleeding. After discussions with his family, care was withdrawn and he died peacefully.
-
-A week later, the intern participated in a well-being session for housestaff and discussed the events. He expressed how he was incredibly uncomfortable and felt unequipped to handle the clinical situation. He felt that he had placed the patient's life at risk because of his inexperience. He also reflected that he did not feel comfortable stating his discomfort at the time as he feared he would be labeled as weak by the attending. In addition, he shared the distress he felt when the medical student was assigned to replace him at the patient's bedside—he recognized the student likely had similar insecurities, yet neither one of them felt comfortable saying anything. He also wondered why the nurses and technicians didn't ensure that a more qualified provider was involved.
 
 ================================================================================
 
