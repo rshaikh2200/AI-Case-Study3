@@ -1,0 +1,791 @@
+Title: Copy and Paste
+
+The Case:
+A 77-year-old woman was admitted to a teaching hospital with diarrhea and dehydration after completing her fifth cycle of chemotherapy for ovarian cancer. Her only relevant past medical history included a postoperative pulmonary embolus after hip surgery. This preceded her ovarian cancer diagnosis by several years, and she was treated with 6 months of warfarin with no subsequent events.
+
+The patient was admitted and received intravenous fluids and an infectious evaluation of her stool. The final line of the intern's admitting note also stated that the patient would receive subcutaneous heparin for venous thromboembolism (VTE) prophylaxis, although this was never actually ordered. The patient's care was transferred to a different team the following day, and the accepting intern copied and pasted the plans of the admitting intern into the new note within the electronic health record (EHR). The same note was then copied and pasted on 4 consecutive hospital days and cosigned by the resident and attending, and the patient was ultimately discharged having never received the intended VTE prophylaxis—despite each day's note stating this as part of the plan.
+
+Two days following discharge, the patient developed acute shortness of breath and hypoxia and returned to the hospital, where she was diagnosed with a pulmonary embolus. Only at this admission, and after careful review of the medication record from the previous hospitalization, was it realized that the patient never received any VTE prophylaxis.
+
+================================================================================
+
+Title: Mark My Tooth
+
+The Case:
+A 45-year-old healthy man was scheduled to have two teeth extracted for progressive dental caries. The patient underwent the extractions, awoke from the anesthesia, and then realized that his upper left molars had been extracted instead of his right. The error was recognized and acknowledged immediately following the procedure. The patient still required extraction of the diseased teeth, which occurred a few weeks later. He developed no significant complication from either surgical procedure other than enduring two rounds of anesthesia because of the error.
+
+================================================================================
+
+Title: Informed or Misled?
+
+The Case:
+A 50-year-old man arrived at the hospital for an elective total knee replacement. Based on preoperative discussions, the patient expected to receive spinal anesthesia. The patient reportedly signed an anesthesia permit required by this hospital that stated that any change in the anesthesia plan must occur in writing. For unclear reasons, the patient ultimately received general anesthesia and suffered the adverse outcome of permanent unilateral hearing loss with tinnitus, an unusual complication. The anesthesia records failed to note or explain any change in the anesthesia plan. The patient was understandably upset about his hearing deficit and also angry about the unexpected change in his anesthesia plans.
+
+================================================================================
+
+Title: Abnormal Volunteer Results
+
+The Case:
+A healthy 52-year-old woman volunteered to participate in a radiology study in which she underwent magnetic resonance imaging (MRI) of her abdomen and pelvis. Several weeks later, she received a phone call from the study coordinator reporting that a "major abnormality" was discovered on her MRI. She was told to see her doctor as soon as possible. After seeking further evaluation, she was diagnosed with uterine cancer and started on chemotherapy. While her diagnosis was likely hastened through her participation in the research study (as she expressed no symptoms), the patient wondered whether the delay in reporting the MRI findings to her led to growth in the cancer prior to starting treatment.
+
+================================================================================
+
+Title: On the Other Hand
+
+The Case:
+A young woman with Takayasu's arteritis presented to the hospital with severe abdominal pain. The patient had been diagnosed with Takayasu's a decade earlier. The disease results in arterial stenoses, which can cause ischemia in a variety of organs. One of the diagnostic clues is differential blood pressure (BP) in both arms (if there is more arteritis in one of the arm arteries than the other), and in fact the patient had been noted in the past to have very different BPs in her right and left arm. This had been recorded in her chart but was not noted in her hospital room or on her person.
+
+The patient was admitted at 6:00 p.m. to the intensive care unit (ICU) for monitoring, pain medication, and intravenous (IV) hydration, in preparation for vascular surgery the next morning. The IV, with normal saline, was started in her left arm.
+
+During the night shift, the midnight BP measurement using the right arm revealed a very low pressure (approximately 70 systolic). The nurse notified the covering resident, giving him a concise description of the patient, her primary admitting diagnosis, the surgery plans, and a report of the vital signs. The resident, who had been given only a brief signout on the patient (that did not include the history of different BPs in the two arms), was quite worried about the hypotension and ordered Levophed (norepinephrine), a powerful IV pressor. He did not examine the patient—if he had, he would have found that her mental status was normal, which might have been a clue that the true BP was not as low as the reading. The nurse took the resident's verbal order for the medication and administered the drug.
+
+When the surgical team arrived in the morning, they were puzzled by the low BP (since the patient appeared to be otherwise stable) and asked that the BP be reassessed, once in each arm. When the pressure was measured in the left arm, it was noted to be within normal range, even as the pressure in the right arm was still very low. The team immediately discontinued the pressor order, believing that the patient's true BP was the one from the left arm, and that the right arm reading was due to local vascular narrowing. Although giving a vasoconstricting medication to a patient with narrow blood vessels could have had catastrophic effects, no adverse outcomes were noted in this case.
+
+================================================================================
+
+Title: Production Pressures
+
+The Case:
+A 65-year-old man with bipolar disorder was scheduled for maintenance electroconvulsive therapy (ECT), a procedure he had received dozens of times before. These procedures are usually administered in the morning by an anesthesiologist. Later in the morning, that anesthesiologist staffs the preoperative anesthesia clinic. A second anesthesiologist in the group spends the day in the operating room (OR) supervising three nurse anesthetists.
+
+On the day of the scheduled ECT, the clinic anesthesiologist called in sick. The service, which had no policy to cover unexpected absences and rarely cancelled a case, scrambled to try to cover the ECT procedure, finally asking the OR anesthesiologist to attend on the case. He protested, noting that he was already responsible for overseeing the anesthesia for three surgeries in the OR. But finally, to avoid delays in the ECT administration, he reluctantly agreed to come to the day surgery unit to perform the quick (usually less than 10 minutes) procedure.
+
+After the ECT was performed, the patient did not wake up promptly as expected. The anesthesiologist checked his medication cart and realized that he had inadvertently administered the intermediate-acting muscle relaxant rocuronium, instead of the short-acting agent succinylcholine. He later attributed this error to being rushed and stressed, leading him to pull the wrong vial from the refrigerator. He had never made this mistake before.
+
+The patient was given more sedation to prevent awareness and bag-and-mask ventilation to support his respirations. After about 30 minutes, his neuromuscular blockade was pharmacologically reversed with neostigmine. The patient was informed of the error, and there were no long-term adverse consequences.
+
+================================================================================
+
+Title: Staggered Sensitivity Results
+
+The Case:
+A 60-year-old woman with squamous cell carcinoma of the glottis underwent laryngectomy, anterior neck dissection, and pectoralis flap reconstruction of the anterior esophagus. Postoperatively, she was started on clindamycin for surgical site infection prophylaxis. On postoperative day three, increased drainage from the surgical site was noted, which progressed and required a return to the operating room for exploration on postoperative day six. The site revealed purulent material with involvement of the jugular sheath. Cultures of the wound were taken, and the site was irrigated and re-closed.
+
+Two days later, the wound cultures grewStaphylococcus aureus. Per hospital protocol, the microbiology laboratory called the nursing unit to report the positive culture, and the patient's nurse informed the physician team. Clindamycin was continued. Three days later, a final sensitivity profile for theS. aureusisolate returned, showing resistance to clindamycin. Hospital policy does not call for notification to clinicians by the microbiology lab when a "preliminary" culture result becomes "final" (when final sensitivities become available). At this facility, physicians view laboratory results in a scrolling text–based computer system, which presents results in chronological order according to the time of specimen collection. The final microbiology result and the critical sensitivity results in this case remained in chronological order (now 5 days prior). The physicians did not view the updated culture results, and the patient remained on clindamycin.
+
+The next day, the right internal jugular vein ruptured, and the patient was taken emergently to the operating room. A widespread infection of the surgical site with destruction of the jugular sheath and erosion into the internal jugular vein was noted. The internal jugular vein was ligated and sacrificed. The patient died of sepsis and multiorgan system failure 3 days later.
+
+================================================================================
+
+Title: Back to Basics
+
+The Case:
+A 48-year-old woman with insulin-dependent diabetes mellitus presents to the emergency department with right upper quadrant pain, fever, and leukocytosis, prompting admission for presumed cholangitis. Overnight, the patient was made NPO (nothing by mouth) in anticipation of an endoscopic retrograde cholangiopancreatography (ERCP) the following morning. The admitting medical team ordered an insulin sliding scale for the patient, and her blood glucose levels became very difficult to control in the ensuing hours. In the morning, the patient developed an anion gap and evidence of mild diabetic ketoacidosis. The physician evaluating the patient in the morning realized that no basal insulin was ordered and instituted a more appropriate regimen of insulin, and the patient underwent an uneventful ERCP and hospitalization.
+
+================================================================================
+
+Title: Rapid Mis-St(r)ep
+
+The Case:
+A 5-year-old girl was brought to an urgent care center by her father with a 2-day history of fever to 103°F, sore throat, and diffuse abdominal pain. There was no history of cough or runny nose. On examination, she appeared ill and had a temperature of 101°F. Her posterior oropharynx was erythematous without exudates, and the tonsils were not enlarged. She had tender anterior cervical lymphadenopathy. The remainder of the examination, including the abdominal examination, was unremarkable.
+
+With concern for strep throat, the urgent care physician swabbed the child's throat and performed a rapid antigen detection test (RADT) in the clinic. The "rapid strep test" was interpreted as negative. A culture of the posterior oropharynx was not performed. Urinalysis revealed 3+ ketones and a specific gravity (SG) >1.030. The child was given a diagnosis of viral syndrome and dehydration, and the father was reassured. He was advised to give her antipyretics and extra water and juice and to observe her closely for adequate urine output or worsening of symptoms.
+
+Four hours later, the child appeared more ill to the father and developed a fever of 104°F. Concerned, the father took the child to the nearest emergency department (ED). In the ED, she had a fever of 103.5°F and an erythematous posterior oropharynx and tender lymphadenopathy on examination. The ED physician repeated the RADT. The result was strongly positive for group A streptococcal infection. The child was treated with oral amoxicillin and was afebrile with minimal sore throat 2 days later.
+
+================================================================================
+
+Title: Crossed Coverage
+
+The Case:
+A 27-year-old woman with a history of congenital heart disease was admitted for cardiac transplantation evaluation. She had already undergone multiple surgeries, including aortic valve replacement for which she was on warfarin with a goal international normalized ratio (INR) level of 2.0–3.0.
+
+On admission, her hemoglobin level was normal and her INR was 2.6. At the admitting hospital, a formal policy required that all inpatient orders for warfarin be rewritten each day to prevent overdosing. The intern caring for the patient ordered her usual outpatient dose of 15 mg x 1. On hospital day two, the patient's INR had risen to 3.6. The intern did not write the order for warfarin for hospital day two and clearly outlined in the daily progress note that the warfarin was to be held.
+
+After the shift change, the evening nurse noted that the daily warfarin order had not been written. She was puzzled, as she distinctly remembered from signout that the patient was on warfarin for the prosthetic aortic valve. Without checking the progress notes or the laboratory values for that day, she paged the night float intern (not the primary intern caring for the patient) who was cross-covering. Having not received a verbal signout from the primary intern, the cross-covering intern reviewed the written signout on the patient and noted that warfarin was listed as one of the patient's medications. As it turns out, the primary intern had not updated the written signout that day, and warfarin was still listed as an active medication. Without checking the progress notes or the patient's INR level for the day, the cross-covering intern gave the nurse a verbal order to give the patient one dose of warfarin, 15 mg.
+
+The pharmacy dispensed the medication, and the patient received 15 mg of warfarin. The next day, the patient's INR was 5.6; 3 days later, it peaked at 7.7. Oral vitamin K was given to counteract the effects of the warfarin. The patient had a minor nosebleed but no other adverse consequences.
+
+================================================================================
+
+Title: The "Customer" Is Always Right
+
+The Case:
+An 18-month-old female was brought to the family medicine clinic with a chief complaint of "rash and diarrhea." Five days earlier, the patient's mother noted a rash on her daughter for which she was advised to administer diphenhydramine (Benadryl) as needed. While the rash improved, the patient developed diarrhea and low-grade fever, prompting a visit to the clinic. During the visit, the mother also revealed that her daughter had fallen from a 1.5-foot-high bed a few hours earlier and appeared unsteady. The mother expressed concern that the child might have a fracture and requested an x-ray.
+
+Physical exam revealed a fussy child with normal vital signs and no evidence of ecchymosis, edema, or localized tenderness in the extremities. The child was somewhat unsteady when placed on the floor to stand and remained uncooperative with an attempt to demonstrate her gait. The resident physician's diagnosis was a "viral syndrome" causing the diarrhea and low-grade fever. He attributed the child's unsteadiness to the Benadryl, perhaps exacerbated by the viral infection. He advised the mother that a fracture was unlikely based on the exam findings. The resident discussed his findings with the attending physician, although he did not specifically mention the mother's request for an x-ray.
+
+Later that evening, the mother returned to the emergency department to request an x-ray because of her daughter's inability to bear weight. An x-ray was performed, which showed a nondisplaced fracture of the tibia, requiring placement of a cast. Frustrated with the sequence of events, the mother felt that her concerns at the first visit were not heard.
+
+================================================================================
+
+Title: Right Patient, Wrong Sample
+
+The Case:
+A 54-year-old man was admitted to the hospital for preoperative evaluation and elective knee surgery. On the morning of surgery, the patient was awakened by the phlebotomist who drew his blood for basic laboratories and type and cross-matching.
+
+To ensure proper patient identification, the hospital had implemented a policy requiring a registered nurse or physician to verify the identity of all patients screened for blood transfusion. In practice, after verification of identity, the nurse or physician was required to initial the patient label on the vial of blood.
+
+As it was the change of nursing shift, the bedside nurse for the patient was not available and there were no physicians on the floor at the time. With another floor of patients still to see, the phlebotomist carried the labeled vial of blood out to the nurses’ station, and the label was signed by a random nurse. The sample was sent to the laboratory for analysis.
+
+Later that morning, a laboratory technician noticed a large and surprising change (compared to the previous day’s sample) in the hemoglobin value for a different patient on the same floor. She chose to investigate the discrepancy. Upon review, she realized that the vials of blood for the 54-year-old man had been mislabeled with another patient’s label by the phlebotomist. The reason the hemoglobins were so discrepant for this other patient was that today’s value was that of the 54-year-old man, the wrong patient. On closer examination, it was determined that all the blood samples had been mislabeled, including the vial for type and cross-matching.
+
+Despite the “near miss,” the patient suffered no harm, and another blood specimen was drawn prior to surgery.
+
+================================================================================
+
+Title: Crossing the Borderline
+
+The Case:
+A 24-year-old woman with borderline personality disorder was admitted to an inpatient psychiatry unit following a failed suicide attempt with excess doses of acetaminophen. The patient had a history of suicide attempts, including episodes of self-inflicted trauma and abusive behavior. Upon admission, the patient was isolative, displaying a flat affect and expressing a desire to harm herself. When her mood significantly improved after several days of restricted activities, the care team provided her with more freedom, hoping it would improve her condition. Despite occasional gestures suggesting ongoing risk for self-harm as well as continued conflicts with the care team, the patient’s behavior became focused on a home visit for her upcoming birthday.
+
+As the care team had observed nearly 72 hours of appropriate behavior, the day before her birthday, they granted permission for the patient’s request. Later that evening at home, the patient set herself on fire, prompting immediate return to the hospital for necessary treatment. The events prompted a review and a strengthening of the policies regarding formal risk assessment in this patient population.
+
+================================================================================
+
+Title: Secured But Not Always Safe
+
+The Case:
+An 84-year-old healthy woman underwent an elective left total knee replacement for degenerative osteoarthritis. She received spinal anesthesia, and the airway was maintained with the use of a laryngeal mask airway (LMA). The 2-hour surgery went well with no reported intraoperative complications. However, while in recovery, the patient's family noted an increase in the size of the patient's neck, prompting an evaluation from the anesthesiologist. Because the patient's airway had been secured with an LMA (as opposed to an endotracheal method), the anesthesiologist recommended simple observation of the neck, apparently believing that an airway complication was relatively unlikely.
+
+The following day, the patient developed a fever with continued fullness in her neck. Antibiotics were started. The patient remained hemodynamically stable with no breathing discomfort, dysphagia, or neck pain. However, on postoperative day 3, she became lethargic and had a marked elevation in her white blood cell count.
+
+The patient was sent for emergency computed tomography (CT) scanning, which revealed retropharyngeal and mediastinal abscesses. Following surgical drainage and continued antibiotic therapy, the patient improved clinically and was ultimately discharged to a skilled nursing facility for knee rehabilitation. In retrospect, the clinicians felt that the infection resulted from a perforation caused by the LMA. After the patient's recovery, the family recalled being reassured before surgery that "this technique is far safer [than endotracheal intubation] with fewer complications."
+
+================================================================================
+
+Title: Urinary Retention Dilemma
+
+The Case:
+Following an elective thyroidectomy, a 56-year-old man with a history of benign prostatic hypertrophy (BPH) and urinary hesitancy returned to the med-surg unit for monitoring calcium balance (the thyroid is adjacent to the parathyroid glands, which control the body's calcium balance). After returning, the patient began complaining of problems with urination, lower abdominal discomfort, and frequently voiding very small amounts of urine. The nurse administered terazosin (an alpha blocking agent for urinary obstruction), first the 2 mg initially ordered by the physician; the dose was later increased to 10 mg by the surgeon (the patient's pre-surgical dose). The total urine output during the 24 hours following surgery was only 1200 cc (which seemed low in light of the amount of intravenous hydration), and it came in frequent, small amounts.
+
+During this time, the patient became increasingly uncomfortable and restless. During morning rounds, the surgeon learned of the patient's continued difficulty voiding and ordered urinary catheterization. The nurse catheterized the patient and obtained 900 cc of urine (normal post-void residual volume is a few hundred cc). The patient experienced immediate relief. The catheter was then removed, and the patient was discharged a few hours later.
+
+After arriving home, the patient again became increasingly uncomfortable and unable to void more than a small amount. He called his urologist and was seen that afternoon. The urologist placed a Foley catheter that yielded 800 cc urine. The patient again experienced immediate relief. This time, the catheter was left in for a week to allow the bladder to regain tone. During this extended time with an indwelling catheter, the patient took antibiotics to prevent a urinary tract infection.
+
+================================================================================
+
+Title: Getting a Good Report Card: Unintended Consequences of the Public Reporting of Hospital Quality
+
+The Case:
+A 55-year-old woman with end stage renal disease requiring hemodialysis and coronary artery disease (status post-coronary artery bypass grafting and placement of a St. Jude prosthetic valve) was admitted to the medical service with palpitations and chest pain. She reported missing her scheduled hemodialysis session, and her symptoms resolved with prompt inpatient hemodialysis. In the course of her work-up, it was noted that she was subtherapeutic on her anticoagulation with warfarin, and a heparin drip was initiated with the plan to bridge her until her INR was in the therapeutic range.
+
+Mostly in response to increasing pressure from the hospital's administration to improve compliance with publicly reported quality measures, the attending physician recommended pneumococcal vaccination, and it was administered. Later that day, the patient complained of pain over her right upper arm. The attending told the patient that this was a common complaint after immunization and that it would resolve. The next day, the patient reported that her pain was worse, and the team noted an 8-centimeter hematoma within the muscles of her upper arm. The hematoma resolved spontaneously. There was no permanent harm.
+
+================================================================================
+
+Title: A Troubling Amine
+
+The Case:
+A 43-year-old woman was admitted to the intensive care unit for symptoms of heart and respiratory failure. She was found to have severe mitral and tricuspid valve regurgitation. She responded well to medical therapy, and surgical valve repair was scheduled. During her initial evaluation, a jaw fracture was incidentally noted. Given the jaw fracture and her valvular disease, an oromaxillofacial surgeon recommended prophylactic antibiotic coverage prior to surgery. Penicillin, 500 mg orally four times daily, was ordered. On the second day of antibiotics, when the nurse compared the drug with the medication administration record (MAR), she noticed that the patient was receiving penicillamine (a non-antibiotic medication used in the treatment of Wilson’s disease and severe rheumatoid arthritis) instead of penicillin and alerted the pharmacy.
+
+A pharmacist reviewed the original handwritten order and saw that penicillin was clearly prescribed. The pharmacist who entered the order into the pharmacy computer system had typed in the code “PENIC” and had received a drop-down box that displayed all formulations and dosages of both penicillin and penicillamine. That pharmacist had incorrectly selected penicillamine as the drug to be given. The final check of the medication (at the time the drug left the pharmacy) compared the drug product against the information in the pharmacy computer system but not against the original handwritten order. The patient suffered no ill effects from the error and received the course of penicillin as originally prescribed.
+
+================================================================================
+
+Title: DNR in the OR and Afterwards
+
+The Case:
+An 85-year-old woman with dementia took a mechanical fall at her skilled nursing facility (SNF) and suffered a fractured femur. After initial evaluation in the emergency department, the patient was admitted to a surgical unit where the providers contacted the niece, the patient’s health care proxy, to discuss decision making. The providers confirmed the patient’s wishes, including her desire not to be resuscitated (a preference that was articulated in her advance directive, which accompanied the patient to the hospital). The niece agreed that the patient would be a full code during surgery (in other words, the DNR order would be suspended), but then the DNR order would apply for the remainder of the hospitalization.
+
+The patient’s operative course was uneventful and she returned to the surgical unit for routine postoperative care. Several days after the surgery, the nurse who cared for the patient at the time of admission noted her code status to be documented as ‘full code’–quickly realizing that the patient’s DNR wishes had not been reinstated in the chart. Fortunately, the error led to no inappropriate resuscitative measures, but the event did generate a hospital review of DNR orders around surgery.
+
+================================================================================
+
+Title: It's All in the Syringe
+
+The Case:
+A 33-year-old man with type 2 diabetes presented to his physician's office to discuss his diabetes management. The patient admitted not taking his medications or checking his blood sugars regularly. In the office, his blood sugar was 335 mg/dL, so the nurse practitioner (NP) ordered 6 units of regular insulin to administer.
+
+After the medical assistant brought the insulin and syringe, the NP prepared the medication and injected the insulin. Immediately after the injection, the NP discovered that a tuberculin syringe was used instead of an insulin one. As a result of the error, the patient inadvertently received 60 units of insulin rather than 6 units. The patient was given orange juice, a sandwich, and his blood sugars were closely monitored for 4 hours with no significant events.
+
+================================================================================
+
+Title: Miscalculated Risk
+
+The Case:
+A healthy 36-year-old man was admitted to a teaching hospital for acute low back strain after lifting his 2-week-old infant. He received Vicodin (hydrocodone and acetaminophen) on an "as needed" basis. After 2 days, the intern was instructed to switch the patient to long-acting oral morphine in anticipation of discharge. After the first dose of MS Contin (controlled-release oral morphine), the patient was noted to be somnolent; 3 hours later, he was in respiratory distress. He was intubated and transferred to the intensive care unit. The ICU team evaluated his recent analgesic use and determined that he had received a dose of MS Contin that far exceeded his previous Vicodin requirement. The patient subsequently developed acute respiratory distress syndrome (ARDS) and sepsis, presumably related to aspiration. He remained in the ICU for 2 weeks and required pressors for blood pressure management. Eventually, the patient recovered fully and was discharged home.
+
+================================================================================
+
+Title: Over Not So Easy
+
+The Case:
+A 62-year-old woman with end-stage liver disease was hospitalized for recurrent variceal bleeding. On admission, she reported allergies to a number of medications as well as a food allergy to eggs. The patient was adamant about appropriate documentation of her allergies, especially her food allergy because "scrambled eggs almost killed me." Consequently, her medication and food allergies were clearly displayed on her medical chart as well as her wristband.
+
+On hospital day 1, she underwent successful banding of a bleeding varix. Post-procedure, she developed some mild hepatic encephalopathy and was treated with lactulose. She was slightly disoriented but alert, and her diet was advanced—the diet order at the time was "low-salt diet."
+
+She remained clinically stable until the morning of hospital day 2, when she had acute onset of tachypnea with audible wheezing and hypoxia. She recovered quickly with administration of continuous albuterol, hydrocortisone, and antihistamines. At the time of the event, one of the clinicians noticed that her breakfast tray, sitting by her bedside, included a plate of half-eaten bacon and eggs. She did not recall eating the eggs, probably because of her encephalopathy. She had no long-lasting complications from the allergic reaction.
+
+================================================================================
+
+Title: One ACE Too Many
+
+The Case:
+A 72-year-old man with coronary artery disease, diabetes, and recently diagnosed congestive heart failure presented to the emergency department (ED) with chest pain. An acute myocardial infarction was ruled out. Because his admission medication regimen did not include an angiotensin-converting enzyme (ACE) inhibitor, one was started before discharge. He had no known renal dysfunction. Two weeks later, he presented to the ED with fatigue, lethargy, and a critically elevated serum potassium level. Shortly thereafter, he suffered a cardiac arrest and died.
+
+The patient had previously been receiving outpatient care from an ancillary clinic of the hospital. When the ED physician called to inform the clinic of the patient's death, the primary care provider recalled that the patient previously had been treated with an ACE inhibitor and had developed hyperkalemia after 1 week of therapy. The ACE inhibitor had been discontinued at that time.
+
+================================================================================
+
+Title: Citrate Mix-Up
+
+The Case:
+A 36-year-old woman with multiple sclerosis, diabetes, and chronic renal failure was transferred from a skilled nursing facility (SNF) to the hospital for treatment of an infection. On admission, an order was written for Bicitra, 30 mL four times daily—a medication that she had been receiving in the SNF. The hospital pharmacist filled the order with Polycitra instead of Bicitra, and dispensed a 473-mL container. (Polycitra is a combination product containing citric acid and potassium citrate; Bicitra contains only citric acid.) Assuming the Polycitra was dispensed in the appropriate quantity for a single dose, the nurse gave the patient the bottle and a straw and instructed her to drink the entire amount.
+
+When the nurse on the next shift noticed the empty container with the straw, she interviewed the patient. The patient confirmed that she consumed the entire amount and said that it tasted good. The physician was notified. A STAT serum potassium level was >8 mEq/L (normal 3.5-5), and her blood glucose was 600 mg/dL (normal
+
+The patient was treated with Kayexalate (sodium polystyrene sulfonate) and an insulin infusion, and she recovered within 24 hours without further complications.
+
+================================================================================
+
+Title: Cups of Error
+
+The Case:
+An 87-year-old man was 5 days postoperative from a decompressive laminectomy. Although he suffered from dementia, he remained alert and oriented with only mild short-term memory loss. During his stay at a rehabilitation unit, a nursing student administered a “cup” of medications that included clopidogrel (Plavix), carbidopa-levodopa (Sinemet), prednisone, rivastigmine tartrate (Exelon), and risperidone (Risperdal). Unfortunately, this cup of medications belonged to another patient on the unit. As a result, the patient became drowsy with mild nausea and hypotension, but the symptoms resolved within 24 hours without further event. After learning about the error, the family requested no further care from any nursing students.
+
+On this particular unit, nursing students receive supervision from a senior nursing instructor. The unit's policy required that only the instructors access Pyxis (an automated drug dispensing system) when administering medications. In this case, the instructor attempted to save time by having the eight nursing students prepare their medications from Pyxis at the same time; after preparation, the instructor reviewed each student's understanding of the medication(s) and preparation accuracy. After this process was completed, the students left each of their patients' medication(s) in a “cup” on the counter in the medication room. When the time came to administer the medication(s), the student in this case picked up the wrong cup of medications for her patient.
+
+The error was discovered when a different student expecting to give the above medications reviewed the ones in her cup and discovered the wrong medications—also a near miss for her patient.
+
+================================================================================
+
+Title: Insert Omission
+
+The Case:
+A multiparous woman presented to the gynecology clinic requesting intrauterine contraceptive (IUC) placement (Figure). She was appropriately counseled on the risks and benefits of the IUC and at that visit had a normal Papanicolaou test and negative cultures for gonorrhea andChlamydia trachomatis.
+
+As instructed, she returned a week later while having menses for placement of a copper IUC. The gynecologist placed the IUC without difficulty and showed the patient how to palpate the IUC strings. One month later, the patient presented to the clinic because she was unable to find the strings. On pelvic examination, the gynecologist was also unable to locate the strings. A pelvic ultrasound revealed a 7-week intrauterine pregnancy and an IUC. By dates, the patient was approximately 3-4 weeks pregnant at the time of IUC insertion, and the “menses” was probably implantation bleeding.
+
+The patient was referred to a perinatologist who recommended that the IUC remain in place. The patient subsequently had an elective termination of pregnancy without complication. As a result of this error, the clinic now requires urine human chorionic gonadotropin (HCG) testing prior to procedures in premenopausal women regardless of menstrual or sexual history.
+
+================================================================================
+
+Title: Language Barrier
+
+The Case:
+A previously healthy 10-month-old girl was taken to a   pediatrician's office by her monolingual Spanish-speaking parents when they   noted that their daughter had generalized weakness. The infant was diagnosed   with iron-deficiency anemia. At the time of the clinic visit, therewere no Spanish-speaking staffor interpreters available.   One of the nurses spoke broken Spanish and in general terms was able to   explain the girl had "low blood" and needed to take a medication.
+
+The parents were thankful for the attention and nodded in   understanding. The pediatrician wrote the following prescription in English:
+
+Fer-Gen-Sol   iron, 15 mg per 0.6 ml, 1.2 ml daily (3.5 mg/kg)
+
+The parents took the prescription to the pharmacy. The local   pharmacy did not have a Spanish-speaking pharmacist on staff, nor did they   obtain an interpreter. The pharmacist attempted to demonstrate proper dosing   and administration using the medication dropper and the parents nodded in   understanding. The prescription label on the bottle was written in English.
+
+The parents administered the medication at home and, within   15 minutes, the 10-month-old vomited twice and appeared ill. They took her to   the nearest emergency department, where the serum iron level 1 hour after   ingestion was found to be365 mcg/dL(therapeutic levels are 60-180 mcg/dL). She   was admitted to the hospital for intravenous hydration and observation.   Serial serum iron levels and electrolytes were monitored. She was   asymptomatic for the remainder of the hospitalization and discharged the   following day with no apparentsequelae.
+
+Upon questioning, the parents stated that they had   administered a household tablespoon of the medication, approximately 15 ml or   43 mg/kg (a 12.5-fold overdose). At the time of discharge from the hospital,   the nurse counseled the parents on proper dosing through a hospital   interpreter.
+
+================================================================================
+
+Title: Collegiality vs. Competence
+
+The Case:
+A 91-year-old man with coronary artery disease was taken to the operating room (OR) for semi-elective repair of a 10-cm abdominal aortic aneurysm (AAA). The procedure was relatively uneventful, and the infrarenal aneurysm was repaired. The patient’s estimated blood loss was more than 1000 cc, and he received 2-3 units of cell saver blood. As the fascia was being closed, the surgeon noted pooling of blood in the surgical field. The patient’s abdomen was re-explored, at which time he began bleeding profusely from multiple sites, including the surgical wound, endotracheal tube, nasogastric tube, and intravenous catheter sites, all consistent with the development of disseminated intravascular coagulation (DIC).
+
+The surgeon mechanically reinforced the anastomosis sites, but they continued to bleed. Surgeons assisting with the case, as well as the anesthesiologist, recommended packing and closing the abdomen to tamponade the bleeding and transferring the patient to the ICU for further medical management. The attending surgeon opted to give blood products and continued to attempt local control of the bleeding with little success. The patient was finally closed and transferred to the ICU 6 hours after the DIC was first noted. He had received more than 20 units of blood products and was acidotic on multiple pressors. At this time, the attending surgeon left the hospital, and the patient was managed primarily by the chief resident.
+
+The next morning, the patient continued to require multiple pressors and a bicarbonate drip and had fixed pupils. The attending surgeon opted to bring the patient back to the OR for a second look. He found clotted blood but no treatable lesions; no interventions were undertaken. The patient subsequently had progressive hypotension, did not respond to resuscitative measures, and died.
+
+The attending surgeon was known to have had multiple surgical complications in previous cases, and had been formally investigated twice for inability to meet the standard of care. Given his seniority, longevity, and respected position in the medical center, his credentials were never formally restricted; rather, it was informally requested that he not perform certain procedures, including AAA repair.
+
+================================================================================
+
+Title: Liposuction Gone Awry
+
+The Case:
+A 54-year-old man with HIV was referred to a plastic surgeon for cosmetic surgery. In the plastic surgeon’s office, he underwent neck and facial liposuction with eyelid tightening under local anesthesia. There were no complications at the time of the procedure and the patient was sent home.
+
+After arriving home, the patient noticed an expanding neck mass near the incision site and progressive shortness of breath. He contacted the plastic surgeon, who directed him to the nearest emergency department. Upon arrival, the patient was in severe respiratory distress and needed an emergent tracheostomy, secondary to neck swelling and edema. He was taken to the operating room, where he was found to have a laceration of the external jugular vein. The vessel was repaired and the patient required a prolonged stay in the intensive care unit. He eventually was discharged to home.
+
+================================================================================
+
+Title: Workaround Error
+
+The Case:
+A retired 81-year-old physician with metastatic colon cancer was admitted to an acute care hospital with pneumonia and congestive heart failure (CHF). After his acute hospitalization, he was transferred to a skilled nursing unit to complete antibiotic therapy. Cancer chemotherapy was scheduled to begin after discharge.
+
+Three days after transfer to the skilled nursing unit, the patient complained of nausea. Intravenous ondansetron (Zofran) was ordered. Approximately 1 hour after the first dose of ondansetron, he was found unresponsive and in respiratory distress. Stat labs were ordered, and his blood glucose was 23 mg/dL. The patient had no history of diabetes or hypoglycemia.
+
+He was given glucagon and transferred to the intensive care unit. Laboratory studies showed an insulin level of greater than 1500 micro-units/mL (upper end of the reference range: 17 micro-units/mL). Intravenous glucose and glucagon were continued, and his blood glucose stayed in the low 40 mg/dL range for several days. Ultimately, he was discharged without any permanent disability from the event, but he was in a weakened state and his chemotherapy was delayed.
+
+The incident led to an internal review of the case. In this skilled nursing unit, many of the nurses remove medications from the Pyxis machine (an automated dispensing device) and insulin from the refrigerator and place them in portable medication carts that are then taken to the bedside. The nurse who was caring for the patient the night of the first ondansetron dose worked infrequently and had an especially heavy workload that evening (she was caring for nine patients on her shift). When her portable medication cart was inspected, ondansetron and insulin vials were found to be next to each other. It was presumed that she mistakenly administered insulin instead of ondansetron.
+
+================================================================================
+
+Title: Deciphering the Code
+
+The Case:
+An 85-year-old man with advanced oxygen-dependent chronic obstructive pulmonary disease (COPD) presented to the emergency department (ED) with increasing shortness of breath and cough. Initial evaluation demonstrated worsening hypoxemia and a chest x-ray showing a new, large left-sided pleural effusion. A therapeutic thoracentesis was performed, which relieved the patient’s symptoms, but the etiology of the effusion remained unclear.
+
+At the time of admission, the resident asked the patient about his advance directives, and he stated his wish to be DNR/DNI (do not resuscitate/do not intubate). The patient’s wife confirmed that her husband never wanted to be “shocked or placed on a breathing machine.” The resident placed a note in the chart to document the discussion.
+
+A few days later, the patient was found unresponsive and pulseless. A code blue was called. The on-call resident (different from the admitting resident) responded and found the patient to be in ventricular fibrillation. Unaware of the patient’s advance directive, the resident successfully resuscitated the patient (with medications and shocks) and transferred him to the ICU. The resident then contacted the patient’s wife, who reiterated the patient’s wishes to not undergo such measures. Immediately following this discussion, the patient again became pulseless, and resuscitative efforts were appropriately withheld. The patient died within minutes.
+
+At this particular hospital, the policy was that residents should both document any code status discussion and enter a DNR/DNI “order” (to be cosigned by the attending later) in the electronic medical record. In this case, the discussion with the patient regarding code status was appropriately documented, but a specific DNR/DNI “order” was not entered into the medical record. Had the order been entered, it would have triggered the placement of an easily visible wristband onto the patient by the nursing staff, who would have also documented the order in their nursing records (neither of which happened). Even though there was no formal DNR order in the electronic record, the nurses might have chosen not to “call the code” had they seen the record of the code status discussion in the resident’s progress note. Unfortunately, there was no computer terminal at the patient’s bedside (and there were no longer any paper medical records), and so the bedside nurses had no access to the record of the DNR discussion, which contributed to the error. The end result was that the patient was resuscitated when he explicitly told his providers that he wished not to be.
+
+================================================================================
+
+Title: Confusion With Acetaminophen
+
+The Case:
+Parents brought their 5-year-old son to the emergency department (ED) with a 24-hour history of fever, cough, and frontal headache. Physical examination, vital signs, and laboratory evaluation were unremarkable. The patient was discharged with a diagnosis of viral syndrome after receiving one dose of acetaminophen in liquid form. Two days later, the patient returned to the ED with continuing fever and new rigors, vomiting, lethargy, and right upper quadrant abdominal pain. Laboratory evaluation indicated that acetaminophen levels and PT/INR were elevated.
+
+Further discussion with the parents revealed that they misread the instructions about administering liquid acetaminophen. They gave multiple doses of 20 mL (48 mg/mL solution equaling 960 mgper dose) instead of the correct dose for their 20-kg child (6 mL = 288 mg). The patient was admitted to the hospital, given intravenous N-acetylcysteine, and his symptoms improved over the succeeding days. His acetaminophen levels declined, and he was safely discharged home without further events.
+
+================================================================================
+
+Title: An Outpatient 'Zebra'
+
+The Case:
+A 64-year-old man presented to the outpatient clinic with a chief complaint of left foot pain and numbness. His past medical history included lumbar disc disease, hypertension, and active tobacco use. A medicine resident evaluated the patient, diagnosed sciatica due to existing disc disease, and prescribed appropriate analgesics after discussion with a supervising attending. Three weeks later, the patient continued to experience left foot pain but also developed localized swelling. A different resident (and supervising attending) evaluated the patient, ordered plain films that showed no evidence of fracture or osteomyelitis, and prescribed antibiotics for cellulitis. During the following week, the patient’s symptoms continued, and he received evaluations from two additional residents, one of whom ordered a bone scan that confirmed no evidence of osteomyelitis.
+
+The next week, the patient returned with persistent foot symptoms, and yet another provider noted a decreased pulse in the left foot and referred urgently for vascular evaluation. The patient ultimately received a diagnosis of left superficial femoral artery occlusion and underwent successful vascular bypass within a week. Though the delay in diagnosis might not have prevented a surgical procedure, the diagnostic errors produced repeated visits, continued symptoms, and an ineffective treatment plan for nearly 5 weeks despite many opportunities for earlier intervention.
+
+================================================================================
+
+Title: Slippery Slide Into Life
+
+The Case:
+A 25-year-old woman presented to the hospital in labor 	and at full gestation after receiving uncomplicated prenatal care. A 	third-year obstetrics and gynecology resident delivered the infant under 	attending supervision via vacuum-assisted vaginal delivery. Following 	delivery of the shoulders, the resident turned to place the vacuum device 	on a nearby equipment stand. During that time window, the patient adjusted 	her positioning while on the birthing bed (creating an inadvertent push), 	and the infant slid out of the vaginal canal, slipped out of the 	resident’s hands, and dropped headfirst onto the floor.
+
+The infant suffered a left parietal fracture and hematoma 	at the site of impact. Although he required close observation and 	neurosurgical consultation, no intervention was indicated. In reviewing the 	incident, staff interviews suggested that both noise and confusion of roles 	among the labor and delivery team contributed to the error, which, through 	luck alone, led to no long-term sequelae for the infant.
+
+================================================================================
+
+Title: Discharged Blindly
+
+The Case:
+An elderly blind man developed a deep vein thrombosis during his hospital stay. At discharge, he was to receive enoxaparin (Lovenox) for self-administration at home in addition to other medications. Before leaving the hospital, he was given written information sheets regarding his medications and received counseling from a nurse and a pharmacist. They did not notice that the patient was blind.
+
+Several days after discharge, the patient called the primary care triage nurse and stated that he had been discharged with a bag of medications and some injections, but that he could not administer them because he could not read the instructions.
+
+After retrieving his chart, the triage nurse noted that the patient was blind and, upon questioning, also learned that he lived alone. The patient was subsequently readmitted to the hospital for continuation of anticoagulation therapy.
+
+================================================================================
+
+Title: One Dose, Fifty Pills
+
+The Case:
+A middle-aged man was admitted to the medical service of a teaching hospital with suspected vasculitis. When the initial diagnostic studies failed to provide a definitive diagnosis, the team decided to treat the patient empirically with high-dose steroids.
+
+When discussing the patient on morning rounds, the senior resident instructed the intern quite clearly to “give the patient one gram of steroids.” After rounds (and some quick math), the intern ordered:
+
+“Prednisone 20 mg tabs 50 pills PO x 1 now”
+
+After receiving the written order, the pharmacist contacted the intern to clarify the order. She suggested to the intern that the one gram of steroids probably was supposed to be given in an intravenous form. The busy and harried intern stated firmly that he wished to give the patient fifty 20-mg pills. When the pharmacist persisted in questioning the order and gently suggested the intern may want to contact his senior resident for clarification, the intern refused and replied, “You can give it with a tablespoon of Maalox.”
+
+The patient was brought fifty 20-mg pills of prednisone and became angry and frustrated as he swallowed pill after pill. He developed mild nausea and heartburn while taking the prednisone.
+
+The following day, upon review of the medication record, the senior resident found the error. The oral prednisone was stopped, and the patient was correctly given a gram of intravenous methylprednisolone (Solu-Medrol). He eventually recovered from his vasculitis and was discharged in a stable condition.
+
+================================================================================
+
+Title: Infused, Not Ingested
+
+The Case:
+A patient in the ICU was scheduled for a CT scan. The nurse prepared the patient by administering contrast, an unfamiliar task for this particular nurse. Rather than giving the Gastrografin solution orally via a nasogastric tube (the appropriate route), the nurse took the bottle of contrast, mixed it in a 250-cc bag of normal saline, and infused it intravenously.
+
+When the patient arrived for the study, the radiology technician asked the nurse whether the patient received the “oral” contrast solution. The nurse responded, “Yes,” and quickly removed and discarded the IV bag. Suspecting an error, the technician contacted the radiologist, and they discovered an IV bag marked “contrast” in the trash after the nurse departed from the radiology suite.
+
+The nurse was subsequently approached about the error and failed to disclose the actual events. The physician caring for the patient did not inform the family of the error until the following morning, stating he wasn’t certain of the consequence of receiving oral contrast intravenously. As it turned out, the patient developed acute renal failure, but it resolved without any significant sequelae.
+
+Following the event, the nurse was fired. The nurse reported that his primary role involved non-ICU care, and this was the first time he administered contrast or transported a patient for a radiology study. He “floated” to work in the ICU that particular day due to staffing issues. The hospital responded by marking all oral contrast bottles “PO ONLY—NOT IV.”
+
+================================================================================
+
+Title: Time of Death?
+
+The Case:
+An 80-year-old woman with multiple illnesses, including chronic obstructive pulmonary disease (COPD), was found pulseless and cyanotic in her hospital bed. A code was called, which involved intubation, the administration of several parenteral medications, and prolonged chest compressions. The “final rhythm” was deemed agonal and the code was “called” after approximately 15 minutes. Virtually all the members of the code team left the room, leaving behind only a single nurse to clean up. Not 3 minutes later, the nurse emerged from the room, breathlessly declaring that the patient had a strong pulse and was now breathing spontaneously. After initially dismissing her observations as representing agonal respirations, clinicians reevaluated the patient and found her to be in a perfusing rhythm with spontaneous breathing. She was transported to the ICU, where she languished for several days before supportive efforts were discontinued because of her poor neurologic prognosis.
+
+The nurse had seen numerous codes, but never participated in one until that night. She was trained and certified in cardiopulmonary resuscitation (CPR) but had never trained with the other team members and didn’t recall being trained in how to “call” the end of codes. She commented on how difficult it had been to squeeze the Ambu bag toward the end of the code, a fact she did not raise with the code team leader during the code itself.
+
+The code team never came together to discuss this error (the premature pronouncement of death); rather, at the end of the code they all wandered off and resumed their usual jobs.
+
+================================================================================
+
+Title: The Wrong Channel
+
+The Case:
+A 28-year-old woman in labor began receiving treatment with magnesium sulfate for preeclampsia. Initial dosing started at 50 mL/hour using a multi-channel medication pump (Figure). Additional infusions from the pump included lactated ringers (125 mL/hour) and Pitocin (12 mL/hour). The three pump chambers were located side by side on the device. Following placement of epidural anesthesia, a fetal heart rate deceleration occurred due to maternal hypotension. A fluid bolus with lactated ringers was ordered. The nurse increased the pump rate to 500 mL/hour, but within 20 minutes, the patient reported feeling warm, weak, short of breath, and flushed.
+
+While checking the pump, the nurse realized that she had inadvertently increased the magnesium sulfate rate instead of the lactated ringers. The infusion was stopped immediately. The patient remained weak and areflexic for about 20 minutes, prompting administration of calcium gluconate. She was monitored closely until her symptoms fully resolved. Afterward, she successfully delivered a healthy infant.
+
+================================================================================
+
+Title: PCA Overdose
+
+The Case:
+A 49-year-old woman underwent an uneventful total abdominal hysterectomy bilateral salpingo-oophorectomy. Postoperatively, the patient complained of severe pain and received intravenous morphine sulfate in small increments. She remained alert and oriented and, while in the post-anesthesia care unit (PACU), she began receiving a continuous infusion of morphine via a patient-controlled analgesia (PCA) pump.
+
+A few hours after leaving the PACU and arriving on the floor, she was found pale with shallow breathing, a faint pulse, and pinpoint pupils. The nursing staff called a “code” and the patient was resuscitated and transferred to the intensive care unit on a respirator. A search for reversible causes was unrevealing and, despite aggressive supportive care, the patient had no improvement in her mental status. Several days later, an electroencephalogram result revealed no brain activity. Based on family wishes, life support was withdrawn and the patient died. Review of the case by providers implicated a PCA overdose, though no autopsy was performed to exclude other etiologies. The precise mechanism of the overdose was never elucidated.
+
+================================================================================
+
+Title: Surprise Wire
+
+The Case:
+A 39-year-old man with a history of liver disease presented to the emergency department (ED) with gastrointestinal bleeding and altered mental status. Due to his clinical condition in the ED, he required intubation as well as placement of a right femoral central venous catheter (CVC). In the ICU, his nurse experienced some difficulty using his central line, but she was able to draw blood back from all three ports. Over the course of the next week, the patient's condition improved, allowing for successful extubation and transfer out of the ICU. On the day of transfer, the ICU nurse removed the patient’s femoral catheter but discovered the guidewire (used at the time of placement in the ED) still in the patient's femoral vein. The nurse removed the wire easily and without incident.
+
+Later investigation revealed that the ED physician, who placed the central line, inadvertently left the guidewire in place and failed to account for the missing guidewire at the end of the procedure. Although the error increased risk for an infectious or thrombotic complication, removal of the catheter occurred prior to any adverse event, and the patient was unharmed.
+
+================================================================================
+
+Title: Two Pills, Same Drug
+
+The Case:
+A 34-year-old woman with AIDS developed a fever and hypotension due to suspected pneumonia. Her past medical history included several AIDS-related complications, but a recent test showed that her viral load was undetectable on a drug regimen of stavudine, lamivudine, and Kaletra (a combination pill containing lopinavir and ritonavir). Given her critical condition, an infectious disease consultant recommended changing her stavudine, which is associated with lactic acidosis, to abacavir. The intern caring for the patient used a preprinted antiretroviral order template (paper form) to execute the medication orders, requesting a new agent, Trizivir, a combination pill containing abacavir, lamivudine, and zidovudine.
+
+The following morning, a pharmacist noted that the patient’s revised orders called for continuation of stavudine, lamivudine, and Kaletra in addition to the new order for Trizivir. The patient was thus set to receive double doses of lamivudine and thymidine analogs, any of which could be terribly toxic in overdose. Apparently, the execution of orders via the template did not automatically cancel the other, free-form orders, a processing issue the intern failed to recognize. Fortunately, the pharmacist caught the error minutes before scheduled administration, and the patient suffered no adverse event, because only Trizivir was administered.
+
+================================================================================
+
+Title: Getting to the Root of the Matter
+
+The Case:
+A 65-year-old man with atrial fibrillation, lung cancer, and chronic renal insufficiency presented to the emergency department (ED) with shortness of breath. His vital signs were significant for a respiratory rate of 32, a temperature of 102.4°F, and an oxygen saturation of 87% on a 100% non-rebreather. A chest X-ray showed a right middle   infiltrate. Due to respiratory distress, the patient was intubated.
+
+Shortly thereafter, the patient became hypotensive with a systolic blood pressure (BP) of 65 mm Hg. Fluid resuscitation was continued while BP was supported with phenylephrine and vasopressin. Phenylephrine was changed to norepinephrine. After 8 hours, arterial blood gas test revealed a pH 7.23, Pco223 mm Hg, Po2161 mm Hg and base excess –16, lactate 6.2 mmol/L (normal 0.5 – 2.2 mmol/L). A pulmonary artery catheter was placed, and initial numbers were—surprisingly—more consistent with cardiogenic shock than septic shock, with a central venous pressure of 13-17 mm Hg, pulmonary capillary wedge pressure of 19 mm Hg, cardiac index (CI) 1.8 L/min/m2, and systemic vascular resistance (SVR) of 1500 dynes/sec x cm-5. Norepinephrine was weaned rapidly. The patient remained on vasopressin. An echocardiogram showed global decrease in contractility, with an ejection fraction 45% and mild right ventricular dilatation. Shortly thereafter, it was discovered that the patient had been receiving 0.4 units/min of vasopressin, rather than the intended dose of 0.04 units/min. Vasopressin was discontinued.
+
+Within the next few hours, the patient’s condition improved. The CI and mixed venous oxygen saturation increased to 3.8 L/min/m2and 75%, respectively, and the SVR decreased to 586 dynes/sec x cm-5. A creatine kinase (CK) peaked to 7236 U/L, CKMB to 37 U/L. The patient was treated with fluids and antibiotics and had an uneventful recovery.
+
+================================================================================
+
+Title: Blind Spot
+
+The Case:
+A 36-year-old woman with no significant past medical history underwent right nephrectomy in the left lateral position. The surgery was uncomplicated—her blood pressures intraoperatively were within 20% of her baseline, and she did not have significant blood loss. Immediately after surgery, the patient complained of “blurriness” in one eye. This was attributed to eye ointment applied during the surgery and no further work-up was pursued.
+
+Two weeks later during a clinic visit, the patient complained of blindness in the left eye. She was emergently referred to an ophthalmologist and diagnosed with retinal ischemia as a complication of surgery. Three months after surgery, the patient still had partial visual loss.
+
+================================================================================
+
+Title: Pregnant With Danger
+
+The Case:
+A 35-year-old woman, 38 weeks pregnant, presented to the emergency department (ED) in the middle of the night complaining of left leg pain. She also had some mild lower back pain, but no other symptoms. Hospital policy stated that all patients greater than 20 weeks’ gestation should go directly to labor and delivery unless their problem was clearly unrelated to the pregnancy. At ED triage, the pain was deemed to be non-obstetrical in nature, and so she was evaluated in the ED rather than being sent to labor and delivery.
+
+Physical examination revealed her left leg was slightly cooler than the right leg but was otherwise unremarkable. A Doppler venous ultrasound revealed no evidence of deep venous thrombosis, but there appeared to be decreased blood flow to the leg in the left-lying position with normal blood flow in other positions. After many hours of evaluation and observation in the ED, the pain was diagnosed as musculoskeletal. To facilitate evaluation by her obstetrician, she was transferred briefly to labor and delivery. Fetal monitoring was normal and the patient was discharged home.
+
+The following morning, the patient’s husband found her dead at home. An emergency cesarean section was performed in the ED, but both the mother and the infant expired. Autopsy revealed a ruptured aortic dissection.
+
+================================================================================
+
+Title: Discharge Against Medical Advice
+
+The Case:
+A 50-year-old man with a history of alcohol abuse and alcohol-induced dementia was admitted to the medical service with mild alcohol withdrawal. He was also found to have a proximal humeral fracture, and the orthopedic consult recommended surgical repair. The patient was treated with benzodiazepines for his alcohol withdrawal and remained medically stable. After hearing the risks and benefits of surgery from the physicians, the patient refused.
+
+In light of the patient’s chronic dementia and acute delirium due to alcohol withdrawal, formal mental status testing was performed, which indicated that the patient lacked the capacity to make medical decisions. A psychiatry consultation supported this determination.
+
+On hospital day 4, at approximately midnight, the patient stated to his nurse that he wished to leave the hospital. Neither the floor nurse nor the charge nurse was aware the patient had been found to lack decision-making capacity. They contacted the nightfloat covering resident and informed her that the patient wished to leave. The resident glanced at the chart, asked the patient a few questions, and allowed him to leave against medical advice (AMA).
+
+The primary medical team was informed the following morning about the discharge. They had no contact information for the patient, and he could not be located. What happened to him is unknown.
+
+================================================================================
+
+Title: The Forgotten Med
+
+The Case:
+A 78-year-old woman with a history of chronic obstructive pulmonary disease (COPD) came to the hospital with increasing shortness of breath and chest pain. Although she had no history of diabetes, her glucose level on admission was nearly 300 mg/dL. Along with initial treatment, the admitting physician prescribed once-daily insulin (glargine) and ordered finger-stick glucose checks four times daily (QID), with sliding-scale coverage for persistently elevated glucose values.
+
+The patient ruled out for a myocardial infarction, and her COPD exacerbation improved after initial treatment. After 3 days, she was transferred to a skilled nursing facility (SNF) for continued observation and intensive respiratory treatments. Medication orders from the acute care ward were continued at the SNF.
+
+Three days later, a physician evaluated the patient and reviewed her progress. He noted that, while glucose values in the hospital ranged from 150-250 mg/dL, glucose levels currently ranged from 90-140 mg/dL (essentially normal). Therefore, thinking that the patient’s glycemic control had improved, he discontinued the QID glucose checks and insulin sliding-scale orders. However, he failed to notice the existing order for glargine, a long-acting insulin.
+
+Four days later, the patient became unresponsive. The physician ordered stat blood cultures, electrolytes, and a head CT scan. As staff prepared to transport the patient to radiology, the lab called to report a critical value—a glucose level of 22 mg/dL. The physician immediately ordered intravenous dextrose followed by an infusion, which led to a rapid improvement in the patient’s mental status. Luckily, the patient suffered no subsequent events, her glargine was discontinued, and she continued her rehabilitation at the SNF.
+
+The incident led to an internal review of the case. The physician acknowledged that he had seen the glargine order earlier in her SNF stay but had forgotten about it when he discontinued the glucose checks and sliding-scale insulin orders. Also, as in most hospitals, the nursing medication administration record (MAR) listed the once-daily dose of insulin in a different location than the sliding-scale insulin, because one is a regular medication and the other given as needed. This seemingly added to the confusion among the day and night nursing staff—since it was the latter who administered the evening glargine and the former who performed the glucose checks and would have administered the sliding-scale insulin therapy.
+
+================================================================================
+
+Title: Hold the tPA
+
+The Case:
+A 74-year-old woman with a history of atrial fibrillation on warfarin therapy came to the emergency department (ED) 1 hour after the sudden onset of aphasia and right-sided weakness. A non-contrast CT scan of the brain revealed blurring of the left gray-white junction with no hemorrhage, consistent with an acute left middle cerebral artery ischemic stroke. Less than 3 hours had elapsed since the onset of her symptoms, making her a potential candidate for thrombolysis. There were no contraindications to tissue plasminogen activator (tPA) administration at the time, but laboratory results, including a complete blood count (CBC) and coagulation studies, were pending.
+
+In order to expedite treatment (crucial because research finds benefit for thrombolysis in acute stroke only if administered in the first 3 hours; see below), the ED physician wrote an order for an appropriate dose of intravenous (IV) tPA and asked a nurse to obtain the dose from the pharmacy. The nurse returned from the pharmacy and placed the medication at the patient’s bedside. A second ED nurse caring for the patient read the order in the patient’s chart and administered the tPA bolus. Five minutes later, the lab results returned—the INR was elevated at 4.5, an absolute contraindication to thrombolytic therapy.
+
+The patient was transferred to the neurological ICU. She underwent serial CT scanning, which did not show hemorrhagic conversion of her ischemic stroke. She didn’t suffer any other bleeding complications, but she was unable to receive many elements of standard ischemic stroke care, such as permissive hypertension. Eventually, she died of stroke-related complications.
+
+================================================================================
+
+Title: Around the Block
+
+The Case:
+A 77-year-old woman with multiple medical problems was admitted to the hospital for an elective knee replacement. The orthopedic surgeon, recognizing the risk of deep vein thrombosis (DVT), prescribed enoxaparin (Lovenox) for DVT prophylaxis at the time of admission. The anesthesiologist felt that an epidural anesthetic would be safer than general anesthesia in this patient, and placed an epidural catheter to administer the anesthetic (Figure 1). The surgery went well, but soon after surgery the patient developed new onset lower extremity weakness. A "stat" MRI scan revealed a spinal hematoma (Figure 2). Despite prompt recognition, the patient was permanently paralyzed from the waist down.
+
+A retrospective analysis of the case revealed that the admission order form included the statement "Lovenox is not recommended in patients with an epidural," located right next to the check box used to order enoxaparin. A nurse and pharmacist had countersigned the signature block next to this warning.
+
+================================================================================
+
+Title: Techno Trip
+
+The Case:
+A 70-year-old woman was admitted to a community hospital after developing confusion and right-sided weakness. A CT scan of her brain showed an acute subdural hematoma. The hospital arranged a transfer to large referral center for urgent neurosurgical evaluation. The radiology department at the community hospital had recently implemented an electronic picture archiving and communication system (PACS). Instead of printed films, the patient was sent with a compact disk (CD) containing copies of relevant studies. On arrival at the referral center, a right-sided hemiparesis was confirmed on physical exam. The accepting surgeon inserted the CD into a local computer. The CT image that appeared on the screen showed some brain atrophy, small, old strokes, and a large left-sided subdural hygroma, but no acute hemorrhage. The surgeon felt that the patient had a stroke, admitted her to the stroke unit, and consulted neurology.
+
+The next day, a consulting neurologist found a set of more recent images while scrolling through the PACS disk. These demonstrated the acute subdural hemorrhage for which the patient had been transferred. The subdural was urgently evacuated, and the patient improved after a prolonged period of rehabilitation.
+
+================================================================================
+
+Title: On O.R. Off?
+
+The Case:
+An elderly man was admitted to the vascular surgery service with rest pain in his leg. Angiography demonstrated peripheral artery disease with anatomy suitable for revascularization. A consulting cardiologist recommended a stress echocardiogram to evaluate the patient's risk for surgery. While awaiting those results, the vascular surgery service tentatively scheduled the patient for surgery the next morning after obtaining informed consent. Shortly after making their decision, the surgeons learned that the stress echocardiogram showed marked abnormalities warranting a cardiac catheterization and delay of surgery. The surgeons contacted the operating room and informed them that the case was canceled. When the team rounded on the patient later that evening, he was asleep, so the surgeons chose to defer their discussion of the new course of action with him until the morning. The surgeons documented the change of plans in the patient's chart, but failed to inform the nursing staff. The patient remained "NPO" overnight in anticipation of the cardiac catheterization. Due to unexplained events, the operation was not canceled on the schedule.
+
+The next morning the patient was taken to the OR holding area as the first case of the day. Meanwhile, the vascular surgery team rounded on the patient only to discover him missing from his bed. They assumed he was undergoing cardiac catheterization. Due to time restrictions and the desire to start promptly, staff did not ask surgeons to mark the operative site in the holding area outside the OR. The patient was taken to the operating room, intubated, and given a general anesthetic. When the OR staff contacted the vascular surgeon to start the case, he stated that it had been canceled. The patient awakened without event and suffered no adverse consequences from the error. Cardiac catheterization and peripheral arterial bypass surgery were later completed successfully.
+
+================================================================================
+
+Title: Preventable Rash
+
+The Case:
+A 35-year-old man with HIV was being followed in an outpatient internal medicine clinic. At a routine visit, screening laboratories were checked. The clinic never contacted the patient about his laboratory test results, and he assumed they were normal. He returned to his normal lifestyle, including occasional unprotected sexual activity.
+
+One month later, he developed a rash. The outpatient clinic was unable to see him immediately, and recommended he go to the urgent care clinic. The urgent care provider reviewed his lab results and discovered that his tests for rapid plasma reagin (RPR) and Treponema antibody were both positive. Examination was notable for a classic syphilitic rash (Figure), confirming the diagnosis of secondary syphilis. The patient was treated with penicillin in the urgent care clinic. However, he subsequently developed a Jarisch-Herxheimer reaction and was admitted to the hospital.
+
+================================================================================
+
+Title: Carpe Diem (Seize the Day)
+
+The Case:
+A 53-year-old man presented for a new patient visit at a local medical clinic. He had several chronic medical conditions including hypertension, hyperlipidemia, depression, osteoarthritis, and a seizure disorder. His medications included phenytoin for his seizure disorder. Two months prior to this presentation, the patient called the on-call physician worried that he had suffered a seizure. The patient requested a "handicapped" license plate because of increasing difficulty walking long distances due to his osteoarthritis. To his surprise, the physician informed him of the need to alert the Department of Motor Vehicles (DMV) about his seizure disorder. The patient reported that his neurologist allowed him to drive "only to and from work" because his seizures were "nocturnal." Despite the patient receiving treatment from several physicians over the years, this was the first time a physician explained the need to report his condition to the DMV. The patient was very upset with the treating physician, but the physician felt he was complying with the law.
+
+================================================================================
+
+Title: Overriding Considerations
+
+The Case:
+Mrs. G visited her obstetrician for first trimester routine prenatal care. The obstetrician offered genetic testing for a variety of conditions, including Tay-Sachs and Canavan's diseases, since both Mrs. G and her husband, a healthy 35-year-old physician, were of Ashkenazi Jewish descent. Mrs. G consented to be tested and told the obstetrician that she would discuss with her husband that evening whether he wanted to have the genetic tests. The obstetrician gave Mrs. G consent forms and information to take home to her husband. The obstetrician also entered laboratory test orders in the computerized order entry system for the genetic screening panel for both Mrs. G, since she had consented to be tested, and for Dr. G, assuming he would consent to be tested. However, the obstetrician did not mention this to Mrs. G.
+
+At home that evening, Dr. G reviewed the materials and told his wife that he definitely did not want to be tested. Several weeks later, Dr. G visited his primary care doctor for a check-up. The physician ordered routine screening laboratory tests (fasting lipid profile, complete blood count, and urinalysis) through the computerized order entry system, and the next morning Dr. G presented to the laboratory for testing. The laboratory and its computer system were the same as used by Mrs. G's obstetrician.
+
+Unbeknownst to Dr. G, the phlebotomist drew samples not only for the routine testing ordered by his primary care doctor but also for the genetic screening, because it was listed in the computer even though Dr. G had not consented. In doing so, the phlebotomist overrode the computerized alert that prompted him to be sure the patient had consented; he assumed that the physician must have obtained consent before ordering the tests. Ten days later, the obstetrician called Mrs. G to give her "the good news" that all her screening tests were normal. The obstetrician mentioned incidentally that her husband tested positive as a carrier of Canavan's disease. This disclosure caused some distress, but no physical harm. No increased level of care was needed.
+
+================================================================================
+
+Title: Mark My Limb
+
+The Case:
+A patient went to the operating room (OR) for surgery on the lower leg. Per the Universal Protocol, the surgeon marked the proper leg prior to bringing the patient to the OR. The patient was placed in the prone position and anesthesia was administered. A "Time Out" was performed, during which all the team members met and confirmed the procedure. The nurse began to prep the patient's lower leg, but the anesthesiologist felt that something wasn't right. After stabilizing the patient, he checked the chart and discovered that the nurse had scrubbed the wrong extremity. He notified the team members and stopped the procedure. The patient had come just minutes away from having surgery on the wrong leg, but no harm occurred. The correct leg was then prepared, and the patient underwent successful surgery.
+
+================================================================================
+
+Title: A "Weak" Response
+
+The Case:
+A primary care physician on call for his group received a call at 9:00PM from a 68-year-old man. He said, "They started me on a new pill for my blood pressure and now I feel really weak." The physician asked how long ago the new medication was started. "Three days," the patient replied.
+
+The patient could not recall the name of the drug, but he found the bottle of tablets, whose label read hydrochlorothiazide 25 mg. He stated that he had been taking one pill per day as instructed. The patient reported also taking lisinopril 20 mg daily for more than a year.
+
+The physician, attributing the symptoms to the new medication, instructed the patient to stop the hydrochlorothiazide. He told the patient to use his home blood pressure cuff after the call and to come into the clinic right away if systolic pressure went above 180 mmHg. Otherwise, the patient was told to make an appointment to see his regular doctor to get a different medication for his blood pressure.
+
+Three days later, the patient was hospitalized with sudden onset of right arm and leg weakness, as well as difficulty speaking. He was found to be in atrial fibrillation with a ventricular response of 120 beats per minute.
+
+On reviewing the patient's symptoms and confirming with the patient's regular physician that the atrial fibrillation was new, the admitting physician judged that the patient became weak due to the new atrial fibrillation and rapid ventricular response rather than to potassium depletion, hyponatremia, or other effects of the hydrochlorothiazide. The findings on neuroimaging were strongly suggestive of an embolic stroke. The patient was begun on warfarin for atrial fibrillation and received rehabilitation while in hospital, but still had weakness and some word-finding difficulties 6 weeks later.
+
+================================================================================
+
+Title: Hard to Swallow
+
+The Case:
+An elderly man underwent hernia surgery. Postoperatively, the patient developed a transient ischemic attack (TIA) and respiratory difficulties. The nurses noted that the patient, whose speech was normal before surgery, now had slurred speech and choked on thin liquids. The neurologist recommended a swallowing study.
+
+A speech pathologist evaluated the patient and found him to be at high risk for aspiration. On the consultation form, she recommended that the patient be made NPO. She didn't think the recommendation was important enough to "bother" the physician, and recorded it only on the consultation form. In keeping with standard practice at the hospital, speech pathologists, respiratory therapists, and physical therapists write their notes in a special section of the chart, not in the core daily progress notes area, which is the part of the chart that all physicians read. The physician did not see the form, and the patient continued to receive thickened liquids. Two days later, the patient suddenly aspirated, arrested, and died.
+
+The hospital investigates all critical incidents through the Quality Management Department and the Vice President of Medical Affairs. This particular case was reviewed within an hour of the patient's death. Subsequently, the VP of Medical Affairs submitted a protocol to the medical staff executive committee concerning swallowing evaluations. This protocol, now in effect, permits the speech pathologist to write the order to make the patient NPO if the bedside swallowing evaluation is suspicious for the risk of aspiration. Hospital personnel felt that physicians would accede to speech pathologists' recommendations to keep a patient NPO (for aspiration risk), and that it was safer to have the physicians "pre-authorize" an NPO order than risk a repeat of this scenario by waiting for a physician's order.
+
+================================================================================
+
+Title: Electronic Err
+
+The Case:
+A 75-year-old woman with coronary artery disease presented to the emergency department (ED) with chest pain that that had not responded to three sublingual nitroglycerin tablets at home. Supplemental oxygen and nitroglycerin paste resulted in resolution of the patient's symptoms, but she was admitted for cardiac monitoring and serial cardiac enzymes to rule out myocardial infarction.
+
+The patient gave a clear history to the admitting internist, but could not recall the names of some of her medications, nor could she remember any of the doses. The hospital was able to access the electronic health record (EHR) of the large multi-specialty clinic where the patient received her medical care. The admitting physician printed the medication list from that EHR. The most recent note in her ambulatory chart listed warfarin, aspirin, clopidogrel, diltiazem CR, metoprolol XL, and atorvastatin—so he wrote orders for those medications with doses as stated in the medication list.
+
+One hour later, the admitting physician received a page from the telemetry floor. The nurse informed him that the patient had developed a junctional rhythm with a heart rate less than 40 and stated, "She looks really bad." She was given atropine stat, which resulted in improvement in the heart rate and the patient's general appearance.
+
+On reviewing the patient's outpatient record in greater detail, the physician found a recent cardiology note. The note listed the same medications documented elsewhere in the EHR, but also documented his plan to discontinue diltiazem and decrease metoprolol due to recent episodes of symptomatic bradycardia.
+
+Neither the EHR medication list nor the most recent note from the primary care physician reflected these changes, but a call to the patient's pharmacy confirmed that she had not refilled her diltiazem and that metoprolol had been prescribed at a lower dose than before. Thus, the patient had been given 100 mg of metoprolol XL and 180 mg of diltiazem CR by the hospital admitting physician, rather than the 50 mg of metoprolol XL and no diltiazem intended by her outpatient cardiologist. The patient remained clinically stable, but did rule in for a myocardial infarction with a troponin that peaked at 8. Whether the infarct resulted from the medication error or had already occurred at the time of admission was unclear, but the physician did inform the patient of the error.
+
+The Institution's Response
+
+After a discussion of this case at the clinic's monthly safety and quality improvement meeting, a physician and nurse audited a small random sample of patient records. Medication lists commonly lagged far behind clinic notes, frequently containing medications no longer received by the patient, omitting new medications, and failing to document changes in dose. Analogous discrepancies were found for problem lists: patients' main EHR problem lists often continued to list problems long since resolved and failed to include new problems.
+
+The clinic approached the EHR vendor to ask about modifications to the current system that would allow automatic updating of medication and problem lists or, in the absence of such a system, add a flag to medication and problem lists indicating that the patient has been seen in clinic more recently than the date of the last change to the medication list. The vendor thought that the latter solution could be implemented over a 6- to 12-month time frame. In the meantime, clinic nurses added a medication review to vital signs and weight prior to each patient's appointment with a physician.
+
+================================================================================
+
+Title: Lap Burn
+
+The Case:
+A woman was scheduled for an elective diagnostic laparoscopy for dysfunctional uterine bleeding. After accessing the abdomen with the trocar without complication, the surgeon inserted the laparoscope but found that she needed to reposition the trocar. She removed the laparoscope and placed it on the tray in front of her. After adjusting the trocar, she picked up the laparoscope and noticed the drapes were melted where the distal tip of the scope had been placed. The drapes had been covering the patient, and examination revealed a second-degree burn of the thigh. The burn healed without any scarring.
+
+================================================================================
+
+Title: Moved Too Soon
+
+The Case:
+A 67-year-old man was admitted to a general hospital ward after undergoing a laminectomy. Two hours after arriving, while the patient was still groggy from anesthesia, a nurse entered the room and stated that it was time to administer his clonazepam. As the patient began to take the medicine, his daughter (who happened to be a nurse) stated that she didn't think he should be receiving clonazepam and asked the nurse to double check prior to administration. The nurse returned after checking and asked, "Aren't you Mr. X?" The patient said, "No, I am Mr. J."
+
+It turned out that, due to a bed shortage, Mr. J was to be moved down the hall, and Mr. X, a seizure patient scheduled to be transferred out of the neuro-ICU that afternoon, was to be moved into that room. The room change was made on the hospital's computer before the patients were physically moved. Thus, when the nurse checked the computer, it showed that Mr. X was in that room and due for his clonazepam.
+
+================================================================================
+
+Title: Reaction to Dye
+
+The Case:
+A patient was referred to urology after having several episodes of gross hematuria. The urologist thought that the patient might have a renal mass and sent him to radiology for a CT scan. The patient stated that he was not allergic to x-ray dye. Therefore, the resident radiologist told the technologist to proceed with contrast material administration for contrast enhancement. Soon after the injection, the patient went into anaphylactic shock on the CT table. Luckily, the patient was rapidly resuscitated and suffered no permanent harm. On later questioning, the patient stated that he was "very allergic" to shellfish. On further inquiry, including an exhaustive review of all of the patient's allergies, he stated that he was extremely allergic to iodine in all forms.
+
+================================================================================
+
+Title: Security Lapse
+
+The Case:
+A medical student learned that the hospital's radiology image library was accessible throughout the university's computer system, meaning that patient x-rays could be viewed in dormitories, libraries, and at public terminals. Moreover, the images were accessible through the Internet, on a Web site that didn't require any user identification or password.
+
+Concerned that the public accessibility of this information constituted a violation of patient privacy, he alerted another medical student who worked in the ethics department and asked her to speak with her faculty mentor. She did, but relayed that her mentor was unconcerned with this problem. During the student's Health Insurance Portability and Accountability Act (HIPAA) training, he again became concerned that, by not securing patient privacy, the hospital was in violation of HIPAA regulations and vulnerable to lawsuits. The student spoke with several faculty members in the medicine department regarding his concerns. The faculty members seemed surprised by the student's findings, but did not advise him to contact the hospital's HIPAA compliance officers nor undertake that action themselves.
+
+Several months later, during the course of one of the student's clinical clerkships, he again mentioned the lack of security to an attending physician, who became very concerned and contacted the head of the hospital's HIPAA compliance office. Within hours, the office contacted the student for further description of the violation, and within a week the security problem was repaired. The total time elapsed between the student's initial identification of the problem and the hospital's solution was 18 months, several of which were after the April 2003 deadline for HIPAA compliance.
+
+================================================================================
+
+Title: Caution, Interrupted
+
+The Case:
+A 55-year-old man with acute myelogenous leukemia and several recent hospitalizations for fever and neutropenia presented to the emergency department (ED) with fever and hypotension. After assessment by the emergency physician, administration of intravenous crystalloid and empiric broad-spectrum antibiotics, the patient was assessed by his oncologist. Based on the patient's several recent admissions and the results of a blood culture drawn during the last admission, the oncologist added an order for Diflucan (fluconazole) 100 mg IV to cover a possible fungal infection.
+
+Because intravenous fluconazole was not kept in the ED, the nurse phoned the pharmacy to send the medication as soon as possible. A 50 ml bottle of Diprivan (propofol, an intravenous sedative-hypnotic commonly used in anesthesia) that had been mistakenly labeled in the pharmacy as "Diflucan 100 mg/50 mL" was sent to the emergency department. Because the nurse also worked in the medical intensive care unit, she was quite familiar with both intravenous Diflucan and Diprivan. When a glass bottle containing an opaque liquid arrived instead of the plastic bag containing a clear solution that she expected, she thought that something might be amiss.
+
+As she was about to telephone the pharmacy for clarification, a physician demanding her immediate assistance with another patient distracted her. Several minutes later, when she re-entered the room of the leukemia patient, she forgot what she had been planning to do before the interruption and simply hung the medication, connecting the bottle of Diprivan to the patient's subclavian line.
+
+The patient's IV pump alarmed less than one minute later due to air in the line. Fortunately, in removing the air from the line, the nurse again noted the unusual appearance of the "Diflucan" and realized that she had been distracted before she could pursue the matter with the pharmacy. She stopped the infusion immediately and sent the bottle back to the pharmacy, which confirmed that Diprivan had mistakenly been dispensed in place of Diflucan.
+
+The patient experienced no adverse effects—presumably he received none of the Diprivan, given the air in the line, the infusion time of less than a minute, and the absence of clinical effect (Diprivan is a rapidly-acting agent). Nonetheless, the ED and pharmacy flagged this as a potentially fatal medication error and pursued a joint, interdisciplinary root cause analysis, which identified the following contributing factors: (i) Nearly 600 orders of medication labels are manually prepared and sorted daily; (ii) Labels are printed in "batch" by floor instead of by drug; (iii) The medications have "look-alike" brand names; (iv) A pharmacy technician trainee was working in IV medication preparation room at the time; and (v) The nurse had been "yelled at" the day before by another physician—she attributed her immediate and total diversion of attention in large part to her fear of a similar episode.
+
+================================================================================
+
+Title: Doctor, Don't Treat Thyself
+
+The Case:
+A 50-year-old radiologist presented to the emergency department of the community hospital where he worked and reported increasing shortness of breath over the past several days. His medical history was notable for hyperlipidemia, which had been discovered 10 years earlier after he presented with unstable angina and required coronary bypass surgery. He stated that he had no chest pain whatsoever and repeatedly emphasized that he had been completely free of cardiac symptoms since his surgery 10 years ago.
+
+Physical examination revealed tachypnea (25 respirations per minute), tachycardia (110 beats per minute), and bilateral lower lung field crackles. A chest x-ray was obtained and read by the patient himself, who declared it to show bilateral infiltrates clearly indicative of pneumonia. Because it was after midnight and no other radiologist was in-house, the admitting internist did not question the reading of the radiologist–patient. The admitting physician ordered blood cultures and prescribed intravenous ceftriaxone as well as oral levofloxacin as empiric coverage for community-acquired pneumonia.
+
+Several hours later, the nurse paged the admitting physician to say that the patient's blood pressure was plummeting. The physician ordered a 500-cc intravenous bolus of normal saline for presumed hypovolemia or early sepsis. He came to see the patient after the bolus had been administered (30 minutes later) and found the patient profoundly dyspneic. A blood gas revealed a pH of 7.2, pCO2 of 50, and pO2 of 50 on high-flow oxygen.
+
+The physician told the nurse to call a code, in order to alert the emergency physician on duty, and to bring the "crash cart." The emergency physician arrived promptly and began preparations to intubate, but the patient went into cardiac arrest. The initial rhythm was ventricular fibrillation, but degenerated into asystole, from which the patient never recovered. He was pronounced dead after 30 minutes of resuscitative efforts.
+
+The emergency physician had asked that a troponin be added to the blood work drawn at the time of the code. The next morning, on reviewing these results, the internist saw that the troponin had been markedly elevated. The incident prompted an internal review by the hospital, during which several radiologists reviewed the initial chest x-ray and reported it as clearly consistent with pulmonary edema. Autopsy confirmed a large anterior myocardial infarction and prominent pulmonary edema.
+
+================================================================================
+
+Title: Glucose Roller Coaster
+
+The Case:
+A 71-year-old woman with congestive heart failure was admitted to the hospital. Her medical history was significant for dialysis-dependent, end-stage kidney disease and coronary artery disease. She did not have a preadmission diagnosis of diabetes.
+
+While in the step-down unit on the evening of admission, the patient had a routine phlebotomy sample drawn, and the blood sugar level was 674 mg/dL. At 11:30 pm, the nurse notified the covering intern, who telephone-ordered 10 Units of regular insulin to be given subcutaneously. At 1:10 am, a finger-stick glucose level was 50 mg/dL, and the intern verbally ordered 1 amp of D50 to be given intravenously (IV). At 3:00 am, a phlebotomized specimen revealed a glucose level of 19 mg/dL, and the intern verbally ordered another amp of D50 IV, as well as a D10 drip. At 5:27 am, a finger-stick glucose was 99 mg/dL. At 11:00 am, a phlebotomy sample revealed a blood glucose level of 351 mg/dL. Another covering intern was notified, and 8 units of regular insulin were ordered to be given subcutaneously. At 3:40 pm, the patient was unresponsive, and a finger-stick glucose level was 13 mg/dL. Two amps of D50 were verbally ordered, and follow up finger sticks were in the normal range.
+
+Later, it was discovered that many of the phlebotomy specimens had been drawn above an IV line infusing dextrose solution. The step-down nurse was re-educated regarding blood draws in relation to lines. Despite multiple episodes of hypoglycemia, all subsequent glucose levels were normal and this patient suffered no lasting harm.
+
+================================================================================
+
+Title: The Worst Headache
+
+The Case:
+A 48-year-old woman with a history of migraine headaches and hypertension presented to her outpatient clinic with a 4-day history of headache. While shopping 4 days earlier, she experienced sudden onset of a severe diffuse headache—"maybe the worst headache I've ever had." She sat down because of the pain and associated nausea.
+
+She had presented to clinic later that day, where a nurse practitioner assessed her symptoms as consistent with her prior migraines, and recommended that she simply start the regimen that she had used in the past (ibuprofen and ergotamine tartrate/caffeine [Cafergot®]).
+
+When her symptoms remained severe, she returned the following day to the urgent care center. A staff physician agreed with the nurse's diagnosis and reassured the patient that there simply had not been enough time for the medications to take effect. He administered intramuscular ketorolac and oral prochlorperazine, with substantial improvement in her symptoms. An appointment was made for her to follow-up with her primary care physician 3 days later in case symptoms persisted, and also to discuss initiation of a medication for migraine prophylaxis.
+
+When the patient returned for her clinic visit in the late afternoon 3 days later, she initially stated that her symptoms had resolved. On closer questioning, however, she stated that she continued to experience headaches when straining (eg, during bowel movements) or bending over. Her physical exam, including visualization of both retinas, was normal.
+
+The physician regarded the initial acute presentation as very worrisome for subarachnoid hemorrhage (SAH). However, her subsequent clinical course seemed too benign, even with the lingering headaches. Given that he had not completely ruled out the possibility of hemorrhage, he arranged for her to have a CT scan and asked the radiologist to page him immediately with the results. He also gave the patient clear instructions to call him if her symptoms worsened.
+
+The radiologist paged the primary physician later that evening to inform him that the head CT was normal. Knowing that the CT is not 100% sensitive for subarachnoid hemorrhage, the physician telephoned the patient the next morning to see how she was doing. She had just woken up, but thanked him for calling and stated that she felt much better—then the phone went dead. At first, the physician thought she had simply hung up, but since it was rather abrupt he called back and received a busy signal. He called 911.
+
+EMTs found the patient on the floor, arousable only to painful stimuli. MR angiography in the emergency department demonstrated a posterior circulation aneurysm (Figure 1), which was clipped later that day. The patient required a ventriculoperitoneal shunt, but her postoperative course went well, with complete neurologic recovery.
+
+================================================================================
+
+Title: Bowel Prep
+
+The Case:
+The patient is a 73-year-old woman who 20 years ago underwent treatment for breast cancer. At her daughter's suggestion, the patient requested referral for colonoscopy, as she understood there was an increased risk of her having a second malignancy.
+
+At four feet ten inches tall, the patient was petite, weighing only 88 pounds. Her primary care physician referred her to a gastroenterologist whose practice consists of ambulatory endoscopy. In his practice, patients are not routinely seen in advance of their procedures, so the patient called the gastroenterologist's office and was given instructions for her bowel prep. When she inquired about whether the "dose" of the prep needed adjustment given her small size, the nurse told her that this was the "standard" dose. The nurse asked no further questions.
+
+The patient used the bowel prep as instructed, and her husband found her unresponsive on the morning of her scheduled colonoscopy. She was taken to the hospital and found to have significant electrolyte abnormalities including hyponatremia, hypokalemia, hypophosphatemia, hypocalcemia, and hypomagnesemia, all believed to be complications of the bowel prep. She was re-hydrated, her electrolytes were corrected, and she was discharged home after 48 hours.
+
+================================================================================
+
+Title: Allergy to Holter
+
+The Case:
+A 52-year-old man was admitted for palpitations and chest pain. As part of the evaluation, on hospital day 4 the patient was sent to the cardiac clinic to start a continuous recording of his electrocardiogram via Holter monitor.
+
+Since the patient was ambulatory and had gone for other tests on his own, he was told to go to the cardiology clinic for a check-up of his heart rhythm. He was handed a "Request for Consultation" form, on which there was only one word: "Holter." The form did not state the patient's name or the department.
+
+The patient had been told the clinic was on the fifth floor of the ambulatory building, so he took the elevator to that floor. He presented himself to the reception desk of the first clinic he saw—the allergy clinic (which is on the same floor as the cardiology clinic)—where the nurse took his consultation form, and told him, "Mr. Holter, you are in the right place." She then proceeded to conduct a complete pin-prick skin sensitivity test on his back, which showed no evidence of allergies. Armed with a form that showed his "Holter" test was negative, the patient walked back to his ward.
+
+Upon his return, the patient told his ward nurse, "I've just finished the Holter test." —"And where is the Holter device?" asked the nurse. —"It is on my back and does not hurt at all!"
+
+The nurse looked at the patient's back and realized that he had had an allergy test. She then escorted him to the cardiac clinic to have an actual Holter monitor placed. There was no harm (fortunately) to the patient, other than an unnecessary test and a brief delay in the ECG recording.
+
+Additional investigation revealed that the patient was able to read and there was no language barrier. The workload for the allergy clinic nurse was light. She had merely glanced at, but did not read, the consultation form. Since it was not the first time a patient had received an unnecessary allergy test, the hospital published the event in their incident report newsletter and changed the signs to clinics on that floor. The nurse retired from practice (as previously scheduled) the following month.
+
+================================================================================
+
+Title: The Result Stopped Here
+
+The Case:
+A 91-year-old female was transferred to a hospital-based skilled nursing unit from the acute care hospital for continued wound care and intravenous (IV) antibiotics for methicillin-resistantStaphylococcus aureus(MRSA) osteomyelitis of the heel. She was on IV vancomycin and began to have frequent, large stools.
+
+The attending physician ordered a test forClostridium difficileon Friday, and was then off for the weekend. That night, the test result came back positive. The lab called infection control, who in turn notified the float nurse caring for the patient. The nurse did not notify the physician on call or the regular nursing staff. Isolation signs were posted on the patient's door and chart, and the result was noted in the patient's nursing record. Each nurse who subsequently cared for this patient assumed that the physician had been notified, in large part because the patient was receiving vancomycin. However, it was IV vancomycin (for the MRSA osteomyelitis), not oral vancomycin, which is required to treatC. difficile.
+
+On Monday, the physician who originally ordered theC. difficiletest returned to assess the patient and found the isolation signs on her door. He asked why he was never notified and why the patient was not being treated. The nurse on duty at that time told him that the patient was on IV vancomycin. The float nurse, who had received the original notification from infection control, stated that she had assumed the physician would check the results of the test he had ordered. Due to the lack of follow-up, the patient went three days without treatment forC. difficile, and continued to have more than 10 loose stools daily. Given her advanced age, this degree of gastrointestinal loss undoubtedly played a role in her decline in functional status and extended hospital stay.
+
+================================================================================
+
+Title: Lethal Vertigo
+
+The Case:
+A 64-year-old woman, with no prior medical history, complained of sudden onset of severe vertigo and vomiting, without headache. Her initial blood pressure in the emergency department (ED) was 170/90 (at about 4:00 PM). Physical examination was limited because the patient's vertigo dramatically worsened when she opened her eyes. Neurological exam was grossly normal—the patient could follow commands and there was no focal weakness. A provisional diagnosis of labyrinthitis was made, and prochlorperazine (Compazine) 10 mg IV was administered. An hour later, however, the patient noted little improvement, and so lorazepam 2 mg IV was given. An hour after that, the patient was signed out to a second attending, who administered atropine 0.5 mg IV. Four hours later, she was signed out to a third attending. At that point (10:00 PM), the physician decided to hold her overnight in the ED and admit her if she was not better in the morning. At 11:00 PM, the patient complained of a headache and was given acetaminophen 650 mg by mouth. An hour later, the patient sustained a cardiopulmonary arrest and could not be resuscitated.
+
+Autopsy revealed that the patient had died of a cerebellar hemorrhage. A subsequent review of the case indicated that the death was potentially avoidable, had life-saving neurosurgery been performed within the first few hours of her ED presentation.
+
+================================================================================
+
+Title: Listen to the Family
+
+The Case:
+Vascular surgery was consulted for placement of a dialysis catheter in a patient on the medical floor. The surgical resident examined the patient, an elderly woman with dementia and renal insufficiency receiving IV hydration. The resident called the family to obtain informed consent for the procedure. The daughter was very surprised by the call, stating that no one had discussed initiating dialysis; she insisted that it was a mistake. The surgical resident attempted to convince the daughter that the patient's life was in danger, but the daughter refused to give consent. The next morning, the surgeon returned to the bedside, where the family again refused to provide consent. The medical attending caring for the patient was ultimately called, and he verified that the patient had prerenal azotemia related to dehydration. He was unaware of any request for dialysis catheter placement in this patient. Because they were worried about her safety, the family signed the patient out of the hospital and returned her to the nursing home. Upon further review, the catheter placement request was for another patient on the same floor with the same unusual last name, who had chronic renal failure progressing towards dialysis.
+
+================================================================================
+
+Title: Dangerous Dapsone
+
+The Case:
+A 78-year-old woman with newly diagnosed multiple myeloma on corticosteroids presented to the emergency department with dyspnea. Upon admission, she was found to be hypoxic, and she required increasing amounts of oxygen to maintain saturations greater than 90%. However, her arterial blood gas (ABG) showed a paO2 of > 430 on 100% O2, with no A-a (alveolar-arterial) gradient. The next day, she was found to be cyanotic on morning rounds, and a stat ABG showed methemoglobinemia of 30%.
+
+The etiology of her methemoglobinemia was determined to be incorrectly dosed dapsone forPneumocystis cariniipneumonia (PCP) prophylaxis. The patient had seen her oncologist the week before admission, who had erroneously written her dapsone prescription as "100 mg TID", instead of TIW (Mondays, Wednesdays, and Fridays). Of note, on admission, the inpatient pharmacy had called the admitting team about the inappropriately dosed dapsone. However, because the patient's family had a copy of the original prescription from the oncologist, the admitting team assumed that the dose was correct and rewrote the medication order at the erroneously high dose. Fortunately for this patient, this mistake did not cause her adverse long-term clinical consequences. Once the error was discovered, the patient was promptly started on cimetidine 300 mg IV daily, and her methemoglobinemia resolved 7 days after admission.
+
+================================================================================
+
+Title: No Blood, Please
+
+The Case:
+A young woman, about 30 years of age, was injured in an automobile collision. She was brought to the emergency department (ED) via ambulance, where she was found to be suffering internal bleeding with life threatening blood loss. After examination, physicians advised her that without transfusion of one to two units of blood within a very short time, she would die. The patient refused the transfusion, stating that her religion forbids it and that she understood the consequences. The ED staff deemed her to be competent and was ready to comply with her wishes.
+
+At about the same time that she was undergoing examination, both her parents and her minister arrived. The parents asserted that their daughter had recently converted to her new faith only weeks before and therefore did not fully understand why the religion forbids blood transfusion nor the consequences of her decision. The minister, on the other hand, stated that the woman converted to this religion with the full knowledge of its tenets and was well aware of the consequences of her decision. He stated that, at the time of her conversion, she swore an oath that she would live by the tenets of the faith; that oath contained language forbidding blood transfusions. As these discussions unfolded, the woman lost consciousness. The ED staff reversed their previous decision, and transfused two units of blood into the unconscious woman. She was then taken to surgery.
+
+The woman recovered from her injuries. She and the minister of her church sued the hospital generally and ED staff specifically. The judgment ruled in her favor, saying that the hospital and ED staff violated her civil rights and interfered with her ability to make her own decisions.
+
+================================================================================
+
+Title: Do Me a Favor
+
+The Case:
+A 26-year-old gravida 4 para 1 woman reported that her last menstrual period was 5 weeks prior, and she had a positive home pregnancy test. With a history of one ectopic pregnancy, one normal vaginal delivery, and one spontaneous abortion (miscarriage) at 6 weeks, she was concerned about a repeat ectopic pregnancy. The patient was a nurse who worked at the hospital and was friends with one of the obstetrics/gynecology residents. She asked the resident to perform a transvaginal ultrasound to check for an intrauterine pregnancy and rule out an ectopic pregnancy.
+
+The resident brought the patient into the antenatal testing room without notifying the nursing staff or registering the patient. A transvaginal ultrasound was done, which did find an intrauterine pregnancy; neither the findings nor the patient's condition was documented in the medical record. The vaginal probe was not cleaned appropriately after the procedure.
+
+The charge nurse on the floor noticed that the bed in the antenatal testing room had been used. On inquiry, she could not find a patient who had been admitted to that room. Ultimately, she asked the resident, who revealed that he had scanned his friend.
+
+================================================================================
+

@@ -1,0 +1,497 @@
+
+Title: Privacy Gone Awry
+
+The Case:
+A 3-year-old child underwent bilateral myringotomies and tube insertion with adenoidectomy. Preoperatively, she had an upper respiratory infection, but was eating normally. She was very active in the preoperative screening area. Immediately following the surgery, her oxygen saturations fell to the upper 80s while on blow-by humidified oxygen.
+
+In preparation for an upcoming JCAHO inspection, the small community hospital (which had suffered from significant nursing shortages and thereby relied on many young and inexperienced staff members) was in the midst of a major internal educational campaign regarding HIPAA, encouraging all staff to be particularly attentive to issues of patient privacy. In keeping with this, the recovery room nurse (a recent graduate from nursing school) closed the "privacy" drapes, which left her unable to visualize the pulse oximeter.
+
+Within the hour, the nurse heard loud inspiratory stridor coming from inside the curtain. The anesthesiologist and otolaryngologist were called stat, and found the child in extremis. They managed the patient's airway over the next few minutes, barely avoiding intubation by "bagging" the patient.
+
+The child was admitted overnight and was discharged the following morning after her respiratory status dramatically improved. She suffered no permanent adverse sequelae.
+
+================================================================================
+
+Title: Missed TB
+
+The Case:
+A 38-year-old white female with no past medical history presented to the hospital with fevers, respiratory failure, and bilateral pulmonary infiltrates. She was treated empirically with broad-spectrum antibiotics, which were continued even after her initial blood and sputum cultures returned negative. Fevers persisted and she soon developed acute respiratory distress syndrome (ARDS). The treating physicians considered bronchoscopy, but felt the patient was too ill to tolerate the procedure. An HIV test was sent and was negative. On hospital day 21, her providers considered the possibility of tuberculosis, and sent sputum for acid-fast bacilli (AFB) smear and culture. The AFB smears were negative. The patient continued to deteriorate, with progressive respiratory failure, and died shortly afterward. Several days later, the AFB cultures began growingMycobacterium tuberculosis.
+
+================================================================================
+
+Title: Fumbled Handoff
+
+The Case:
+A 73-year-old female with history of hypertension, non-insulin dependent diabetes mellitus (NIDDM), and chronic renal insufficiency was admitted for an elective sigmoid resection and diverting colostomy. On postoperative day (POD) 2, the patient was tachycardic, despite receiving a low-dose beta-blocker. That same day, she informed her nurse that she had developed left leg pain. Assuming it was related to the epidural placed preoperatively, the nurse called anesthesia, and they responded by decreasing the epidural rate. The primary surgical team was not called at that time. On POD 3, the patient had no complaints for the primary team on morning rounds. Later in the evening, the cross-covering intern was called concerning the left leg pain. No information about this intern's findings was relayed to the primary team the next morning. On POD 4, the patient complained to the nurse of mild chest discomfort. She was seen by housestaff within 20 minutes and by the attending several hours later. Her exam was unremarkable. A workup was initiated, but within an hour of the attending's visit, the patient's blood pressure dropped to 70/40, followed shortly thereafter by a pulseless electrical activity (PEA) arrest, from which she could not be resuscitated. Post-mortem examination revealed pulmonary embolism.
+
+================================================================================
+
+Title: Autopsy Revelation
+
+The Case:
+A 45-year-old male with development delay presented to the emergency department with acute abdominal pain. His mother, who was his main caregiver, accompanied him. The mother was talkative and answered all questions on his behalf, including questions about his symptoms and past medical history.
+
+The mother described the current episode as the sudden onset of severe pain, which initially seemed to be in the epigastric area, but had since moved over to the right upper quadrant and flank. The patient nodded his assent throughout his mother's account. Mother and son stated that the pain was no longer as severe as it had been at its onset, roughly 2 hours earlier. She stressed that he had experienced very similar complaints the previous year, which were diagnosed as due to renal colic.
+
+On physical examination, the patient was moderately obese and appeared in mild discomfort, but no acute distress. His vital signs were normal except for mild tachycardia to 100 beats per minute. Abdominal examination revealed mild tenderness with deep palpation in the epigastrium and right upper quadrant. There was no costovertebral angle tenderness, and rectal examination was unremarkable.
+
+The emergency physician's working diagnosis was renal colic, but he also considered the possibility of gallstones. He planned to obtain a right upper quadrant ultrasound if the pain did not respond to treatment for renal colic or if laboratory tests suggested a hepatobiliary process.
+
+The patient received an intramuscular injection of ketorolac (Toradol), which provided significant relief, as did a second injection 2 hours later. Serum chemistry and blood count results returned within normal limits. Urinalysis was not available, however, as the patient had forgotten the instructions and flushed his urine sample. He was discharged with a prescription for acetaminophen with codeine, instructions to drink at least 8 glasses of water a day, and a strainer for his urine in case he passed a stone, all of which the mother stated she was familiar with based on the previous episode.
+
+The next morning, the patient's mother found him in bed completely unresponsive and with no palpable pulse. Ambulance personnel pronounced him dead at the scene. The medical examiner requested an autopsy, which revealed a perforated gastric ulcer and widespread peritonitis.
+
+================================================================================
+
+Title: Lethal Cap
+
+The Case:
+A 9-month-old child was seen by her pediatrician for a fever and decreased appetite. She was found to have otitis media and was prescribed amoxicillin. The doctor gave the first dose to the infant in the office, demonstrating step-by-step how to deliver the medicine via syringe.
+
+At home, the father drew up the next dose without removing the syringe cap. He gave the dose to the child who suddenly had difficulty breathing and collapsed. When emergency medical services (EMS) arrived, the child was intubated and transported to a children's hospital. Despite intubation, she could not be adequately ventilated. The tube was removed and intubation was tried again, still without improvement. The infant was then taken to the operating room to undergo bronchoscopy. The syringe cap was found lodged in her trachea. Evaluation in the subsequent days revealed brain death. The infant was removed from life support and died shortly thereafter.
+
+================================================================================
+
+Title: OR Peeping
+
+The Case:
+A healthy unmarried woman was undergoing a dilation and curettage (D&C) following an incomplete spontaneous abortion (miscarriage).
+
+At this community hospital, a new operating room (OR) suite had recently opened. It was equipped with video cameras in all OR rooms to check staff location and activities, observe the status of ongoing procedures, and assist with development of educational materials. The video cameras are monitored at the nurses' station, located just inside the OR suite. As such, the monitors are visible to anyone who enters the OR doors, and sometimes to those standing outside the doors. Prior to surgery, the hospital admissions staff obtains general consent from patients for videotaping for "education and safety" purposes. The use, placement, and high visibility of the cameras in the OR is not explained in writing or discussed with the patient.
+
+During the D&C procedure, the woman's face was shown on the OR video monitor. She was recognized by someone who passed the OR suite when the door was open. The serious privacy issues came to light after the passerby disclosed the woman's presence in the OR to other people. "Gossip" spread around town about the woman's pregnancy and D&C. It raised a great deal of speculation and was embarrassing to the woman and others.
+
+================================================================================
+
+Title: Transfusion "Slip"
+
+The Case:
+A married couple, Mr. and Mrs. M, was brought to the emergency department (ED) of a Level 1 trauma center after a half-ton truck that had skidded out of control struck their car. Mr. M appeared hemodynamically stable, but had bilateral femoral fractures. Mrs. M had been the driver. Her blood pressure remained low despite wide-open crystalloid infusions, and she had signs of peritoneal irritation on exam. Both patients were typed and crossed, although only Mrs. M appeared to need packed red blood cells urgently.
+
+The husband and wife patients had been placed in a large trauma bay with two beds. In the commotion of stabilizing and assessing both patients, the blood typing tube for Mr. M was labeled with the sticker for Mrs. M. Once the specimen was labeled and sent to the lab, this error would normally have been undetectable based on the standard protocols for handling transfusion products. By coincidence, however, Mrs. M had previously undergone a Cesarean section at the same hospital. She had been typed and crossed at that time. She and her husband did not share the same blood type (she was Type O and he Type A). The alert technologist in the blood bank noticed the change in blood type and inferred that a mistake must have been made. She called the ED immediately. They agreed to redraw her blood sample for re-typing, but also requested that O-negative blood be sent the ED immediately in case the patient deteriorated. Mrs. M thus never received the wrong blood.
+
+This case represents a very serious near miss. But for the coincidence of Mrs. M's blood type being on file at the same hospital, she would have received a potentially fatal incompatible transfusion matched for her husband's blood type (A) and not her own (O).
+
+================================================================================
+
+Title: X-ray Flip
+
+The Case:
+A 19-year-old man presented to the emergency department with respiratory distress after blunt chest trauma. A digital chest radiograph was labeled backwards; a "left" marker was mistakenly placed over the right chest. There was a moderate pneumothorax seen on the film on the anatomic left side (the side of the aortic arch). On the radiograph, however, the pneumothorax appeared to be on the patient's right (Figure).
+
+The resident assigned to the patient performed a brief physician examination, but based his localization of the pneumothorax largely on the reading of the chest radiograph. He thus placed a right chest tube. A correctly labeled follow-up chest x-ray showed persistent pneumothorax on the patient's left and the right-sided chest tube. A second chest tube was then placed, this time in the patient's left chest. The patient remained stable. The right chest tube was removed after the physicians confirmed that there was no air leak. There were no further sequelae.
+
+================================================================================
+
+Title: Undiagnosed Vaginal Bleeding
+
+The Case:
+The patient is a 34-year-old gravida 3, para 3 woman with a 2-year history of increasingly profuse vaginal bleeding. Over the past two years, the patient had been placed on oral contraceptives, but these had not stanched the bleeding. The patient reported having a Pap smear approximately 18 months earlier, read as "unsatisfactory, obscured by blood." However, she had not had a follow-up study. A gynecologist had seen her about 6 months earlier, and told her she needed a hysteroscopy and a dilation and curettage (D&C). However, he explained that he did not accept Medicaid, which was her source of health insurance. Her follow-up remained sporadic, and her bleeding continued—profuse enough that she required hospitalization for transfusions twice in the preceding 2 months.
+
+Her bleeding increased again, and she presented to the emergency department (ED). Physical exam revealed that the patient had an extremely friable exophytic cervical lesion, which was biopsied and confirmed to be invasive cervical cancer. Upon evaluation by a gynecologic-oncologist, she was found to be Stage IIB cancer. After undergoing radiation therapy and chemotherapy, she still has persistent disease. Her prognosis is currently guarded. Her oncologist believes that her delayed diagnosis profoundly affected her prognosis.
+
+================================================================================
+
+Title: Environmental Safety in the OR
+
+The Case:
+The infection control department of a hospital noticed a marked increase in the rates of post-operative sternal wound infections in surgical patients admitted to the hospital for coronary artery bypass graft (CABG) surgery. The increased infection rates were accompanied by increased readmissions and prolonged lengths of stay. Two patients had to have their sternum removed because of infection; two others died. One cardiac surgeon and his team were identified as having higher infection rates than others, even though they used the same operating room (OR) suites and facilities.
+
+An infection control practitioner conducted "environmental rounds" within the OR suite to observe the surgical team during the entire CABG surgical procedure. She found that the team was very "sloppy"—members of the team wore loose hair and jewelry (earrings, necklaces); several also wore regular sandals into the OR. The infection control practitioner noted also that several team members did not re-scrub when moving from working on the saphenous graft in the patient's leg back to the patient's open chest.
+
+================================================================================
+
+Title: Triage Time Bomb
+
+The Case:
+A parent presented with a child to the emergency department (ED) triage area (located around the corner and down the hall from the actual ED). The child was febrile, and had been vomiting and having diarrhea. After evaluating the child, who was still vomiting and had several episodes of diarrhea in the triage cubicle, the triage nurse was unsure about how to administer acetaminophen to the child. The nurse walked back to the ED to ask the physician about this. The doctor advised the nurse to bring the child to an ED exam room immediately (rather than wait for her "turn"), so that the child could be evaluated and receive intravenous (IV) fluid and possibly antiemetics. The physician explained to the nurse that the child might be dehydrated, and that acetaminophen could be given once these symptoms were controlled.
+
+After receiving these instructions from the doctor, the nurse alerted the ED charge nurse of the plan. This nurse told the triage nurse not to bring the child back to the ED yet, because not enough staff members were available to care for the child. She stated that some patients were being discharged, and when they were, then the child could be brought back. The triage nurse walked back out of the ED and down the hallway and relayed this altered plan to the child’s parent, who then decided to take the child elsewhere for treatment.
+
+Later in the evening, it was discovered that the child had been taken to another local hospital ED in full arrest.
+
+================================================================================
+
+Title: Ruptured Heterotopic Pregnancy
+
+The Case:
+A 43-year-old woman, gravida 3 para 2, presented at 16 weeks' gestational age with abdominal pain. Her current pregnancy was the result of in vitro fertilization (IVF) with a donor egg. An outpatient ultrasound at 14 weeks was reportedly normal. On the day of presentation, she had experienced a sudden onset of severe lower abdominal pain followed by nausea and vomiting. Responding paramedics documented transient loss of consciousness and difficulty recording blood pressures en route to the emergency department (ED). In the ED, she was hypotensive and tachycardic with an initial spun hematocrit of 28. The ED physician performed an ultrasound, which showed an intrauterine pregnancy and free fluid in the peritoneal cavity. The ED physicians were concerned about a ruptured appendix.
+
+After surgery and obstetrics were informed of the patient, she was given IV fluids and sent to the CT scanner. The patient was seen in the CT scanner by the obstetrics resident, who after reviewing the history and noting the patient's appearance (hypothermic, tachycardic, and hypotensive), felt the patient was at high risk for a ruptured heterotopic pregnancy (a pregnancy in which one embryo implants inside the uterus and another is outside the uterus [Figure]). The patient was pulled out of the scanner and taken emergently to the operating room, where an exploratory laparotomy found a 12-week fetus in the right fallopian tube along with 4 liters of peritoneal blood.
+
+================================================================================
+
+Title: To Resuscitate or Not?
+
+The Case:
+A critically ill end-stage AIDS patient was hospitalized for end-of-life care. Given the state of his disease, his code status was Do Not Resuscitate/Do Not Intubate (DNR/DNI), though he was still receiving active care. The patient was suffering from multiple concurrent infections requiring intravenous antibiotics.
+
+The patient in the room next to him was also receiving antibiotics. Inadvertently, the antibiotics were switched at the nursing station, resulting in the administration of Nafcillin (a penicillin-like antibiotic) to the AIDS patient, who in the past had a known anaphylactic-shock reaction to penicillins. The difficulty was, if the AIDS patient developed anaphylaxis to the Nafcillin, there was a good chance he would suffer a cardiopulmonary arrest, given the advanced state of his illness. If this were to occur, he would likely die if heroic measures were not taken.
+
+The nurse taking care of both patients realized the error after she went to give the other patient his antibiotics and saw that the printed label did not match the patient′s name. Unfortunately, the wrong medication had already been given to the AIDS patient. After noticing the error, the nurse called the covering physician. The physician spoke to the patient, advised him that he might possibly suffer anaphylaxis to the errant medication, and asked him if he wanted to maintain his code status as DNR/DNI.
+
+The patient was treated prophylactically for the possibility of allergic/anaphylactic reaction. For the next several hours, his nursing care became more intensive with more frequent vital sign checks. Luckily, he did not suffer any adverse outcome from the medication. By the next morning, it was clear that there were no sequelae.
+
+================================================================================
+
+Title: Inadvertent Castration
+
+The Case:
+An 83-year-old man presented with a left groin mass, "which had been there for years" but had recently increased in size. The patient described persistent aching in his left scrotal area, with no identifiable exacerbating or alleviating factors. He noted no change in bowel or bladder habits and reported taking a stool softener. No history was elicited or offered regarding prior genital surgery. Physical examination showed a 20-centimeter left groin mass with some superficial skin ulcerations. The mass was non-tender and was not reducible. The right groin and scrotum were unremarkable.
+
+The patient underwent surgery with a preoperative diagnosis of direct left inguinal hernia versus left hydrocele. Although preoperative ultrasound might have allowed this differentiation, it was not performed. Exploration of the left groin revealed a relatively small direct hernia and large left-sided hydrocele (Figure). The planned repair of the direct hernia was carried out, but an intra-operative decision was made to perform complete excision of the hydrocele, spermatic cord, and testicle on the left. The operation was completed without complication.
+
+In the recovery room, the surgeon discussed the changes to the planned procedure with the patient's wife, who informed the surgeon that the patient's right testicle had been removed after a traumatic injury many years earlier. In subsequent discussions with both the patient and his wife about hormonal replacement, the patient revealed that he had not been sexually active for several years. The patient was informed of the benefits of hormonal replacement—on energy level, muscle mass, and bone density—regardless of sexual activity. He elected to receive periodic, intramuscularly injected testosterone.
+
+================================================================================
+
+Title: Don't Push
+
+The Case:
+A 37-year-old HIV-positive woman was brought to the emergency room by her family because she had exhibited altered mentation for 3 days. The patient had been diagnosed with HIV infection 3 years earlier. Her opportunistic infections included thrush andPneumocystis cariniipneumonia (PCP). She had never received highly active antiretroviral therapy (HAART). Nevertheless, her lowest CD4 count was 560 and her viral load was low. The patient did not have any significant past surgical or psychiatric history. Medications on admission included only trimethoprim/sulfamethoxazole [Bactrim] for PCP prophylaxis.
+
+The patient’s mental status deteriorated rapidly after admission: she tossed about on her bed and had visual and auditory hallucinations. Per the hospital’s safety protocol, the planned lumbar puncture was put on hold because of her agitation. Neurology and psychiatry consultations were sought. The psychiatry team recommended haloperidol administered via intravenous (IV) push 5 mg every 20 minutes until sedation was achieved, so that the neurologist and psychiatrist could evaluate the patient. However, after 3 doses of haloperidol, the patient’s face turned pale and she started gasping for air. The patient was connected to a cardiac monitor on a crash cart, which showed polymorphic ventricular tachycardia ("torsade de pointes") (Figure).
+
+The patient received IV magnesium sulfate immediately. In the cardiac intensive care unit, she required placement of a transvenous pacemaker. She was able to return to a regular medical floor 1 day later, and her mental status improved without any intervention over the subsequent week.
+
+================================================================================
+
+Title: Misread Label
+
+The Case:
+An infant was born with sluggish respirations. During labor the infant’s mother had received meperidine [Demerol, a pain medication], a narcotic with a half-life of 2.5-4.0 hours in adults and 12-39 hours in neonates. The physician started resuscitation and ordered naloxone [an opiate antagonist]. Shortly after administration of the medication, the infant’s condition began to deteriorate further.
+
+Prompted by the proximity of the deterioration to the administration of the naloxone the physician checked the packaging of the drug. The syringe had inadvertently been filled with Lanoxin [digoxin, a cardiac medication] instead of naloxone. The packages of both drugs, made by the same manufacturer, were almost identical. ECG revealed bi-directional ventricular tachycardia, consistent with digoxin toxicity.
+
+Approximately 1 hour later the infant died. A post-mortem digoxin level was 17 ng/ml (therapeutic range 0.8 to 2 ng/ml).
+
+================================================================================
+
+Title: Waiting Too Long
+
+The Case:
+A 31-year-old gravida 1, para 1 woman presented at 40 weeks in the early stages of labor having received limited prenatal care at an outside clinic. Physical exam performed by the obstetrics resident was suggestive of placenta previa and an anesthesiologist was called to prepare for a cesarean section (C-section). The anesthesiologists were short-staffed and also covering the operating rooms on a different floor, but felt they could be available if needed emergently. Shortly afterward, fetal heart rate monitoring suggested fetal distress and the patient was transferred to the operating room for emergent C-section. The anesthesiologists were called again but were unavailable due to another operative emergency. After significant delay, the patient was ultimately anesthetized and underwent C-section. Unfortunately, the baby was delivered with profound neurologic abnormalities, including quadriplegia and cortical blindness.
+
+================================================================================
+
+Title: 40 of K
+
+The Case:
+An 81-year-old female maintained on warfarin for a history of chronic atrial fibrillation and mitral valve replacement developed asymptomatic runs of ventricular tachycardia while hospitalized. The unit nurse contacted the physician, who was engaged in a sterile procedure in the cardiac catheterization laboratory (cath lab) and gave a verbal order, which was relayed to the unit nurse via the procedure area nurse. Someone in the verbal order process said "40 of K." The unit nurse (whose past clinical experience was in neonatal intensive care) wrote the order as "Give 40 mg Vit K IV now."
+
+The hospital pharmacist contacted the physician concerning the high dose and the route and discovered that the intended order was "40 mEq of KCl po." The pharmacist wrote the clarification order. However, the unit nurse had already obtained vitamin K on override from the Pyxis MedStation® (an automated medication dispensing system) and administered the dose intravenously (IV). The nurse attempted to contact the physician but was told he was busy with procedures. A routine order to increase warfarin from 2.5 mg to 5 mg (based on an earlier INR) was written later in the day and interpreted by the evening shift nurse as the physician’s response to the medication event. The physician was not actually informed that the vitamin K had been administered until the next day. Heparin was initiated and warfarin was re-titrated to a therapeutic level. The patient’s INR was subtherapeutic for 3 days, but no untoward clinical consequences occurred.
+
+================================================================================
+
+Title: Urine a Tough Position
+
+The Case:
+A 22-year-old unmarried woman came to her doctor’s office worried that she might be pregnant. Although she did not want to have a baby at that time, she stated that she would carry the pregnancy to term if she were pregnant.
+
+The patient collected her own urine sample and placed it in the specimen cabinet, which opens into the laboratory. A urine specimen already placed in the cabinet by a different patient had not yet been labeled and processed by the lab technician. Five minutes later, the physician was informed that the pregnancy test was negative. The physician conveyed this result to the patient, much to her great relief.
+
+After the physician left the room, he was informed that the two specimens had likely been switched. The other urine sample belonged to a diabetic patient; the technologist suspected a mix-up after a urine dipstick on that sample indicated elevated glucose. Both patients were asked to resubmit urine samples; in fact, the patient was pregnant.
+
+The physician was placed in the awkward position of informing the patient that the samples had been switched, and appropriate sympathetic counseling was made more difficult.
+
+================================================================================
+
+Title: To LP or Not LP
+
+The Case:
+A 4-month-old male infant was seen in the office setting of a large multisite practice. He presented with fever and irritability without an obvious source. He was referred to the local pediatric emergency department for further evaluation. Parents were advised the reason for the referral was so that he could get a "blood test" performed.
+
+Because the clinic was busy, the provider was unable to call the emergency department (ED) physician in a timely manner. The parents presented to the ED and said they were there for a "blood test" and were referred to a local lab for further evaluation. At the lab, they were informed that the doctor had not called in any lab test orders. The lab asked the patient´s family to wait while the physician was called, but while waiting the infant became more obtunded and toxic. At that point, the parents decided to leave and go to another hospital ED for evaluation. Meanwhile, the original physician called the first ED for the lumbar puncture (LP) results. He was informed that the patient had been sent to the lab and was not seen in the ED. At the second ED, an LP was done after another physician evaluation, and the child was diagnosed with meningitis. Despite the several-hour delay, the child was treated with 10 days of medication and recovered fully.
+
+================================================================================
+
+Title: Charcoal Lavage of the Lungs
+
+The Case:
+A 47-year-old man presented to an emergency department (ED) with altered mental status, and was believed to have a probable overdose. He received endotracheal intubation, and, after he was stabilized, the ED staff planned to place a nasogastric (NG) tube to begin charcoal gastric lavage. A nurse passed the NG tube, and an attempt to aspirate gastric contents yielded no return. At that point, the nurse injected a 50-cc syringe full of air through the tube, and the intern reported that he heard a "woosh." Convinced that the NG tube was properly placed by its ease of passage, the confirmatory sound of the air over the stomach, and the presence of the endotracheal tube (with its inflated tracheal balloon), he gave the nurse the go-ahead to inject a slurry of activated charcoal in a sorbitol vehicle through the tube.
+
+Soon after the charcoal infusion, the patient began to cough and developed worsening oxygenation. A chest radiograph demonstrated a new infiltrate in the right mid-lung field just distal to the tip of the NG tube, which clearly was in the right mainstem bronchus. The tube was promptly removed. The patient was treated for aspiration pneumonitis (although the charcoal is relatively inert, the osmotic stress induced by the sorbitol is quite toxic to the lungs), but he developed multiple complications including progressive pneumonia and ultimately died.
+
+The case submitter reported that, in response to this incident, the hospital changed its protocol to require a confirmatory radiograph before anything is infused through a newly-placed NG tube.
+
+================================================================================
+
+Title: Lost in the Black Hole
+
+The Case:
+A 38-year-old married, monogamous female came to the emergency department with aseptic meningitis. She had a remote history of gonorrhea, no environmental exposures, and had not taken any non-steroidal anti-inflammatory or sulfonamide drugs. She was admitted to the hospital and cared for by a hospitalist, who suspected that the patient might have acute HIV and ordered a test for HIV quantitative PCR. The test result (positive, with a viral load of 32,000 copies/mL) came back more than 1 week after the patient was discharged, and the hospitalist noted it. However, the laboratory indicated that the batch was "defective" and the test needed to be rerun. The hospitalist never received the new report and, lacking a reminder system, forgot to follow up on the result. Neither the patient nor the primary care physician was notified that an HIV test was pending, so neither of them followed up on this test result. The error was first recognized 6 months later when the hospitalist stumbled upon the original test report while cleaning out a desk.
+
+In fact, the patient´s aseptic meningitis was her first manifestation of acute HIV seroconversion. Although it was unclear whether the delayed notification had adverse clinical consequences (the role of antiretroviral treatment during primary HIV infection is controversial), it caused the patient major emotional distress, delayed referral to an HIV specialist, and raised the possibility of unprotected intercourse during the 6 months during which she was seropositive but unaware of her diagnosis.
+
+================================================================================
+
+Title: Check the Bags
+
+The Case:
+A 50-year-old man with new atrial fibrillation was placed on a diltiazem drip in the emergency department for rate control. After arriving at the cardiac care unit (CCU), he was noted to be hypotensive and a saline bolus was ordered. The nurse asked a coworker to get her a bag of saline and went to check on another patient. When she returned to the first patient’s bedside, she noticed that an intravenous (IV) bag was already hanging from the IV pole, and thought that her coworker must have placed the saline bag there. Believing the patient required a rapid saline infusion, she opened the IV up, and the solution infused in rapidly. At that moment, her coworker arrived with the 500 cc saline bag, which caused the patient’s nurse to realize, in horror, that she had given the patient an IV bolus of more than 300 mg of diltiazem. The patient suffered severe bradycardia, which required temporary transvenous pacemaker placement and calcium infusion. Luckily, there was no permanent harm.
+
+================================================================================
+
+Title: Making Do
+
+The Case:
+A 56-year-old female with dysfunctional uterine bleeding and possible retained intrauterine device (IUD) was scheduled for elective hysteroscopy and dilation and curettage (D&C). Of note, she had recently completed a course of tetracycline for an asymptomatic infection withActinomyces israeliidiscovered on Pap smear.
+
+After the patient was in the operating room and prepared for the procedure, the team discovered that the equipment typically used for hysteroscopy was unavailable—the case had been listed only as a "D&C" on the operating room (OR) schedule, so the hysteroscopy set had not yet been sterilized after use earlier in the day. To avoid cancelling the procedure, the team borrowed sterile parts from various other hysteroscopy sets.
+
+During insufflation of the uterus, the patient suffered cardiac arrest presumably related to air embolus. The patient was successfully resuscitated. After an 8-day stay in the intensive care unit, the patient was discharged home with no permanent sequelae.
+
+Initially the team attributed the patient’s decompensation to air introduced from the "makeshift" hysteroscopy set, which may not have been a truly "closed" system. However, post-operatively, the patient developed fevers, and blood cultures grewActinomyces. The team then concluded that the event was more likely caused by intraoperative introduction ofActinomyces, due to incomplete eradication of this infection pre-operatively.
+
+================================================================================
+
+Title: Did We Forget Something?
+
+The Case:
+A 76-year-old-man underwent right aorto-iliac aneurysm repair. He developed postoperative fever, initially attributed to ventilator-associated pneumonia. However, the fever persisted and no definite source was identified. He received multiple courses of broad-spectrum antibiotics over a 2-month hospitalization.
+
+Several months after discharge, he presented to another institution with recurrent fever, neurologic deficits, and renal failure. He was diagnosed as having endocarditis withCandida albicanson the basis of echocardiography and blood culture results. Despite amphotericin and valve surgery, he died a few weeks after this admission.
+
+Autopsy revealed a surgical sponge in the abdomen around the previous aorto-iliac repair. An abdominal computed tomographic (CT) scan during the previous hospitalization had shown a metallic clip in the area of the graft, but no other abnormalities. The patient had not had any other surgeries.
+
+================================================================================
+
+Title: Shake Well
+
+The Case:
+A 35-year-old patient on the neurology service was receiving carbamazepine for a seizure disorder. Daily serum drug levels consistently fell below the therapeutic range, which led the physicians to gradually increase the doses. On the seventh day of hospitalization, the patient appeared drowsy, which progressed to stupor, unresponsiveness, and hypotension. For completeness, the evaluating physician added a serum drug level to the other lab tests and was surprised to find the carbamazepine level markedly elevated, in the toxic range.
+
+The cause of the toxic carbamazepine level was assumed to have been an iatrogenic overdose the day of the patent’s deterioration, so a medication error report was filed. When the pharmacist began investigating the report, she noted that the brand of carbamazepine suspension had recently been changed to a generic formulation that tended to settle out of suspension significantly faster than the original manufacturer’s suspension.
+
+After satisfying herself that a dosing error had not occurred on the day of the patient’s deterioration, the pharmacist inferred that failure to shake the bottle prior to administration resulted in the initial doses being very dilute. As the others used the multi-dose suspension bottle, the remaining solution became increasingly concentrated, resulting in a toxic dose.
+
+Because the healthcare organization had switched carbamazepine formulations at all its member hospitals, a Continuous Quality Improvement (CQI) process was initiated, which identified a similar medication error at another location. In the second case, a pharmacy technician failed to shake thoroughly a bottle of carbamazepine suspension prior to pouring it into a plastic bottle for dispensing. The nature of the second error was discovered after a sample of the remaining suspension was sent to an independent lab for analysis and found to be highly concentrated.
+
+================================================================================
+
+Title: A Little Shuteye
+
+The Case:
+A 3-year-old boy was seen in urgent care for a superficial laceration above the left eyebrow. The pediatrician had heard of the availability of topical skin adhesive that can be used in place of sutures to close wounds (trade name DERMABOND). This was the physician’s first experience using this agent, and there had been no training on its proper use in the department. The wound was close to the eye, the child squirmed during the application, and no eye protection was used during the procedure. After the procedure, the physician realized that the child could no longer open his eye, which had been partially sealed shut. An ophthalmologist evaluated the child the next day, and fortunately, there was no permanent injury.
+
+================================================================================
+
+Title: Feeling No Pain
+
+The Case:
+A 33-year-old female underwent hysterectomy for refractory endometriosis. For pain post-operatively, the patient was placed on a Patient-Controlled Analgesia (PCA) pump containing morphine sulfate. Three hours after her transfer to a gynecology floor, the patient began complaining of severe frontal headache, nausea, and vomiting. Nurses attributed these symptoms to post-operative pain and the effects of the morphine. The PCA pump was continued, despite her continued complaints of headache and relatively mild incisional discomfort. The patient became progressively drowsier and her respiratory status declined. Luckily, the pulse oximeter alarm was activated when her oxygen saturation fell, and the PCA pump was discontinued. At the time of the discontinuation, the patient's O2 saturation level was 76%. At that point, clinicians realized that she was actually suffering from an adverse reaction to morphine. Further investigation of the patient's prior medical history revealed similar complaints with prior administration of meperidine hydrochloride (Demerol), but these had not been noticed in her chart, elicited on pre-operative history, nor flagged as an adverse reaction or “allergy.”
+
+================================================================================
+
+Title: Check the Wristband
+
+The Case:
+The patient was a 28-year-old female awaiting ambulatory surgery. She was very anxious about the impending surgery. The patient spoke English and appeared to be of average intelligence.
+
+In this institution, standard practice was that ambulatory surgery patients walked to the operating suite accompanied by a Registered Nurse (RN). The case was reported to AHRQ WebM&M by this circulating nurse, who noted,“I went to the surgical day care unit to meet my next patient. I picked up the chart that was next to this patient. The chart was correct for my next patient. I verbally stated the patient's name and this woman confirmed her name. She also confirmed other information, including the [type of] surgery.”
+
+In retrospect, the nurse realized that she herself had supplied much of the critical information for patient identification, rather than asking the patient open-ended questions and insisting that the patient provide correct identifying information. And yet, the patient affirmed all the nurse’s queries. Upon reflection, the nurse realized,“This patient was so anxious she was not actually hearing much of anything I said to her. She continued to agree and confirm whatever I said to her. The error on my part was that I stated her name, and did not check her wristband.”
+
+At the end of the identification procedure, the nurse walked the patient to the operating room (OR) suite and had her positioned on the OR table. The certified nurse anesthetist checked the patient's wristband and alerted the nurse to her error—the chart the RN had picked up was not that of the correct patient but had inadvertently been left next to her. The nurse noted,“I was shocked. I apologized, explained she was in the wrong room, and asked that she return to the waiting area. I had to take the patient off the OR table and return her to the surgical day care unit.”
+
+Luckily, the error was caught and the patient was not harmed. As the nurse recalled,“I learned a serious lesson, which I certainly had been taught in nursing school, which is to always check the wristband. I don't know just how far this mistake would have gone, because the patient is frequently asleep when the surgeon enters the suite. I now reinforce the importance of always checking the wristband whenever I have an opportunity to with my colleagues.”
+
+================================================================================
+
+Title: Bleeding Risk
+
+The Case:
+A frail 78-year-old woman fell at home and fractured her left hip. Her past medical history included atrial fibrillation, hypertension, coronary artery disease, and stroke. The surgical repair and post-operative course were uneventful. The patient was discharged to a skilled nursing facility (SNF) for physical therapy on low-molecular-weight heparin, with a plan to initiate warfarin once it became clear that that she was not at high risk for falls.
+
+Two weeks into her admission at the SNF, the patient’s physician began warfarin therapy at 5 mg daily. An INR level taken 3 days later was 1.5. Heparin was discontinued and warfarin was increased to 6 mg daily. An INR level was not ordered to be drawn for 7 days, at which time it was at a critical level of 20 (therapeutic range 2-3). The physician discontinued warfarin, but no other therapy was administered to reverse the anticoagulant effect. A repeat INR 3 days later was 12. A one time order for 10 mg of Vitamin K intramuscularly (IM) was administered. A repeat INR was ordered 2 days later, at which time it was 4.4—elevated but no longer critical. Two days after that, the INR was subtherapeutic at 1.4. At that point, the physician reinitiated warfarin at the original dosage of 5 mg daily. The INR did not become therapeutic for another 12 days, presumably because of the Vitamin K effect.
+
+================================================================================
+
+Title: The Dangerous Detour
+
+The Case:
+Following an overdose of alcohol and Ativan, a 26-year-old woman was admitted to the Medicine service for observation after being placed on a 72-hour hold by Psychiatry. Per hospital policy, a 24-hour sitter was placed with the patient.
+
+The patient was to be accompanied to Radiology for a chest film and asked to go to the bathroom first. The transport and sitter were in the room when the nurse left the room to get the chart, which would go down with the patient. The sitter and transporter began to chat. The nurse returned and became concerned that the patient was still in the bathroom. She opened the bathroom door to find the patient with her gown tied around her neck and the door hinge. The patient was standing on the upside-down garbage can and was seconds from stepping off and hanging herself. The patient was unharmed; she was stopped in time.
+
+================================================================================
+
+Title: XL or Smaller?
+
+The Case:
+With a history of hypertension and chronic renal failure secondary to hemolytic uremia syndrome at age 3, a 14-year-old boy presented to the emergency department with dehydration secondary to gastroenteritis. Though his gastroenteritis had resolved, he was admitted due to worsening renal function and out-of-control hypertension.
+
+The intern admitting the patient spoke with the renal fellow to ask for advice concerning the hypertension, which now measured 160/95. The renal fellow recommended giving the patient Procardia® (nifedipine) 30 mg by mouth. The intern wrote an order for the medication. Approximately 45 minutes later, the nurse paged to inform the intern that the medication had been given and inquire how often the blood pressure should be checked. The intern’s senior resident happened to be present. As the scenario was discussed, the senior realized that 30 mg of Procardia, not Procardia XL® (extended-release nifedipine), had been given. The nurse was asked to check the blood pressure every 3 minutes, and the residents immediately went to see the patient.
+
+Within 5 minutes, the patient’s blood pressure had decreased to 110/60. IV fluids were started and the renal fellow was contacted. Glucagon was brought up to the bedside but did not need to be administered, as the patient’s blood pressure did not drop below 100/50 and he remained asymptomatic while supine.
+
+Upon further discussion between the fellow, intern, nurse, and pharmacist, several points emerged. When renal specialists refer to the extended-release drug Procardia XL, it is often called Procardia 30 mg, to differentiate it from Procardia 5 mg, the instant-release formulation used in hypertensive crisis. The pediatric intern had minimal experience dealing with hypertensive medications, and did not recognize the difference when the fellow recommended Procardia 30 mg. The nurse had consulted a drug reference and had seen that Procardia was typically given as 5 mg, but that a 30 mg dose was available. She then discussed the order with the pharmacist. The pharmacist had seen that the medication was written as Procardia, and not as Procardia XL. However, after talking with the nurse, who confirmed the patient had significant hypertension currently refractory to his normal hypertensive medications, he concluded that Procardia was indeed the desired medication.
+
+================================================================================
+
+Title: Not a Miscarriage
+
+The Case:
+A 32-year-old woman, gravida 3, para 1, with a history of Type 2 diabetes mellitus on metformin, presented at 7 and 2/7 weeks by last menstrual period (LMP). The patient reported a history of a primary low transverse cesarean section and a bicornuate uterus. Formal ultrasound revealed an intrauterine gestational sac, with no embryo, and a bicornuate uterus. Beta hCG was 1009 mIU/ml. Hgb A1C was 9.4 g/dL. Her metformin was discontinued and insulin was started.
+
+She was scheduled for a repeat scan approximately 48 hours later, when her hCG would be expected to be over 2000 mIU/ml. At that time, she was spotting, and instead presented to the gynecology clinic. She was seen by an intern who presented the case to an attending and mentioned that the patient had already been found to have an intrauterine pregnancy (IUP) on formal sonogram, but failed to mention her history of a bicornuate uterus. They performed a transvaginal ultrasound, found an empty uterus with a thin stripe, and diagnosed the patient as having a completed spontaneous abortion. At that time, they restarted her metformin.
+
+Several weeks later, the patient went to the family planning clinic for follow-up on a Friday afternoon, at which time a urine pregnancy test was positive. An hCG was checked and found to be 40,000 mIU/ml. She was given a lab slip to return on Monday (before the results were back), as it was unclear whether the urine pregnancy test was positive from an ongoing pregnancy or if she was pregnant again. Her hCG increased, and she was again seen in the gynecology clinic that day, where an ultrasound confirmed a 13 and 3/7 week IUP in the right uterine horn. The patient was then admitted for insulin therapy.
+
+================================================================================
+
+Title: Inappropriate Antibiotic Use
+
+The Case:
+A 41-year-old woman presented to the hospital with acute renal failure, which came to be diagnosed as a first presentation of systemic lupus erythematosus (SLE). During the hospitalization, she developed additional complications of SLE including cerebritis, hemolytic anemia, and thrombocytopenia.
+
+After 2 weeks in the hospital, the patient was given vancomycin and piperacillin/tazobactam for altered mental status and leukocytosis of 19,000. A few days later, antibiotics were changed to vancomycin and levofloxacin for persistent leukocytosis and low-grade fevers. Multiple cultures from urine, blood, and sputum yielded no organisms, but the patient was kept on antibiotics due to fevers. Although no clear source of infection was identified, antibiotics were continued for 3 weeks, at which point her fevers spiked to 38.5°C. At that time, a single blood culture grew vancomycin-resistantEnterococcus faecium(VRE), as did a central line catheter tip. Furthermore, urine cultures grew more than 100,000 colonies ofCandida glabrata.
+
+The patient received a consultation from an infectious disease (ID) specialist, who recommended that all antibiotics be discontinued. Within 24 hours, the patient defervesced. She remained hemodynamically stable and underwent further treatment for her SLE.
+
+Additional information: Although the ID consultants would have preferred to treat the VRE with linezolid, the patient’s severe thrombocytopenia and anemia prohibited its use. Thus, she was given doxycycline, a second-line agent for this organism, and had her central venous catheter discontinued. A repeat blood culture grew VRE, which necessitated removal and re-placement of yet another central venous catheter. In an attempt to clear colonization ofC glabrata, multiple Foley catheters were changed, and the organism eventually was eliminated. Initiating immunosuppressive treatment for the patient’s SLE had to await eradication of the resistant organisms.
+
+================================================================================
+
+Title: Suicidal Man With Gun
+
+The Case:
+The patient is a 36-year-old man who came to a psychiatry clinic for outpatient evaluation of severe depression that had persisted for nearly 2 years. On initial interview, the patient reported chronic thoughts of suicide, stating “If I had a good way [to kill myself], I’d have done it already.” On screening for suicide risk factors, the patient admitted to possessing a handgun. He denied active plans for suicide, including using the gun, because “A friend or family member would have to clean up the mess.”
+
+The attending physician and resident performing the evaluation assessed the patient as at chronic risk for suicide, but not acute risk, and noted that prompt removal of gun from the patient’s possession was paramount to his safety. Both also agreed that building a treatment alliance would be a critical factor in accomplishing that goal. For the patient’s depression, the treatment plan included starting an antidepressant (citalopram) as well as psychotherapy.
+
+The patient resisted plans to remove the handgun and refused multiple disposition plans proposed by the resident and the resident’s supervisor (who was not the evaluating attending physician during the initial assessment). Suicidal ideation continued and, as time passed in treatment, the supervisor viewed him as a significantly higher risk to complete suicide than the resident did. Discussions with other faculty and the clinic’s risk manager ensued in an effort to delineate the resident’s legal options to remove the gun from the patient’s possession. Unfortunately, they were not able to develop a clear pathway to removing the handgun. The resident felt that forcing the issue legally would cause the patient to feel abandoned and unsafe, with a strong possibility of either suicide or termination of treatment (with concomitant increased risk of suicide). The supervisor felt that the institution’s primary responsibility was to keep the patient safe, and the longer it took to remove the gun, the more at risk the patient was for an adverse outcome. Both resident and supervisor agreed that prior to exploring any emotionally sensitive issues in treatment, the gun had to be removed.
+
+The gun was eventually removed from the patient’s residence, but it required nearly 3 months to achieve this goal. Though no harm occurred, this case was a “near miss,” given the prolonged exposure of a potentially suicidal patient to such an obvious hazard.
+
+================================================================================
+
+Title: Ectopic or Not?
+
+The Case:
+The patient is a 24-year-old woman, gravida 4, para 1, ectopic 1, at 6 weeks from her last menstrual period. She presents to the emergency department with a 3-day history of vaginal spotting and dull left lower quadrant pain. Her history is remarkable for pelvic inflammatory disease at the age of 22 followed by an ectopic pregnancy requiring right salpingostomy one year later. She is sexually active with one male partner and uses condoms inconsistently.
+
+Examination shows normal vital signs, a benign abdominal exam, and a pelvic exam showing scant blood in the vagina, a closed os, a slightly enlarged uterus, and a minimally enlarged and mildly tender left adnexa. Rectal examination confirms these findings. Her hematocrit is 36%, hCG 12,206 mIU/ml, and her blood type is A positive. An ultrasound showed a thickened endometrial stripe but no fluid collection or gestational sac, and a 2-cm left adnexal cystic structure distinct from the left ovary with no fetal pole identified.
+
+With the diagnosis of repeat ectopic pregnancy, the patient was given methotrexate 50 mg/m2IM and discharged home with precautions to return for increased pain, bleeding, or signs of hypovolemia. She returned 4 days later to the emergency department for worsening pain. Her follow-up hCG was 13,000 mIU/ml. The on-call gynecology team reviewed her work-up and decided to perform a uterine aspiration, which yielded copious tissue but no apparent villi. The patient was then offered surgical management of her ectopic pregnancy. Laparoscopy revealed a 3 x 4 cm left ampullary ectopic and 300 cc hemoperitoneum. The contralateral tube appeared normal and a left salpingectomy was performed. The patient was discharged home the next day and her hCG showed an appropriate decline.
+
+================================================================================
+
+Title: Bloody BP Cuff
+
+The Case:
+Patient #1, a 28-year-old male, was a trauma patient following a motor vehicle collision into a cement pillar. Patient #1 was in the trauma bay with massive injuries and profuse bleeding. The blood pressure cuff (which was partly fabric and partly nylon) was saturated with so much blood that it could be wrung out. Patient #1 was taken to surgery where he coded and died about an hour later.
+
+Patient #2, a 24-year-old female, was also in a motor vehicle collision and had cuts over her upper body from glass shattered in the crash. Patient #2 was placed into the same trauma bay vacated by patient #1. The same blood-saturated cuff was placed onto her arm, with no regard for universal precautions.
+
+A nurse noted that the same bloody cuff was used from patient to patient. This observation was received by other staff members with a shoulder shrug. Several weeks later, a letter from the medical examiner revealed that Patient #1 was HIV and Hepatitis B Virus (HBV) positive and that the collision was a suicide.
+
+================================================================================
+
+Title: The Dropped Lung
+
+The Case:
+A 79-year-old woman was admitted for hypoxia and shortness of breath. Two weeks prior she had been hospitalized for dyspnea and was found to have multiple bilateral pulmonary nodules on chest x-ray and a small left-sided pleural effusion felt to be consistent with widely metastatic cancer. The patient refused a work-up and was discharged to a skilled nursing facility (SNF). Increasing dyspnea and oxygen desaturations at the SNF prompted her return to the hospital. In the Emergency Department, the patient was moderately dyspneic with a respiratory rate of 25 and an oxygen saturation of 85% on room air and 97% on 6-Liter nasal canula. Chest x-ray again demonstrated nodules on the right side, but her entire left lung field was now completely “whited out.”
+
+The residents caring for the patient interpreted the white-out as a large pleural effusion, and diagnostic thoracentesis was attempted with return of only 25 cc of yellow fluid. A repeat chest X-ray showed a small lucency at the apex, which they interpreted as improved aeration after removal of fluid. On hospital day two, the initial chest x-ray was read out by the radiologists as left lung collapse (not effusion) with mild leftward deviation of the trachea. The post-procedure film was interpreted as persistent collapse, now accompanied by a small apical pneumothorax.
+
+The patient’s pneumothorax ultimately resolved with conservative treatment, and she received palliative care for her cancer.
+
+================================================================================
+
+Title: The 2-Week Itch
+
+The Case:
+A 40-year-old woman with bipolar disorder (on trazodone) came to her primary care physician with new urticaria. She received a handwritten prescription for Zyrtec and Atarax.
+
+The handwriting on the prescription was not unduly messy, but the pharmacist dispensed Zyprexa instead of Zyrtec.
+
+At the follow-up visit for her urticaria 2 weeks later, the physician asked if patient was taking her medications as directed because the symptoms hadn’t improved. She was specifically asked about the Zyrtec, at which point patient stated that she was not taking Zyrtec, but was taking a different medication—Zyprexa. As was her habit, the patient had brought all of her pills to the visit, so when the provider asked to see them, the error was immediately recognized.
+
+The patient took the medication for about 2 weeks, with no adverse sequelae. Antipsychotic treatment lowers the seizure threshold and could have increased the severity and/or frequency of epileptic episodes, but this was not observed in this patient.
+
+================================================================================
+
+Title: Medication Overdose
+
+The Case:
+A 15-year-old boy with end-stage AIDS was admitted to the pediatric ICU with mental status changes. He was diagnosed with status epilepticus and started on a loading dose of IV phenytoin.
+
+In the step-down unit, the resident wrote an order for a maintenance dose of phenytoin. The order was written as mg/kg/d without specification that ’d’ meant day vs. dose. As a result, the patient received approximately three times the indicated dose. Later that day, a pharmacist called to alert the resident to his mistake. The subsequent phenytoin level was 98 (therapeutic range 10-20).
+
+Administration of phenytoin was held until the level was therapeutic, and the patient’s mental status gradually improved. He had no further seizure activity and ultimately his mental status returned to baseline. He was discharged back to a chronic care facility.
+
+================================================================================
+
+Title: Premature or Overdue?
+
+The Case:
+A 32-year-old woman, gravida 3, para 1, presented for prenatal care at 24 weeks. Her past medical history was unremarkable, and results of her prenatal laboratory tests were normal. On physical examination, she was moderately obese and had a fundal height of 24 cm. Fetal heart tones were about 130 per minute. Routine prenatal care was planned.
+
+The patient missed several ultrasound appointments, but did have several additional prenatal physical examinations that indicated normal growth in fundal height, up to a 41-week size. The physicians recommended that the patient begin post-dates surveillance with twice weekly NST/AFI (Non Stress Test/Amniotic Fluid Index) at 41 weeks, but she missed her first appointment. At 42 weeks, she was admitted for post-dates labor induction using misoprostol and oxytocin. Twelve hours into the induction, examination showed 3 cm cervical dilatation. The patient’s care was handed off to the next day’s labor and delivery team. The team was concerned that the patient had poor dating criteria for post-dates induction and decided to perform an ultrasound examination. The exam showed normal placenta and fluid, and a cephalic singleton with symmetric measurements and estimated fetal weight of 2200 gm, consistent with an estimated gestational age 33 +/- 3 weeks.
+
+The team stopped the induction at this point and observed the patient until her contractions subsided. The next day her cervical examination had regressed to 1 cm dilatation. The team planned to offer amniocentesis or continued twice weekly testing for 3 weeks with follow-up ultrasound for serial growth if undelivered in 3 weeks.
+
+Given the patient’s late entry to care and difficulty keeping ultrasound appointments, the physicians were concerned that she might not return twice weekly for fetal surveillance. An amniocentesis showing fetal lung maturity would permit induction of labor without the risks of loss to follow-up for a possible post-dates or growth-restricted pregnancy. The patient complied with fetal surveillance and delivered a healthy baby boy 3 weeks later.
+
+================================================================================
+
+Title: Which End Is Which?
+
+The Case:
+A 39-year-old woman with chronic peri-anal fistulas and infected anal sinuses underwent laparoscopic diverting colostomy to divert her fecal stream and allow the perineum and anal lesions to heal. During the surgery, pneumoperitoneum was established and the “floppy descending” colon was identified, mobilized, and divided. The “proximal” end was brought up to skin and sutured, and the distal end was stapled closed.
+
+After 9 days, the failure of gas or stool to appear in the colostomy bag prompted an abdominal CT scan, which demonstrated large bowel obstruction. On return to the OR for laparotomy, it became apparent that the diversion had involved the transverse colon rather than the descending colon. In addition, the distal portion of the bowel had been brought up to the skin as the colostomy, while the proximal end had been stapled shut. This produced a complete bowel obstruction. Surgeons corrected the orientation and performed a new colostomy. After the second operation, the patient’s perianal fistulae and infected anal sinuses improved as initially intended.
+
+================================================================================
+
+Title: When "Psychiatric" Symptoms Are Not
+
+The Case:
+A 70-year-old man without documented past psychiatric history was placed on an involuntary hold as a danger to others and for grave disability because of his belief that his neighbors were shocking him with low-voltage electricity.
+
+The patient had been seen for many years through a local HMO and his records indicated no psychiatric or medical disorders other than a remote GI bleed. A friend of the patient’s reported the patient had believed for the past 5 to 7 years that the “shockers” had been after him. In the 2 weeks prior to hospitalization, the patient reported they had somehow “upped the current.”
+
+At a local ER, the patient had normal labs and physical examination, with a confirming non-focal neurologic exam on admission to the psychiatric inpatient unit. The patient used a walker for ambulation “because of pain.” He was diagnosed as Psychosis NOS (not otherwise specified) with a note in the plan to defer starting anti-psychotic medications and rule out medical etiologies for his acute symptoms.
+
+The treating team began low dose haloperidol. On the first day of hospitalization, the patient complained that he couldn’t move because he was shocked by something in his room. Although he felt paralyzed, he was able to lift both legs off the bed and move his toes. On day 2, he was incontinent of urine. He was placed on an extended involuntary hold on day 3. By day 4, he reported continued difficulty moving, continued incontinence of urine, decreased sensation below the waist, and constipation.
+
+Neurology was then consulted. They found his history and findings on exam to be concerning for spinal cord pathology of advanced severity. They ordered an MRI of the spine, which demonstrated an infiltrating mass between T8 and T10 with well-preserved disc space, thought most likely to be either lymphoma or metastasis. Brain metastases were also present.
+
+The patient was transferred to the inpatient medical unit for CT-guided biopsy and other indicated procedures.
+
+The consensus was that the patient’s prognosis was not affected by the several-day delay. His neurological status improved after radiation treatment for his cord compression, but the mistake could have resulted in permanent loss of neurological function.
+
+================================================================================
+
+Title: Flying Object Hits MRI
+
+The Case:
+A child was brought to the Magnetic Resonance Imaging (MRI) room for a brain scan. Accompanied by an anesthesiologist, the child was receiving sedation for the MRI via an infusion pump with a long IV tube. The anesthesiologist was aware that the pump needed to be kept away from the magnet. The pump was placed 10 to 15 feet away from the MRI magnet on top of a garbage can, as is the practice at the hospital—no bracket is used to secure the pump.
+
+When the scan was completed and the patient was to be wheeled out from inside the scanner, the anesthesiologist brought the pump to the foot of the bed to secure it to a bracket there. However, the child made an unusual noise, which caused the anesthesiologist to turn around suddenly. As he did so, the pump flew out of his hand and hit the magnet, which is always on. The impact damaged the pump, but the child was unharmed.
+
+Root Cause Analysis later revealed the following background information: Metal items are kept outside of the MRI room, but an exception is made for infusion pumps, which are allowed inside the room at a safe distance from the MRI magnet. However, at this hospital, no bracket is used to secure the pump, and no markings are present on the floor or elsewhere to indicate what is considered a safe distance. Following this event, the hospital has committed to purchasing MRI-safe pumps and installing brackets in MRI rooms to secure the pumps. Additional staff education and posted warnings have also been put in place. Other solutions such as using metal detectors and double-checking people before they enter the MRI room are also being considered.
+
+================================================================================
+
+Title: Procedural Mishap: Learning Curve?
+
+The Case:
+A 28-year-old multiparous obese female presented for laparoscopic tubal ligation. The patient had undesired fertility and was sure of her decision for permanent sterilization. She consented to a laparoscopy.
+
+During the procedure, poor visualization and inadequate gas expansion led the team to believe that they had not yet entered the peritoneal cavity. Replacement of the trocar and laparoscope were performed. The anesthesiologist then noted a rapid decrease in the patient’s blood pressure and increasing tachycardia, indicating a possible vascular injury. Conversion to open laparotomy revealed bleeding due to a laceration of the right common iliac artery. Pressure was applied and vascular surgery was consulted. End-to-end anastomosis of the artery was successfully performed, followed by the planned bilateral tubal ligation. The patient had an uncomplicated postoperative course. Serial Dopplers of distal arterial pulses were normal, and the patient was discharged home in stable condition.
+
+The main operator was a trainee, supervised by a senior attending. The trainee was relatively inexperienced in the procedure. The patient was obese, which added somewhat to the complexity, but nevertheless the procedure was considered routine and the complication unexpected.
+
+================================================================================
+
+Title: Patient Mix-Up
+
+The Case:
+Joe Smith [not his real name], a 42-year-old man with nausea and vomiting for 4 days, was on the general medical service at an academic medical center. Overnight, another man with the last name Smith (Raymond Smith [not his real name]) was admitted to the same room. Usually, this coincidence would have been prevented, but the hospital had a bed shortage. Moreover, the admission occurred at 6:30AM, around the time the nursing shift changed, so that the outgoing staff did not notice that this patient was being placed in a room with another Mr. Smith.
+
+Raymond Smith is a 60-year-old man admitted for treatment of alcohol withdrawal. He was scheduled to receive a dose of IV haloperidol at 7AM. The nurse retrieved the pre-filled syringe from the correct Mr. Smith's medication drawer, but confused the two patients when she entered the room. She was about to administer the haloperidol to the wrong Mr. Smith, but the medical student caring for him was pre-rounding and asked the nurse what medication Joe Smith was about to receive. When the student informed the nurse that the team had not ordered any haloperidol for this patient, they checked the medication administration record (MAR) together and recognized the error. The haloperidol was given to the right Mr. Smith, and one Mr. Smith was moved to another room, to reduce the chance of another such error.
+
+================================================================================
+
