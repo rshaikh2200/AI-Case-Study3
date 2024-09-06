@@ -1,4 +1,5 @@
-import { BedrockClient, RetrieveAndGenerateCommand } from '@aws-sdk/client-bedrock'; // Import the client and command together
+import { BedrockClient } from '@aws-sdk/client-bedrock';
+import { RetrieveAndGenerateCommand } from '@aws-sdk/client-bedrock'; // Importing the command
 import { NextResponse } from 'next/server';
 
 const bedrockClient = new BedrockClient({ region: 'us-east-1' });
@@ -58,7 +59,7 @@ export async function POST(req) {
       },
     };
 
-    // Use the correct constructor for the RetrieveAndGenerateCommand
+    // Ensure RetrieveAndGenerateCommand is correctly constructed
     const command = new RetrieveAndGenerateCommand(input);
     const response = await bedrockClient.send(command);
 
