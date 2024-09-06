@@ -1,3 +1,5 @@
+"use client";
+
 // pages/index.js (or pages/page.js depending on your Next.js structure)
 import React, { useState } from 'react';
 
