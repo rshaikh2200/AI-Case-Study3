@@ -18,14 +18,13 @@ Return in the following JSON format:
 }
 `;
 
-const message = 'Generate 10 case studies and 1 question for each';
-
 export async function POST(req) {
   try {
-    console.log(`Manual message: ${message}`);
+    const body = await req.json();
+    const { message } = body;
 
     const input = {
-      input: { text: message },
+      input: { text: message || systemPrompt },
       retrieveAndGenerateConfiguration: {
         type: 'KNOWLEDGE_BASE',
         knowledgeBaseConfiguration: {
@@ -39,8 +38,7 @@ export async function POST(req) {
           },
           generationConfiguration: {
             promptTemplate: {
-              textPromptTemplate:
-                "You are a helpful AI assistant for Crescent Technology. This is data you're given about Crescent: $search_results$. Be concise and keep the message close to 20 words.",
+              textPromptTemplate: systemPrompt, // Using the system prompt defined earlier
             },
             inferenceConfig: {
               textInferenceConfig: {
@@ -59,12 +57,12 @@ export async function POST(req) {
       },
     };
 
-    // Ensure RetrieveAndGenerateCommand is correctly constructed
+    // Construct the command correctly
     const command = new RetrieveAndGenerateCommand(input);
     const response = await bedrockClient.send(command);
 
-    const responseText = response.output?.text ?? 'No response from model';
-    const citations = response.citations ?? [];
+    const responseText = response?.output?.text ?? 'No response from model';
+    const citations = response?.citations ?? [];
 
     return new NextResponse(JSON.stringify({ response: responseText, citations }), {
       status: 200,
