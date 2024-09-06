@@ -69,7 +69,7 @@ export async function POST(req) {
             }
           },
           knowledgeBaseId: '8JNS4T4ALI', // Replace with your actual Knowledge Base ID
-          modelArn: 'anthropic.claude-3-haiku-20240307-v1:0', // Replace with your model ARN
+          modelArn: 'anthropic.claude-3-5-sonnet-20240620-v1:0', // Replace with your model ARN
           orchestrationConfiguration: { 
             queryTransformationConfiguration: { 
               type: 'QUERY_DECOMPOSITION'
