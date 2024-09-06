@@ -19,23 +19,20 @@ Return the output in the following JSON format:
     ]
 }`;
 
-export async function POST(req) {
+// Test function using static values
+export async function POST() {
     const client = new BedrockAgentRuntimeClient({
         region: "us-east-1",
-        credentials: fromEnv(),  // Ensure credentials are passed
+        credentials: fromEnv(),  // Ensure this is set properly
     });
 
+    // Static values for testing
+    const role = "Doctor";
+    const specialty = "Cardiology";
+    const department = "Cardiology Department";
+
     try {
-        const body = await req.json();
-        const { role, specialty, department } = body;
-
-        if (!role || !specialty || !department) {
-            return new Response(JSON.stringify({ error: "Role, specialty, and department are required" }), {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' },
-            });
-        }
-
+        // Define the input for the RetrieveAndGenerateCommand
         const input = {
             input: { text: `Role: ${role}, Specialty: ${specialty}, Department: ${department}` },
             retrieveAndGenerateConfiguration: {
@@ -70,10 +67,16 @@ export async function POST(req) {
             }
         };
 
+        // Create the command
         const command = new RetrieveAndGenerateCommand(input);
+        
+        console.log("Sending request to Bedrock...");
         const response = await client.send(command);
 
+        console.log("Bedrock response:", response);
+
         if (!response.output?.text) {
+            console.error("No output text from Bedrock model");
             throw new Error('No response from Bedrock model');
         }
 
@@ -85,7 +88,7 @@ export async function POST(req) {
         });
 
     } catch (error) {
-        console.error("Error during Bedrock request:", error);  // Improved logging
+        console.error("Error during Bedrock request:", error);  // Detailed error logging
         return new Response(JSON.stringify({ error: "An internal server error occurred." }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
