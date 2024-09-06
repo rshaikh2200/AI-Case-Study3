@@ -1,4 +1,4 @@
-import { BedrockClient } from '@aws-sdk/client-bedrock'; // Correct import
+import { BedrockClient, InvokeModelCommand } from '@aws-sdk/client-bedrock'; // Correct import
 import { NextResponse } from 'next/server';
 
 const bedrockClient = new BedrockClient({ region: 'us-east-1' });
@@ -23,70 +23,24 @@ export async function POST(req) {
     const { message } = body;
 
     const input = {
-      input: { 
-        text: message || systemPrompt 
-      },
-      retrieveAndGenerateConfiguration: { 
-        externalSourcesConfiguration: { 
-          generationConfiguration: { 
-           
-            inferenceConfig: { 
-              textInferenceConfig: { 
-                maxTokens: 512,
-                stopSequences: [ "." ],
-                temperature: 0.7,
-                topP: 0.9
-              }
-            },
-            promptTemplate: { 
-              textPromptTemplate: systemPrompt
-            }
-          },
-          modelArn: 'anthropic.claude-3-5-sonnet-20240620-v1:0', // Replace with your model ARN
-          sources: [ 
-            { 
-              sourceType: "S3",
-              s3Location: { 
-                uri: "s3://casestudyai"
-              }
-            }
-          ]
-        },
-        knowledgeBaseConfiguration: { 
-          generationConfiguration: { 
-            },
-        
-            inferenceConfig: { 
-              textInferenceConfig: { 
-                maxTokens: 512,
-                stopSequences: [ "." ],
-                temperature: 0.7,
-                topP: 0.9
-              }
-            },
-            promptTemplate: { 
-              textPromptTemplate: systemPrompt
-            }
-          },
+      modelId: 'anthropic.claude-3-5-sonnet-20240620-v1:0', // Replace with the correct model ID
+      contentType: 'application/json',
+      body: JSON.stringify({
+        input: message || systemPrompt,
+        configuration: {
           knowledgeBaseId: '8JNS4T4ALI', // Replace with your actual Knowledge Base ID
-          modelArn: 'anthropic.claude-3-5-sonnet-20240620-v1:0', // Replace with your model ARN
-          orchestrationConfiguration: { 
-            queryTransformationConfiguration: { 
-              type: 'QUERY_DECOMPOSITION'
-            }
-          },
-          retrievalConfiguration: { 
-            vectorSearchConfiguration: { 
+          retrievalConfig: {
+            vectorSearchConfig: {
               numberOfResults: 5,
-              overrideSearchType: 'SEMANTIC'
-            }
-          }
+              searchType: 'SEMANTIC',
+            },
+          },
         },
-        type: 'KNOWLEDGE_BASE'
-      }
-    
+      }),
+    };
 
-    const command = new InvokeModelCommand(input); // Ensure correct API call
+    // Use the correct command: InvokeModelCommand
+    const command = new InvokeModelCommand(input);
     const response = await bedrockClient.send(command);
 
     const responseText = response?.body?.toString() ?? 'No response from model';
