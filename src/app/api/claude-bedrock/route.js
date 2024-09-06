@@ -1,88 +1,56 @@
-import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/client-bedrock-agent-runtime";
-import { fromEnv } from "@aws-sdk/credential-providers";
+import { BedrockClient } from '@aws-sdk/client-bedrock';
+import { NextResponse } from 'next/server';
 
-const systemPrompt = `You are an AI tasked with providing summarized case studies based on the user's input. 
-Your task is as follows:
-1. Summarize 10 case studies, each in about 100 words, based on the user's role, specialty, and department.
-2. After each case study, generate 3 relevant and thought-provoking questions based on the core principles of the case study.
-3. Ensure the summaries and questions are clear and concise, and tailored to the user's specific role and specialty.
+const bedrockClient = new BedrockClient();
 
-Return the output in the following JSON format:
+const systemPrompt = `You are tasked with generating 10 summarized case studies along with 1 question per case study. Each case study should be relevant to the user's department, role, and specialty. The structure should be:
+1. Summarize each case study with key points.
+2. Generate 1 relevant question for each case study.
+Return in the following JSON format:
 {
-    "caseStudies": [
-        {
-            "summary": str,
-            "questions": [
-                str, str, str
-            ]
-        }
-    ]
-}`;
+  "caseStudies": [
+    {
+      "caseStudy": str,
+      "question": str
+    }
+  ]
+}
+`;
 
 export async function POST(req) {
-    const { role, specialty, department } = await req.json(); // Get user input from the request body
+    const data = await req.text();
 
-    const client = new BedrockAgentRuntimeClient({
-        region: "us-east-1",
-        credentials: fromEnv(),  // Ensure this is set properly
-    });
-
-    try {
-        const input = {
-            input: { text: `Role: ${role}, Specialty: ${specialty}, Department: ${department}` },
-            retrieveAndGenerateConfiguration: {
-                type: "KNOWLEDGE_BASE",
-                knowledgeBaseConfiguration: {
-                    knowledgeBaseId: "6XDDZFP2RK", // Ensure this is your actual Knowledge Base ID
-                    modelArn: "anthropic.claude-3-haiku-20240307-v1:0", // Ensure this is the correct model ARN
-                    retrievalConfiguration: {
-                        vectorSearchConfiguration: {
-                            numberOfResults: 10,
-                            overrideSearchType: "SEMANTIC"
-                        }
-                    },
-                    generationConfiguration: {
-                        promptTemplate: {
-                            textPromptTemplate: `${systemPrompt} $search_results$`
-                        },
-                        inferenceConfig: {
-                            textInferenceConfig: {
-                                temperature: 0.7,
-                                topP: 0.9,
-                                maxTokens: 2048
-                            }
-                        },
-                    },
-                    orchestrationConfiguration: {
-                        queryTransformationConfiguration: {
-                            type: "QUERY_DECOMPOSITION",
-                        }
+    const params = {
+        modelId: 'claude-3-haiku',
+        prompt: `${systemPrompt}\n\nUser Data: ${data}`,
+        responseFormat: 'json',
+        maxTokens: 3000, // Adjust as needed for case study and question length
+        retrieveAndGenerateConfiguration: {
+            type: "KNOWLEDGE_BASE",
+            knowledgeBaseConfiguration: {
+                knowledgeBaseId: "6XDDZFP2RK", // Ensure this is your actual Knowledge Base ID
+                modelArn: "anthropic.claude-3-haiku-20240307-v1:0", // Ensure this is the correct model ARN
+                retrievalConfiguration: {
+                    vectorSearchConfiguration: {
+                        numberOfResults: 10,
+                        overrideSearchType: "SEMANTIC"
                     }
                 }
             }
-        };
-
-        // Create the command
-        const command = new RetrieveAndGenerateCommand(input);
-        const response = await client.send(command);
-
-        if (!response.output?.text) {
-            throw new Error('No response from Bedrock model');
         }
+    };
 
-        // Parse the JSON response from the Bedrock API
-        const caseStudies = JSON.parse(response.output.text);
+    try {
+        const completion = await bedrockClient.generate(params);
 
-        return new Response(JSON.stringify(caseStudies.caseStudies), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-        });
+        // Parse the JSON response from Amazon Bedrock
+        const caseStudies = JSON.parse(completion.result);
 
+        // Return the case studies as a JSON response
+        return NextResponse.json(caseStudies.caseStudies);
     } catch (error) {
-        console.error("Error during Bedrock request:", error);
-        return new Response(JSON.stringify({ error: "An internal server error occurred." }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
-        });
+        console.error('Error generating case studies:', error);
+        return NextResponse.json({ error: 'Failed to generate case studies' });
     }
 }
+
