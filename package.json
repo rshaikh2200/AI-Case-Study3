@@ -11,7 +11,7 @@
   "dependencies": {
     "@aws-sdk/client-bedrock": "^3.624.0",
     "@aws-sdk/client-bedrock-agent-runtime": "^3.632.0",
-    "@aws-sdk/credential-providers": "^3.632.0",
+    "@aws-sdk/credential-providers": "^3.645.0",
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@google/generative-ai": "^0.16.0",
