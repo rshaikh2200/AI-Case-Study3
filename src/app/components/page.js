@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from 'react';
 import {
     TextField,
@@ -67,7 +69,7 @@ export default function HomePage() {
                         required
                     />
                     <TextField
-                        label="Specialty"
+                        label="Specialization"
                         variant="outlined"
                         fullWidth
                         value={specialty}
