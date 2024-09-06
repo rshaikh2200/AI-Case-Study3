@@ -1,91 +1,56 @@
-"use client";
+// pages/index.js (or pages/page.js depending on your Next.js structure)
+import React, { useState } from 'react';
 
-import { useState } from 'react';
+export default function Home() {
+  const [caseStudies, setCaseStudies] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-export default function HomePage() {
-    const [department, setDepartment] = useState('');
-    const [role, setRole] = useState('');
-    const [specialty, setSpecialty] = useState('');
-    const [caseStudies, setCaseStudies] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+  const handleTakeAssessment = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const response = await fetch('/api/generate-case-studies', {
+        method: 'POST',
+      });
+      const data = await response.json();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        setLoading(true);
-        setError(null);
+      if (response.ok) {
+        setCaseStudies(data);  // Update state with the retrieved case studies
+      } else {
+        throw new Error(data.error || 'Failed to fetch case studies');
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        const userData = JSON.stringify({
-            department,
-            role,
-            specialty
-        });
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>Take the Assessment</h1>
+      <button onClick={handleTakeAssessment} disabled={loading}>
+        {loading ? 'Generating...' : 'Take Assessment'}
+      </button>
 
-        try {
-            const res = await fetch('/api/claude-bedrock', {
-                method: 'POST',
-                body: userData,
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-            if (!res.ok) {
-                throw new Error('Failed to fetch case studies');
-            }
-
-            const data = await res.json();
-            setCaseStudies(data);
-        } catch (error) {
-            console.error('Error fetching case studies:', error);
-            setError('Failed to generate case studies');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return (
-        <div>
-            <h1>Take Assessment</h1>
-            <form onSubmit={handleSubmit}>
-                <input 
-                    type="text" 
-                    placeholder="Department" 
-                    value={department} 
-                    onChange={(e) => setDepartment(e.target.value)} 
-                />
-                <input 
-                    type="text" 
-                    placeholder="Role" 
-                    value={role} 
-                    onChange={(e) => setRole(e.target.value)} 
-                />
-                <input 
-                    type="text" 
-                    placeholder="Specialty" 
-                    value={specialty} 
-                    onChange={(e) => setSpecialty(e.target.value)} 
-                />
-                <button type="submit">Take Assessment</button>
-            </form>
-
-            {loading && <p>Loading case studies...</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-
-            {caseStudies.length > 0 && (
-                <div>
-                    <h2>Generated Case Studies</h2>
-                    <ul>
-                        {caseStudies.map((caseStudy, index) => (
-                            <li key={index}>
-                                <h3>Case Study {index + 1}</h3>
-                                <p>{caseStudy.caseStudy}</p>
-                                <p><strong>Question:</strong> {caseStudy.question}</p>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-        </div>
-    );
+      <div style={{ marginTop: '20px' }}>
+        {caseStudies.length > 0 && (
+          <div>
+            <h2>Generated Case Studies</h2>
+            {caseStudies.map((study, index) => (
+              <div key={index} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
+                <h3>Case Study {index + 1}</h3>
+                <p><strong>Summary:</strong> {study.caseStudy}</p>
+                <p><strong>Question:</strong> {study.question}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }

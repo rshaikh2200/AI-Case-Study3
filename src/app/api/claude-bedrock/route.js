@@ -1,3 +1,4 @@
+// pages/api/generate-case-studies.js
 import { BedrockClient } from '@aws-sdk/client-bedrock';
 import { NextResponse } from 'next/server';
 
@@ -17,47 +18,47 @@ Return in the following JSON format:
 }
 `;
 
-export async function POST(req) {
+export default async function handler(req, res) {
     try {
-        const data = await req.text();
+        if (req.method === 'POST') {
+            const params = {
+                modelId: 'claude-3-haiku',
+                prompt: `${systemPrompt}`,
+                responseFormat: 'json',
+                maxTokens: 3000,
+                retrieveAndGenerateConfiguration: {
+                    type: "KNOWLEDGE_BASE",
+                    knowledgeBaseConfiguration: {
+                        knowledgeBaseId: "6XDDZFP2RK",
+                        modelArn: "anthropic.claude-3-haiku-20240307-v1:0",
+                        retrievalConfiguration: {
+                            vectorSearchConfiguration: {
+                                numberOfResults: 10,
+                                overrideSearchType: "SEMANTIC",
+                            },
+                        },
+                    },
+                },
+            };
 
-        const params = {
-            modelId: 'claude-3-haiku',
-            prompt: `${systemPrompt}`,
-            responseFormat: 'json',
-            maxTokens: 3000, 
-            retrieveAndGenerateConfiguration: {
-                type: "KNOWLEDGE_BASE",
-                knowledgeBaseConfiguration: {
-                    knowledgeBaseId: "6XDDZFP2RK", 
-                    modelArn: "anthropic.claude-3-haiku-20240307-v1:0",
-                    retrievalConfiguration: {
-                        vectorSearchConfiguration: {
-                            numberOfResults: 10,
-                            overrideSearchType: "SEMANTIC"
-                        }
-                    }
-                }
+            const completion = await bedrockClient.generate(params);
+
+            if (!completion.result) {
+                throw new Error('No result returned from Bedrock');
             }
-        };
 
-        const completion = await bedrockClient.generate(params);
-        
-        if (!completion.result) {
-            throw new Error('No result returned from Bedrock');
+            const parsedResult = JSON.parse(completion.result);
+
+            if (!parsedResult.caseStudies) {
+                throw new Error('Invalid response format from Bedrock');
+            }
+
+            return res.status(200).json(parsedResult.caseStudies);
+        } else {
+            return res.status(405).json({ error: 'Method not allowed' });
         }
-
-        // Parse the JSON response safely
-        const parsedResult = JSON.parse(completion.result);
-        
-        if (!parsedResult.caseStudies) {
-            throw new Error('Invalid response format from Bedrock');
-        }
-
-        // Return the case studies as a JSON response
-        return NextResponse.json(parsedResult.caseStudies);
     } catch (error) {
         console.error('Error generating case studies:', error);
-        return NextResponse.json({ error: 'Failed to generate case studies' });
+        return res.status(500).json({ error: 'Failed to generate case studies' });
     }
 }
