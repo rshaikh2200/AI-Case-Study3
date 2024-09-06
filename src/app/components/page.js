@@ -1,6 +1,5 @@
 "use client";
 
-// pages/index.js (or pages/page.js depending on your Next.js structure)
 import React, { useState } from 'react';
 
 export default function Home() {
@@ -15,7 +14,16 @@ export default function Home() {
     try {
       const response = await fetch('/api/claude-bedrock', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',  // Set content type as JSON
+        },
+        body: JSON.stringify({
+          department: 'ER',  // Replace with actual user input or dynamic data
+          role: 'Surgeon',
+          specialty: 'Orthopedic',
+        }),
       });
+
       const data = await response.json();
 
       if (response.ok) {

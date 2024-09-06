@@ -19,17 +19,26 @@ Return in the following JSON format:
 
 export default async function handler(req, res) {
     try {
+        // Ensure the request is a POST method
         if (req.method === 'POST') {
+            // Parse request body (make sure it's JSON)
+            const { department, role, specialty } = req.body;
+
+            if (!department || !role || !specialty) {
+                return res.status(400).json({ error: 'Missing required fields: department, role, specialty' });
+            }
+
+            // Prepare parameters for Bedrock
             const params = {
-                modelId: 'claude-3-haiku',  // Ensure this model ID is correct
+                modelId: 'claude-3-haiku',
                 prompt: `${systemPrompt}`,
                 responseFormat: 'json',
                 maxTokens: 3000,
                 retrieveAndGenerateConfiguration: {
                     type: "KNOWLEDGE_BASE",
                     knowledgeBaseConfiguration: {
-                        knowledgeBaseId: "6XDDZFP2RK",  // Ensure this is valid
-                        modelArn: "anthropic.claude-3-haiku-20240307-v1:0",  // Check if the ARN is correct
+                        knowledgeBaseId: "6XDDZFP2RK",
+                        modelArn: "anthropic.claude-3-haiku-20240307-v1:0",
                         retrievalConfiguration: {
                             vectorSearchConfiguration: {
                                 numberOfResults: 10,
@@ -43,6 +52,7 @@ export default async function handler(req, res) {
             // Log the params for debugging
             console.log("Params being sent to Bedrock:", params);
 
+            // Call Bedrock API
             const completion = await bedrockClient.generate(params);
 
             if (!completion.result) {
@@ -55,8 +65,10 @@ export default async function handler(req, res) {
                 throw new Error('Invalid response format from Bedrock');
             }
 
+            // Return the case studies in response
             return res.status(200).json(parsedResult.caseStudies);
         } else {
+            // Return 405 if the method is not allowed
             return res.status(405).json({ error: 'Method not allowed' });
         }
     } catch (error) {
