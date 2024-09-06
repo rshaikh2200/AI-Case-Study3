@@ -23,33 +23,21 @@ export default function HomePage() {
     const [error, setError] = useState(null);
     const [response, setResponse] = useState(null);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError(null);
-
-        try {
-            const res = await fetch('/api/claude-bedrock', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ role, specialty, department }),
-            });
-
-            if (!res.ok) {
-                const errorMessage = await res.text();
-                throw new Error(`Network response was not ok: ${res.status} ${errorMessage}`);
-            }
-
-            const data = await res.json();
-            setResponse(data);
-        } catch (err) {
-            setError(`Error: ${err.message}`);  // More specific error message
-        } finally {
-            setLoading(false);
-        }
-    };
+    const handleSubmit = async () => {
+      try {
+          const response = await fetch('api/generate', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text }),
+          });
+          if (!response.ok) throw new Error('Network response was not ok');
+          const data = await response.json();
+          setFlashcards(data);
+          setPreviewShown(true);
+      } catch (error) {
+          console.error('There was a problem with the fetch operation:', error);
+      }
+  };
 
     return (
         <Container maxWidth="md">
