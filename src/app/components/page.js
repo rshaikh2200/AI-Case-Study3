@@ -71,6 +71,7 @@ export default function HomePage() {
 
             {loading && <p>Loading case studies...</p>}
             {error && <p style={{ color: 'red' }}>{error}</p>}
+
             {caseStudies.length > 0 && (
                 <div>
                     <h2>Generated Case Studies</h2>
