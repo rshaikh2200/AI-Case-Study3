@@ -22,7 +22,7 @@ export default function HomePage() {
         });
 
         try {
-            const res = await fetch('/api/generate-case-studies', {
+            const res = await fetch('/api/claude-bedrock', {
                 method: 'POST',
                 body: userData,
                 headers: {
