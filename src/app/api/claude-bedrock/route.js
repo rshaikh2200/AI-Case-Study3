@@ -1,5 +1,4 @@
-import { BedrockClient } from '@aws-sdk/client-bedrock';
-import { RetrieveAndGenerateCommand } from '@aws-sdk/client-bedrock'; // Importing the command
+import { BedrockClient, RetrieveAndGenerateCommand } from '@aws-sdk/client-bedrock'; // Import the client and command together
 import { NextResponse } from 'next/server';
 
 const bedrockClient = new BedrockClient({ region: 'us-east-1' });
@@ -29,7 +28,7 @@ export async function POST(req) {
       retrieveAndGenerateConfiguration: {
         type: 'KNOWLEDGE_BASE',
         knowledgeBaseConfiguration: {
-          knowledgeBaseId: 'TO2LMBBASW', // Replace with your actual Knowledge Base ID
+          knowledgeBaseId: 'ZNMWSCRJJG', // Replace with your actual Knowledge Base ID
           modelArn: 'anthropic.claude-3-haiku-20240307-v1:0', // Replace with your model ARN
           retrievalConfiguration: {
             vectorSearchConfiguration: {
@@ -59,6 +58,7 @@ export async function POST(req) {
       },
     };
 
+    // Use the correct constructor for the RetrieveAndGenerateCommand
     const command = new RetrieveAndGenerateCommand(input);
     const response = await bedrockClient.send(command);
 
