@@ -1,5 +1,3 @@
-"use client";
-
 import { BedrockClient } from '@aws-sdk/client-bedrock';
 import { NextResponse } from 'next/server';
 
@@ -25,7 +23,7 @@ export async function POST(req) {
 
         const params = {
             modelId: 'claude-3-haiku',
-            prompt: `${systemPrompt},
+            prompt: `${systemPrompt}`,
             responseFormat: 'json',
             maxTokens: 3000, 
             retrieveAndGenerateConfiguration: {
@@ -63,4 +61,3 @@ export async function POST(req) {
         return NextResponse.json({ error: 'Failed to generate case studies' });
     }
 }
-
