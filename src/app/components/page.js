@@ -45,7 +45,7 @@ export default function HomePage() {
             const data = await res.json();
             setResponse(data);
         } catch (err) {
-            setError('An error occurred. Please try again.');
+            setError(`Error: ${err.message}`);  // More specific error message
         } finally {
             setLoading(false);
         }

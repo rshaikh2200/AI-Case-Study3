@@ -1,8 +1,6 @@
 import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/client-bedrock-agent-runtime";
 import { fromEnv } from "@aws-sdk/credential-providers";
 
-
-// Define the system prompt to generate case studies and questions
 const systemPrompt = `You are an AI tasked with providing summarized case studies based on the user's input. 
 Your task is as follows:
 1. Summarize 10 case studies, each in about 100 words, based on the user's role, specialty, and department.
@@ -22,14 +20,14 @@ Return the output in the following JSON format:
 }`;
 
 export async function POST(req) {
-    // Initialize the Bedrock Agent Runtime client
-    const client = new BedrockAgentRuntimeClient({ region: "us-east-1" });
+    const client = new BedrockAgentRuntimeClient({
+        region: "us-east-1",
+        credentials: fromEnv(),  // Ensure credentials are passed
+    });
 
     try {
-        // Parse the request body
         const body = await req.json();
         const { role, specialty, department } = body;
-        console.log(`Received role: ${role}, specialty: ${specialty}, department: ${department}`);
 
         if (!role || !specialty || !department) {
             return new Response(JSON.stringify({ error: "Role, specialty, and department are required" }), {
@@ -38,14 +36,13 @@ export async function POST(req) {
             });
         }
 
-        // Define the input for the RetrieveAndGenerateCommand
         const input = {
             input: { text: `Role: ${role}, Specialty: ${specialty}, Department: ${department}` },
             retrieveAndGenerateConfiguration: {
                 type: "KNOWLEDGE_BASE",
                 knowledgeBaseConfiguration: {
-                    knowledgeBaseId: "6XDDZFP2RK", // Replace with your actual Knowledge Base ID
-                    modelArn: "anthropic.claude-3-haiku-20240307-v1:0", // Replace with your model ARN
+                    knowledgeBaseId: "6XDDZFP2RK", // Make sure this is your actual Knowledge Base ID
+                    modelArn: "anthropic.claude-3-haiku-20240307-v1:0", // Ensure this is the correct model ARN
                     retrievalConfiguration: {
                         vectorSearchConfiguration: {
                             numberOfResults: 10,
@@ -73,24 +70,23 @@ export async function POST(req) {
             }
         };
 
-        // Create the command
         const command = new RetrieveAndGenerateCommand(input);
-
-        // Send the command to Bedrock and wait for the response
         const response = await client.send(command);
 
-        // Extract the response text and format it
-        const caseStudies = JSON.parse(response.output?.text || "No response from model");
+        if (!response.output?.text) {
+            throw new Error('No response from Bedrock model');
+        }
 
-        // Return the case studies and questions as a JSON response
+        const caseStudies = JSON.parse(response.output.text);
+
         return new Response(JSON.stringify(caseStudies), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });
-        
+
     } catch (error) {
-        console.error(error);
-        return new Response(JSON.stringify({ error: "An error occurred" }), {
+        console.error("Error during Bedrock request:", error);  // Improved logging
+        return new Response(JSON.stringify({ error: "An internal server error occurred." }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
         });
