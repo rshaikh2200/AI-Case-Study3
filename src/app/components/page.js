@@ -1,67 +1,44 @@
-"use client";
+import { BedrockClient, InvokeModelCommand } from '@aws-sdk/client-bedrock'; // Correct Bedrock import
+import { NextResponse } from 'next/server';
 
-import React, { useState } from 'react';
+const bedrockClient = new BedrockClient({ region: 'us-east-1' }); // Initialize the Bedrock client
 
-export default function Home() {
-  const [caseStudies, setCaseStudies] = useState([]); // Store generated case studies and questions
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null); // Add state for handling errors
-
-  const takeAssessment = async () => {
-    if (isLoading) return; // Prevent multiple requests
-    setIsLoading(true);
-    setError(null); // Reset error state before making a new request
-
-    try {
-      // Send a request to the backend to generate the assessment
-      const response = await fetch('/api/claude-bedrock', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message: "Generate case studies" }), // Simplified request
-      });
-
-      if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(`Network response was not ok: ${response.status} ${errorMessage}`);
-      }
-
-      const data = await response.json();
-
-      // Update the case studies state with the generated case studies
-      setCaseStudies(data.response.caseStudies || []);
-    } catch (error) {
-      console.error('Error:', error);
-      setError('An error occurred while generating the assessment. Please try again.');
-    } finally {
-      setIsLoading(false);
+const systemPrompt = `You are tasked with generating 10 summarized case studies along with 1 question per case study. The structure should be:
+1. Summarize each case study with key points.
+2. Generate 1 relevant question for each case study.
+Return in the following JSON format:
+{
+  "caseStudies": [
+    {
+      "caseStudy": str,
+      "question": str
     }
-  };
+  ]
+}
+`;
 
-  return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h1>Take the Assessment</h1>
-      <button onClick={takeAssessment} disabled={isLoading}>
-        {isLoading ? 'Generating...' : 'Take Assessment'}
-      </button>
+export async function POST(req) {
+  try {
+    const body = await req.json();
+    const { message } = body;
 
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message */}
+    const input = {
+      modelId: 'anthropic.claude-3-5-sonnet-20240620-v1:0', // Replace with the correct model ARN
+      prompt: systemPrompt + message,  // Input text for the model
+      maxResults: 10, // Number of case studies you want
+      temperature: 0.7,
+      topP: 0.9,
+      maxTokens: 512
+    };
 
-      <div style={{ marginTop: '20px' }}>
-        {caseStudies.length > 0 && (
-          <div>
-            <h2>Generated Case Studies</h2>
-            {caseStudies.map((study, index) => (
-              <div key={index} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
-                <h3>Case Study {index + 1}</h3>
-                <p><strong>Summary:</strong> {study.caseStudy}</p>
-                <p><strong>Question:</strong> {study.question}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+    const command = new InvokeModelCommand(input); // Correct Bedrock invocation command
+    const response = await bedrockClient.send(command);
+
+    const responseText = response?.output ?? 'No response from model'; // Adjust to match response structure
+
+    return NextResponse.json({ response: responseText }, { status: 200 });
+  } catch (err) {
+    console.error(`ERROR: Can't invoke model. Reason: ${err.message || err}`);
+    return NextResponse.json({ error: `Error invoking model: ${err.message || err}` }, { status: 500 });
+  }
 }
