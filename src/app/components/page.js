@@ -1,69 +1,67 @@
 "use client";
 
-import { BedrockClient } from '@aws-sdk/client-bedrock'; // Correct import
-import { NextResponse } from 'next/server';
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
-import { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 
-// Assuming BedrockClient is correctly initialized
-const bedrockClient = new BedrockClient({ region: 'us-east-1' });
+export default function Home() {
+  const [caseStudies, setCaseStudies] = useState([]); // Store generated case studies and questions
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null); // Add state for handling errors
 
-export async function POST(req) {
-  try {
-    const body = await req.json();
-    const { message } = body;
+  const takeAssessment = async () => {
+    if (isLoading) return; // Prevent multiple requests
+    setIsLoading(true);
+    setError(null); // Reset error state before making a new request
 
-    const input = {
-      input: { text: message },
-      retrieveAndGenerateConfiguration: {
-        type: "KNOWLEDGE_BASE",
-        knowledgeBaseConfiguration: {
-          knowledgeBaseId: "8JNS4T4ALI", // Replace with your actual Knowledge Base ID
-          modelArn: "anthropic.claude-3-5-sonnet-20240620-v1:0", // Replace with your model ARN
-          retrievalConfiguration: {
-            vectorSearchConfiguration: {
-              numberOfResults: 5,
-              overrideSearchType: "SEMANTIC"
-            }
-          },
-          generationConfiguration: {
-            promptTemplate: {
-              textPromptTemplate: "You are a helpful AI assistant for Crescent Technology. This is data you're given about Crescent: $search_results$. Be concise and keep the message close to 20 words."
-            },
-            inferenceConfig: {
-              textInferenceConfig: {
-                temperature: 0.7,
-                topP: 0.9,
-                maxTokens: 512,
-              }
-            },
-          },
-          orchestrationConfiguration: {
-            queryTransformationConfiguration: {
-              type: "QUERY_DECOMPOSITION", 
-            }
-          }
+    try {
+      // Send a request to the backend to generate the assessment
+      const response = await fetch('/api/claude-bedrock', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      },
-    };
+        body: JSON.stringify({ message: "Generate case studies" }), // Simplified request
+      });
 
-    // Assuming an alternative to InvokeModelCommand is used if it's unavailable
-    const command = new bedrockClient(input); // Adjust based on actual method
+      if (!response.ok) {
+        const errorMessage = await response.text();
+        throw new Error(`Network response was not ok: ${response.status} ${errorMessage}`);
+      }
 
-    // Send the command using the BedrockClient instance
-    const response = await bedrockClient.send(command);
+      const data = await response.json();
 
-    const responseText = response?.output?.toString() ?? 'No response from model';
+      // Update the case studies state with the generated case studies
+      setCaseStudies(data.response.caseStudies || []);
+    } catch (error) {
+      console.error('Error:', error);
+      setError('An error occurred while generating the assessment. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    return new NextResponse(JSON.stringify({ response: responseText }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (err) {
-    console.error(`ERROR: Can't invoke model. Reason: ${err.message || err}`);
-    return new NextResponse(JSON.stringify({ error: `Error invoking model: ${err.message || err}` }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  return (
+    <div style={{ padding: '20px', textAlign: 'center' }}>
+      <h1>Take the Assessment</h1>
+      <button onClick={takeAssessment} disabled={isLoading}>
+        {isLoading ? 'Generating...' : 'Take Assessment'}
+      </button>
+
+      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message */}
+
+      <div style={{ marginTop: '20px' }}>
+        {caseStudies.length > 0 && (
+          <div>
+            <h2>Generated Case Studies</h2>
+            {caseStudies.map((study, index) => (
+              <div key={index} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
+                <h3>Case Study {index + 1}</h3>
+                <p><strong>Summary:</strong> {study.caseStudy}</p>
+                <p><strong>Question:</strong> {study.question}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
