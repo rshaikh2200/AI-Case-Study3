@@ -1,66 +1,64 @@
-"use client";
+import { BedrockClient, InvokeModelCommand } from '@aws-sdk/client-bedrock'; // Correct import
+import { NextResponse } from 'next/server';
 
-import React, { useState } from 'react';
+const bedrockClient = new BedrockClient({ region: 'us-east-1' });
 
-export default function Home() {
-  const [caseStudies, setCaseStudies] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+export async function POST(req) {
+  try {
+    const body = await req.json();
+    const { message } = body;
 
-  const handleTakeAssessment = async () => {
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const response = await fetch('/api/claude-bedrock', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',  // Set content type as JSON
+    const input = {
+      input: { text: message },
+      retrieveAndGenerateConfiguration: {
+        type: "KNOWLEDGE_BASE",
+        knowledgeBaseConfiguration: {
+          knowledgeBaseId: "8JNS4T4ALI", // Replace with your actual Knowledge Base ID
+          modelArn: "anthropic.claude-3-5-sonnet-20240620-v1:0", // Replace with your model ARN
+          retrievalConfiguration: {
+            vectorSearchConfiguration: {
+              numberOfResults: 5,
+              overrideSearchType: "SEMANTIC"
+            }
+          },
+          generationConfiguration: {
+            promptTemplate: {
+              textPromptTemplate: "You are a helpful AI assistant for Crescent Technology. This is data you're given about Crescent: $search_results$. Be concise and keep the message close to 20 words."
+            },
+            inferenceConfig: {
+              textInferenceConfig: {
+                temperature: 0.7,
+                topP: 0.9,
+                maxTokens: 512,
+              }
+            },
+          },
+          orchestrationConfiguration: {
+            queryTransformationConfiguration: {
+              type: "QUERY_DECOMPOSITION", 
+            }
+          }
         },
-        body: JSON.stringify({
-          department: 'ER',  // Replace with actual user input or dynamic data
-          role: 'Surgeon',
-          specialty: 'Orthopedic',
-        }),
-      });
+      },
+    };
 
-      const data = await response.json();
+    // Ensure that InvokeModelCommand is correctly instantiated
+    const command = new InvokeModelCommand(input);
 
-      if (response.ok) {
-        setCaseStudies(data);  // Update state with the retrieved case studies
-      } else {
-        throw new Error(data.error || 'Failed to fetch case studies');
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Send the command using the BedrockClient instance
+    const response = await bedrockClient.send(command);
 
-  return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h1>Take the Assessment</h1>
-      <button onClick={handleTakeAssessment} disabled={loading}>
-        {loading ? 'Generating...' : 'Take Assessment'}
-      </button>
+    const responseText = response?.output?.toString() ?? 'No response from model';
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      <div style={{ marginTop: '20px' }}>
-        {caseStudies.length > 0 && (
-          <div>
-            <h2>Generated Case Studies</h2>
-            {caseStudies.map((study, index) => (
-              <div key={index} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
-                <h3>Case Study {index + 1}</h3>
-                <p><strong>Summary:</strong> {study.caseStudy}</p>
-                <p><strong>Question:</strong> {study.question}</p>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
+    return new NextResponse(JSON.stringify({ response: responseText }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  } catch (err) {
+    console.error(`ERROR: Can't invoke model. Reason: ${err.message || err}`);
+    return new NextResponse(JSON.stringify({ error: `Error invoking model: ${err.message || err}` }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
 }
