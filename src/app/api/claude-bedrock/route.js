@@ -18,36 +18,44 @@ Return in the following JSON format:
 `;
 
 export async function POST(req) {
-    const data = await req.text();
+    try {
+        const data = await req.text();
 
-    const params = {
-        modelId: 'claude-3-haiku',
-        prompt: `${systemPrompt}\n\nUser Data: ${data}`,
-        responseFormat: 'json',
-        maxTokens: 3000, // Adjust as needed for case study and question length
-        retrieveAndGenerateConfiguration: {
-            type: "KNOWLEDGE_BASE",
-            knowledgeBaseConfiguration: {
-                knowledgeBaseId: "6XDDZFP2RK", // Ensure this is your actual Knowledge Base ID
-                modelArn: "anthropic.claude-3-haiku-20240307-v1:0", // Ensure this is the correct model ARN
-                retrievalConfiguration: {
-                    vectorSearchConfiguration: {
-                        numberOfResults: 10,
-                        overrideSearchType: "SEMANTIC"
+        const params = {
+            modelId: 'claude-3-haiku',
+            prompt: `${systemPrompt}\n\nUser Data: ${data}`,
+            responseFormat: 'json',
+            maxTokens: 3000, 
+            retrieveAndGenerateConfiguration: {
+                type: "KNOWLEDGE_BASE",
+                knowledgeBaseConfiguration: {
+                    knowledgeBaseId: "6XDDZFP2RK", 
+                    modelArn: "anthropic.claude-3-haiku-20240307-v1:0",
+                    retrievalConfiguration: {
+                        vectorSearchConfiguration: {
+                            numberOfResults: 10,
+                            overrideSearchType: "SEMANTIC"
+                        }
                     }
                 }
             }
-        }
-    };
+        };
 
-    try {
         const completion = await bedrockClient.generate(params);
+        
+        if (!completion.result) {
+            throw new Error('No result returned from Bedrock');
+        }
 
-        // Parse the JSON response from Amazon Bedrock
-        const caseStudies = JSON.parse(completion.result);
+        // Parse the JSON response safely
+        const parsedResult = JSON.parse(completion.result);
+        
+        if (!parsedResult.caseStudies) {
+            throw new Error('Invalid response format from Bedrock');
+        }
 
         // Return the case studies as a JSON response
-        return NextResponse.json(caseStudies.caseStudies);
+        return NextResponse.json(parsedResult.caseStudies);
     } catch (error) {
         console.error('Error generating case studies:', error);
         return NextResponse.json({ error: 'Failed to generate case studies' });

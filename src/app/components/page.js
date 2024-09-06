@@ -1,122 +1,88 @@
-"use client";
-
-import React, { useState } from 'react';
-import {
-    TextField,
-    Button,
-    Typography,
-    Container,
-    CircularProgress,
-    Alert,
-    Paper,
-    List,
-    ListItem,
-    ListItemText,
-    Box,
-} from '@mui/material';
+import { useState } from 'react';
 
 export default function HomePage() {
+    const [department, setDepartment] = useState('');
     const [role, setRole] = useState('');
     const [specialty, setSpecialty] = useState('');
-    const [department, setDepartment] = useState('');
+    const [caseStudies, setCaseStudies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [response, setResponse] = useState(null);
 
-    const handleSubmit = async () => {
-      try {
-          const response = await fetch('api/generate', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ text }),
-          });
-          if (!response.ok) throw new Error('Network response was not ok');
-          const data = await response.json();
-          setFlashcards(data);
-          setPreviewShown(true);
-      } catch (error) {
-          console.error('There was a problem with the fetch operation:', error);
-      }
-  };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setLoading(true);
+        setError(null);
+
+        const userData = JSON.stringify({
+            department,
+            role,
+            specialty
+        });
+
+        try {
+            const res = await fetch('/api/generate-case-studies', {
+                method: 'POST',
+                body: userData,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!res.ok) {
+                throw new Error('Failed to fetch case studies');
+            }
+
+            const data = await res.json();
+            setCaseStudies(data);
+        } catch (error) {
+            console.error('Error fetching case studies:', error);
+            setError('Failed to generate case studies');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <Container maxWidth="md">
-            <Paper elevation={3} sx={{ padding: 4, mt: 4 }}>
-                <Typography variant="h4" component="h1" gutterBottom>
-                    Case Study Assessment
-                </Typography>
+        <div>
+            <h1>Take Assessment</h1>
+            <form onSubmit={handleSubmit}>
+                <input 
+                    type="text" 
+                    placeholder="Department" 
+                    value={department} 
+                    onChange={(e) => setDepartment(e.target.value)} 
+                />
+                <input 
+                    type="text" 
+                    placeholder="Role" 
+                    value={role} 
+                    onChange={(e) => setRole(e.target.value)} 
+                />
+                <input 
+                    type="text" 
+                    placeholder="Specialty" 
+                    value={specialty} 
+                    onChange={(e) => setSpecialty(e.target.value)} 
+                />
+                <button type="submit">Take Assessment</button>
+            </form>
 
-                <form onSubmit={handleSubmit}>
-                    <TextField
-                        label="Role"
-                        variant="outlined"
-                        fullWidth
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                        margin="normal"
-                        required
-                    />
-                    <TextField
-                        label="Specialization"
-                        variant="outlined"
-                        fullWidth
-                        value={specialty}
-                        onChange={(e) => setSpecialty(e.target.value)}
-                        margin="normal"
-                        required
-                    />
-                    <TextField
-                        label="Department"
-                        variant="outlined"
-                        fullWidth
-                        value={department}
-                        onChange={(e) => setDepartment(e.target.value)}
-                        margin="normal"
-                        required
-                    />
-
-                    <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            disabled={loading}
-                            size="large"
-                        >
-                            {loading ? <CircularProgress size={24} /> : 'Take Assessment'}
-                        </Button>
-                    </Box>
-                </form>
-
-                {error && (
-                    <Alert severity="error" sx={{ mt: 3 }}>
-                        {error}
-                    </Alert>
-                )}
-
-                {response && (
-                    <Box sx={{ mt: 5 }}>
-                        <Typography variant="h5" gutterBottom>
-                            Generated Case Studies
-                        </Typography>
-                        {response.caseStudies.map((study, index) => (
-                            <Paper key={index} sx={{ mb: 3, p: 3 }} variant="outlined">
-                                <Typography variant="h6" gutterBottom>
-                                    Case Study {index + 1}
-                                </Typography>
-                                <Typography>{study.summary}</Typography>
-                                <List sx={{ mt: 2 }}>
-                                    {study.questions.map((question, qIndex) => (
-                                        <ListItem key={qIndex}>
-                                            <ListItemText primary={question} />
-                                        </ListItem>
-                                    ))}
-                                </List>
-                            </Paper>
+            {loading && <p>Loading case studies...</p>}
+            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {caseStudies.length > 0 && (
+                <div>
+                    <h2>Generated Case Studies</h2>
+                    <ul>
+                        {caseStudies.map((caseStudy, index) => (
+                            <li key={index}>
+                                <h3>Case Study {index + 1}</h3>
+                                <p>{caseStudy.caseStudy}</p>
+                                <p><strong>Question:</strong> {caseStudy.question}</p>
+                            </li>
                         ))}
-                    </Box>
-                )}
-            </Paper>
-        </Container>
+                    </ul>
+                </div>
+            )}
+        </div>
     );
 }
