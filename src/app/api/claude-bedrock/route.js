@@ -1,3 +1,5 @@
+"use client";
+
 import { BedrockClient } from '@aws-sdk/client-bedrock';
 import { NextResponse } from 'next/server';
 
