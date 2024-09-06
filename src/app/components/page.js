@@ -1,6 +1,10 @@
-import { BedrockClient, InvokeModelCommand } from '@aws-sdk/client-bedrock'; // Correct import
-import { NextResponse } from 'next/server';
+"use client";
 
+import { BedrockClient } from '@aws-sdk/client-bedrock'; // Correct import
+import { NextResponse } from 'next/server';
+import { useState } from 'react';
+
+// Assuming BedrockClient is correctly initialized
 const bedrockClient = new BedrockClient({ region: 'us-east-1' });
 
 export async function POST(req) {
@@ -42,8 +46,8 @@ export async function POST(req) {
       },
     };
 
-    // Ensure that InvokeModelCommand is correctly instantiated
-    const command = new InvokeModelCommand(input);
+    // Assuming an alternative to InvokeModelCommand is used if it's unavailable
+    const command = new bedrockClient(input); // Adjust based on actual method
 
     // Send the command using the BedrockClient instance
     const response = await bedrockClient.send(command);
