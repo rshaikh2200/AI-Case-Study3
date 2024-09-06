@@ -1,7 +1,7 @@
 import { BedrockRuntimeClient, RetrieveandGenerateCommand } from '@aws-sdk/client-bedrock-agent-runtime'; // Correct import
 import { NextResponse } from 'next/server';
 
-const bedrockClient = new BedrockRuntimeClient({ region: 'us-east-1' }); // Initialize the Bedrock client
+const bedrockClient = new BedrockAgentRuntimeClient({ region: 'us-east-1' }); // Initialize the Bedrock client
 
 const systemPrompt = `You are tasked with generating 10 summarized case studies along with 1 question per case study. The structure should be:
 1. Summarize each case study with key points.
