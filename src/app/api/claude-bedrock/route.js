@@ -1,4 +1,4 @@
-import { BedrockRuntimeClient, RetrieveandGenerateCommand } from '@aws-sdk/client-bedrock-agent-runtime'; // Correct import
+import { BedrockAgentRuntimeClient, RetrieveandGenerateCommand } from '@aws-sdk/client-bedrock-agent-runtime'; // Correct import
 import { NextResponse } from 'next/server';
 
 const bedrockClient = new BedrockAgentRuntimeClient({ region: 'us-east-1' }); // Initialize the Bedrock client
