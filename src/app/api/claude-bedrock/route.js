@@ -23,7 +23,7 @@ export async function POST(req) {
 
         const params = {
             modelId: 'claude-3-haiku',
-            prompt: `${systemPrompt}\n\nUser Data: ${data}`,
+            prompt: `${systemPrompt},
             responseFormat: 'json',
             maxTokens: 3000, 
             retrieveAndGenerateConfiguration: {
