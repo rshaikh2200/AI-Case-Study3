@@ -2,7 +2,8 @@
 
 import { BedrockClient } from '@aws-sdk/client-bedrock'; // Correct import
 import { NextResponse } from 'next/server';
-import { useState } from 'react';
+import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { useState, useRef, useEffect } from 'react';
 
 // Assuming BedrockClient is correctly initialized
 const bedrockClient = new BedrockClient({ region: 'us-east-1' });
