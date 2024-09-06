@@ -1,4 +1,3 @@
-// pages/api/generate-case-studies.js
 import { BedrockClient } from '@aws-sdk/client-bedrock';
 import { NextResponse } from 'next/server';
 
@@ -22,15 +21,15 @@ export default async function handler(req, res) {
     try {
         if (req.method === 'POST') {
             const params = {
-                modelId: 'claude-3-haiku',
+                modelId: 'claude-3-haiku',  // Ensure this model ID is correct
                 prompt: `${systemPrompt}`,
                 responseFormat: 'json',
                 maxTokens: 3000,
                 retrieveAndGenerateConfiguration: {
                     type: "KNOWLEDGE_BASE",
                     knowledgeBaseConfiguration: {
-                        knowledgeBaseId: "6XDDZFP2RK",
-                        modelArn: "anthropic.claude-3-haiku-20240307-v1:0",
+                        knowledgeBaseId: "6XDDZFP2RK",  // Ensure this is valid
+                        modelArn: "anthropic.claude-3-haiku-20240307-v1:0",  // Check if the ARN is correct
                         retrievalConfiguration: {
                             vectorSearchConfiguration: {
                                 numberOfResults: 10,
@@ -40,6 +39,9 @@ export default async function handler(req, res) {
                     },
                 },
             };
+
+            // Log the params for debugging
+            console.log("Params being sent to Bedrock:", params);
 
             const completion = await bedrockClient.generate(params);
 
@@ -58,7 +60,8 @@ export default async function handler(req, res) {
             return res.status(405).json({ error: 'Method not allowed' });
         }
     } catch (error) {
-        console.error('Error generating case studies:', error);
-        return res.status(500).json({ error: 'Failed to generate case studies' });
+        // Log the error for debugging purposes
+        console.error('Error generating case studies:', error.message);
+        return res.status(500).json({ error: 'Failed to generate case studies', details: error.message });
     }
 }
