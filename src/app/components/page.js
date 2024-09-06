@@ -6,7 +6,6 @@ import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import React, { useState } from 'react';
 
 export default function HomePage() {
     const [role, setRole] = useState('');
