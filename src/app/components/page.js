@@ -13,7 +13,7 @@ export default function Home() {
     setError(null);
     
     try {
-      const response = await fetch('/api/generate-case-studies', {
+      const response = await fetch('/api/claude-bedrock', {
         method: 'POST',
       });
       const data = await response.json();
