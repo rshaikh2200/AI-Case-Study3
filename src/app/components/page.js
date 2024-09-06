@@ -37,13 +37,13 @@ export default function HomePage() {
                 body: JSON.stringify({ role, specialty, department }),
             });
 
-            const data = await res.json();
-
-            if (res.ok) {
-                setResponse(data);
-            } else {
-                setError(data.error);
+            if (!res.ok) {
+                const errorMessage = await res.text();
+                throw new Error(`Network response was not ok: ${res.status} ${errorMessage}`);
             }
+
+            const data = await res.json();
+            setResponse(data);
         } catch (err) {
             setError('An error occurred. Please try again.');
         } finally {
