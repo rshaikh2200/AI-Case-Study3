@@ -19,26 +19,21 @@ Return the output in the following JSON format:
     ]
 }`;
 
-// Test function using static values
-export async function POST() {
+export async function POST(req) {
+    const { role, specialty, department } = await req.json(); // Get user input from the request body
+
     const client = new BedrockAgentRuntimeClient({
         region: "us-east-1",
         credentials: fromEnv(),  // Ensure this is set properly
     });
 
-    // Static values for testing
-    const role = "Doctor";
-    const specialty = "Cardiology";
-    const department = "Cardiology Department";
-
     try {
-        // Define the input for the RetrieveAndGenerateCommand
         const input = {
             input: { text: `Role: ${role}, Specialty: ${specialty}, Department: ${department}` },
             retrieveAndGenerateConfiguration: {
                 type: "KNOWLEDGE_BASE",
                 knowledgeBaseConfiguration: {
-                    knowledgeBaseId: "6XDDZFP2RK", // Make sure this is your actual Knowledge Base ID
+                    knowledgeBaseId: "6XDDZFP2RK", // Ensure this is your actual Knowledge Base ID
                     modelArn: "anthropic.claude-3-haiku-20240307-v1:0", // Ensure this is the correct model ARN
                     retrievalConfiguration: {
                         vectorSearchConfiguration: {
@@ -69,26 +64,22 @@ export async function POST() {
 
         // Create the command
         const command = new RetrieveAndGenerateCommand(input);
-        
-        console.log("Sending request to Bedrock...");
         const response = await client.send(command);
 
-        console.log("Bedrock response:", response);
-
         if (!response.output?.text) {
-            console.error("No output text from Bedrock model");
             throw new Error('No response from Bedrock model');
         }
 
+        // Parse the JSON response from the Bedrock API
         const caseStudies = JSON.parse(response.output.text);
 
-        return new Response(JSON.stringify(caseStudies), {
+        return new Response(JSON.stringify(caseStudies.caseStudies), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });
 
     } catch (error) {
-        console.error("Error during Bedrock request:", error);  // Detailed error logging
+        console.error("Error during Bedrock request:", error);
         return new Response(JSON.stringify({ error: "An internal server error occurred." }), {
             status: 500,
             headers: { 'Content-Type': 'application/json' }
