@@ -28,26 +28,26 @@ export default async function handler(req, res) {
                 return res.status(400).json({ error: 'Missing required fields: department, role, specialty' });
             }
 
-            // Prepare parameters for Bedrock
             const params = {
-                modelId: 'claude-3-haiku',
-                prompt: `${systemPrompt}`,
-                responseFormat: 'json',
-                maxTokens: 3000,
-                retrieveAndGenerateConfiguration: {
-                    type: "KNOWLEDGE_BASE",
-                    knowledgeBaseConfiguration: {
-                        knowledgeBaseId: "6XDDZFP2RK",
-                        modelArn: "anthropic.claude-3-haiku-20240307-v1:0",
-                        retrievalConfiguration: {
-                            vectorSearchConfiguration: {
-                                numberOfResults: 10,
-                                overrideSearchType: "SEMANTIC",
-                            },
-                        },
-                    },
-                },
-            };
+              modelId: 'claude-3-haiku',  // Ensure this model ID is correct
+              prompt: `${systemPrompt}`,
+              responseFormat: 'json',
+              maxTokens: 3000,
+              retrieveAndGenerateConfiguration: {
+                  type: "KNOWLEDGE_BASE",
+                  knowledgeBaseConfiguration: {
+                      knowledgeBaseId: "6XDDZFP2RK",  // Ensure this is valid
+                      modelArn: "anthropic.claude-3-haiku-20240307-v1:0",  // Ensure the ARN is valid
+                      retrievalConfiguration: {
+                          vectorSearchConfiguration: {
+                              numberOfResults: 10,
+                              overrideSearchType: "SEMANTIC",
+                          },
+                      },
+                  },
+              },
+          };
+          
 
             // Log the params for debugging
             console.log("Params being sent to Bedrock:", params);
