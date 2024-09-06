@@ -29,7 +29,7 @@ export default function HomePage() {
         setError(null);
 
         try {
-            const res = await fetch('/api/generate-case-studies', {
+            const res = await fetch('/api/claude-bedrock', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
