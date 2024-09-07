@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, Box, Paper, CircularProgress, Alert, List, ListItem, ListItemText, Radio, RadioGroup, FormControlLabel } from '@mui/material';
+import { TextField, Button, Typography, Container, Box, Paper, CircularProgress, Alert, List, ListItem, ListItemText } from '@mui/material';
 
 export default function Home() {
   const [caseStudies, setCaseStudies] = useState([]);
@@ -111,36 +111,17 @@ export default function Home() {
                         {q.question}
                       </Typography>
 
-                      {/* Display options with improved layout */}
-                      <RadioGroup>
+                      {/* Display options with better styling */}
+                      <List>
                         {q.options.map((option, optIndex) => (
-                          <FormControlLabel
-                            key={optIndex}
-                            value={option.key}
-                            control={<Radio />}
-                            label={
-                              <Box display="flex" alignItems="center">
-                                <Box
-                                  component="span"
-                                  sx={{
-                                    borderRadius: '50%',
-                                    border: '2px solid black',
-                                    width: '24px',
-                                    height: '24px',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    marginRight: '8px',
-                                  }}
-                                >
-                                  {String.fromCharCode(65 + optIndex)}
-                                </Box>
-                                {option.label}
-                              </Box>
-                            }
-                          />
+                          <ListItem key={optIndex} dense>
+                            <ListItemText
+                              primaryTypographyProps={{ variant: 'body2' }}
+                              primary={`${option.key}. ${option.label}`}
+                            />
+                          </ListItem>
                         ))}
-                      </RadioGroup>
+                      </List>
                     </Box>
                   ))
                 ) : (
