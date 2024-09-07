@@ -20,8 +20,7 @@ export async function POST(request) {
 
     const message = `
       Generate a concise medical case study for a ${role} in the ${department} department specializing in ${specialization}.
-      The case study should be 100-150 words and include relevant details from the following search results: $search_results$. In the response do not provide sentences that refer to prevention, solution or what could have been avoided in the case study. 
-
+      The case study should be 100-150 words and include relevant details from the following search results: $search_results$. 
       Format the case study as follows:
       The Case:
       
