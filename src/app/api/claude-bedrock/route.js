@@ -29,7 +29,8 @@ export async function POST(request) {
       A 38-year-old female with no past medical history presented with fevers, respiratory failure, and bilateral pulmonary infiltrates. She developed ARDS. 
       AFB cultures grew Mycobacterium tuberculosis after broad-spectrum antibiotics failed.
 
-      After the case study, create 3 multiple-choice questions with four options (a, b, c, d) based on the safety core principles. All relevant data and relevant details for producing questions based on safety core principles can be found by the following search results $search_results$;
+      After the case study, create 3 multiple-choice questions with four options (a, b, c, d) based on these core principles. 
+      The data for hospitals core safety principles and all relevant details can be found from the following search results: $search_results$;
     `;
 
     const input = {
@@ -67,7 +68,7 @@ export async function POST(request) {
     // Log the response to see if it's structured as expected
     console.log('Full Response from Bedrock:', response);
 
-    const responseText = response.output?.text ?? "No response from model";
+    const responseText = response.output?.text || "No response from model";
 
     if (!responseText || responseText.includes("Sorry")) {
       throw new Error("Model unable to process the request.");
@@ -89,7 +90,7 @@ export async function POST(request) {
     const questionsText = responseText.substring(questionsStart).trim();
     const questionBlocks = questionsText.split(/\d\./).slice(1);
 
-    const formattedQuestions = questionBlocks.map((block, index) => {
+    const formattedQuestions = questionBlocks.map((block) => {
       const [questionText, ...options] = block.split(/[a-d]\./).map((str) => str.trim());
       return {
         question: questionText,
