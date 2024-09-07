@@ -20,15 +20,11 @@ export async function POST(request) {
 
     const message = `
       Generate a concise medical case study for a ${role} in the ${department} department specializing in ${specialization}.
-      The case study should be 100-150 words and include relevant details from the following search results:
-      
-      $search_results$
+      The case study should be 100-150 words and include relevant details from the following search results: $search_results$
 
       Format the case study as follows:
       The Case:
-      A 38-year-old female with no past medical history presented with fevers, respiratory failure, and bilateral pulmonary infiltrates. She developed ARDS. 
-      AFB cultures grew Mycobacterium tuberculosis after broad-spectrum antibiotics failed.
-
+      
       After the case study, create 3 multiple-choice questions with four options (a, b, c, d) based on the safety core principles. All relevant data and relevant details for producing questions based on safety core principles can be found by the following search results $search_results$;
     `;
 
