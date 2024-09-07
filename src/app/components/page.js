@@ -1,97 +1,127 @@
 "use client";
 
 import React, { useState } from 'react';
+import { TextField, Button, Typography, Container, Box, Paper, CircularProgress, Alert, List, ListItem } from '@mui/material';
 
 export default function Home() {
-  const [role, setRole] = useState(''); // State for role input
-  const [department, setDepartment] = useState(''); // State for department input
-  const [specialty, setSpecialty] = useState(''); // State for specialty input
-  const [caseStudies, setCaseStudies] = useState([]); // Store generated case studies and questions
+  const [caseStudies, setCaseStudies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null); // Add state for handling errors
+  const [error, setError] = useState(null);
+  const [response, setResponse] = useState(''); 
 
-  const takeAssessment = async () => {
-    if (isLoading) return; // Prevent multiple requests
+  // Form state for department, role, and specialization
+  const [department, setDepartment] = useState('');
+  const [role, setRole] = useState('');
+  const [specialization, setSpecialization] = useState('');
+
+  // Handle API call to fetch case studies and questions
+  const handleTakeAssessment = async () => {
     setIsLoading(true);
-    setError(null); // Reset error state before making a new request
+    setError(null);
 
     try {
-      // Send a request to the backend to generate the assessment
       const response = await fetch('/api/claude-bedrock', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ role, department, specialty }), // Send user inputs
+        body: JSON.stringify({ department, role, specialization }),
       });
 
       if (!response.ok) {
-        const errorMessage = await response.text();
-        throw new Error(`Network response was not ok: ${response.status} ${errorMessage}`);
+        throw new Error('Failed to fetch case studies');
       }
 
       const data = await response.json();
 
-      // Update the case studies state with the generated case studies
-      setCaseStudies(data.response.caseStudies || []);
-    } catch (error) {
-      console.error('Error:', error);
-      setError('An error occurred while generating the assessment. Please try again.');
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      // Set the fetched case study and questions
+      setCaseStudies([{ caseStudy: data.caseStudy, questions: data.questions }]);
+    } catch (err) {
+      setError(err.message || 'An error occurred');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: '20px', textAlign: 'center' }}>
-      <h1>Take the Assessment</h1>
+    <Container>
+      <Box component={Paper} p={3} my={4}>
+        <Typography variant="h4" gutterBottom>Take Assessment</Typography>
 
-      {/* Form for user input */}
-      <div style={{ marginBottom: '20px' }}>
-        <input
-          type="text"
-          placeholder="Enter Role"
-          value={role}
-          onChange={(e) => setRole(e.target.value)}
-          style={{ marginRight: '10px', padding: '5px' }}
-        />
-        <input
-          type="text"
-          placeholder="Enter Department"
+        {/* Input fields for department, role, and specialization */}
+        <TextField
+          label="Department"
+          fullWidth
+          margin="normal"
           value={department}
           onChange={(e) => setDepartment(e.target.value)}
-          style={{ marginRight: '10px', padding: '5px' }}
         />
-        <input
-          type="text"
-          placeholder="Enter Specialty"
-          value={specialty}
-          onChange={(e) => setSpecialty(e.target.value)}
-          style={{ marginRight: '10px', padding: '5px' }}
+        <TextField
+          label="Role"
+          fullWidth
+          margin="normal"
+          value={role}
+          onChange={(e) => setRole(e.target.value)}
         />
-      </div>
+        <TextField
+          label="Specialization"
+          fullWidth
+          margin="normal"
+          value={specialization}
+          onChange={(e) => setSpecialization(e.target.value)}
+        />
 
-      {/* Button to take the assessment */}
-      <button onClick={takeAssessment} disabled={isLoading}>
-        {isLoading ? 'Generating...' : 'Take Assessment'}
-      </button>
+        <Box mt={2}>
+          <Button variant="contained" color="primary" onClick={handleTakeAssessment} disabled={isLoading}>
+            {isLoading ? <CircularProgress size={24} /> : 'Take Assessment'}
+          </Button>
+        </Box>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message */}
-
-      <div style={{ marginTop: '20px' }}>
-        {caseStudies.length > 0 && (
-          <div>
-            <h2>Generated Case Studies</h2>
-            {caseStudies.map((study, index) => (
-              <div key={index} style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
-                <h3>Case Study {index + 1}</h3>
-                <p><strong>Summary:</strong> {study.caseStudy}</p>
-                <p><strong>Question:</strong> {study.question}</p>
-              </div>
-            ))}
-          </div>
+        {/* Error handling */}
+        {error && (
+          <Box mt={2}>
+            <Alert severity="error">{error}</Alert>
+          </Box>
         )}
-      </div>
-    </div>
+
+        {/* Display case studies and questions */}
+        {caseStudies.length > 0 && (
+          <Box mt={4}>
+            {caseStudies.map((item, index) => (
+              <Box key={index} mb={3}>
+                <Typography variant="h6">Case Study {index + 1}:</Typography>
+                <Typography variant="body1" gutterBottom>{item.caseStudy}</Typography>
+
+                {/* Safely handle the questions array */}
+                {Array.isArray(item.questions) ? (
+                  item.questions.map((q, i) => (
+                    <Box key={i} mt={2}>
+                      <Typography variant="subtitle1">Question {i + 1}: {q.question}</Typography>
+                      
+                      {/* Display options beneath the question */}
+                      <List>
+                        {q.options.map((option, optIndex) => (
+                          <ListItem key={optIndex}>
+                            <Typography variant="body2">
+                              {`${option.key}. ${option.label}`}
+                            </Typography>
+                          </ListItem>
+                        ))}
+                      </List>
+                    </Box>
+                  ))
+                ) : (
+                  <Typography variant="body2" color="textSecondary">No questions available for this case study.</Typography>
+                )}
+              </Box>
+            ))}
+          </Box>
+        )}
+      </Box>
+    </Container>
   );
 }

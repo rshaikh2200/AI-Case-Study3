@@ -1,69 +1,117 @@
-import { BedrockAgentRuntimeClient, RetrieveandGenerateCommand } from '@aws-sdk/client-bedrock-agent-runtime'; // Correct import
+import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/client-bedrock-agent-runtime";
 import { NextResponse } from 'next/server';
+import dotenv from 'dotenv';
 
-const bedrockClient = new BedrockAgentRuntimeClient({ region: 'us-east-1' }); // Initialize the Bedrock client
+// Load environment variables from .env file located in src directory
+dotenv.config({ path: 'src/.env.local' });
 
-const systemPrompt = `You are tasked with generating 10 summarized case studies along with 1 question per case study. The structure should be:
-1. Summarize each case study with key points.
-2. Generate 1 relevant question for each case study.
-Return in the following JSON format:
-{
-  "caseStudies": [
-    {
-      "caseStudy": str,
-      "question": str
-    }
-  ]
-}
-`;
+// Initialize Bedrock client with credentials from the environment
+const client = new BedrockAgentRuntimeClient({
+  region: 'us-east-1',
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  }
+});
 
-export async function POST(req) {
+export async function POST(request) {
   try {
-    const body = await req.json();
-    const { role, department, specialty } = body; // Ensure you're receiving these fields
+    const { department, role, specialization } = await request.json();
 
-    // Combine the system prompt with the user input (role, department, specialty)
-    const prompt = `
-    ${systemPrompt}
-    Role: ${role}
-    Department: ${department}
-    Specialty: ${specialty}
-    `;
+    const message = 
+      `Generate a concise medical case study for a ${role} in the ${department} department specializing in ${specialization}.
+      The case study should be 100-150 words and include relevant details from the following search results:
+      
+      $search_results$
 
-    // Prepare the input for RetrieveandGenerateCommand
+      Format the case study as follows:
+      The Case:
+      A 38-year-old female with no past medical history presented with fevers, respiratory failure, and bilateral pulmonary infiltrates. She developed ARDS. 
+      AFB cultures grew Mycobacterium tuberculosis after broad-spectrum antibiotics failed.
+
+      After the case study, create 3 multiple-choice questions with four options (a, b, c, d) based on these core principles:
+      1) Support the Team
+      2) Ask Questions
+      3) Focus on Task
+      4) Effective Communication
+      5) 4 safety principels 11 error prevention tools
+      6) CHAMP Safety Behaviors
+      7) Know 5ive. Save lives`;
+
     const input = {
-      agentId: 'anthropic.claude-3-5-sonnet-20240620-v1:0', // Replace with your model's ARN (Agent ID)
-      prompt, // The generated prompt from the user inputs
-      maxResults: 10, // Number of case studies and questions
-      temperature: 0.7, // Model behavior (adjust as needed)
-      topP: 0.9, // Nucleus sampling
-      maxTokens: 512 // Ensure the token limit is sufficient for generating responses
+      input: { text: message },
+      retrieveAndGenerateConfiguration: {
+        type: "KNOWLEDGE_BASE",
+        knowledgeBaseConfiguration: {
+          knowledgeBaseId: "8JNS4T4ALI",
+          modelArn: "anthropic.claude-3-haiku-20240307-v1:0",
+          retrievalConfiguration: {
+            vectorSearchConfiguration: {
+              numberOfResults: 5,
+              overrideSearchType: "SEMANTIC"
+            }
+          },
+          generationConfiguration: {
+            promptTemplate: {
+              textPromptTemplate: message,
+              inferenceConfig: {
+                textInferenceConfig: {
+                  temperature: 0.5, // Reduced temperature for more deterministic responses
+                  topP: 0.8,
+                  maxTokens: 1024
+                }
+              }
+            }
+          }
+        }
+      }
     };
 
-    // Use RetrieveandGenerateCommand to invoke the model and generate the response
-    const command = new RetrieveandGenerateCommand(input);
-    const response = await bedrockClient.send(command);
+    const command = new RetrieveAndGenerateCommand(input);
+    const response = await client.send(command);
 
-    // Assuming response contains a field with the case studies and questions
-    const responseOutput = response?.output ?? 'No response from the model';
+    // Log the response to see if it's structured as expected
+    console.log('Full Response from Bedrock:', response);
 
-    // Parse and format the response if necessary
-    let parsedResponse;
-    try {
-      parsedResponse = JSON.parse(responseOutput); // Assuming the model returns a JSON string
-    } catch (err) {
-      console.error('Failed to parse model response:', err);
-      return NextResponse.json({ error: 'Failed to parse model response' }, { status: 500 });
+    const responseText = response.output?.text ?? "No response from model";
+
+    if (!responseText || responseText.includes("Sorry")) {
+      throw new Error("Model unable to process the request.");
     }
 
-    // Check if the parsedResponse has the expected structure
-    if (!parsedResponse.caseStudies || !Array.isArray(parsedResponse.caseStudies)) {
-      return NextResponse.json({ error: 'Unexpected response format from the model' }, { status: 500 });
+    const caseStudyStart = responseText.indexOf("The Case:");
+    const questionsStart = responseText.indexOf("Questions:");
+
+    if (caseStudyStart === -1 || questionsStart === -1) {
+      console.warn("Incomplete response detected. Logging full response for debugging.");
+      return NextResponse.json({ 
+        caseStudy: "No case study generated", 
+        questions: "No questions generated", 
+        warning: "Model did not generate a complete response" 
+      });
     }
 
-    return NextResponse.json({ response: parsedResponse }, { status: 200 });
+    const caseStudy = responseText.substring(caseStudyStart, questionsStart).trim();
+    const questionsText = responseText.substring(questionsStart).trim();
+    const questionBlocks = questionsText.split(/\d\./).slice(1);
+
+    const formattedQuestions = questionBlocks.map((block, index) => {
+      const [questionText, ...options] = block.split(/[a-d]\./).map((str) => str.trim());
+      return {
+        question: questionText,
+        options: options.map((option, i) => ({
+          label: option,
+          key: String.fromCharCode(97 + i),
+        })),
+      };
+    });
+
+    return NextResponse.json({
+      caseStudy: caseStudy || 'No case study generated',
+      questions: formattedQuestions.length > 0 ? formattedQuestions : 'No questions generated',
+    });
   } catch (err) {
-    console.error(`ERROR: Unable to generate assessment or retrieve model response. Reason: ${err.message || err}`);
-    return NextResponse.json({ error: `Error: ${err.message || err}` }, { status: 500 });
+    console.error(`Error invoking Retrieve and Generate: ${err.message || err}`);
+    return NextResponse.json({ error: `Error invoking Retrieve and Generate: ${err.message || err}` }, { status: 500 });
   }
 }
