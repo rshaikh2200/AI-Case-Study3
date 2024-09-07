@@ -18,7 +18,7 @@ export async function POST(request) {
   try {
     const { department, role, specialization } = await request.json();
 
-    const message = `
+    const message = 
       Generate a concise medical case study for a ${role} in the ${department} department specializing in ${specialization}.
       The case study should be 100-150 words and include relevant details from the following search results:
       
@@ -30,8 +30,7 @@ export async function POST(request) {
       AFB cultures grew Mycobacterium tuberculosis after broad-spectrum antibiotics failed.
 
       After the case study, create 3 multiple-choice questions with four options (a, b, c, d) based on these core principles. 
-      The data for hospitals core safety principles and all relevant details can be found from the following search results: $search_results$;
-    `;
+      The data for hospitals core safte principles and all relevant details can be found from the following seach results: $search_results$;
 
     const input = {
       input: { text: message },
@@ -68,7 +67,7 @@ export async function POST(request) {
     // Log the response to see if it's structured as expected
     console.log('Full Response from Bedrock:', response);
 
-    const responseText = response.output?.text || "No response from model";
+    const responseText = response.output?.text ?? "No response from model";
 
     if (!responseText || responseText.includes("Sorry")) {
       throw new Error("Model unable to process the request.");
@@ -90,7 +89,7 @@ export async function POST(request) {
     const questionsText = responseText.substring(questionsStart).trim();
     const questionBlocks = questionsText.split(/\d\./).slice(1);
 
-    const formattedQuestions = questionBlocks.map((block) => {
+    const formattedQuestions = questionBlocks.map((block, index) => {
       const [questionText, ...options] = block.split(/[a-d]\./).map((str) => str.trim());
       return {
         question: questionText,
@@ -106,7 +105,8 @@ export async function POST(request) {
       questions: formattedQuestions.length > 0 ? formattedQuestions : 'No questions generated',
     });
   } catch (err) {
-    console.error(`Error invoking Retrieve and Generate: ${err.message || err}`);
-    return NextResponse.json({ error: `Error invoking Retrieve and Generate: ${err.message || err}` }, { status: 500 });
+    console.error(Error invoking Retrieve and Generate: ${err.message || err});
+    return NextResponse.json({ error: Error invoking Retrieve and Generate: ${err.message || err} }, { status: 500 });
   }
 }
+
