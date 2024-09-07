@@ -29,14 +29,7 @@ export async function POST(request) {
       A 38-year-old female with no past medical history presented with fevers, respiratory failure, and bilateral pulmonary infiltrates. She developed ARDS. 
       AFB cultures grew Mycobacterium tuberculosis after broad-spectrum antibiotics failed.
 
-      After the case study, create 3 multiple-choice questions with four options (a, b, c, d) based on these core principles:
-      1) Support the Team
-      2) Ask Questions
-      3) Focus on Task
-      4) Effective Communication
-      5) 4 safety principels 11 error prevention tools
-      6) CHAMP Safety Behaviors
-      7) Know 5ive. Save lives`;
+      After the case study, create 3 multiple-choice questions with four options (a, b, c, d) based on the safety core principles All relevant data, and relevant details for producing questions based on safety core principles can be found by the following search results $search_results$`;
 
     const input = {
       input: { text: message },

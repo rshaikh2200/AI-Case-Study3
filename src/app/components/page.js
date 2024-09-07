@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { TextField, Button, Typography, Container, Box, Paper, CircularProgress, Alert, List, ListItem } from '@mui/material';
+import { TextField, Button, Typography, Container, Box, Paper, CircularProgress, Alert, List, ListItem, ListItemText } from '@mui/material';
 
 export default function Home() {
   const [caseStudies, setCaseStudies] = useState([]);
@@ -92,30 +92,42 @@ export default function Home() {
         {caseStudies.length > 0 && (
           <Box mt={4}>
             {caseStudies.map((item, index) => (
-              <Box key={index} mb={3}>
-                <Typography variant="h6">Case Study {index + 1}:</Typography>
-                <Typography variant="body1" gutterBottom>{item.caseStudy}</Typography>
+              <Box key={index} mb={5} p={3} borderRadius={2} boxShadow={2} bgcolor="background.paper">
+                <Typography variant="h5" color="primary" gutterBottom>
+                  Case Study {index + 1}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  {item.caseStudy}
+                </Typography>
 
-                {/* Safely handle the questions array */}
+                {/* Handle the questions array safely */}
                 {Array.isArray(item.questions) ? (
                   item.questions.map((q, i) => (
-                    <Box key={i} mt={2}>
-                      <Typography variant="subtitle1">Question {i + 1}: {q.question}</Typography>
-                      
-                      {/* Display options beneath the question */}
+                    <Box key={i} mt={3} mb={3} p={2} borderRadius={2} boxShadow={1} bgcolor="background.default">
+                      <Typography variant="subtitle1" gutterBottom>
+                        Question {i + 1}
+                      </Typography>
+                      <Typography variant="body2" gutterBottom>
+                        {q.question}
+                      </Typography>
+
+                      {/* Display options with better styling */}
                       <List>
                         {q.options.map((option, optIndex) => (
-                          <ListItem key={optIndex}>
-                            <Typography variant="body2">
-                              {`${option.key}. ${option.label}`}
-                            </Typography>
+                          <ListItem key={optIndex} dense>
+                            <ListItemText
+                              primaryTypographyProps={{ variant: 'body2' }}
+                              primary={`${option.key}. ${option.label}`}
+                            />
                           </ListItem>
                         ))}
                       </List>
                     </Box>
                   ))
                 ) : (
-                  <Typography variant="body2" color="textSecondary">No questions available for this case study.</Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    No questions available for this case study.
+                  </Typography>
                 )}
               </Box>
             ))}
