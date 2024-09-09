@@ -24,7 +24,14 @@ export async function POST(request) {
       Format the case study as follows:
       The Case:
       
-      After the case study, create 3 multiple-choice questions with four options (a, b, c, d) based on the safety core principles. All relevant data and relevant details for producing questions based on safety core principles can be found by the following search results $search_results$;
+      After the case study, create 3 multiple-choice questions with four options (a, b, c, d) based on the safety core principles. All relevant data and relevant details for producing questions based on safety core principles can be found by the following search results $search_results$; Format the questions as follow:
+      
+      Question: 
+      A)
+      B)
+      C)
+      D) 
+
     `;
 
     const input = {
@@ -68,39 +75,51 @@ export async function POST(request) {
       throw new Error("Model unable to process the request.");
     }
 
+    // Get the part of the response starting from "The Case:"
     const caseStudyStart = responseText.indexOf("The Case:");
-    const questionsStart = responseText.indexOf("Questions:");
-
-    if (caseStudyStart === -1 || questionsStart === -1) {
-      console.warn("Incomplete response detected. Logging full response for debugging.");
+    if (caseStudyStart === -1) {
+      console.warn("No case study section found in the response.");
       return NextResponse.json({ 
         caseStudy: "No case study generated", 
         questions: "No questions generated", 
-        warning: "Model did not generate a complete response" 
+        warning: "Model did not generate a case study" 
       });
     }
 
-    const caseStudy = responseText.substring(caseStudyStart, questionsStart).trim();
-    const questionsText = responseText.substring(questionsStart).trim();
-    const questionBlocks = questionsText.split(/\d\./).slice(1);
+    // Extract the case study part from the response text
+    const caseStudy = responseText.substring(caseStudyStart).trim();
 
-    const formattedQuestions = questionBlocks.map((block, index) => {
-      const [questionText, ...options] = block.split(/[a-d]\./).map((str) => str.trim());
-      return {
-        question: questionText,
-        options: options.map((option, i) => ({
-          label: option,
-          key: String.fromCharCode(97 + i),
-        })),
-      };
+    // Use the case study as the prompt for image generation using OpenAI API
+    const openAiResponse = await fetch("https://api.openai.com/v1/images/generations", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "dall-e-3",
+        prompt: caseStudy, // Use only the case study part for image generation
+        size: "1024x1024", // Customize size if needed
+        n: 1, // Number of images
+      }),
     });
 
+    const imageData = await openAiResponse.json();
+
+    // Handle errors from OpenAI
+    if (!openAiResponse.ok) {
+      return NextResponse.json({ error: imageData.error?.message || "Failed to generate image." }, { status: openAiResponse.status });
+    }
+
+    const imageUrl = imageData.data[0]?.url;
+
+    // Return the case study and image URL as response
     return NextResponse.json({
       caseStudy: caseStudy || 'No case study generated',
-      questions: formattedQuestions.length > 0 ? formattedQuestions : 'No questions generated',
+      imageUrl: imageUrl || 'No image generated',
     });
   } catch (err) {
-    console.error(`Error invoking Retrieve and Generate: ${err.message || err}`);
-    return NextResponse.json({ error: `Error invoking Retrieve and Generate: ${err.message || err}` }, { status: 500 });
+    console.error(`Error invoking Retrieve and Generate or OpenAI Image Generation: ${err.message || err}`);
+    return NextResponse.json({ error: `Error invoking Retrieve and Generate or Image Generation: ${err.message || err}` }, { status: 500 });
   }
 }
