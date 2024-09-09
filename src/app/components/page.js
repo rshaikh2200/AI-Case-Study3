@@ -14,8 +14,13 @@ import {
   Radio,
   AppBar,
   Toolbar,
-  Stack,
-  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton,
+  Menu,
+  MenuItem,
 } from '@mui/material';
 import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 
@@ -29,6 +34,8 @@ export default function Home() {
   const [department, setDepartment] = useState('');
   const [role, setRole] = useState('');
   const [specialization, setSpecialization] = useState('');
+  const [openProfileDialog, setOpenProfileDialog] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleTakeAssessment = async () => {
     setIsLoading(true);
@@ -98,6 +105,27 @@ export default function Home() {
     }
   };
 
+  const handleOpenProfileDialog = () => {
+    setOpenProfileDialog(true);
+  };
+
+  const handleCloseProfileDialog = () => {
+    setOpenProfileDialog(false);
+  };
+
+  const handleSaveProfile = () => {
+    // Save the values here, possibly to a database or state
+    setOpenProfileDialog(false);
+  };
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Container maxWidth="md">
       <AppBar position="static">
@@ -115,16 +143,20 @@ export default function Home() {
           </SignedOut>
           <SignedIn>
             <UserButton afterSignOutUrl="/" />
+            <IconButton color="inherit" onClick={handleMenuOpen}>
+              <Typography>Profile</Typography>
+            </IconButton>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+              <MenuItem onClick={handleOpenProfileDialog}>Edit Profile</MenuItem>
+            </Menu>
           </SignedIn>
         </Toolbar>
       </AppBar>
 
-      <Box component={Paper} p={5} my={6} sx={{ backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}>
-        <Typography variant="h3" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-          Take Your Assessment
-        </Typography>
-
-        <Box my={4}>
+      {/* Profile Dialog */}
+      <Dialog open={openProfileDialog} onClose={handleCloseProfileDialog}>
+        <DialogTitle>Edit Profile</DialogTitle>
+        <DialogContent>
           <TextField
             label="Department"
             fullWidth
@@ -152,18 +184,32 @@ export default function Home() {
             variant="outlined"
             sx={{ marginBottom: 3 }}
           />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseProfileDialog} color="secondary">
+            Cancel
+          </Button>
+          <Button onClick={handleSaveProfile} color="primary">
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-          <Box display="flex" justifyContent="center">
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleTakeAssessment}
-              disabled={isLoading}
-              sx={{ padding: '10px 30px', fontSize: '1.2rem' }}
-            >
-              {isLoading ? <CircularProgress size={24} /> : 'Take Assessment'}
-            </Button>
-          </Box>
+      <Box component={Paper} p={5} my={6} sx={{ backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}>
+        <Typography variant="h3" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+          Take Your Assessment
+        </Typography>
+
+        <Box my={4} display="flex" justifyContent="center">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleTakeAssessment}
+            disabled={isLoading}
+            sx={{ padding: '10px 30px', fontSize: '1.2rem' }}
+          >
+            {isLoading ? <CircularProgress size={24} /> : 'Take Assessment'}
+          </Button>
         </Box>
 
         {error && (

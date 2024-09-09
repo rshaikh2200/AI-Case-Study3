@@ -24,7 +24,7 @@ export async function POST(request) {
       Format the case study as follows:
       The Case:
       
-      After the case study, create 3 multiple-choice questions with four options (a, b, c, d) based on the safety core principles. All relevant data and relevant details for producing questions based on safety core principles can be found by the following search results $search_results$; Format the questions as follow:
+      After the case study, create 1 multiple-choice question with four options (a, b, c, d) based on the safety core principles. All relevant data and relevant details for producing questions based on safety core principles can be found by the following search results $search_results$; Format the questions as follow:
       
       Question: 
       A)
