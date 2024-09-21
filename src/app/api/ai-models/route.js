@@ -2,6 +2,8 @@ import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/
 import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 
+//hi
+
 // Load environment variables from the .env.local file
 dotenv.config({ path: 'src/.env.local' });
 
