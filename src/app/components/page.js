@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Ensures client-side rendering
 
 import React, { useState } from 'react';
 import {
@@ -23,7 +23,14 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
+import dynamic from 'next/dynamic';
+
+// Dynamically load Clerk components (ssr: false)
+const SignedIn = dynamic(() => import('@clerk/nextjs').then(mod => mod.SignedIn), { ssr: false });
+const SignedOut = dynamic(() => import('@clerk/nextjs').then(mod => mod.SignedOut), { ssr: false });
+const SignInButton = dynamic(() => import('@clerk/nextjs').then(mod => mod.SignInButton), { ssr: false });
+const SignUpButton = dynamic(() => import('@clerk/nextjs').then(mod => mod.SignUpButton), { ssr: false });
+const UserButton = dynamic(() => import('@clerk/nextjs').then(mod => mod.UserButton), { ssr: false });
 
 export default function Home() {
   const [caseStudies, setCaseStudies] = useState([]);
@@ -55,6 +62,10 @@ export default function Home() {
   };
 
   const handleSaveProfile = () => {
+    if (!department || !role || !specialization) {
+      setError('Please fill out all profile fields.');
+      return;
+    }
     setOpenProfileDialog(false);
   };
 
@@ -278,4 +289,3 @@ export default function Home() {
     </Container>
   );
 }
-
