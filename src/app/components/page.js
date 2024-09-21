@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from 'react';
 import {
   TextField,
@@ -37,72 +36,12 @@ export default function Home() {
   const [openProfileDialog, setOpenProfileDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleTakeAssessment = async () => {
-    setIsLoading(true);
-    setError(null);
-    setCurrentQuestionIndex(0);
-
-    try {
-      const response = await fetch('/api/claude-bedrock', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ department, role, specialization }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch case studies');
-      }
-
-      const data = await response.json();
-
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      setCaseStudies([{ caseStudy: data.caseStudy, questions: data.questions }]);
-
-      const openAiResponse = await fetch('/api/claude-bedrock', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: data.caseStudy }),
-      });
-
-      const imageData = await openAiResponse.json();
-
-      if (!openAiResponse.ok || imageData.error) {
-        throw new Error(imageData.error || 'Failed to generate image');
-      }
-
-      setImageUrl(imageData.imageUrl);
-
-    } catch (err) {
-      setError(err.message || 'An error occurred');
-    } finally {
-      setIsLoading(false);
-    }
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleAnswerSelect = (questionIndex, answerKey) => {
-    setSelectedAnswers(prev => ({
-      ...prev,
-      [questionIndex]: answerKey,
-    }));
-  };
-
-  const handleNextQuestion = () => {
-    if (currentQuestionIndex < caseStudies[0].questions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  };
-
-  const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-    }
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   const handleOpenProfileDialog = () => {
@@ -114,16 +53,64 @@ export default function Home() {
   };
 
   const handleSaveProfile = () => {
-    // Save the values here, possibly to a database or state
     setOpenProfileDialog(false);
   };
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleTakeAssessment = async () => {
+    setIsLoading(true);
+    setError(null);
+    setCurrentQuestionIndex(0);
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+    if (!department || !role || !specialization) {
+      setError('Please complete your profile before taking the assessment.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // Fetch case study
+      const caseStudyResponse = await fetch('/api/ai-models', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ department, role, specialization }),
+      });
+
+      if (!caseStudyResponse.ok) {
+        const errorResponse = await caseStudyResponse.json();
+        throw new Error(`Failed to fetch case studies: ${errorResponse.message || 'Unknown error'}`);
+      }
+
+      const caseStudyData = await caseStudyResponse.json();
+      if (!caseStudyData.caseStudy || !Array.isArray(caseStudyData.questions)) {
+        throw new Error('Invalid data format received from API');
+      }
+
+      setCaseStudies([{ caseStudy: caseStudyData.caseStudy, questions: caseStudyData.questions }]);
+
+      // Fetch image
+      const openAiResponse = await fetch('/api/ai-models', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt: caseStudyData.caseStudy }),
+      });
+
+      const imageData = await openAiResponse.json();
+
+      if (!openAiResponse.ok || imageData.error) {
+        throw new Error(imageData.error || 'Failed to generate image');
+      }
+
+      setImageUrl(imageData.imageUrl);
+    } catch (err) {
+      console.error('Error fetching case study:', err);
+      setError(err.message || 'An error occurred');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -131,7 +118,7 @@ export default function Home() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            Flashcards SaaS
+            AI Safety Case Studies
           </Typography>
           <SignedOut>
             <SignInButton mode="modal">
@@ -153,7 +140,6 @@ export default function Home() {
         </Toolbar>
       </AppBar>
 
-      {/* Profile Dialog */}
       <Dialog open={openProfileDialog} onClose={handleCloseProfileDialog}>
         <DialogTitle>Edit Profile</DialogTitle>
         <DialogContent>
@@ -197,7 +183,7 @@ export default function Home() {
 
       <Box component={Paper} p={5} my={6} sx={{ backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}>
         <Typography variant="h3" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-          Take Your Assessment
+          Safety Assessment
         </Typography>
 
         <Box my={4} display="flex" justifyContent="center">
@@ -244,14 +230,19 @@ export default function Home() {
 
                 <RadioGroup
                   value={selectedAnswers[currentQuestionIndex] || ''}
-                  onChange={(e) => handleAnswerSelect(currentQuestionIndex, e.target.value)}
+                  onChange={(e) =>
+                    setSelectedAnswers({
+                      ...selectedAnswers,
+                      [currentQuestionIndex]: e.target.value,
+                    })
+                  }
                 >
                   {caseStudies[0].questions[currentQuestionIndex].options.map((option, index) => (
                     <FormControlLabel
                       key={index}
                       value={option.key}
                       control={<Radio />}
-                      label={<Typography variant="body2">{`${option.key}. ${option.label}`}</Typography>}
+                      label={<Typography variant="body2">{option.label}</Typography>}
                       sx={{ marginBottom: 1 }}
                     />
                   ))}
@@ -261,7 +252,7 @@ export default function Home() {
                   <Button
                     variant="contained"
                     color="secondary"
-                    onClick={handlePreviousQuestion}
+                    onClick={() => setCurrentQuestionIndex((prev) => Math.max(prev - 1, 0))}
                     disabled={currentQuestionIndex === 0}
                     sx={{ padding: '8px 16px' }}
                   >
@@ -270,7 +261,7 @@ export default function Home() {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={handleNextQuestion}
+                    onClick={() => setCurrentQuestionIndex((prev) => Math.min(prev + 1, caseStudies[0].questions.length - 1))}
                     disabled={currentQuestionIndex === caseStudies[0].questions.length - 1}
                     sx={{ padding: '8px 16px' }}
                   >

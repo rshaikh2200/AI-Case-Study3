@@ -1,4 +1,3 @@
-
 import { ClerkProvider } from '@clerk/nextjs';
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 import { useMemo } from 'react';
