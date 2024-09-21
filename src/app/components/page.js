@@ -1,7 +1,5 @@
 "use client"; // Ensures client-side rendering
 
-//hi
-
 import React, { useState } from 'react';
 import {
   TextField,
@@ -64,10 +62,6 @@ export default function Home() {
   };
 
   const handleSaveProfile = () => {
-    if (!department || !role || !specialization) {
-      setError('Please fill out all profile fields.');
-      return;
-    }
     setOpenProfileDialog(false);
   };
 
