@@ -2,8 +2,6 @@ import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/
 import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 
-//hi
-
 // Load environment variables from the .env.local file
 dotenv.config({ path: 'src/.env.local' });
 
@@ -107,7 +105,7 @@ export async function POST(request) {
     // Log the detailed error for debugging
     console.error('Error invoking RetrieveAndGenerateCommand:', err.message || err);
 
-    // Return the error response to the frontend
+    // Ensure a valid JSON response with proper error message
     return NextResponse.json({
       error: `Failed to fetch case studies: ${err.message || 'Unknown error'}`,
     }, { status: 500 });
