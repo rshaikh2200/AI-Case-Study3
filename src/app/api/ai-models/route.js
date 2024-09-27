@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 
 // Load environment variables from the .env.local file
-dotenv.config({ path: '.env' });
+dotenv.config({ path: '.env.local' });
 
 const client = new BedrockAgentRuntimeClient({
   region: 'us-east-1',
