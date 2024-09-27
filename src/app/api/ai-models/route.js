@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 
 // Load environment variables from the .env.local file
-dotenv.config({ path: '.env.local' });
+dotenv.config({ path: '.env' });
 
 const client = new BedrockAgentRuntimeClient({
   region: 'us-east-1',
@@ -70,10 +70,8 @@ export async function POST(request) {
     // Log the raw model output to the console
     console.log('Model Output:', response.output.text);
 
-    // Dynamic parsing - try to break the response into sections using heuristics
+    // Parse the output into case studies
     const sections = response.output.text.split(/\n\s*\n/);  // Split by newlines and space
-
-    // Identify potential case studies, scenarios, and questions
     const caseStudies = [];
     let currentCaseStudy = { caseStudy: '', scenario: '', questions: [] };
     let questionBuffer = [];
@@ -81,9 +79,7 @@ export async function POST(request) {
     sections.forEach((section) => {
       const lowerSection = section.toLowerCase();
 
-      // Check if it's likely a case study section
       if (lowerSection.includes('case study')) {
-        // Push the current case study and start a new one
         if (currentCaseStudy.caseStudy) {
           caseStudies.push({ ...currentCaseStudy, questions: [...questionBuffer] });
           questionBuffer = [];
@@ -91,21 +87,24 @@ export async function POST(request) {
         currentCaseStudy = { caseStudy: section, scenario: '', questions: [] };
       } else if (lowerSection.includes('scenario')) {
         currentCaseStudy.scenario = section;
-      }
-      // Otherwise, assume it's a question section
-      else {
+      } else {
         const parsedQuestions = parseQuestions(section);
         questionBuffer.push(...parsedQuestions);
       }
     });
 
-    // Push the last case study if needed
     if (currentCaseStudy.caseStudy) {
       caseStudies.push({ ...currentCaseStudy, questions: [...questionBuffer] });
     }
 
     if (caseStudies.length === 0) {
       throw new Error('Failed to parse case studies, scenarios, or questions from the response.');
+    }
+
+    // Generate images for each case study
+    for (let caseStudy of caseStudies) {
+      const imageResponse = await generateImageFromCaseStudy(caseStudy.caseStudy);
+      caseStudy.imageUrl = imageResponse.imageUrl || null;
     }
 
     return NextResponse.json({ caseStudies });
@@ -120,8 +119,8 @@ export async function POST(request) {
 
 // Helper function to parse 3 questions from the text block
 function parseQuestions(text) {
-  const questionBlocks = text.split(/\n\n/).filter(block => block.trim()); // Split by double newline to separate questions
-  return questionBlocks.slice(0, 3).map((block) => {  // Parse first 3 questions
+  const questionBlocks = text.split(/\n\n/).filter(block => block.trim());
+  return questionBlocks.slice(0, 3).map((block) => {
     const lines = block.split('\n').filter(line => line.trim());
     const question = lines[0];
     const options = lines.slice(1, 5).map((line, index) => ({
@@ -132,3 +131,27 @@ function parseQuestions(text) {
   });
 }
 
+// Function to generate an image from a case study using OpenAI's DALL·E API
+async function generateImageFromCaseStudy(caseStudy) {
+  const openAiResponse = await fetch("https://api.openai.com/v1/images/generations", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: "dall-e-3",
+      prompt: caseStudy,
+      size: "1024x1024",
+      n: 1,
+    }),
+  });
+
+  const imageData = await openAiResponse.json();
+
+  if (!openAiResponse.ok) {
+    return { error: imageData.error?.message || "Failed to generate image." };
+  }
+
+  return { imageUrl: imageData.data[0]?.url };
+}
