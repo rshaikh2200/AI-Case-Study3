@@ -3,9 +3,8 @@ import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 
 // Load environment variables from the .env.local file
-dotenv.config({ path: 'src/.env.local' });
+dotenv.config({ path: '.env' });
 
-// Initialize Bedrock client with credentials from the environment
 const client = new BedrockAgentRuntimeClient({
   region: 'us-east-1',
   credentials: {
@@ -16,25 +15,23 @@ const client = new BedrockAgentRuntimeClient({
 
 // Sanitize input to prevent problematic content
 const sanitizeInput = (text) => {
-  const restrictedWords = ['forbiddenWord1', 'forbiddenWord2']; // Add more restricted words if necessary
+  const restrictedWords = ['forbiddenWord1', 'forbiddenWord2'];
   return restrictedWords.reduce((acc, word) => acc.replace(new RegExp(word, 'gi'), '***'), text);
 };
 
 export async function POST(request) {
   try {
-    // Parse incoming request body
     const { department, role, specialization } = await request.json();
 
-    // Sanitize input values
     const sanitizedDepartment = sanitizeInput(department || 'General Department');
     const sanitizedRole = sanitizeInput(role || 'General Role');
     const sanitizedSpecialization = sanitizeInput(specialization || 'General Specialization');
 
-    // Construct prompt message for the AI model
+    // Update the prompt to request 3 questions per case study
     const message = `
-      Please generate the following:
-      - The Case: A concise medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
-      - Question: Create 1 multiple-choice question with four options based on safety core principles. Do not include the correct answer or any explanation. Only provide the case study and the question with its options.
+      Please generate 4 medical case studies (100-150 words) with a scenario where something went wrong in each case study and include 3 multiple-choice questions for each case study:
+      - Case Study: A concise medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
+      - Questions: Create 3 multiple-choice questions for each case study, each with four options. Do not include the correct answer or any explanation.
     `;
 
     const input = {
@@ -53,12 +50,12 @@ export async function POST(request) {
           generationConfiguration: {
             promptTemplate: {
               textPromptTemplate: `Please use the following information:\n$search_results$\n${message}`,
-              basePromptTemplate: `Here is the case study and question information:\n$search_results$\n${message}`,
+              basePromptTemplate: `Here is the case study, scenario, and questions:\n$search_results$\n${message}`,
               inferenceConfig: {
                 textInferenceConfig: {
                   temperature: 0.5,
                   topP: 0.8,
-                  maxTokens: 1024,
+                  maxTokens: 2048,
                 },
               },
             },
@@ -67,89 +64,71 @@ export async function POST(request) {
       },
     };
 
-    // Log the constructed command to verify correct parameters
-    console.log('RetrieveAndGenerateCommand Input:', input);
-
-    // Send the command to Amazon Bedrock
     const command = new RetrieveAndGenerateCommand(input);
     const response = await client.send(command);
 
-    // Log the response for debugging purposes
-    console.log('Full Response from Bedrock:', response);
+    // Log the raw model output to the console
+    console.log('Model Output:', response.output.text);
 
-    // Extract the relevant parts from the response
-    const caseStudyMatch = response.output.text.match(/The Case:(.*)Question:/s);
-    const questionsMatch = response.output.text.match(/Question:(.*)/s);
+    // Dynamic parsing - try to break the response into sections using heuristics
+    const sections = response.output.text.split(/\n\s*\n/);  // Split by newlines and space
 
-    if (!caseStudyMatch || !questionsMatch) {
-      throw new Error("Could not parse case study or questions from the model output.");
-    }
+    // Identify potential case studies, scenarios, and questions
+    const caseStudies = [];
+    let currentCaseStudy = { caseStudy: '', scenario: '', questions: [] };
+    let questionBuffer = [];
 
-    const caseStudy = caseStudyMatch[1].trim();
-    const questionsText = questionsMatch[1].trim();
+    sections.forEach((section) => {
+      const lowerSection = section.toLowerCase();
 
-    // Generate an image based on the case study
-    const imageResponse = await generateImageFromCaseStudy(caseStudy);
-    if (imageResponse.error) {
-      return NextResponse.json({ error: imageResponse.error }, { status: 500 });
-    }
-
-    // Return the parsed case study, questions, and image URL in a formatted manner
-    return NextResponse.json({
-      caseStudy: formatCaseStudy(caseStudy),
-      questions: parseQuestions(questionsText),
-      imageUrl: imageResponse.imageUrl,
+      // Check if it's likely a case study section
+      if (lowerSection.includes('case study')) {
+        // Push the current case study and start a new one
+        if (currentCaseStudy.caseStudy) {
+          caseStudies.push({ ...currentCaseStudy, questions: [...questionBuffer] });
+          questionBuffer = [];
+        }
+        currentCaseStudy = { caseStudy: section, scenario: '', questions: [] };
+      } else if (lowerSection.includes('scenario')) {
+        currentCaseStudy.scenario = section;
+      }
+      // Otherwise, assume it's a question section
+      else {
+        const parsedQuestions = parseQuestions(section);
+        questionBuffer.push(...parsedQuestions);
+      }
     });
 
-  } catch (err) {
-    // Log the detailed error for debugging
-    console.error('Error invoking RetrieveAndGenerateCommand:', err.message || err);
+    // Push the last case study if needed
+    if (currentCaseStudy.caseStudy) {
+      caseStudies.push({ ...currentCaseStudy, questions: [...questionBuffer] });
+    }
 
-    // Ensure a valid JSON response with proper error message
+    if (caseStudies.length === 0) {
+      throw new Error('Failed to parse case studies, scenarios, or questions from the response.');
+    }
+
+    return NextResponse.json({ caseStudies });
+
+  } catch (err) {
+    console.error('Error invoking RetrieveAndGenerateCommand:', err.message || err);
     return NextResponse.json({
       error: `Failed to fetch case studies: ${err.message || 'Unknown error'}`,
     }, { status: 500 });
   }
 }
 
-// Helper functions
+// Helper function to parse 3 questions from the text block
 function parseQuestions(text) {
-  const lines = text.split('\n').filter(line => line.trim());
-  const question = lines[0];
-  const options = lines.slice(1, 5).map((line, index) => ({
-    key: String.fromCharCode(65 + index), // A, B, C, D for options
-    label: line.trim(),
-  }));
-  return [{ question, options }];
-}
-
-function formatCaseStudy(caseStudyText) {
-  // Remove any unnecessary labels or repeated headers
-  return caseStudyText.replace(/The Case:/gi, '').trim();
-}
-
-// Use the case study as the prompt for image generation using OpenAI API
-async function generateImageFromCaseStudy(caseStudy) {
-  const openAiResponse = await fetch("https://api.openai.com/v1/images/generations", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "dall-e-3",
-      prompt: caseStudy, // Use only the case study part for image generation
-      size: "1024x1024", // Customize size if needed
-      n: 1, // Number of images
-    }),
+  const questionBlocks = text.split(/\n\n/).filter(block => block.trim()); // Split by double newline to separate questions
+  return questionBlocks.slice(0, 3).map((block) => {  // Parse first 3 questions
+    const lines = block.split('\n').filter(line => line.trim());
+    const question = lines[0];
+    const options = lines.slice(1, 5).map((line, index) => ({
+      key: String.fromCharCode(65 + index), // A, B, C, D for options
+      label: line.trim(),
+    }));
+    return { question, options };
   });
-
-  const imageData = await openAiResponse.json();
-
-  // Handle errors from OpenAI
-  if (!openAiResponse.ok) {
-    return { error: imageData.error?.message || "Failed to generate image." };
-  }
-
-  return { imageUrl: imageData.data[0]?.url };
 }
+
