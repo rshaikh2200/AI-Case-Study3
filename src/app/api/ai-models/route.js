@@ -2,6 +2,7 @@ import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/
 import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 
+dotenv.config();
 
 const client = new BedrockAgentRuntimeClient({
   region: 'us-east-1',
@@ -177,14 +178,22 @@ async function fetchImagesForCaseStudies(caseStudies) {
           }),
         });
 
-        const imageData = await openAiResponse.json();
-
+        // Ensure the response is OK before parsing
         if (!openAiResponse.ok) {
-          console.warn(`Failed to generate image for Case Study: ${caseStudy.caseStudy}. Error: ${imageData.error?.message || 'Unknown error'}`);
+          const errorData = await openAiResponse.json();
+          console.warn(`Failed to generate image for Case Study: ${caseStudy.caseStudy}. Error: ${errorData.error?.message || 'Unknown error'}`);
           return { ...caseStudy, imageUrl: null };
         }
 
-        return { ...caseStudy, imageUrl: imageData.data[0]?.url };
+        // Try parsing the response
+        const imageData = await openAiResponse.json();
+
+        // Validate that the response contains the expected data
+        if (!imageData || !imageData.data || !imageData.data[0]?.url) {
+          throw new Error(`Invalid response format for Case Study: ${caseStudy.caseStudy}`);
+        }
+
+        return { ...caseStudy, imageUrl: imageData.data[0].url };
       } catch (error) {
         console.error('Error generating image:', error.message);
         return { ...caseStudy, imageUrl: null };
@@ -192,3 +201,4 @@ async function fetchImagesForCaseStudies(caseStudies) {
     })
   );
 }
+
