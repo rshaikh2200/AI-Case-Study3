@@ -95,7 +95,7 @@ export default function Home() {
     // Your image fetching logic
   };
 
-  const handleSubmitPreAssessment = async () => {
+const handleSubmitPreAssessment = async () => {
   setIsLoading(true);
   try {
     const response = await fetch('/api/ai-models', {
@@ -106,10 +106,9 @@ export default function Home() {
       body: JSON.stringify({ department, role, specialization }),
     });
 
-    // Check if the response is JSON
     const contentType = response.headers.get('Content-Type') || '';
+
     if (!response.ok) {
-      // If the response is not ok, handle the error
       if (contentType.includes('application/json')) {
         const errorData = await response.json();
         throw new Error(`Failed to fetch case studies: ${errorData.message || 'Unknown error'}`);
@@ -119,16 +118,19 @@ export default function Home() {
       }
     }
 
-    // Parse the JSON response only if it is valid JSON
     if (contentType.includes('application/json')) {
       const data = await response.json();
       setCaseStudies(data.caseStudies);
       setShowPreAssessment(false);
       setShowCaseStudies(true);
     } else {
+      // Log the unexpected response and throw an error
+      const textResponse = await response.text();
+      console.error('Unexpected response:', textResponse);
       throw new Error('Unexpected non-JSON response.');
     }
   } catch (err) {
+    console.error('Error occurred while submitting assessment:', err.message || err);
     setError(err.message || 'An error occurred');
   } finally {
     setIsLoading(false);
