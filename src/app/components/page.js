@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   TextField,
   Button,
+  Grid,
   Typography,
   Container,
   Box,
@@ -11,17 +12,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  AppBar,
-  Toolbar,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  IconButton,
-  Menu,
-  MenuItem,
 } from '@mui/material';
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
 
 const safetyQuestions = [
   {
@@ -78,7 +69,6 @@ const safetyQuestions = [
   },
 ];
 
-
 export default function Home() {
   const [caseStudies, setCaseStudies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -88,50 +78,23 @@ export default function Home() {
   const [department, setDepartment] = useState('');
   const [role, setRole] = useState('');
   const [specialization, setSpecialization] = useState('');
-  const [openProfileDialog, setOpenProfileDialog] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
   const [showPreAssessment, setShowPreAssessment] = useState(false);
   const [showCaseStudies, setShowCaseStudies] = useState(false);
   const [showSafetyStatement, setShowSafetyStatement] = useState(true);
-
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleOpenProfileDialog = () => {
-    setOpenProfileDialog(true);
-  };
-
-  const handleCloseProfileDialog = () => {
-    setOpenProfileDialog(false);
-  };
-
-  const handleSaveProfile = () => {
-    setOpenProfileDialog(false);
-  };
+  const [assessmentComplete, setAssessmentComplete] = useState(false);
 
   const handleTakeAssessment = async () => {
-    setIsLoading(true);
-    setError(null);
-
-    if (!department || !role || !specialization) {
-      setError('Please complete your profile before taking the assessment.');
-      setIsLoading(false);
-      return;
-    }
-
     setShowPreAssessment(true);
     setShowSafetyStatement(false);
-    setIsLoading(false);
+    await generateImageForCaseStudy(0);
+  };
+
+  const fetchImagesForCaseStudies = async (caseStudyIndex) => {
+    // Your image fetching logic
   };
 
   const handleSubmitPreAssessment = async () => {
     setIsLoading(true);
-
     try {
       const response = await fetch('/api/ai-models', {
         method: 'POST',
@@ -148,7 +111,6 @@ export default function Home() {
 
       const data = await response.json();
       setCaseStudies(data.caseStudies);
-
       setShowPreAssessment(false);
       setShowCaseStudies(true);
     } catch (err) {
@@ -160,79 +122,85 @@ export default function Home() {
 
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
 
+  const handleAnswerChange = (caseStudyIndex, questionIndex, selectedOption) => {
+    setSelectedAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [caseStudyIndex]: {
+        ...prevAnswers[caseStudyIndex],
+        [questionIndex]: selectedOption,
+      },
+    }));
+  };
+
+  const generateImageForCaseStudy = async (index) => {
+    if (caseStudies[index] && !caseStudies[index].imageUrl) {
+      await fetchImagesForCaseStudies(index);
+    }
+  };
+
+  const handleNextButtonClick = async () => {
+    const nextIndex = currentCaseStudyIndex + 1;
+    if (nextIndex < caseStudies.length) {
+      setCurrentCaseStudyIndex(nextIndex);
+      await generateImageForCaseStudy(nextIndex);
+    }
+  };
+
+  const handlePreviousButtonClick = () => {
+    const prevIndex = currentCaseStudyIndex - 1;
+    if (prevIndex >= 0) {
+      setCurrentCaseStudyIndex(prevIndex);
+    }
+  };
+
+  const handleSubmitAssessment = () => {
+    setAssessmentComplete(true);
+    setShowCaseStudies(false);
+    setTimeout(() => {
+      setAssessmentComplete(false);
+      setShowSafetyStatement(true);
+    }, 3000);
+  };
+
   return (
     <Container maxWidth="md">
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            AI Safety Case Studies
-          </Typography>
-          <SignedOut>
-            <SignInButton mode="modal">
-              <Button color="inherit">Log In</Button>
-            </SignInButton>
-            <SignUpButton mode="modal">
-              <Button color="inherit">Sign Up</Button>
-            </SignUpButton>
-          </SignedOut>
-          <SignedIn>
-            <UserButton afterSignOutUrl="/" />
-            <IconButton color="inherit" onClick={handleMenuOpen}>
-              <Typography>Profile</Typography>
-            </IconButton>
-            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-              <MenuItem onClick={handleOpenProfileDialog}>Edit Profile</MenuItem>
-            </Menu>
-          </SignedIn>
-        </Toolbar>
-      </AppBar>
-
-      <Dialog open={openProfileDialog} onClose={handleCloseProfileDialog}>
-        <DialogTitle>Edit Profile</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Department"
-            fullWidth
-            margin="normal"
-            value={department}
-            onChange={(e) => setDepartment(e.target.value)}
-            variant="outlined"
-            sx={{ marginBottom: 3 }}
-          />
-          <TextField
-            label="Role"
-            fullWidth
-            margin="normal"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            variant="outlined"
-            sx={{ marginBottom: 3 }}
-          />
-          <TextField
-            label="Specialization"
-            fullWidth
-            margin="normal"
-            value={specialization}
-            onChange={(e) => setSpecialization(e.target.value)}
-            variant="outlined"
-            sx={{ marginBottom: 3 }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseProfileDialog} color="secondary">
-            Cancel
-          </Button>
-          <Button onClick={handleSaveProfile} color="primary">
-            Save
-          </Button>
-        </DialogActions>
-      </Dialog>
-
       <Box component={Paper} p={5} my={6} sx={{ backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}>
         {showSafetyStatement && (
           <Typography variant="body1" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 4 }}>
             Avoidable medical errors in hospitals are the third leading cause of death in the USA. 99% of avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety principles and corresponding 11 error prevention tools (EPTs). By understanding and using this safety language, harm to patients can be drastically reduced.
           </Typography>
+        )}
+
+        {showSafetyStatement && (
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                label="Department"
+                fullWidth
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                label="Role"
+                fullWidth
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                variant="outlined"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextField
+                label="Specialization"
+                fullWidth
+                value={specialization}
+                onChange={(e) => setSpecialization(e.target.value)}
+                variant="outlined"
+              />
+            </Grid>
+          </Grid>
         )}
 
         <Box my={4} display="flex" justifyContent="center">
@@ -242,7 +210,7 @@ export default function Home() {
               color="primary"
               onClick={handleTakeAssessment}
               disabled={isLoading}
-              sx={{ padding: '10px 30px', fontSize: '1.2rem' }}
+              sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
             >
               {isLoading ? <CircularProgress size={24} /> : 'Take Assessment'}
             </Button>
@@ -287,9 +255,10 @@ export default function Home() {
                 variant="contained"
                 color="primary"
                 onClick={handleSubmitPreAssessment}
-                sx={{ padding: '8px 16px' }}
+                disabled={isLoading}
+                sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
               >
-                Submit: Part I
+                {isLoading ? <CircularProgress size={24} /> : 'Submit: Part I'}
               </Button>
             </Box>
           </Box>
@@ -303,15 +272,21 @@ export default function Home() {
 
         {showCaseStudies && caseStudies.length > 0 && currentCaseStudy && (
           <Box mt={4}>
+            {currentCaseStudy.imageUrl && (
+              <Box mb={3} display="flex" justifyContent="center">
+                <img
+                  src={currentCaseStudy.imageUrl}
+                  alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
+                  style={{ maxWidth: '520px', height: 'auto', borderRadius: '8px' }}
+                />
+              </Box>
+            )}
+
             <Typography variant="h5" color="primary" gutterBottom sx={{ fontWeight: 'bold' }}>
               Case Study {currentCaseStudyIndex + 1}
             </Typography>
             <Typography variant="body1" gutterBottom sx={{ marginBottom: 3, fontSize: '1rem' }}>
-              {currentCaseStudy.caseStudy}
-            </Typography>
-
-            <Typography variant="body1" gutterBottom>
-              <strong>Scenario:</strong> {currentCaseStudy.scenario}
+              {currentCaseStudy.scenario}
             </Typography>
 
             {currentCaseStudy.questions.map((questionData, qIndex) => (
@@ -321,17 +296,12 @@ export default function Home() {
                 </Typography>
 
                 <RadioGroup
-                  value={selectedAnswers[currentCaseStudyIndex] || ''}
-                  onChange={(e) =>
-                    setSelectedAnswers({
-                      ...selectedAnswers,
-                      [currentCaseStudyIndex]: e.target.value,
-                    })
-                  }
+                  value={selectedAnswers[currentCaseStudyIndex]?.[qIndex] || ''}
+                  onChange={(e) => handleAnswerChange(currentCaseStudyIndex, qIndex, e.target.value)}
                 >
-                  {questionData.options.map((option, index) => (
+                  {questionData.options.map((option, i) => (
                     <FormControlLabel
-                      key={index}
+                      key={i}
                       value={option.key}
                       control={<Radio />}
                       label={<Typography variant="body2">{option.label}</Typography>}
@@ -346,22 +316,40 @@ export default function Home() {
               <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => setCurrentCaseStudyIndex((prev) => Math.max(prev - 1, 0))}
+                onClick={handlePreviousButtonClick}
                 disabled={currentCaseStudyIndex === 0}
-                sx={{ padding: '8px 16px' }}
+                sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
               >
                 Previous
               </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setCurrentCaseStudyIndex((prev) => Math.min(prev + 1, caseStudies.length - 1))}
-                disabled={currentCaseStudyIndex === caseStudies.length - 1}
-                sx={{ padding: '8px 16px' }}
-              >
-                Next
-              </Button>
+              {currentCaseStudyIndex === caseStudies.length - 1 ? (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmitAssessment}
+                  sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
+                >
+                  Submit
+                </Button>
+              ) : (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNextButtonClick}
+                  sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
+                >
+                  Next
+                </Button>
+              )}
             </Box>
+          </Box>
+        )}
+
+        {assessmentComplete && (
+          <Box mt={4}>
+            <Typography variant="h4" color="success" gutterBottom sx={{ textAlign: 'center' }}>
+              You have successfully completed the safety assessment!
+            </Typography>
           </Box>
         )}
       </Box>
