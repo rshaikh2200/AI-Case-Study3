@@ -2,8 +2,6 @@ import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/
 import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 
-// Load environment variables from the .env.local file
-dotenv.config({ path: '.env' });
 
 const client = new BedrockAgentRuntimeClient({
   region: 'us-east-1',
@@ -14,25 +12,39 @@ const client = new BedrockAgentRuntimeClient({
 });
 
 // Sanitize input to prevent problematic content
-const sanitizeInput = (text) => {
+const sanitizeInput = (text = '') => {
   const restrictedWords = ['forbiddenWord1', 'forbiddenWord2'];
   return restrictedWords.reduce((acc, word) => acc.replace(new RegExp(word, 'gi'), '***'), text);
 };
 
+// Sanitize the scenario for safe image generation
+function sanitizeScenario(scenario) {
+  const restrictedWords = ['error', 'failure', 'death', 'harm', 'mistake', 'accident', 'complication'];
+  let sanitizedScenario = scenario;
+
+  // Replace problematic words with neutral terms
+  restrictedWords.forEach(word => {
+    const regex = new RegExp(`\\b${word}\\b`, 'gi');
+    sanitizedScenario = sanitizedScenario.replace(regex, 'issue');
+  });
+
+  // Strip out specific sensitive content (optional)
+  sanitizedScenario = sanitizedScenario.replace(/(something went wrong|malpractice|wrong action|fatal)/gi, 'a minor issue occurred');
+
+  return sanitizedScenario;
+}
+
 export async function POST(request) {
   try {
-    const { department, role, specialization } = await request.json();
+    const { department = 'General Department', role = 'General Role', specialization = 'General Specialization' } = await request.json();
 
-    const sanitizedDepartment = sanitizeInput(department || 'General Department');
-    const sanitizedRole = sanitizeInput(role || 'General Role');
-    const sanitizedSpecialization = sanitizeInput(specialization || 'General Specialization');
+    const sanitizedDepartment = sanitizeInput(department);
+    const sanitizedRole = sanitizeInput(role);
+    const sanitizedSpecialization = sanitizeInput(specialization);
 
-    // Update the prompt to request 3 questions per case study
-    const message = `
-      Please generate 4 medical case studies (100-150 words) with a scenario where something went wrong in each case study and include 3 multiple-choice questions for each case study:
-      - Case Study: A concise medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
-      - Questions: Create 3 multiple-choice questions for each case study, each with four options. Do not include the correct answer or any explanation.
-    `;
+    const message = `Please generate 4 medical case studies (100-200 words) with a scenario where something went wrong in each case study and include 3 multiple-choice questions for each case study:
+      - A concise medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
+      - Create 3 multiple-choice questions for each case study with 4 options. The questions should focus only on the 11 error prevention tools and how they could be used to prevent the error in the case study.`;
 
     const input = {
       input: { text: message },
@@ -50,7 +62,7 @@ export async function POST(request) {
           generationConfiguration: {
             promptTemplate: {
               textPromptTemplate: `Please use the following information:\n$search_results$\n${message}`,
-              basePromptTemplate: `Here is the case study, scenario, and questions:\n$search_results$\n${message}`,
+              basePromptTemplate: `Here is the case study and questions:\n$search_results$\n${message}`,
               inferenceConfig: {
                 textInferenceConfig: {
                   temperature: 0.5,
@@ -67,49 +79,29 @@ export async function POST(request) {
     const command = new RetrieveAndGenerateCommand(input);
     const response = await client.send(command);
 
-    // Log the raw model output to the console
-    console.log('Model Output:', response.output.text);
+    // Log the entire model response to the console
+    console.log("Model Response:", response);
 
-    // Parse the output into case studies
-    const sections = response.output.text.split(/\n\s*\n/);  // Split by newlines and space
-    const caseStudies = [];
-    let currentCaseStudy = { caseStudy: '', scenario: '', questions: [] };
-    let questionBuffer = [];
-
-    sections.forEach((section) => {
-      const lowerSection = section.toLowerCase();
-
-      if (lowerSection.includes('case study')) {
-        if (currentCaseStudy.caseStudy) {
-          caseStudies.push({ ...currentCaseStudy, questions: [...questionBuffer] });
-          questionBuffer = [];
-        }
-        currentCaseStudy = { caseStudy: section, scenario: '', questions: [] };
-      } else if (lowerSection.includes('scenario')) {
-        currentCaseStudy.scenario = section;
-      } else {
-        const parsedQuestions = parseQuestions(section);
-        questionBuffer.push(...parsedQuestions);
-      }
-    });
-
-    if (currentCaseStudy.caseStudy) {
-      caseStudies.push({ ...currentCaseStudy, questions: [...questionBuffer] });
+    if (!response?.output?.text) {
+      throw new Error('No valid text found in the model response.');
     }
+
+    const caseStudies = parseCaseStudies(response.output.text);
 
     if (caseStudies.length === 0) {
       throw new Error('Failed to parse case studies, scenarios, or questions from the response.');
     }
 
-    // Generate images for each case study
-    for (let caseStudy of caseStudies) {
-      const imageResponse = await generateImageFromCaseStudy(caseStudy.caseStudy);
-      caseStudy.imageUrl = imageResponse.imageUrl || null;
-    }
+    // Log that the text-based case studies were successfully parsed
+    console.log("Case studies parsed successfully. Now generating images...");
 
-    return NextResponse.json({ caseStudies });
+    // Fetch images for each case study without rate limiting
+    const caseStudiesWithImages = await fetchImagesForCaseStudies(caseStudies);
+
+    return NextResponse.json({ caseStudies: caseStudiesWithImages });
 
   } catch (err) {
+    // Log the error and send a response with the error message
     console.error('Error invoking RetrieveAndGenerateCommand:', err.message || err);
     return NextResponse.json({
       error: `Failed to fetch case studies: ${err.message || 'Unknown error'}`,
@@ -117,41 +109,86 @@ export async function POST(request) {
   }
 }
 
-// Helper function to parse 3 questions from the text block
+// Helper function to parse the case studies and questions from the response
+function parseCaseStudies(responseText) {
+  const caseStudies = [];
+  const caseStudyBlocks = responseText.split(/Case Study \d+:/g).filter(Boolean);
+
+  caseStudyBlocks.forEach((block, index) => {
+    let [scenario, ...questionsBlock] = block.split('Questions:').map(section => section.trim());
+
+    scenario = scenario
+      .replace(/^[^\n]+\n/, '')
+      .replace(/\nMultiple Choice Questions:\n/, '')
+      .replace(/Specialization: [^\n]+\n/g, '')
+      .replace(/Case Summary:/, '')
+      .replace(/Multiple-Choice Questions:/, '') 
+      .trim();
+
+    const questions = parseQuestions(questionsBlock.join('Questions:'));
+
+    caseStudies.push({
+      caseStudy: `Case Study ${index + 1}`,  // Identifier
+      scenario: scenario.trim(),  // Actual scenario content
+      questions: questions,
+    });
+  });
+
+  return caseStudies;
+}
+
+// Helper function to parse questions block
 function parseQuestions(text) {
+  if (!text) return [];
+
   const questionBlocks = text.split(/\n\n/).filter(block => block.trim());
   return questionBlocks.slice(0, 3).map((block) => {
     const lines = block.split('\n').filter(line => line.trim());
-    const question = lines[0];
+
+    const question = lines[0].replace(/^\d+\.\s*/, '').trim();
+
     const options = lines.slice(1, 5).map((line, index) => ({
-      key: String.fromCharCode(65 + index), // A, B, C, D for options
+      key: String.fromCharCode(65 + index),  // A, B, C, D for options
       label: line.trim(),
     }));
+
     return { question, options };
   });
 }
 
-// Function to generate an image from a case study using OpenAI's DALL·E API
-async function generateImageFromCaseStudy(caseStudy) {
-  const openAiResponse = await fetch("https://api.openai.com/v1/images/generations", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "dall-e-3",
-      prompt: caseStudy,
-      size: "1024x1024",
-      n: 1,
-    }),
-  });
+// Fetch images for each case study
+async function fetchImagesForCaseStudies(caseStudies) {
+  return await Promise.all(
+    caseStudies.map(async (caseStudy) => {
+      try {
+        const sanitizedScenario = sanitizeScenario(caseStudy.scenario);  // Use sanitized version of the scenario
 
-  const imageData = await openAiResponse.json();
+        const openAiResponse = await fetch("https://api.openai.com/v1/images/generations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: "dall-e-3",
+            prompt: sanitizedScenario,  // Use sanitized prompt for image generation
+            size: "1024x1024",  // Customize size if needed
+            n: 1,
+          }),
+        });
 
-  if (!openAiResponse.ok) {
-    return { error: imageData.error?.message || "Failed to generate image." };
-  }
+        const imageData = await openAiResponse.json();
 
-  return { imageUrl: imageData.data[0]?.url };
+        if (!openAiResponse.ok) {
+          console.warn(`Failed to generate image for Case Study: ${caseStudy.caseStudy}. Error: ${imageData.error?.message || 'Unknown error'}`);
+          return { ...caseStudy, imageUrl: null };
+        }
+
+        return { ...caseStudy, imageUrl: imageData.data[0]?.url };
+      } catch (error) {
+        console.error('Error generating image:', error.message);
+        return { ...caseStudy, imageUrl: null };
+      }
+    })
+  );
 }
