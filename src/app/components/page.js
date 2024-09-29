@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from 'react';
 import {
   TextField,
@@ -95,48 +93,32 @@ export default function Home() {
     // Your image fetching logic
   };
 
-const handleSubmitPreAssessment = async () => {
-  setIsLoading(true);
-  try {
-    const response = await fetch('/api/ai-models', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ department, role, specialization }),
-    });
+  const handleSubmitPreAssessment = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/ai-models', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ department, role, specialization }),
+      });
 
-    const contentType = response.headers.get('Content-Type') || '';
-
-    if (!response.ok) {
-      if (contentType.includes('application/json')) {
+      if (!response.ok) {
         const errorData = await response.json();
         throw new Error(`Failed to fetch case studies: ${errorData.message || 'Unknown error'}`);
-      } else {
-        const errorText = await response.text();
-        throw new Error(`Failed to fetch case studies: ${errorText || 'Unknown error'}`);
       }
-    }
 
-    if (contentType.includes('application/json')) {
       const data = await response.json();
       setCaseStudies(data.caseStudies);
       setShowPreAssessment(false);
       setShowCaseStudies(true);
-    } else {
-      // Log the unexpected response and throw an error
-      const textResponse = await response.text();
-      console.error('Unexpected response:', textResponse);
-      throw new Error('Unexpected non-JSON response.');
+    } catch (err) {
+      setError(err.message || 'An error occurred');
+    } finally {
+      setIsLoading(false);
     }
-  } catch (err) {
-    console.error('Error occurred while submitting assessment:', err.message || err);
-    setError(err.message || 'An error occurred');
-  } finally {
-    setIsLoading(false);
-  }
-};
-
+  };
 
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
 
