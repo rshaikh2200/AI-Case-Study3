@@ -276,10 +276,20 @@ export default function Home() {
           <Box mt={4}>
             {currentCaseStudy.imageUrl && (
               <Box mb={3} display="flex" justifyContent="center">
-                <img
+                <Box
+                  component="img"
                   src={currentCaseStudy.imageUrl}
                   alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
-                  style={{ maxWidth: '520px', height: 'auto', borderRadius: '8px' }}
+                  sx={{
+                    width: '100%',
+                    maxWidth: '520px',
+                    height: 'auto',
+                    borderRadius: '8px',
+                    objectFit: 'contain',
+                    '@media (max-width: 600px)': {
+                      maxWidth: '100%',
+                    },
+                  }}
                 />
               </Box>
             )}
