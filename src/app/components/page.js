@@ -96,31 +96,45 @@ export default function Home() {
   };
 
   const handleSubmitPreAssessment = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch('/api/ai-models', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ department, role, specialization }),
-      });
+  setIsLoading(true);
+  try {
+    const response = await fetch('/api/ai-models', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ department, role, specialization }),
+    });
 
-      if (!response.ok) {
+    // Check if the response is JSON
+    const contentType = response.headers.get('Content-Type') || '';
+    if (!response.ok) {
+      // If the response is not ok, handle the error
+      if (contentType.includes('application/json')) {
         const errorData = await response.json();
         throw new Error(`Failed to fetch case studies: ${errorData.message || 'Unknown error'}`);
+      } else {
+        const errorText = await response.text();
+        throw new Error(`Failed to fetch case studies: ${errorText || 'Unknown error'}`);
       }
+    }
 
+    // Parse the JSON response only if it is valid JSON
+    if (contentType.includes('application/json')) {
       const data = await response.json();
       setCaseStudies(data.caseStudies);
       setShowPreAssessment(false);
       setShowCaseStudies(true);
-    } catch (err) {
-      setError(err.message || 'An error occurred');
-    } finally {
-      setIsLoading(false);
+    } else {
+      throw new Error('Unexpected non-JSON response.');
     }
-  };
+  } catch (err) {
+    setError(err.message || 'An error occurred');
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
 
