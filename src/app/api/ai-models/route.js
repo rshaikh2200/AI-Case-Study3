@@ -18,9 +18,11 @@ const sanitizeInput = (text = '') => {
   return restrictedWords.reduce((acc, word) => acc.replace(new RegExp(word, 'gi'), '***'), text);
 };
 
-// Sanitize the scenario for safe image generation
+// Sanitize the scenario for safe image generation (specific to Case Study 3)
 function sanitizeScenario(scenario) {
-  const restrictedWords = ['error', 'failure', 'death', 'harm', 'mistake', 'accident', 'complication'];
+  const restrictedWords = [
+    'error', 'failure', 'death', 'harm', 'mistake', 'accident', 'complication', 'malpractice', 'wrong action', 'fatal'
+  ];
   let sanitizedScenario = scenario;
 
   // Replace problematic words with neutral terms
@@ -29,8 +31,11 @@ function sanitizeScenario(scenario) {
     sanitizedScenario = sanitizedScenario.replace(regex, 'issue');
   });
 
-  // Strip out specific sensitive content (optional)
-  sanitizedScenario = sanitizedScenario.replace(/(something went wrong|malpractice|wrong action|fatal)/gi, 'a minor issue occurred');
+  // Additional replacements for specific phrases
+  sanitizedScenario = sanitizedScenario.replace(/(severe pain|irreversible damage|long-term disability|failed to recognize|muscle and nerve damage)/gi, 
+  'discomfort, functional issues, delayed diagnosis, and long-term functional limitations');
+
+  console.log('Sanitized Scenario:', sanitizedScenario);  // Log the sanitized version
 
   return sanitizedScenario;
 }
@@ -43,9 +48,9 @@ export async function POST(request) {
     const sanitizedRole = sanitizeInput(role);
     const sanitizedSpecialization = sanitizeInput(specialization);
 
-    const message = `Please generate 4 medical case studies (100-200 words) with a scenario where something went wrong in each case study and include 3 multiple-choice questions for each case study:
-      - A concise medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
-      - Create 3 multiple-choice questions for each case study with 4 options. The questions should focus only on the 11 error prevention tools and how they could be used to prevent the error in the case study.`;
+    const message = `Please generate 4 medical case studies (120-200 words) and include 3 multiple-choice questions for each case study:
+      - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
+      - Create 3 case study based unique multiple-choice questions for each case study with 4 options. The questions should be based on the error prevention tools, safety behaviors and how they could have been used to prevent the error in the case study.`;
 
     const input = {
       input: { text: message },
@@ -63,7 +68,7 @@ export async function POST(request) {
           generationConfiguration: {
             promptTemplate: {
               textPromptTemplate: `Please use the following information:\n$search_results$\n${message}`,
-              basePromptTemplate: `Here is the case study and questions:\n$search_results$\n${message}`,
+              basePromptTemplate: `Here is the case studies, error prevention tools, CHAMP safety behaviors. Grady safety behaviors :\n$search_results$\n${message}`,
               inferenceConfig: {
                 textInferenceConfig: {
                   temperature: 0.5,
@@ -80,7 +85,6 @@ export async function POST(request) {
     const command = new RetrieveAndGenerateCommand(input);
     const response = await client.send(command);
 
-    // Log the entire model response to the console
     console.log("Model Response:", response);
 
     if (!response?.output?.text) {
@@ -93,16 +97,13 @@ export async function POST(request) {
       throw new Error('Failed to parse case studies, scenarios, or questions from the response.');
     }
 
-    // Log that the text-based case studies were successfully parsed
     console.log("Case studies parsed successfully. Now generating images...");
 
-    // Fetch images for each case study without rate limiting
     const caseStudiesWithImages = await fetchImagesForCaseStudies(caseStudies);
 
     return NextResponse.json({ caseStudies: caseStudiesWithImages });
 
   } catch (err) {
-    // Log the error and send a response with the error message
     console.error('Error invoking RetrieveAndGenerateCommand:', err.message || err);
     return NextResponse.json({
       error: `Failed to fetch case studies: ${err.message || 'Unknown error'}`,
@@ -110,7 +111,7 @@ export async function POST(request) {
   }
 }
 
-// Helper function to parse the case studies and questions from the response
+// Parse case studies and questions from the model response
 function parseCaseStudies(responseText) {
   const caseStudies = [];
   const caseStudyBlocks = responseText.split(/Case Study \d+:/g).filter(Boolean);
@@ -129,8 +130,8 @@ function parseCaseStudies(responseText) {
     const questions = parseQuestions(questionsBlock.join('Questions:'));
 
     caseStudies.push({
-      caseStudy: `Case Study ${index + 1}`,  // Identifier
-      scenario: scenario.trim(),  // Actual scenario content
+      caseStudy: `Case Study ${index + 1}`,
+      scenario: scenario.trim(),
       questions: questions,
     });
   });
@@ -138,7 +139,7 @@ function parseCaseStudies(responseText) {
   return caseStudies;
 }
 
-// Helper function to parse questions block
+// Parse questions from the text block
 function parseQuestions(text) {
   if (!text) return [];
 
@@ -149,7 +150,7 @@ function parseQuestions(text) {
     const question = lines[0].replace(/^\d+\.\s*/, '').trim();
 
     const options = lines.slice(1, 5).map((line, index) => ({
-      key: String.fromCharCode(65 + index),  // A, B, C, D for options
+      key: String.fromCharCode(65 + index), 
       label: line.trim(),
     }));
 
@@ -157,12 +158,12 @@ function parseQuestions(text) {
   });
 }
 
-// Fetch images for each case study
+// Generate images for each case study
 async function fetchImagesForCaseStudies(caseStudies) {
   return await Promise.all(
     caseStudies.map(async (caseStudy) => {
       try {
-        const sanitizedScenario = sanitizeScenario(caseStudy.scenario);  // Use sanitized version of the scenario
+        const sanitizedScenario = sanitizeScenario(caseStudy.scenario);
 
         const openAiResponse = await fetch("https://api.openai.com/v1/images/generations", {
           method: "POST",
@@ -172,8 +173,8 @@ async function fetchImagesForCaseStudies(caseStudies) {
           },
           body: JSON.stringify({
             model: "dall-e-3",
-            prompt: sanitizedScenario,  // Use sanitized prompt for image generation
-            size: "1024x1024",  // Customize size if needed
+            prompt: sanitizedScenario,
+            size: "1024x1024",
             n: 1,
           }),
         });
@@ -193,5 +194,4 @@ async function fetchImagesForCaseStudies(caseStudies) {
     })
   );
 }
-
 
