@@ -88,12 +88,9 @@ export default function Home() {
   const handleTakeAssessment = async () => {
     setShowPreAssessment(true);
     setShowSafetyStatement(false);
-    await generateImageForCaseStudy(0);
+    await generateImageAndQuestionsForCaseStudy(0);
   };
 
-  const fetchImagesForCaseStudies = async (caseStudyIndex) => {
-    // Your image fetching logic
-  };
 
   const handleSubmitPreAssessment = async () => {
     setIsLoading(true);
@@ -115,6 +112,7 @@ export default function Home() {
       setCaseStudies(data.caseStudies);
       setShowPreAssessment(false);
       setShowCaseStudies(true);
+      await generateImageAndQuestionsForCaseStudy(0); // Fetch first case study immediately after data load
     } catch (err) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -134,9 +132,9 @@ export default function Home() {
     }));
   };
 
-  const generateImageForCaseStudy = async (index) => {
+  const generateImageAndQuestionsForCaseStudy = async (index) => {
     if (caseStudies[index] && !caseStudies[index].imageUrl) {
-      await fetchImagesForCaseStudies(index);
+      await fetchImagesAndQuestionsForCaseStudies(index);
     }
   };
 
@@ -144,7 +142,7 @@ export default function Home() {
     const nextIndex = currentCaseStudyIndex + 1;
     if (nextIndex < caseStudies.length) {
       setCurrentCaseStudyIndex(nextIndex);
-      await generateImageForCaseStudy(nextIndex);
+      await generateImageAndQuestionsForCaseStudy(nextIndex);
     }
   };
 
@@ -214,7 +212,7 @@ export default function Home() {
               disabled={isLoading}
               sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
             >
-              {isLoading ? <CircularProgress size={24} /> : 'Take Assessment'}
+              {isLoading ? 'Starting your assessment in a few minutes, please wait.' : 'Take Assessment'}
             </Button>
           )}
         </Box>
@@ -260,7 +258,7 @@ export default function Home() {
                 disabled={isLoading}
                 sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
               >
-                {isLoading ? <CircularProgress size={24} /> : 'Submit: Part I'}
+                {isLoading ? 'Starting your assessment in a few minutes, please wait.' : 'Submit: Part I'}
               </Button>
             </Box>
           </Box>
@@ -268,7 +266,9 @@ export default function Home() {
 
         {isLoading && (
           <Box mt={4} display="flex" justifyContent="center">
-            <CircularProgress size={40} />
+            <Typography variant="h6" color="primary" align="center">
+              Starting your assessment in a few minutes, please wait.
+            </Typography>
           </Box>
         )}
 
@@ -298,7 +298,7 @@ export default function Home() {
               Case Study {currentCaseStudyIndex + 1}
             </Typography>
             <Typography variant="body1" gutterBottom sx={{ marginBottom: 3, fontSize: '1rem' }}>
-              {currentCaseStudy.scenario}
+              {currentCaseStudy.scenario.replace('Multiple Choice', '')}
             </Typography>
 
             {currentCaseStudy.questions.map((questionData, qIndex) => (
