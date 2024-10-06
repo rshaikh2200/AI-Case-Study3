@@ -47,8 +47,8 @@ export async function POST(request) {
     const sanitizedDepartment = sanitizeInput(department);
     const sanitizedRole = sanitizeInput(role);
     const sanitizedSpecialization = sanitizeInput(specialization);
-
-    const message = `Please generate 4 medical case studies (120-200 words) and include 3 multiple-choice questions for each case study:
+=
+    const message = `Please generate 4 medical case studies (120-200 words) translated in Hindi language and include 3 multiple-choice questions in English language for each case study:
       - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
       - Create 3 case study based unique multiple-choice questions for each case study with 4 options. The questions should be based on the error prevention tools, safety behaviors and how they could have been used to prevent the error in the case study.`;
 
