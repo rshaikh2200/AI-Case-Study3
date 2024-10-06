@@ -2,6 +2,7 @@ import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/
 import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 
+
 dotenv.config({ path: '.env.local' });
 
 const client = new BedrockAgentRuntimeClient({
