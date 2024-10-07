@@ -34,7 +34,7 @@ export async function POST(request) {
     const message = `
       Please generate the following:
       - The Case: A concise medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
-      - Question: Create 1 multiple-choice question with four options based on safety core principles. Do not include the correct answer or any explanation. Only provide the case study and the question with its options.
+      - Questions: Create 4 multiple-choice question with four options based on safety core principles. Do not include the correct answer or any explanation. Only provide the case study and the question with its options.
     `;
 
     const input = {
@@ -78,8 +78,8 @@ export async function POST(request) {
     console.log('Full Response from Bedrock:', response);
 
     // Extract the relevant parts from the response
-    const caseStudyMatch = response.output.text.match(/The Case:(.*)Question:/s);
-    const questionsMatch = response.output.text.match(/Question:(.*)/s);
+    const caseStudyMatch = response.output.text.match(/The Case:(.*)Questions:/s);
+    const questionsMatch = response.output.text.match(/Questions:(.*)/s);
 
     if (!caseStudyMatch || !questionsMatch) {
       throw new Error("Could not parse case study or questions from the model output.");
@@ -112,15 +112,24 @@ export async function POST(request) {
   }
 }
 
-// Helper functions
-function parseQuestions(text) {
+// Updated helper function to handle multiple questions
+function parseQuestions(text, questionCount = 4) {
   const lines = text.split('\n').filter(line => line.trim());
-  const question = lines[0];
-  const options = lines.slice(1, 5).map((line, index) => ({
-    key: String.fromCharCode(65 + index), // A, B, C, D for options
-    label: line.trim(),
-  }));
-  return [{ question, options }];
+  const questions = [];
+  
+  let currentQuestionIndex = 0;
+
+  while (currentQuestionIndex < lines.length && questions.length < questionCount) {
+    const questionText = lines[currentQuestionIndex];
+    const options = lines.slice(currentQuestionIndex + 1, currentQuestionIndex + 5).map((line, index) => ({
+      key: String.fromCharCode(65 + index), // A, B, C, D for options
+      label: line.trim(),
+    }));
+    questions.push({ question: questionText, options });
+    currentQuestionIndex += 5; // Move to the next question block
+  }
+
+  return questions;
 }
 
 function formatCaseStudy(caseStudyText) {

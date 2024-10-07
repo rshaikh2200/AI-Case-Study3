@@ -39,9 +39,9 @@ export default function Home() {
   const [imageUrl, setImageUrl] = useState('');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState({});
-  const [department, setDepartment] = useState('');
-  const [role, setRole] = useState('');
-  const [specialization, setSpecialization] = useState('');
+  const [department, setDepartment] = useState('Intensive Care Unit');
+  const [role, setRole] = useState('Nurse');
+  const [specialization, setSpecialization] = useState('Oncology');
   const [openProfileDialog, setOpenProfileDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -70,11 +70,13 @@ export default function Home() {
     setError(null);
     setCurrentQuestionIndex(0);
 
+    /*
     if (!department || !role || !specialization) {
       setError('Please complete your profile before taking the assessment.');
       setIsLoading(false);
       return;
     }
+    */
 
     try {
       // Fetch case study
