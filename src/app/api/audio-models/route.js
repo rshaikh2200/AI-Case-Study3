@@ -12,33 +12,26 @@ const elevenLabsClient = new ElevenLabsClient({
 console.log("ElevenLabs API Key Loaded:", !!process.env.ELEVENLABS_API_KEY);
 
 export const POST = async (req) => {
-  const { text } = await req.json();
-
-  if (!text) {
-    return NextResponse.json(
-      { error: "Text is required for audio generation" },
-      { status: 400 }
-    );
-  }
-
   try {
+    const { text } = await req.json();
+
+    if (!text) {
+      return NextResponse.json(
+        { error: "Text is required for audio generation" },
+        { status: 400 }
+      );
+    }
+
     // Remove the substring "Multiple Choice" from the text
     const sanitizedText = text.replace("Multiple Choice", "");
-    
+
     const audio = await elevenLabsClient.generate({
       voice: 'ErXwobaYiN019PkySvjV',
       model_id: "eleven_turbo_v2_5",
       text: sanitizedText,
     });
-  } catch (error) {
-    console.error("Error generating audio:", error);
-  }
 
     // Assuming `audio` is a Buffer. If it's a stream, handle accordingly.
-    // Remove the arrayBuffer call
-    // const audioStream = await audio.arrayBuffer();
-
-    // Send the Buffer directly
     return new NextResponse(audio, {
       headers: {
         "Content-Type": "audio/mpeg",
