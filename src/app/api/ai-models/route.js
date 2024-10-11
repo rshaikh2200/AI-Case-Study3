@@ -1,4 +1,3 @@
-// Route.js
 import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/client-bedrock-agent-runtime";
 import { ElevenLabsClient } from "elevenlabs";
 import { v4 as uuid } from "uuid";
@@ -38,7 +37,6 @@ function sanitizeScenario(scenario) {
   sanitizedScenario = sanitizedScenario.replace(/(severe pain|irreversible damage|long-term disability|failed to recognize|muscle and nerve damage)/gi, 
   'discomfort, functional issues, delayed diagnosis, and long-term functional limitations');
 
-  console.log('Sanitized Scenario:', sanitizedScenario);  // Log the sanitized version
 
   return sanitizedScenario;
 }
