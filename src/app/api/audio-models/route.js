@@ -1,37 +1,81 @@
-import { ElevenLabsClient } from "elevenlabs";
-import { v4 as uuid } from "uuid";
+// Import necessary modules
+import { Configuration, OpenAIApi } from 'openai';
 import dotenv from 'dotenv';
-import { NextResponse } from 'next/server';
 
+// Load environment variables
 dotenv.config({ path: '.env.local' });
 
-const elevenLabsClient = new ElevenLabsClient({
-  apiKey: process.env.ELEVENLABS_API_KEY,
+// Initialize OpenAI Configuration
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
-export default async function generateAudio(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: "Method Not Allowed" });
-  }
+// Instantiate OpenAIApi with the configuration
+const ai = new OpenAIApi(configuration);
 
+// Define the text-to-speech function
+async function text2Speech({ 
+  res, 
+  onSuccess, 
+  onError, 
+  model = "tts-1", 
+  voice = "alloy", 
+  input, 
+  speed = 1 
+}) {
   try {
-    const { text } = req.body;
-
-    if (!text) {
-      return res.status(400).json({ error: "Text is required for audio generation" });
-    }
-
-    const audio = await elevenLabsClient.generate({
-      voice: 'ErXwobaYiN019PkySvjV',
-      model_id: "eleven_multilingual_v2",
-      text,
+    const response = await ai.audio.speech.create({
+      model,
+      voice,
+      input,
+      response_format: 'mp3',
+      speed
     });
 
-    const audioStream = await audio.blob();
-    res.setHeader("Content-Type", "audio/mpeg");
-    res.send(audioStream);
+    const readableStream = response.body;
+    readableStream.pipe(res);
+
+    let bufferStore = Buffer.from([]);
+
+    readableStream.on('data', (chunk) => {
+      bufferStore = Buffer.concat([bufferStore, chunk]);
+    });
+    readableStream.on('end', () => {
+      onSuccess({ model, buffer: bufferStore });
+    });
+    readableStream.on('error', (e) => {
+      onError(e);
+    });
   } catch (error) {
-    console.error("Error generating audio:", error);
-    return res.status(500).json({ error: "Failed to generate audio" });
+    onError(error);
+  }
+}
+
+// Export the POST handler
+export async function POST(req, res) {
+  try {
+    const { input, speed, model, voice } = await req.json();
+
+    await new Promise((resolve, reject) => {
+      text2Speech({
+        res,
+        model,
+        voice,
+        input,
+        speed,
+        onSuccess: (result) => {
+          console.log('Audio generation success:', result);
+          resolve(new Response(JSON.stringify(result), { status: 200 }));
+        },
+        onError: (error) => {
+          console.error('Audio generation error:', error);
+          res.status(500).json({ error: 'Audio generation failed' });
+          reject(error);
+        }
+      });
+    });
+  } catch (error) {
+    console.error('Request handling error:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 }
