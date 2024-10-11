@@ -2,6 +2,7 @@
   "name": "customer-support-ai",
   "version": "0.1.0",
   "private": true,
+  "type": "module", 
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -29,7 +30,7 @@
     "lumaai": "^1.0.2",
     "next": "^14.2.14",
     "node-fetch": "^2.6.7",
-    "openai": "^4.55.4",
+    "openai": "^4.67.3",
     "react": "^18",
     "react-dom": "^18",
     "sharp": "^0.33.5",
