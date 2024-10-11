@@ -1,8 +1,8 @@
 import { ElevenLabsClient } from "elevenlabs";
-import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 
-dotenv.config({ path: '.env.local' });
+// Removed dotenv as Next.js automatically handles environment variables
+// dotenv.config({ path: '.env.local' });
 
 const elevenLabsClient = new ElevenLabsClient({
   apiKey: process.env.ELEVENLABS_API_KEY,
