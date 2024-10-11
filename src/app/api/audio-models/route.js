@@ -32,6 +32,7 @@ export const POST = async (req) => {
     });
 
     // Assuming `audio` is a Buffer. If it's a stream, handle accordingly.
+    // If `audio` is not a Buffer, you may need to convert it appropriately
     return new NextResponse(audio, {
       headers: {
         "Content-Type": "audio/mpeg",
@@ -42,6 +43,7 @@ export const POST = async (req) => {
   } catch (error) {
     console.error("Error generating audio:", error);
 
+    // If the error has a response body, attempt to log it
     if (error.body) {
       try {
         const errorBody = await error.body.text();
