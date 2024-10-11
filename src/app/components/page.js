@@ -340,13 +340,13 @@ export default function Home() {
                   {questionData.question}
                 </Typography>
                 <RadioGroup>
-                  {questionData.options.map((option, optionIndex) => (
+                  {questionData.options.map((option) => (
                     <FormControlLabel
-                      key={optionIndex}
-                      value={option}
+                      key={option.key} // Use unique key from option object
+                      value={option.key} // Use key as the value
                       control={<Radio />}
                       label={
-                        <Typography variant="body2">{option}</Typography>
+                        <Typography variant="body2">{option.label}</Typography>
                       }
                       sx={{ marginBottom: 1 }}
                     />
@@ -385,172 +385,183 @@ export default function Home() {
           </Box>
         )}
 
-        {showCaseStudies && caseStudies.length > 0 && currentCaseStudy && (
+        {showCaseStudies && caseStudies.length > 0 && (
           <Box mt={4}>
-            {currentCaseStudy.imageUrl && (
-              <Box mb={3} display="flex" justifyContent="center">
-                <Box
-                  component="img"
-                  src={currentCaseStudy.imageUrl}
-                  alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
-                  sx={{
-                    width: '100%',
-                    maxWidth: '380px',
-                    height: 'auto',
-                    borderRadius: '8px',
-                    objectFit: 'contain',
-                    '@media (max-width: 600px)': {
-                      maxWidth: '100%',
-                    },
-                  }}
-                />
-              </Box>
-            )}
+            {caseStudies.map((caseStudy, index) => (
+              <React.Fragment key={caseStudy.imageUrl || index}>
+                {currentCaseStudyIndex === index && (
+                  <Box>
+                    {caseStudy.imageUrl && (
+                      <Box mb={3} display="flex" justifyContent="center">
+                        <Box
+                          component="img"
+                          src={caseStudy.imageUrl}
+                          alt={`Case Study ${index + 1} Image`}
+                          sx={{
+                            width: '100%',
+                            maxWidth: '380px',
+                            height: 'auto',
+                            borderRadius: '8px',
+                            objectFit: 'contain',
+                            '@media (max-width: 600px)': {
+                              maxWidth: '100%',
+                            },
+                          }}
+                        />
+                      </Box>
+                    )}
 
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Typography
-                variant="h5"
-                color="primary"
-                gutterBottom
-                sx={{ fontWeight: 'bold' }}
-              >
-                {`Case Study ${currentCaseStudyIndex + 1}`}
-              </Typography>
-              <Button
-                type="button" // Explicitly set to "button"
-                variant="contained"
-                color="primary"
-                onClick={fetchAudio}
-                size="small" // Set to small for a smaller button
-                sx={{
-                  marginLeft: 2,
-                  padding: '4px 8px', // Further reduced padding
-                  fontSize: '0.75rem', // Smaller font size
-                  display: 'flex',
-                  alignItems: 'center',
-                  minWidth: 'auto', // Remove minimum width
-                }}
-                disabled={isAudioPlaying}
-              >
-                {isAudioPlaying ? <VolumeUpIcon fontSize="small" /> : <VolumeOffIcon fontSize="small" />}
-                <Typography
-                  variant="caption" // Smaller text variant
-                  sx={{ marginLeft: 0.5 }}
-                >
-                  Listen
-                </Typography>
-              </Button>
-            </Box>
-
-
-            <Typography
-              variant="body1"
-              gutterBottom
-              sx={{ marginBottom: 3, fontSize: '1rem' }}
-            >
-              {currentCaseStudy.scenario.replace('Multiple Choice', '')}
-            </Typography>
-
-            {currentCaseStudy.questions.map((questionData, qIndex) => (
-              <Box
-                key={qIndex}
-                my={4}
-                p={3}
-                sx={{
-                  backgroundColor: '#fff',
-                  borderRadius: '8px',
-                  boxShadow: 2,
-                }}
-              >
-                <Typography variant="subtitle1" gutterBottom>
-                  {`Question ${qIndex + 1}: ${questionData.question}`}
-                </Typography>
-
-                <RadioGroup
-                  value={
-                    selectedAnswers[currentCaseStudyIndex]?.[qIndex] || ''
-                  }
-                  onChange={(e) =>
-                    handleAnswerChange(
-                      currentCaseStudyIndex,
-                      qIndex,
-                      e.target.value
-                    )
-                  }
-                >
-                  {questionData.options.map((option, i) => (
-                    <FormControlLabel
-                      key={i}
-                      value={option} // Changed from option.key to option to match safetyQuestions structure
-                      control={<Radio />}
-                      label={
-                        <Typography variant="body2">
-                          {option}
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Typography
+                        variant="h5"
+                        color="primary"
+                        gutterBottom
+                        sx={{ fontWeight: 'bold' }}
+                      >
+                        {`Case Study ${index + 1}`}
+                      </Typography>
+                      <Button
+                        type="button" // Explicitly set to "button"
+                        variant="contained"
+                        color="primary"
+                        onClick={fetchAudio}
+                        size="small" // Set to small for a smaller button
+                        sx={{
+                          marginLeft: 2,
+                          padding: '4px 8px', // Further reduced padding
+                          fontSize: '0.75rem', // Smaller font size
+                          display: 'flex',
+                          alignItems: 'center',
+                          minWidth: 'auto', // Remove minimum width
+                        }}
+                        disabled={isAudioPlaying}
+                      >
+                        {isAudioPlaying ? (
+                          <VolumeUpIcon fontSize="small" />
+                        ) : (
+                          <VolumeOffIcon fontSize="small" />
+                        )}
+                        <Typography
+                          variant="caption" // Smaller text variant
+                          sx={{ marginLeft: 0.5 }}
+                        >
+                          Listen
                         </Typography>
-                      }
-                      sx={{ marginBottom: 1 }}
-                    />
-                  ))}
-                </RadioGroup>
-              </Box>
+                      </Button>
+                    </Box>
+
+                    <Typography
+                      variant="body1"
+                      gutterBottom
+                      sx={{ marginBottom: 3, fontSize: '1rem' }}
+                    >
+                      {caseStudy.scenario.replace('Multiple Choice', '')}
+                    </Typography>
+
+                    {caseStudy.questions.map((questionData, qIndex) => (
+                      <Box
+                        key={qIndex}
+                        my={4}
+                        p={3}
+                        sx={{
+                          backgroundColor: '#fff',
+                          borderRadius: '8px',
+                          boxShadow: 2,
+                        }}
+                      >
+                        <Typography variant="subtitle1" gutterBottom>
+                          {`Question ${qIndex + 1}: ${questionData.question}`}
+                        </Typography>
+
+                        <RadioGroup
+                          value={
+                            selectedAnswers[index]?.[qIndex] || ''
+                          }
+                          onChange={(e) =>
+                            handleAnswerChange(
+                              index,
+                              qIndex,
+                              e.target.value
+                            )
+                          }
+                        >
+                          {questionData.options.map((option) => (
+                            <FormControlLabel
+                              key={option.key} // Use unique key from option object
+                              value={option.key} // Use key as the value
+                              control={<Radio />}
+                              label={
+                                <Typography variant="body2">
+                                  {option.label}
+                                </Typography>
+                              }
+                              sx={{ marginBottom: 1 }}
+                            />
+                          ))}
+                        </RadioGroup>
+                      </Box>
+                    ))}
+
+                    <Box mt={4} display="flex" justifyContent="space-between">
+                      <Button
+                        type="button" // Explicitly set to "button"
+                        variant="contained"
+                        color="secondary"
+                        onClick={handlePreviousButtonClick}
+                        disabled={currentCaseStudyIndex === 0}
+                        size="small" // Set to small
+                        sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
+                      >
+                        Previous
+                      </Button>
+                      {currentCaseStudyIndex === caseStudies.length - 1 ? (
+                        <Button
+                          type="button" // Explicitly set to "button"
+                          variant="contained"
+                          color="primary"
+                          onClick={handleSubmitAssessment}
+                          size="small" // Set to small
+                          sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
+                        >
+                          Submit
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button" // Explicitly set to "button"
+                          variant="contained"
+                          color="primary"
+                          onClick={handleNextButtonClick}
+                          size="small" // Set to small
+                          sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
+                        >
+                          Next
+                        </Button>
+                      )}
+                    </Box>
+                  </Box>
+                )}
+              </React.Fragment>
             ))}
 
-            <Box mt={4} display="flex" justifyContent="space-between">
-              <Button
-                type="button" // Explicitly set to "button"
-                variant="contained"
-                color="secondary"
-                onClick={handlePreviousButtonClick}
-                disabled={currentCaseStudyIndex === 0}
-                size="small" // Set to small
-                sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
-              >
-                Previous
-              </Button>
-              {currentCaseStudyIndex === caseStudies.length - 1 ? (
-                <Button
-                  type="button" // Explicitly set to "button"
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmitAssessment}
-                  size="small" // Set to small
-                  sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
+            {assessmentComplete && (
+              <Box mt={4}>
+                <Typography
+                  variant="h4"
+                  color="success"
+                  gutterBottom
+                  sx={{ textAlign: 'center' }}
                 >
-                  Submit
-                </Button>
-              ) : (
-                <Button
-                  type="button" // Explicitly set to "button"
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNextButtonClick}
-                  size="small" // Set to small
-                  sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
-                >
-                  Next
-                </Button>
-              )}
-            </Box>
-          </Box>
-        )}
-
-        {assessmentComplete && (
-          <Box mt={4}>
-            <Typography
-              variant="h4"
-              color="success"
-              gutterBottom
-              sx={{ textAlign: 'center' }}
-            >
-              You have successfully completed the safety assessment!
-            </Typography>
+                  You have successfully completed the safety assessment!
+                </Typography>
+              </Box>
+            )}
           </Box>
         )}
       </Box>
     </Container>
   );
-}
+};
