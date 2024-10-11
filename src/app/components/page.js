@@ -147,7 +147,7 @@ export default function Home() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(Failed to fetch case studies: ${errorData.message || 'Unknown error'});
+        throw new Error(`Failed to fetch case studies: ${errorData.message || 'Unknown error'}`);
       }
 
       const data = await response.json();
@@ -334,7 +334,7 @@ export default function Home() {
                   gutterBottom
                   sx={{ fontWeight: 'bold' }}
                 >
-                  {Question ${index + 1}}
+                  {`Question ${index + 1}`}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
                   {questionData.question}
@@ -392,7 +392,7 @@ export default function Home() {
                 <Box
                   component="img"
                   src={currentCaseStudy.imageUrl}
-                  alt={Case Study ${currentCaseStudyIndex + 1} Image}
+                  alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
                   sx={{
                     width: '100%',
                     maxWidth: '380px',
@@ -418,7 +418,7 @@ export default function Home() {
                 gutterBottom
                 sx={{ fontWeight: 'bold' }}
               >
-                {Case Study ${currentCaseStudyIndex + 1}}
+                {`Case Study ${currentCaseStudyIndex + 1}`}
               </Typography>
               <Button
                 type="button" // Explicitly set to "button"
@@ -446,7 +446,6 @@ export default function Home() {
               </Button>
             </Box>
 
-            {/* Removed the audio control element */}
 
             <Typography
               variant="body1"
@@ -468,7 +467,7 @@ export default function Home() {
                 }}
               >
                 <Typography variant="subtitle1" gutterBottom>
-                  {Question ${qIndex + 1}: ${questionData.question}}
+                  {`Question ${qIndex + 1}: ${questionData.question}`}
                 </Typography>
 
                 <RadioGroup
@@ -486,11 +485,11 @@ export default function Home() {
                   {questionData.options.map((option, i) => (
                     <FormControlLabel
                       key={i}
-                      value={option.key}
+                      value={option} // Changed from option.key to option to match safetyQuestions structure
                       control={<Radio />}
                       label={
                         <Typography variant="body2">
-                          {option.label}
+                          {option}
                         </Typography>
                       }
                       sx={{ marginBottom: 1 }}
