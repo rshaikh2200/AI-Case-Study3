@@ -1,11 +1,15 @@
+// Route.js
 import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/client-bedrock-agent-runtime";
+import { ElevenLabsClient } from "elevenlabs";
+import { v4 as uuid } from "uuid";
 import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
-
+import axios from 'axios';
+import FormData from 'form-data'; // Ensure FormData is imported
 
 dotenv.config({ path: '.env.local' });
 
-const client = new BedrockAgentRuntimeClient({
+const bedrockClient = new BedrockAgentRuntimeClient({
   region: 'us-east-1',
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -22,23 +26,36 @@ const sanitizeInput = (text = '') => {
 // Sanitize the scenario for safe image generation (specific to Case Study 3)
 function sanitizeScenario(scenario) {
   const restrictedWords = [
-    'error', 'failure', 'death', 'harm', 'mistake', 'accident', 'complication', 'malpractice', 'wrong action', 'fatal'
+    'error', 'failure', 
   ];
   let sanitizedScenario = scenario;
 
-  // Replace problematic words with neutral terms
   restrictedWords.forEach(word => {
     const regex = new RegExp(`\\b${word}\\b`, 'gi');
     sanitizedScenario = sanitizedScenario.replace(regex, 'issue');
   });
 
-  // Additional replacements for specific phrases
   sanitizedScenario = sanitizedScenario.replace(/(severe pain|irreversible damage|long-term disability|failed to recognize|muscle and nerve damage)/gi, 
   'discomfort, functional issues, delayed diagnosis, and long-term functional limitations');
 
   console.log('Sanitized Scenario:', sanitizedScenario);  // Log the sanitized version
 
   return sanitizedScenario;
+}
+
+// Helper function to trim text to 15-20 words
+function trimToWordCount(text, minWords = 15, maxWords = 20) {
+  const words = text.trim().split(/\s+/);
+  const wordCount = words.length;
+
+  if (wordCount <= maxWords) {
+    // If word count is within the limit, return as is
+    return text;
+  }
+
+  // Trim to the maximum word limit
+  const trimmed = words.slice(0, maxWords).join(' ');
+  return `${trimmed}...`; // Add ellipsis to indicate trimming
 }
 
 export async function POST(request) {
@@ -48,10 +65,10 @@ export async function POST(request) {
     const sanitizedDepartment = sanitizeInput(department);
     const sanitizedRole = sanitizeInput(role);
     const sanitizedSpecialization = sanitizeInput(specialization);
-=
-    const message = `Please generate 4 medical case studies (120-200 words) and include 3 multiple-choice questions for each case study:
+
+    const message = `Please generate 4 medical case studies (150 words) and include 3 multiple-choice questions for each case study:
       - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
-      - Create 3 case study based unique multiple-choice questions for each case study with 4 options. The questions should be based on the error prevention tools, safety behaviors and how they could have been used to prevent the error in the case study.`;
+      - Create 3 case study based unique multiple-choice questions for each case study with 4 options. The questions should be based on the error prevention tools, safety behaviors and how they could have been used to prevent the error in the case study. Do not include hospital implementation to fix solution only the case.`;
 
     const input = {
       input: { text: message },
@@ -84,7 +101,7 @@ export async function POST(request) {
     };
 
     const command = new RetrieveAndGenerateCommand(input);
-    const response = await client.send(command);
+    const response = await bedrockClient.send(command);
 
     console.log("Model Response:", response);
 
@@ -100,6 +117,7 @@ export async function POST(request) {
 
     console.log("Case studies parsed successfully. Now generating images...");
 
+    // Call the defined function to fetch images
     const caseStudiesWithImages = await fetchImagesForCaseStudies(caseStudies);
 
     return NextResponse.json({ caseStudies: caseStudiesWithImages });
@@ -159,40 +177,61 @@ function parseQuestions(text) {
   });
 }
 
-// Generate images for each case study
-async function fetchImagesForCaseStudies(caseStudies) {
-  return await Promise.all(
-    caseStudies.map(async (caseStudy) => {
-      try {
-        const sanitizedScenario = sanitizeScenario(caseStudy.scenario);
+// Define fetchImagesForCaseStudies function
+async function fetchImagesForCaseStudies(caseStudies, model = "sd3-large-turbo", aspect_ratio = "1:1") {
+  try {
+    const responses = await Promise.all(
+      caseStudies.map(async (caseStudy) => {
+        try {
+          // Sanitize the scenario
+          const sanitizedScenario = sanitizeScenario(caseStudy.scenario);
+          
+          // Trim the sanitized scenario to 15-20 words
+          const trimmedScenario = trimToWordCount(sanitizedScenario, 15, 20);
 
-        const openAiResponse = await fetch("https://api.openai.com/v1/images/generations", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-          },
-          body: JSON.stringify({
-            model: "dall-e-3",
-            prompt: sanitizedScenario,
-            size: "1024x1024",
-            n: 1,
-          }),
-        });
+          const payload = {
+            prompt: trimmedScenario, // Use trimmed scenario
+            output_format: "jpeg",
+            model,
+            aspect_ratio,
+            width: 32,   
+            height: 32,  
+          };
 
-        const imageData = await openAiResponse.json();
+          const formData = new FormData();
+          Object.keys(payload).forEach(key => formData.append(key, payload[key]));
 
-        if (!openAiResponse.ok) {
-          console.warn(`Failed to generate image for Case Study: ${caseStudy.caseStudy}. Error: ${imageData.error?.message || 'Unknown error'}`);
+          const response = await axios.post(
+            `https://api.stability.ai/v2beta/stable-image/generate/sd3`,
+            formData,
+            {
+              validateStatus: undefined,
+              responseType: "arraybuffer",
+              headers: {
+                Authorization: `Bearer ${process.env.STABILITY_API_KEY}`, // Secure your API key in environment variables
+                Accept: "image/*",
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            const base64Image = Buffer.from(response.data).toString('base64');
+            return { ...caseStudy, imageUrl: `data:image/jpeg;base64,${base64Image}` };
+          } else {
+            console.warn(`Failed to generate image for Case Study: ${caseStudy.caseStudy}. Error: ${response.status}`);
+            return { ...caseStudy, imageUrl: null };
+          }
+        } catch (error) {
+          console.error('Error generating image:', error.message);
           return { ...caseStudy, imageUrl: null };
         }
+      })
+    );
 
-        return { ...caseStudy, imageUrl: imageData.data[0]?.url };
-      } catch (error) {
-        console.error('Error generating image:', error.message);
-        return { ...caseStudy, imageUrl: null };
-      }
-    })
-  );
+    return responses;
+  } catch (error) {
+    console.error('Error in fetchImagesForCaseStudies:', error.message);
+    throw error;
+  }
 }
 
