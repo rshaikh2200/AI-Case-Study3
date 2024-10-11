@@ -1,9 +1,3 @@
-// Import necessary modules
-import { Configuration, OpenAIApi } from 'openai';
-import dotenv from 'dotenv';
-
-// Load environment variables
-dotenv.config({ path: '.env.local' });
 
 // Initialize OpenAI Configuration
 const configuration = new Configuration({
