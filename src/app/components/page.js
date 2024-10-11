@@ -1,20 +1,21 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
-  TextField,
-  Button,
-  Grid,
-  Typography,
   Container,
   Box,
   Paper,
-  CircularProgress,
+  Typography,
+  Grid,
+  TextField,
+  Button,
   Alert,
   RadioGroup,
   FormControlLabel,
   Radio,
 } from '@mui/material';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 const safetyQuestions = [
   {
@@ -84,13 +85,54 @@ export default function Home() {
   const [showCaseStudies, setShowCaseStudies] = useState(false);
   const [showSafetyStatement, setShowSafetyStatement] = useState(true);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+
+  const audioRef = useRef(null);
+
+  const fetchAudio = async () => {
+    try {
+      const response = await fetch("/api/audio-models", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ text: currentCaseStudy.scenario }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch audio');
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      setAudioUrl(url);
+
+      // Stop any existing audio before playing new one
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+
+      // Create a new Audio object and play
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.play();
+      setIsAudioPlaying(true);
+
+      // When audio ends, update the state
+      audio.onended = () => {
+        setIsAudioPlaying(false);
+      };
+    } catch (error) {
+      console.error("Error fetching audio:", error);
+    }
+  };
 
   const handleTakeAssessment = async () => {
     setShowPreAssessment(true);
     setShowSafetyStatement(false);
     await generateImageAndQuestionsForCaseStudy(0);
   };
-
 
   const handleSubmitPreAssessment = async () => {
     setIsLoading(true);
@@ -105,7 +147,7 @@ export default function Home() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(`Failed to fetch case studies: ${errorData.message || 'Unknown error'}`);
+        throw new Error(Failed to fetch case studies: ${errorData.message || 'Unknown error'});
       }
 
       const data = await response.json();
@@ -162,12 +204,43 @@ export default function Home() {
     }, 3000);
   };
 
+  // Stop audio when switching case studies
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setIsAudioPlaying(false);
+    }
+    // Cleanup when component unmounts
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, [currentCaseStudyIndex]);
+
   return (
     <Container maxWidth="md">
-      <Box component={Paper} p={5} my={6} sx={{ backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}>
+      <Box
+        component={Paper}
+        p={5}
+        my={6}
+        sx={{ backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}
+      >
         {showSafetyStatement && (
-          <Typography variant="body1" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: 4 }}>
-            Avoidable medical errors in hospitals are the third leading cause of death in the USA. 99% of avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety principles and corresponding 11 error prevention tools (EPTs). By understanding and using this safety language, harm to patients can be drastically reduced.
+          <Typography
+            variant="body1"
+            gutterBottom
+            sx={{
+              textAlign: 'center',
+              fontWeight: 'bold',
+              marginBottom: 4,
+            }}
+          >
+            Avoidable medical errors in hospitals are the third leading cause of death in the USA.
+            99% of avoidable medical errors can be traced back to the misuse or lack of use of the
+            4 safety principles and corresponding 11 error prevention tools (EPTs). By understanding
+            and using this safety language, harm to patients can be drastically reduced.
           </Typography>
         )}
 
@@ -206,13 +279,20 @@ export default function Home() {
         <Box my={4} display="flex" justifyContent="center">
           {!showPreAssessment && !showCaseStudies && (
             <Button
+              type="button" // Explicitly set to "button"
               variant="contained"
               color="primary"
               onClick={handleTakeAssessment}
               disabled={isLoading}
-              sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
+              size="large" // Adjust as needed
+              sx={{
+                padding: '10px 30px',
+                fontSize: '1rem',
+              }}
             >
-              {isLoading ? 'Starting your assessment in a few minutes, please wait.' : 'Take Assessment'}
+              {isLoading
+                ? 'Starting your assessment in a few minutes, please wait.'
+                : 'Take Assessment'}
             </Button>
           )}
         </Box>
@@ -224,14 +304,37 @@ export default function Home() {
         )}
 
         {showPreAssessment && !isLoading && (
-          <Box mt={4} p={3} sx={{ backgroundColor: '#fff', borderRadius: '8px', boxShadow: 2, padding: 4 }}>
-            <Typography variant="h5" color="primary" gutterBottom sx={{ fontWeight: 'bold' }}>
+          <Box
+            mt={4}
+            p={3}
+            sx={{
+              backgroundColor: '#fff',
+              borderRadius: '8px',
+              boxShadow: 2,
+              padding: 4,
+            }}
+          >
+            <Typography
+              variant="h5"
+              color="primary"
+              gutterBottom
+              sx={{ fontWeight: 'bold' }}
+            >
               Safety Principles Questions
             </Typography>
             {safetyQuestions.map((questionData, index) => (
-              <Box key={index} mt={2} p={2} sx={{ backgroundColor: '#f0f0f0', borderRadius: 2 }}>
-                <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 'bold' }}>
-                  {`Question ${index + 1}`}
+              <Box
+                key={index}
+                mt={2}
+                p={2}
+                sx={{ backgroundColor: '#f0f0f0', borderRadius: 2 }}
+              >
+                <Typography
+                  variant="subtitle1"
+                  gutterBottom
+                  sx={{ fontWeight: 'bold' }}
+                >
+                  {Question ${index + 1}}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
                   {questionData.question}
@@ -242,7 +345,9 @@ export default function Home() {
                       key={optionIndex}
                       value={option}
                       control={<Radio />}
-                      label={<Typography variant="body2">{option}</Typography>}
+                      label={
+                        <Typography variant="body2">{option}</Typography>
+                      }
                       sx={{ marginBottom: 1 }}
                     />
                   ))}
@@ -252,13 +357,17 @@ export default function Home() {
 
             <Box mt={4} display="flex" justifyContent="center">
               <Button
+                type="button" // Explicitly set to "button"
                 variant="contained"
                 color="primary"
                 onClick={handleSubmitPreAssessment}
                 disabled={isLoading}
-                sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
+                size="large" // Adjust as needed
+                sx={{ padding: '10px 30px', fontSize: '1rem' }}
               >
-                {isLoading ? 'Starting your assessment in a few minutes, please wait.' : 'Submit: Part I'}
+                {isLoading
+                  ? 'Starting your assessment in a few minutes, please wait.'
+                  : 'Submit: Part I'}
               </Button>
             </Box>
           </Box>
@@ -266,7 +375,11 @@ export default function Home() {
 
         {isLoading && (
           <Box mt={4} display="flex" justifyContent="center">
-            <Typography variant="h6" color="primary" align="center">
+            <Typography
+              variant="h6"
+              color="primary"
+              align="center"
+            >
               Starting your assessment in a few minutes, please wait.
             </Typography>
           </Box>
@@ -279,10 +392,10 @@ export default function Home() {
                 <Box
                   component="img"
                   src={currentCaseStudy.imageUrl}
-                  alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
+                  alt={Case Study ${currentCaseStudyIndex + 1} Image}
                   sx={{
                     width: '100%',
-                    maxWidth: '520px',
+                    maxWidth: '380px',
                     height: 'auto',
                     borderRadius: '8px',
                     objectFit: 'contain',
@@ -294,29 +407,92 @@ export default function Home() {
               </Box>
             )}
 
-            <Typography variant="h5" color="primary" gutterBottom sx={{ fontWeight: 'bold' }}>
-              Case Study {currentCaseStudyIndex + 1}
-            </Typography>
-            <Typography variant="body1" gutterBottom sx={{ marginBottom: 3, fontSize: '1rem' }}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography
+                variant="h5"
+                color="primary"
+                gutterBottom
+                sx={{ fontWeight: 'bold' }}
+              >
+                {Case Study ${currentCaseStudyIndex + 1}}
+              </Typography>
+              <Button
+                type="button" // Explicitly set to "button"
+                variant="contained"
+                color="primary"
+                onClick={fetchAudio}
+                size="small" // Set to small for a smaller button
+                sx={{
+                  marginLeft: 2,
+                  padding: '4px 8px', // Further reduced padding
+                  fontSize: '0.75rem', // Smaller font size
+                  display: 'flex',
+                  alignItems: 'center',
+                  minWidth: 'auto', // Remove minimum width
+                }}
+                disabled={isAudioPlaying}
+              >
+                {isAudioPlaying ? <VolumeUpIcon fontSize="small" /> : <VolumeOffIcon fontSize="small" />}
+                <Typography
+                  variant="caption" // Smaller text variant
+                  sx={{ marginLeft: 0.5 }}
+                >
+                  Listen
+                </Typography>
+              </Button>
+            </Box>
+
+            {/* Removed the audio control element */}
+
+            <Typography
+              variant="body1"
+              gutterBottom
+              sx={{ marginBottom: 3, fontSize: '1rem' }}
+            >
               {currentCaseStudy.scenario.replace('Multiple Choice', '')}
             </Typography>
 
             {currentCaseStudy.questions.map((questionData, qIndex) => (
-              <Box key={qIndex} my={4} p={3} sx={{ backgroundColor: '#fff', borderRadius: '8px', boxShadow: 2 }}>
+              <Box
+                key={qIndex}
+                my={4}
+                p={3}
+                sx={{
+                  backgroundColor: '#fff',
+                  borderRadius: '8px',
+                  boxShadow: 2,
+                }}
+              >
                 <Typography variant="subtitle1" gutterBottom>
-                  {`Question ${qIndex + 1}: ${questionData.question}`}
+                  {Question ${qIndex + 1}: ${questionData.question}}
                 </Typography>
 
                 <RadioGroup
-                  value={selectedAnswers[currentCaseStudyIndex]?.[qIndex] || ''}
-                  onChange={(e) => handleAnswerChange(currentCaseStudyIndex, qIndex, e.target.value)}
+                  value={
+                    selectedAnswers[currentCaseStudyIndex]?.[qIndex] || ''
+                  }
+                  onChange={(e) =>
+                    handleAnswerChange(
+                      currentCaseStudyIndex,
+                      qIndex,
+                      e.target.value
+                    )
+                  }
                 >
                   {questionData.options.map((option, i) => (
                     <FormControlLabel
                       key={i}
                       value={option.key}
                       control={<Radio />}
-                      label={<Typography variant="body2">{option.label}</Typography>}
+                      label={
+                        <Typography variant="body2">
+                          {option.label}
+                        </Typography>
+                      }
                       sx={{ marginBottom: 1 }}
                     />
                   ))}
@@ -326,29 +502,35 @@ export default function Home() {
 
             <Box mt={4} display="flex" justifyContent="space-between">
               <Button
+                type="button" // Explicitly set to "button"
                 variant="contained"
                 color="secondary"
                 onClick={handlePreviousButtonClick}
                 disabled={currentCaseStudyIndex === 0}
-                sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
+                size="small" // Set to small
+                sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
               >
                 Previous
               </Button>
               {currentCaseStudyIndex === caseStudies.length - 1 ? (
                 <Button
+                  type="button" // Explicitly set to "button"
                   variant="contained"
                   color="primary"
                   onClick={handleSubmitAssessment}
-                  sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
+                  size="small" // Set to small
+                  sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
                 >
                   Submit
                 </Button>
               ) : (
                 <Button
+                  type="button" // Explicitly set to "button"
                   variant="contained"
                   color="primary"
                   onClick={handleNextButtonClick}
-                  sx={{ padding: '16px 40px', fontSize: '1.2rem' }}
+                  size="small" // Set to small
+                  sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
                 >
                   Next
                 </Button>
@@ -359,7 +541,12 @@ export default function Home() {
 
         {assessmentComplete && (
           <Box mt={4}>
-            <Typography variant="h4" color="success" gutterBottom sx={{ textAlign: 'center' }}>
+            <Typography
+              variant="h4"
+              color="success"
+              gutterBottom
+              sx={{ textAlign: 'center' }}
+            >
               You have successfully completed the safety assessment!
             </Typography>
           </Box>
