@@ -64,7 +64,7 @@ export async function POST(request) {
 
     const message = `Please generate 4 medical case studies (150 words) and include 3 multiple-choice questions for each case study:
       - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
-      - Create 3 case study based unique multiple-choice questions for each case study with 4 options. Each question should be unique and focus on one specific error prevention tool, and how they could have been used to prevent the error in the case study. The questions should not use the same error prevention tools. Do not include hospital implementation to fix solution only the case.`;
+      - Create 3 case study based unique multiple-choice questions for each case study with 4 options. Each question should only focus on one specific error prevention tool, and how they could have been used to prevent the error in the case study. The questions should not use the same error prevention tools. Do not include hospital implementation to fix solution only the case.`;
 
 
     const input = {
@@ -83,7 +83,7 @@ export async function POST(request) {
           generationConfiguration: {
             promptTemplate: {
               textPromptTemplate: `Please use the following information:\n$search_results$\n${message}`,
-              basePromptTemplate: `Here is the case studies, error prevention tools, CHAMP safety behaviors. Grady safety behaviors :\n$search_results$\n${message}`,
+              basePromptTemplate: `Here is the case studies, error prevention tools list :\n$search_results$\n${message}`,
               inferenceConfig: {
                 textInferenceConfig: {
                   temperature: 0.5,
