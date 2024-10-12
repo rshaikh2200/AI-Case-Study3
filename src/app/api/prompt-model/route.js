@@ -1,0 +1,116 @@
+export async function POST(request) {
+    try {
+      // Parse the JSON body from the request
+      const { taskOrPrompt } = await request.json();
+  
+      // Validate the input
+      if (!taskOrPrompt || typeof taskOrPrompt !== "string") {
+        return new Response(
+          JSON.stringify({ error: "Invalid input. 'taskOrPrompt' is required and should be a string." }),
+          { status: 400, headers: { "Content-Type": "application/json" } }
+        );
+      }
+  
+      // Updated META_PROMPT for Image Generation
+      const META_PROMPT = `
+      You are an expert prompt engineer tasked with creating detailed and descriptive prompts for image generation based on given scenarios. Your prompts should be clear, vivid, and free of any NSFW (Not Safe For Work) content. Ensure that the prompts are suitable for use with image generation models and accurately reflect the provided scenario.
+  
+      # Guidelines
+  
+      - **Understand the Scenario**: Carefully read the provided scenario to grasp the context, key elements, and desired visual aspects.
+      - **Detail and Clarity**: Include specific details such as settings, characters, objects, actions, and emotions to create a vivid image in the mind of the image generation model.
+      - **Avoid NSFW Content**: Ensure that the prompt does not contain or imply any inappropriate, offensive, or unsafe content.
+      - **Language and Tone**: Use clear and concise language. Maintain a neutral and professional tone.
+      - **Formatting**: Present the prompt as a single, well-structured paragraph without any markdown or code blocks.
+      - **Consistency**: Maintain consistency in descriptions, avoiding contradictions or vague terms.
+      - **Descriptive Adjectives**: Utilize descriptive adjectives to enhance the visual richness of the prompt.
+  
+      # Steps
+  
+      1. **Analyze the Scenario**: Identify the main elements such as location, characters, objects, and actions.
+      2. **Expand on Details**: Add descriptive elements to each identified component to enrich the prompt.
+      3. **Ensure Appropriateness**: Review the prompt to eliminate any NSFW content or implications.
+      4. **Finalize the Prompt**: Ensure the prompt is cohesive, vivid, and suitable for image generation.
+  
+      # Output Format
+  
+      - **Format**: Plain text paragraph.
+      - **Length**: Approximately 2-4 sentences, providing sufficient detail without being overly verbose.
+      - **Style**: Descriptive and clear, suitable for feeding directly into an image generation model.
+  
+      # Example
+  
+      **Image Prompt**:
+      "A bustling hospital emergency room at night, illuminated by bright overhead lights. Doctors and nurses in white coats move swiftly between beds, attending to patients with focused expressions. Medical equipment and monitors line the walls, while the atmosphere is tense yet organized, reflecting the urgency of a busy night shift."
+  
+      # Notes
+  
+      - **Edge Cases**: If the scenario is abstract or lacks detail, infer reasonable visual elements to create a coherent prompt.
+      - **Cultural Sensitivity**: Be mindful of cultural nuances and avoid stereotypes or biased representations.
+      - **No NSFW Content**: Double-check to ensure the prompt adheres to safety guidelines and does not contain any inappropriate content.
+      `.trim();
+  
+      const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+      if (!OPENAI_API_KEY) {
+        return new Response(
+          JSON.stringify({ error: "OpenAI API key not configured." }),
+          { status: 500, headers: { "Content-Type": "application/json" } }
+        );
+      }
+  
+      // Call the OpenAI API
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: "gpt-4", // Ensure this is the correct model name
+          messages: [
+            {
+              role: "system",
+              content: META_PROMPT,
+            },
+            {
+              role: "user",
+              content: "Scenario:\n" + taskOrPrompt,
+            },
+          ],
+          temperature: 0.7, // Adjust as needed
+          max_tokens: 500, // Adjust based on requirements
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("OpenAI API Error:", errorData);
+        return new Response(JSON.stringify({ error: errorData }), {
+          status: response.status,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+  
+      const data = await response.json();
+      const generatedPrompt = data.choices[0]?.message?.content;
+  
+      if (!generatedPrompt) {
+        return new Response(
+          JSON.stringify({ error: "No prompt generated by OpenAI." }),
+          { status: 500, headers: { "Content-Type": "application/json" } }
+        );
+      }
+  
+      return new Response(JSON.stringify({ prompt: generatedPrompt }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (error) {
+      console.error("Error generating prompt:", error);
+      return new Response(
+        JSON.stringify({ error: "Internal Server Error" }),
+        { status: 500, headers: { "Content-Type": "application/json" } }
+      );
+    }
+  }
+  
