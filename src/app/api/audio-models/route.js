@@ -1,75 +1,45 @@
+import { NextResponse } from 'next/server';
 
-// Initialize OpenAI Configuration
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-// Instantiate OpenAIApi with the configuration
-const ai = new OpenAIApi(configuration);
-
-// Define the text-to-speech function
-async function text2Speech({ 
-  res, 
-  onSuccess, 
-  onError, 
-  model = "tts-1", 
-  voice = "alloy", 
-  input, 
-  speed = 1 
-}) {
+export async function POST(req) {
   try {
-    const response = await ai.audio.speech.create({
-      model,
-      voice,
-      input,
-      response_format: 'mp3',
-      speed
-    });
+    const { input } = await req.json();
 
-    const readableStream = response.body;
-    readableStream.pipe(res);
+    if (!input) {
+      return NextResponse.json({ error: 'Input is required.' }, { status: 400 });
+    }
 
-    let bufferStore = Buffer.from([]);
-
-    readableStream.on('data', (chunk) => {
-      bufferStore = Buffer.concat([bufferStore, chunk]);
-    });
-    readableStream.on('end', () => {
-      onSuccess({ model, buffer: bufferStore });
-    });
-    readableStream.on('error', (e) => {
-      onError(e);
-    });
-  } catch (error) {
-    onError(error);
-  }
-}
-
-// Export the POST handler
-export async function POST(req, res) {
-  try {
-    const { input, speed, model, voice } = await req.json();
-
-    await new Promise((resolve, reject) => {
-      text2Speech({
-        res,
-        model,
-        voice,
+    const response = await fetch('https://api.openai.com/v1/audio/speech', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'tts-1',
+        voice: 'alloy',
         input,
-        speed,
-        onSuccess: (result) => {
-          console.log('Audio generation success:', result);
-          resolve(new Response(JSON.stringify(result), { status: 200 }));
-        },
-        onError: (error) => {
-          console.error('Audio generation error:', error);
-          res.status(500).json({ error: 'Audio generation failed' });
-          reject(error);
-        }
-      });
+      }),
+    });
+
+    console.log('API Response Status:', response.status, response.statusText);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API Error:', errorText);
+      throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorText}`);
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+
+    // Return the audio directly
+    return new NextResponse(arrayBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': 'audio/mpeg',
+      },
     });
   } catch (error) {
-    console.error('Request handling error:', error);
-    res.status(500).json({ error: 'Server error' });
+    console.error('Error generating audio:', error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
