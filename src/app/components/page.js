@@ -90,44 +90,7 @@ export default function Home() {
 
   const audioRef = useRef(null);
 
-  const fetchAudio = async () => {
-    try {
-      const response = await fetch("/api/audio-models", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ text: currentCaseStudy.scenario }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch audio');
-      }
-
-      const blob = await response.blob();
-      const url = URL.createObjectURL(blob);
-      setAudioUrl(url);
-
-      // Stop any existing audio before playing new one
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-
-      // Create a new Audio object and play
-      const audio = new Audio(url);
-      audioRef.current = audio;
-      audio.play();
-      setIsAudioPlaying(true);
-
-      // When audio ends, update the state
-      audio.onended = () => {
-        setIsAudioPlaying(false);
-      };
-    } catch (error) {
-      console.error("Error fetching audio:", error);
-    }
-  };
-
+  
   const handleTakeAssessment = async () => {
     setShowPreAssessment(true);
     setShowSafetyStatement(false);
