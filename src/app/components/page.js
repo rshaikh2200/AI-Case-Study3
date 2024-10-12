@@ -94,8 +94,8 @@ export default function Home() {
   
   const audioRef = useRef(null);
 
-  // Generate Speech Function
-  const generateSpeech = async () => {
+   // Generate Speech Function
+   const generateSpeech = async () => {
     setIsAudioLoading(true);
     setAudioError('');
     try {
@@ -104,7 +104,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ input: currentCaseStudy.scenario }),
+        body: JSON.stringify({ input: caseStudies[currentCaseStudyIndex]?.scenario }),
       });
 
       if (response.ok) {
@@ -127,40 +127,50 @@ export default function Home() {
     }
   };
 
-  // Fetch Audio and Play
+  // Fetch Audio and Toggle Play/Pause
   const fetchAudio = async () => {
-    // If audio is already playing, pause it
     if (isAudioPlaying) {
       audioRef.current.pause();
       setIsAudioPlaying(false);
-      return;
-    }
-
-    // If audioUrl is not set, generate speech
-    if (!audioUrl) {
+    } else {
+      // Generate new speech URL for the current case study
       const url = await generateSpeech();
       if (url) {
         playAudio(url);
       }
-    } else {
-      playAudio(audioUrl);
     }
   };
 
-  // Play Audio Function
+  // Play or Pause Audio Function
   const playAudio = (url) => {
     if (audioRef.current) {
-      audioRef.current.src = url;
-      audioRef.current.play()
-        .then(() => {
-          setIsAudioPlaying(true);
-        })
-        .catch((error) => {
-          console.error('Error playing audio:', error);
-          setAudioError('Failed to play audio.');
-        });
+      if (audioRef.current.src === url && !audioRef.current.paused) {
+        audioRef.current.pause();
+        setIsAudioPlaying(false);
+      } else {
+        audioRef.current.src = url;
+        audioRef.current.play()
+          .then(() => {
+            setIsAudioPlaying(true);
+          })
+          .catch((error) => {
+            console.error('Error playing audio:', error);
+            setAudioError('Failed to play audio.');
+          });
+      }
     }
   };
+
+  // Stop audio when switching case studies
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    // Reset audio-related states when changing case study
+    setAudioUrl(null);
+    setIsAudioPlaying(false);
+    setAudioError('');
+  }, [currentCaseStudyIndex]);
 
   // Handle Audio Play/Pause State
   useEffect(() => {
@@ -186,15 +196,6 @@ export default function Home() {
     };
   }, []);
 
-  // Stop audio when switching case studies
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-      setIsAudioPlaying(false);
-      setAudioUrl(null);
-    }
-  }, [currentCaseStudyIndex]);
 
   // Existing Functions: handleTakeAssessment, handleSubmitPreAssessment, etc.
   const handleTakeAssessment = async () => {
