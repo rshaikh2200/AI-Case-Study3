@@ -85,17 +85,17 @@ export default function Home() {
   const [showCaseStudies, setShowCaseStudies] = useState(false);
   const [showSafetyStatement, setShowSafetyStatement] = useState(true);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
-  
+
   // Audio-related states
   const [audioUrl, setAudioUrl] = useState(null);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioError, setAudioError] = useState('');
-  
+
   const audioRef = useRef(null);
 
-   // Generate Speech Function
-   const generateSpeech = async () => {
+  // Generate Speech Function
+  const generateSpeech = async () => {
     setIsAudioLoading(true);
     setAudioError('');
     try {
@@ -149,7 +149,8 @@ export default function Home() {
         setIsAudioPlaying(false);
       } else {
         audioRef.current.src = url;
-        audioRef.current.play()
+        audioRef.current
+          .play()
           .then(() => {
             setIsAudioPlaying(true);
           })
@@ -196,7 +197,6 @@ export default function Home() {
     };
   }, []);
 
-
   // Existing Functions: handleTakeAssessment, handleSubmitPreAssessment, etc.
   const handleTakeAssessment = async () => {
     setShowPreAssessment(true);
@@ -217,7 +217,9 @@ export default function Home() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(`Failed to fetch case studies: ${errorData.message || 'Unknown error'}`);
+        throw new Error(
+          `Failed to fetch case studies: ${errorData.message || 'Unknown error'}`
+        );
       }
 
       const data = await response.json();
@@ -282,6 +284,7 @@ export default function Home() {
         my={6}
         sx={{ backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}
       >
+        {/* Safety Statement */}
         {showSafetyStatement && (
           <Typography
             variant="body1"
@@ -292,13 +295,15 @@ export default function Home() {
               marginBottom: 4,
             }}
           >
-            Avoidable medical errors in hospitals are the third leading cause of death in the USA.
-            99% of avoidable medical errors can be traced back to the misuse or lack of use of the
-            4 safety principles and corresponding 11 error prevention tools (EPTs). By understanding
-            and using this safety language, harm to patients can be drastically reduced.
+            Avoidable medical errors in hospitals are the third leading cause of
+            death in the USA. 99% of avoidable medical errors can be traced back to the
+            misuse or lack of use of the 4 safety principles and corresponding 11
+            error prevention tools (EPTs). By understanding and using this safety
+            language, harm to patients can be drastically reduced.
           </Typography>
         )}
 
+        {/* Department, Role, Specialization Fields */}
         {showSafetyStatement && (
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
@@ -331,6 +336,7 @@ export default function Home() {
           </Grid>
         )}
 
+        {/* Take Assessment Button */}
         <Box my={4} display="flex" justifyContent="center">
           {!showPreAssessment && !showCaseStudies && (
             <Button
@@ -352,12 +358,14 @@ export default function Home() {
           )}
         </Box>
 
+        {/* Error Alert */}
         {error && (
           <Box mt={2}>
             <Alert severity="error">{error}</Alert>
           </Box>
         )}
 
+        {/* Safety Questions Page */}
         {showPreAssessment && !isLoading && (
           <Box
             mt={4}
@@ -394,7 +402,14 @@ export default function Home() {
                 <Typography variant="body2" gutterBottom>
                   {questionData.question}
                 </Typography>
-                <RadioGroup>
+                <RadioGroup
+                  value={
+                    selectedAnswers['preAssessment']?.[index] || ''
+                  }
+                  onChange={(e) =>
+                    handleAnswerChange('preAssessment', index, e.target.value)
+                  }
+                >
                   {questionData.options.map((option, optionIndex) => (
                     <FormControlLabel
                       key={optionIndex}
@@ -410,6 +425,7 @@ export default function Home() {
               </Box>
             ))}
 
+            {/* Submit Button */}
             <Box mt={4} display="flex" justifyContent="center">
               <Button
                 type="button" // Explicitly set to "button"
@@ -428,20 +444,19 @@ export default function Home() {
           </Box>
         )}
 
+        {/* Loading Indicator */}
         {isLoading && (
           <Box mt={4} display="flex" justifyContent="center">
-            <Typography
-              variant="h6"
-              color="primary"
-              align="center"
-            >
+            <Typography variant="h6" color="primary" align="center">
               Starting your assessment in a few minutes, please wait.
             </Typography>
           </Box>
         )}
 
+        {/* Case Studies Page */}
         {showCaseStudies && caseStudies.length > 0 && currentCaseStudy && (
           <Box mt={4}>
+            {/* Case Study Image */}
             {currentCaseStudy.imageUrl && (
               <Box mb={3} display="flex" justifyContent="center">
                 <Box
@@ -462,11 +477,8 @@ export default function Home() {
               </Box>
             )}
 
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            {/* Case Study Title and Audio Button */}
+            <Box display="flex" alignItems="center" justifyContent="space-between">
               <Typography
                 variant="h5"
                 color="primary"
@@ -522,12 +534,14 @@ export default function Home() {
             {/* Audio Element */}
             <audio ref={audioRef} />
 
+            {/* Audio Error Alert */}
             {audioError && (
               <Box mt={1}>
                 <Alert severity="error">{audioError}</Alert>
               </Box>
             )}
 
+            {/* Case Study Scenario */}
             <Typography
               variant="body1"
               gutterBottom
@@ -536,6 +550,7 @@ export default function Home() {
               {currentCaseStudy.scenario.replace('Multiple Choice', '')}
             </Typography>
 
+            {/* Case Study Questions */}
             {currentCaseStudy.questions.map((questionData, qIndex) => (
               <Box
                 key={qIndex}
@@ -563,14 +578,14 @@ export default function Home() {
                     )
                   }
                 >
-                  {questionData.options.map((option, i) => (
+                  {questionData.options.map((option) => (
                     <FormControlLabel
-                      key={i}
+                      key={option.key}
                       value={option.key}
                       control={<Radio />}
                       label={
                         <Typography variant="body2">
-                          {option.label}
+                          <strong>{option.key}.</strong> {option.label}
                         </Typography>
                       }
                       sx={{ marginBottom: 1 }}
@@ -580,6 +595,7 @@ export default function Home() {
               </Box>
             ))}
 
+            {/* Navigation Buttons */}
             <Box mt={4} display="flex" justifyContent="space-between">
               <Button
                 type="button" // Explicitly set to "button"
@@ -619,6 +635,7 @@ export default function Home() {
           </Box>
         )}
 
+        {/* Assessment Completion Message */}
         {assessmentComplete && (
           <Box mt={4}>
             <Typography
@@ -634,4 +651,4 @@ export default function Home() {
       </Box>
     </Container>
   );
-}
+};
