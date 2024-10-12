@@ -64,7 +64,8 @@ export async function POST(request) {
 
     const message = `Please generate 4 medical case studies (150 words) and include 3 multiple-choice questions for each case study:
       - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
-      - Create 3 case study based unique multiple-choice questions for each case study with 4 options. The questions should be based on the error prevention tools, safety behaviors and how they could have been used to prevent the error in the case study. Do not include hospital implementation to fix solution only the case.`;
+      - Create 3 case study based unique multiple-choice questions for each case study with 4 options. Each question should be unique and focus on one specific error prevention tool, and how they could have been used to prevent the error in the case study. The questions should not use the same error prevention tools. Do not include hospital implementation to fix solution only the case.`;
+
 
     const input = {
       input: { text: message },
