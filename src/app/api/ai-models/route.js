@@ -1,6 +1,4 @@
 import { BedrockAgentRuntimeClient, RetrieveAndGenerateCommand } from "@aws-sdk/client-bedrock-agent-runtime";
-import { ElevenLabsClient } from "elevenlabs";
-import { v4 as uuid } from "uuid";
 import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
 import axios from 'axios';
