@@ -6,19 +6,7 @@ import FormData from 'form-data'; // Ensure FormData is imported
 
 dotenv.config({ path: '.env.local' });
 
-const errorPreventionTools = `
-a. Peer Checking and Coaching
-b. Debrief
-c. ARCC (Ask a question, Request a change, voice concern if needed, Stop the line, and activate the chain of command)
-d. Validate and Verify
-e. STAR (Stop, Think, Act, Review)
-f. No Distraction Zone
-g. Effective Handoffs
-h. Read and Repeat Backs; request and give acknowledgement
-i. Ask clarifying questions
-j. Using Alpha Numeric language
-k. SBAR (Situation, Background, Assessment, Recommendation)
-`;
+
 
 const bedrockClient = new BedrockAgentRuntimeClient({
   region: 'us-east-1',
@@ -78,7 +66,7 @@ export async function POST(request) {
 
     const message = `Please generate 4 medical case studies (150 words) and include 3 multiple-choice questions for each case study:
       - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.
-      - Create 3 case study based unique multiple-choice questions for each case study with 4 options. Each question should only focus on one out of the 11 error prevention tool, and how they could have been used to prevent the error in the case study. The questions should not use the same error prevention tools. Do not include hospital implementation to fix solution only the case.`;
+      - Create 3 case study based unique multiple-choice questions for each case study with 4 options. Each question should soley focus on one out of the 11 error prevention tool, and how they could have been used to prevent the error in the case study. The questions should not use the same error prevention tools. Do not include hospital implementation to fix solution only the case.`;
 
 
     const input = {
