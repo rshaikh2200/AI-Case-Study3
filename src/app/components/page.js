@@ -85,12 +85,118 @@ export default function Home() {
   const [showCaseStudies, setShowCaseStudies] = useState(false);
   const [showSafetyStatement, setShowSafetyStatement] = useState(true);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
+  
+  // Audio-related states
   const [audioUrl, setAudioUrl] = useState(null);
+  const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-
+  const [audioError, setAudioError] = useState('');
+  
   const audioRef = useRef(null);
 
-  
+  // Generate Speech Function
+  const generateSpeech = async () => {
+    setIsAudioLoading(true);
+    setAudioError('');
+    try {
+      const response = await fetch('/api/audio-models', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ input: currentCaseStudy.scenario }),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        setAudioUrl(url);
+        return url;
+      } else {
+        const data = await response.json();
+        console.error('Error from server:', data.error);
+        setAudioError(data.error || 'Failed to generate audio.');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error calling API:', error);
+      setAudioError('An unexpected error occurred.');
+      return null;
+    } finally {
+      setIsAudioLoading(false);
+    }
+  };
+
+  // Fetch Audio and Play
+  const fetchAudio = async () => {
+    // If audio is already playing, pause it
+    if (isAudioPlaying) {
+      audioRef.current.pause();
+      setIsAudioPlaying(false);
+      return;
+    }
+
+    // If audioUrl is not set, generate speech
+    if (!audioUrl) {
+      const url = await generateSpeech();
+      if (url) {
+        playAudio(url);
+      }
+    } else {
+      playAudio(audioUrl);
+    }
+  };
+
+  // Play Audio Function
+  const playAudio = (url) => {
+    if (audioRef.current) {
+      audioRef.current.src = url;
+      audioRef.current.play()
+        .then(() => {
+          setIsAudioPlaying(true);
+        })
+        .catch((error) => {
+          console.error('Error playing audio:', error);
+          setAudioError('Failed to play audio.');
+        });
+    }
+  };
+
+  // Handle Audio Play/Pause State
+  useEffect(() => {
+    const handleAudioEnded = () => {
+      setIsAudioPlaying(false);
+    };
+
+    const handleAudioPause = () => {
+      setIsAudioPlaying(false);
+    };
+
+    const audioElement = audioRef.current;
+    if (audioElement) {
+      audioElement.addEventListener('ended', handleAudioEnded);
+      audioElement.addEventListener('pause', handleAudioPause);
+    }
+
+    return () => {
+      if (audioElement) {
+        audioElement.removeEventListener('ended', handleAudioEnded);
+        audioElement.removeEventListener('pause', handleAudioPause);
+      }
+    };
+  }, []);
+
+  // Stop audio when switching case studies
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setIsAudioPlaying(false);
+      setAudioUrl(null);
+    }
+  }, [currentCaseStudyIndex]);
+
+  // Existing Functions: handleTakeAssessment, handleSubmitPreAssessment, etc.
   const handleTakeAssessment = async () => {
     setShowPreAssessment(true);
     setShowSafetyStatement(false);
@@ -166,21 +272,6 @@ export default function Home() {
       setShowSafetyStatement(true);
     }, 3000);
   };
-
-  // Stop audio when switching case studies
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-      setIsAudioPlaying(false);
-    }
-    // Cleanup when component unmounts
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
-    };
-  }, [currentCaseStudyIndex]);
 
   return (
     <Container maxWidth="md">
@@ -397,19 +488,44 @@ export default function Home() {
                   alignItems: 'center',
                   minWidth: 'auto', // Remove minimum width
                 }}
-                disabled={isAudioPlaying}
+                disabled={isAudioLoading}
               >
-                {isAudioPlaying ? <VolumeUpIcon fontSize="small" /> : <VolumeOffIcon fontSize="small" />}
-                <Typography
-                  variant="caption" // Smaller text variant
-                  sx={{ marginLeft: 0.5 }}
-                >
-                  Listen
-                </Typography>
+                {isAudioLoading ? (
+                  <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
+                    Loading...
+                  </Typography>
+                ) : isAudioPlaying ? (
+                  <>
+                    <VolumeUpIcon fontSize="small" />
+                    <Typography
+                      variant="caption" // Smaller text variant
+                      sx={{ marginLeft: 0.5 }}
+                    >
+                      Pause
+                    </Typography>
+                  </>
+                ) : (
+                  <>
+                    <VolumeOffIcon fontSize="small" />
+                    <Typography
+                      variant="caption" // Smaller text variant
+                      sx={{ marginLeft: 0.5 }}
+                    >
+                      Listen
+                    </Typography>
+                  </>
+                )}
               </Button>
             </Box>
 
-            {/* Removed the audio control element */}
+            {/* Audio Element */}
+            <audio ref={audioRef} />
+
+            {audioError && (
+              <Box mt={1}>
+                <Alert severity="error">{audioError}</Alert>
+              </Box>
+            )}
 
             <Typography
               variant="body1"
