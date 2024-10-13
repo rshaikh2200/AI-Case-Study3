@@ -274,6 +274,9 @@ export default function Home() {
   // State to track current question within a case study
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 
+  // New State to track current safety question
+  const [currentSafetyQuestionIndex, setCurrentSafetyQuestionIndex] = useState(0);
+
   // Generate Speech Function
   const generateSpeech = async () => {
     if (!currentCaseStudy) return;
@@ -411,6 +414,7 @@ export default function Home() {
       setShowCaseStudies(true);
       setCurrentCaseStudyIndex(0);
       setCurrentQuestionIndex(0);
+      setCurrentSafetyQuestionIndex(0); // Reset safety question index
     } catch (err) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -419,12 +423,12 @@ export default function Home() {
   };
 
   // Handle answer changes
-  const handleAnswerChange = (caseStudyIndex, questionIndex, selectedOption) => {
+  const handleAnswerChange = (section, index, selectedOption) => {
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
-      [caseStudyIndex]: {
-        ...prevAnswers[caseStudyIndex],
-        [questionIndex]: selectedOption,
+      [section]: {
+        ...prevAnswers[section],
+        [index]: selectedOption,
       },
     }));
   };
@@ -445,14 +449,22 @@ export default function Home() {
 
   // Handle previous question
   const handlePreviousQuestion = () => {
-    if (currentQuestionIndex > 0) {
+    if (showPreAssessment) {
+      if (currentSafetyQuestionIndex > 0) {
+        setCurrentSafetyQuestionIndex(currentSafetyQuestionIndex - 1);
+      }
+    } else if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
 
   // Handle next question
   const handleNextQuestion = () => {
-    if (
+    if (showPreAssessment) {
+      if (currentSafetyQuestionIndex < safetyQuestions.length - 1) {
+        setCurrentSafetyQuestionIndex(currentSafetyQuestionIndex + 1);
+      }
+    } else if (
       currentCaseStudy &&
       currentCaseStudy.questions &&
       currentQuestionIndex < currentCaseStudy.questions.length - 1
@@ -475,11 +487,15 @@ export default function Home() {
       setCaseStudies([]);
       setCurrentCaseStudyIndex(0);
       setCurrentQuestionIndex(0);
+      setCurrentSafetyQuestionIndex(0);
     }, 3000);
   };
 
   // Current Case Study
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
+
+  // Current Safety Question
+  const currentSafetyQuestion = safetyQuestions[currentSafetyQuestionIndex];
 
   return (
     <Container maxWidth="md">
@@ -591,9 +607,8 @@ export default function Home() {
               Safety Principles Questions
             </Typography>
             {safetyQuestions.length > 0 ? (
-              safetyQuestions.map((questionData, index) => (
+              <Box>
                 <Box
-                  key={index}
                   mt={2}
                   p={2}
                   sx={{ backgroundColor: '#f0f0f0', borderRadius: 2 }}
@@ -603,18 +618,20 @@ export default function Home() {
                     gutterBottom
                     sx={{ fontWeight: 'bold' }}
                   >
-                    {`Question ${index + 1}`}
+                    {`Question ${currentSafetyQuestionIndex + 1} of ${safetyQuestions.length}`}
                   </Typography>
                   <Typography variant="body2" gutterBottom>
-                    {questionData.question}
+                    {currentSafetyQuestion.question}
                   </Typography>
                   <RadioGroup
-                    value={selectedAnswers['preAssessment']?.[index] || ''}
+                    value={
+                      selectedAnswers['preAssessment']?.[currentSafetyQuestionIndex] || ''
+                    }
                     onChange={(e) =>
-                      handleAnswerChange('preAssessment', index, e.target.value)
+                      handleAnswerChange('preAssessment', currentSafetyQuestionIndex, e.target.value)
                     }
                   >
-                    {questionData.options.map((option) => (
+                    {currentSafetyQuestion.options.map((option) => (
                       <FormControlLabel
                         key={option.key}
                         value={option.key}
@@ -629,29 +646,64 @@ export default function Home() {
                     ))}
                   </RadioGroup>
                 </Box>
-              ))
+
+                {/* Navigation Buttons */}
+                <Box
+                  mt={4}
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
+                  <Button
+                    type="button"
+                    variant="contained"
+                    color="secondary"
+                    onClick={handlePreviousQuestion}
+                    disabled={currentSafetyQuestionIndex === 0}
+                    size="small"
+                    sx={{ padding: '6px 20px', fontSize: '0.875rem', marginRight: 1 }}
+                  >
+                    Previous Question
+                  </Button>
+
+                  {currentSafetyQuestionIndex < safetyQuestions.length - 1 ? (
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="secondary"
+                      onClick={handleNextQuestion}
+                      size="small"
+                      sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
+                      disabled={
+                        !selectedAnswers['preAssessment']?.[currentSafetyQuestionIndex]
+                      }
+                    >
+                      Next Question
+                    </Button>
+                  ) : (
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSubmitPreAssessment}
+                      size="large"
+                      sx={{ padding: '10px 30px', fontSize: '1rem' }}
+                      disabled={
+                        !selectedAnswers['preAssessment']?.[currentSafetyQuestionIndex]
+                      }
+                    >
+                      {isLoading
+                        ? 'Submitting your pre-assessment, please wait.'
+                        : 'Submit: Part I'}
+                    </Button>
+                  )}
+                </Box>
+              </Box>
             ) : (
               <Typography variant="body2" color="textSecondary">
                 No pre-assessment questions available.
               </Typography>
             )}
-
-            {/* Submit Button */}
-            <Box mt={4} display="flex" justifyContent="center">
-              <Button
-                type="button"
-                variant="contained"
-                color="primary"
-                onClick={handleSubmitPreAssessment}
-                disabled={isLoading}
-                size="large"
-                sx={{ padding: '10px 30px', fontSize: '1rem' }}
-              >
-                {isLoading
-                  ? 'Submitting your pre-assessment, please wait.'
-                  : 'Submit: Part I'}
-              </Button>
-            </Box>
           </Box>
         )}
 
@@ -821,7 +873,11 @@ export default function Home() {
                           variant="contained"
                           color="secondary"
                           onClick={handlePreviousQuestion}
-                          disabled={currentQuestionIndex === 0}
+                          disabled={
+                            showPreAssessment
+                              ? currentSafetyQuestionIndex === 0
+                              : currentQuestionIndex === 0
+                          }
                           size="small"
                           sx={{ padding: '6px 20px', fontSize: '0.875rem', marginRight: 1 }}
                         >
@@ -834,7 +890,11 @@ export default function Home() {
                             variant="contained"
                             color="secondary"
                             onClick={handleNextQuestion}
-                            disabled={currentQuestionIndex === currentCaseStudy.questions.length - 1}
+                            disabled={
+                              showPreAssessment
+                                ? currentSafetyQuestionIndex === safetyQuestions.length - 1
+                                : currentQuestionIndex === currentCaseStudy.questions.length - 1
+                            }
                             size="small"
                             sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
                           >
@@ -905,4 +965,5 @@ export default function Home() {
       </Box>
     </Container>
   );
-};
+}
+
