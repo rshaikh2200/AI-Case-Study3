@@ -160,9 +160,18 @@ function parseCaseStudies(responseText) {
     .split(/Case Study \d+:/g)
     .filter(Boolean);
 
-  caseStudyBlocks.forEach((block, index) => {
-    const sections = block.split(/Question \d+/).map((section) => section.trim());
-    const scenario = sections[0]; // The case study scenario text
+    caseStudyBlocks.forEach((block, index) => {
+      const sections = block.split(/Question \d+/).map((section) => section.trim());
+      let scenario = sections[0]; // The case study scenario text
+  
+      scenario = scenario
+        .replace(/^[^\n]+\n/, '')
+        .replace(/\nMultiple Choice Questions:\n/, '')
+        .replace(/Specialization: [^\n]+\n/g, '')
+        .replace(/Case Summary:/, '')
+        .replace(/Multiple-Choice Questions:/, '') 
+        .trim();
+    
 
     // Format each question
     const questions = sections.slice(1).map((section, qIndex) => {
