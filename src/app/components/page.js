@@ -19,56 +19,232 @@ import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 
 const safetyQuestions = [
   {
-    question: 'The four safety principles are S.A.F.E. The S stands for Support the team, The A stands for Ask Questions, the F stands for Focus on the Task and the E stands for?',
-    options: ['Effective communication', 'Eat out', 'Everything goes', 'Effective engineering'],
+    question:
+      'The four safety principles are S.A.F.E. The S stands for Support the team, The A stands for Ask Questions, the F stands for Focus on the Task and the E stands for?',
+    options: [
+      { key: 'A', label: 'Effective communication' },
+      { key: 'B', label: 'Eat out' },
+      { key: 'C', label: 'Everything goes' },
+      { key: 'D', label: 'Effective engineering' },
+    ],
   },
   {
-    question: 'The two error prevention tools associated with the first safety principle “S” - “Support the team” are peer check, peer coach, and _____?',
-    options: ['Debrief', 'ARCC', 'SBAR', 'STAR'],
+    question:
+      'The two error prevention tools associated with the first safety principle “S” - “Support the team” are peer check, peer coach, and _____?',
+    options: [
+      { key: 'A', label: 'Debrief' },
+      { key: 'B', label: 'ARCC' },
+      { key: 'C', label: 'SBAR' },
+      { key: 'D', label: 'STAR' },
+    ],
   },
   {
-    question: 'The two error prevention tools associated with the second safety principle “A” - “Ask Questions” are ARCC and _____?',
-    options: ['Validate and Verify', 'SBAR', 'ARCC', 'STAR'],
+    question:
+      'The two error prevention tools associated with the second safety principle “A” - “Ask Questions” are ARCC and _____?',
+    options: [
+      { key: 'A', label: 'Validate and Verify' },
+      { key: 'B', label: 'SBAR' },
+      { key: 'C', label: 'ARCC' },
+      { key: 'D', label: 'STAR' },
+    ],
   },
   {
-    question: 'The two error prevention tools associated with the third safety principle “F” - “Focus on the task” are STAR and _____?',
-    options: ['No Distraction Zone', 'SBAR', 'ARCC', 'Debrief'],
+    question:
+      'The two error prevention tools associated with the third safety principle “F” - “Focus on the task” are STAR and _____?',
+    options: [
+      { key: 'A', label: 'No Distraction Zone' },
+      { key: 'B', label: 'SBAR' },
+      { key: 'C', label: 'ARCC' },
+      { key: 'D', label: 'Debrief' },
+    ],
   },
   {
-    question: 'A peer check is when you 1) ask your colleagues to review your work and offer assistance in reviewing the work of others. True or False?',
-    options: ['True', 'False'],
+    question:
+      'A peer check is when you 1) ask your colleagues to review your work and offer assistance in reviewing the work of others. True or False?',
+    options: [
+      { key: 'A', label: 'True' },
+      { key: 'B', label: 'False' },
+    ],
   },
   {
-    question: 'In peer coaching, you can coach to reinforce (celebrate it publicly when someone does something correctly) or coach to correct (correct someone privately if possible when something is done incorrectly). True or False?',
-    options: ['True', 'False'],
+    question:
+      'In peer coaching, you can coach to reinforce (celebrate it publicly when someone does something correctly) or coach to correct (correct someone privately if possible when something is done incorrectly). True or False?',
+    options: [
+      { key: 'A', label: 'True' },
+      { key: 'B', label: 'False' },
+    ],
   },
   {
     question: 'Which of the following is a good practice for a debrief?',
-    options: ['All three below are good practice for debrief', 'Last only 3 minutes', 'Senior member speaks last so that all team members will freely speak up.', 'Should be structured by asking: What went well, What did not go well, and Who will follow through?'],
+    options: [
+      { key: 'A', label: 'All three below are good practice for debrief' },
+      { key: 'B', label: 'Last only 3 minutes' },
+      {
+        key: 'C',
+        label:
+          'Senior member speaks last so that all team members will freely speak up.',
+      },
+      {
+        key: 'D',
+        label:
+          'Should be structured by asking: What went well, What did not go well, and Who will follow through?',
+      },
+    ],
   },
   {
-    question: 'Which of the following is NOT an escalation step in ARCC?',
-    options: ['All four steps below are valid', 'Ask a question to gently prompt the other person of a potential safety issue', 'Request a change to make the person fully aware of the risk', 'Voice a concern if the person is resistant', 'Use the chain of command if the possibility of patient harm persists'],
+    question:
+      'Which of the following is NOT an escalation step in ARCC?',
+    options: [
+      { key: 'A', label: 'All four steps below are valid' },
+      {
+        key: 'B',
+        label:
+          'Ask a question to gently prompt the other person of a potential safety issue',
+      },
+      {
+        key: 'C',
+        label:
+          'Request a change to make the person fully aware of the risk',
+      },
+      {
+        key: 'D',
+        label:
+          'Voice a concern if the person is resistant',
+      },
+      {
+        key: 'E',
+        label:
+          'Use the chain of command if the possibility of patient harm persists',
+      },
+    ],
   },
   {
-    question: 'Which of the following is NOT an important step in STAR?',
-    options: ['All four steps below are correct', 'Stop – pause for two seconds to focus your attention on the task at hand', 'Think – consider the actions you\'re about to take', 'Act – concentrate and carry out the task', 'Review – check to make sure that the task was done right and you got the right result'],
+    question:
+      'Which of the following is NOT an important step in STAR?',
+    options: [
+      { key: 'A', label: 'All four steps below are correct' },
+      {
+        key: 'B',
+        label:
+          'Stop – pause for two seconds to focus your attention on the task at hand',
+      },
+      {
+        key: 'C',
+        label: 'Think – consider the actions you\'re about to take',
+      },
+      {
+        key: 'D',
+        label: 'Act – concentrate and carry out the task',
+      },
+      {
+        key: 'E',
+        label:
+          'Review – check to make sure that the task was done right and you got the right result',
+      },
+    ],
   },
   {
-    question: 'Which of the following is NOT an important principle that makes an effective handoff?',
-    options: ['All six principles below are effective', 'Standardized and streamlined: concise communication ensures only the critical and necessary information is included.', 'Distraction free environment: conduct handoffs in a “no distraction zone”', 'Face to face/bedside (interactive): ensure the receiver can validate, verify, or ask clarifying questions.', 'Acknowledgements/repeat backs: communication without acknowledgement ISN’T communication', 'Verbal written/printed information: best retention if possible', 'Opportunity for questions/clarification: ask “What questions do you have?”'],
+    question:
+      'Which of the following is NOT an important principle that makes an effective handoff?',
+    options: [
+      { key: 'A', label: 'All six principles below are effective' },
+      {
+        key: 'B',
+        label:
+          'Standardized and streamlined: concise communication ensures only the critical and necessary information is included.',
+      },
+      {
+        key: 'C',
+        label:
+          'Distraction free environment: conduct handoffs in a “no distraction zone”',
+      },
+      {
+        key: 'D',
+        label:
+          'Face to face/bedside (interactive): ensure the receiver can validate, verify, or ask clarifying questions.',
+      },
+      {
+        key: 'E',
+        label:
+          'Acknowledgements/repeat backs: communication without acknowledgement ISN’T communication',
+      },
+      {
+        key: 'F',
+        label:
+          'Verbal written/printed information: best retention if possible',
+      },
+      {
+        key: 'G',
+        label:
+          'Opportunity for questions/clarification: ask “What questions do you have?”',
+      },
+    ],
   },
   {
-    question: 'Which of the following is NOT a step in Read and Repeat Back communication?',
-    options: ['All 3 below are steps in Read and Repeat Back communication', 'Sender communicates information to receiver', 'Receiver listens or writes down the information and reads/repeats it back', 'Sender acknowledges the accuracy of the read-back by stating “That’s correct”'],
+    question:
+      'Which of the following is NOT a step in Read and Repeat Back communication?',
+    options: [
+      { key: 'A', label: 'All 3 below are steps in Read and Repeat Back communication' },
+      {
+        key: 'B',
+        label: 'Sender communicates information to receiver',
+      },
+      {
+        key: 'C',
+        label:
+          'Receiver listens or writes down the information and reads/repeats it back',
+      },
+      {
+        key: 'D',
+        label:
+          'Sender acknowledges the accuracy of the read-back by stating “That’s correct”',
+      },
+    ],
   },
   {
-    question: 'Which of the following is NOT a part of the SBAR technique?',
-    options: ['All four parts below are part of the SBAR technique', 'Situation: what is the situation, patient, or project?', 'Background: what is important to communicate including problems and precautions?', 'Assessment: what is my assessment of the situation, problems, and precautions?', 'Recommendations: what is my recommendation, request, or plan?'],
+    question:
+      'Which of the following is NOT a part of the SBAR technique?',
+    options: [
+      { key: 'A', label: 'All four parts below are part of the SBAR technique' },
+      {
+        key: 'B',
+        label: 'Situation: what is the situation, patient, or project?',
+      },
+      {
+        key: 'C',
+        label:
+          'Background: what is important to communicate including problems and precautions?',
+      },
+      {
+        key: 'D',
+        label:
+          'Assessment: what is my assessment of the situation, problems, and precautions?',
+      },
+      {
+        key: 'E',
+        label:
+          'Recommendations: what is my recommendation, request, or plan?',
+      },
+    ],
   },
   {
-    question: 'Which of the following is NOT a situation in which asking a clarifying question would be important?',
-    options: ['All three below are important situations where asking a clarifying question would be important', 'When in unexpected high-risk situations', 'When information is incomplete', 'When information is ambiguous'],
+    question:
+      'Which of the following is NOT a situation in which asking a clarifying question would be important?',
+    options: [
+      { key: 'A', label: 'All three below are important situations where asking a clarifying question would be important' },
+      {
+        key: 'B',
+        label: 'When in unexpected high-risk situations',
+      },
+      {
+        key: 'C',
+        label: 'When information is incomplete',
+      },
+      {
+        key: 'D',
+        label: 'When information is ambiguous',
+      },
+    ],
   },
 ];
 
@@ -104,7 +280,9 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ input: caseStudies[currentCaseStudyIndex]?.scenario }),
+        body: JSON.stringify({
+          input: caseStudies[currentCaseStudyIndex]?.scenario,
+        }),
       });
 
       if (response.ok) {
@@ -201,7 +379,6 @@ export default function Home() {
   const handleTakeAssessment = async () => {
     setShowPreAssessment(true);
     setShowSafetyStatement(false);
-    await generateImageAndQuestionsForCaseStudy(0);
   };
 
   const handleSubmitPreAssessment = async () => {
@@ -209,9 +386,7 @@ export default function Home() {
     try {
       const response = await fetch('/api/ai-models', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ department, role, specialization }),
       });
 
@@ -236,7 +411,11 @@ export default function Home() {
 
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
 
-  const handleAnswerChange = (caseStudyIndex, questionIndex, selectedOption) => {
+  const handleAnswerChange = (
+    caseStudyIndex,
+    questionIndex,
+    selectedOption
+  ) => {
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
       [caseStudyIndex]: {
@@ -340,12 +519,12 @@ export default function Home() {
         <Box my={4} display="flex" justifyContent="center">
           {!showPreAssessment && !showCaseStudies && (
             <Button
-              type="button" // Explicitly set to "button"
+              type="button"
               variant="contained"
               color="primary"
               onClick={handleTakeAssessment}
               disabled={isLoading}
-              size="large" // Adjust as needed
+              size="large"
               sx={{
                 padding: '10px 30px',
                 fontSize: '1rem',
@@ -403,20 +582,20 @@ export default function Home() {
                   {questionData.question}
                 </Typography>
                 <RadioGroup
-                  value={
-                    selectedAnswers['preAssessment']?.[index] || ''
-                  }
+                  value={selectedAnswers['preAssessment']?.[index] || ''}
                   onChange={(e) =>
                     handleAnswerChange('preAssessment', index, e.target.value)
                   }
                 >
-                  {questionData.options.map((option, optionIndex) => (
+                  {questionData.options.map((option) => (
                     <FormControlLabel
-                      key={optionIndex}
-                      value={option}
+                      key={option.key}
+                      value={option.key}
                       control={<Radio />}
                       label={
-                        <Typography variant="body2">{option}</Typography>
+                        <Typography variant="body2">
+                          <strong>{option.key}.</strong> {option.label}
+                        </Typography>
                       }
                       sx={{ marginBottom: 1 }}
                     />
@@ -428,12 +607,12 @@ export default function Home() {
             {/* Submit Button */}
             <Box mt={4} display="flex" justifyContent="center">
               <Button
-                type="button" // Explicitly set to "button"
+                type="button"
                 variant="contained"
                 color="primary"
                 onClick={handleSubmitPreAssessment}
                 disabled={isLoading}
-                size="large" // Adjust as needed
+                size="large"
                 sx={{ padding: '10px 30px', fontSize: '1rem' }}
               >
                 {isLoading
@@ -488,18 +667,18 @@ export default function Home() {
                 {`Case Study ${currentCaseStudyIndex + 1}`}
               </Typography>
               <Button
-                type="button" // Explicitly set to "button"
+                type="button"
                 variant="contained"
                 color="primary"
                 onClick={fetchAudio}
-                size="small" // Set to small for a smaller button
+                size="small"
                 sx={{
                   marginLeft: 2,
-                  padding: '4px 8px', // Further reduced padding
-                  fontSize: '0.75rem', // Smaller font size
+                  padding: '4px 8px',
+                  fontSize: '0.75rem',
                   display: 'flex',
                   alignItems: 'center',
-                  minWidth: 'auto', // Remove minimum width
+                  minWidth: 'auto',
                 }}
                 disabled={isAudioLoading}
               >
@@ -510,20 +689,14 @@ export default function Home() {
                 ) : isAudioPlaying ? (
                   <>
                     <VolumeUpIcon fontSize="small" />
-                    <Typography
-                      variant="caption" // Smaller text variant
-                      sx={{ marginLeft: 0.5 }}
-                    >
+                    <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
                       Pause
                     </Typography>
                   </>
                 ) : (
                   <>
                     <VolumeOffIcon fontSize="small" />
-                    <Typography
-                      variant="caption" // Smaller text variant
-                      sx={{ marginLeft: 0.5 }}
-                    >
+                    <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
                       Listen
                     </Typography>
                   </>
@@ -563,7 +736,7 @@ export default function Home() {
                 }}
               >
                 <Typography variant="subtitle1" gutterBottom>
-                  {`Question ${qIndex + 1}: ${questionData.question}`}
+                  {`${questionData.question}`}
                 </Typography>
 
                 <RadioGroup
@@ -598,34 +771,34 @@ export default function Home() {
             {/* Navigation Buttons */}
             <Box mt={4} display="flex" justifyContent="space-between">
               <Button
-                type="button" // Explicitly set to "button"
+                type="button"
                 variant="contained"
                 color="secondary"
                 onClick={handlePreviousButtonClick}
                 disabled={currentCaseStudyIndex === 0}
-                size="small" // Set to small
+                size="small"
                 sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
               >
                 Previous
               </Button>
               {currentCaseStudyIndex === caseStudies.length - 1 ? (
                 <Button
-                  type="button" // Explicitly set to "button"
+                  type="button"
                   variant="contained"
                   color="primary"
                   onClick={handleSubmitAssessment}
-                  size="small" // Set to small
+                  size="small"
                   sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
                 >
                   Submit
                 </Button>
               ) : (
                 <Button
-                  type="button" // Explicitly set to "button"
+                  type="button"
                   variant="contained"
                   color="primary"
                   onClick={handleNextButtonClick}
-                  size="small" // Set to small
+                  size="small"
                   sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
                 >
                   Next
@@ -651,4 +824,5 @@ export default function Home() {
       </Box>
     </Container>
   );
-};
+}
+
