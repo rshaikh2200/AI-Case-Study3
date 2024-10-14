@@ -7,246 +7,18 @@ import {
   Paper,
   Typography,
   Grid,
-  TextField,
   Button,
   Alert,
   RadioGroup,
   FormControlLabel,
   Radio,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
-
-const safetyQuestions = [
-  {
-    question:
-      'The four safety principles are S.A.F.E. The S stands for Support the team, The A stands for Ask Questions, the F stands for Focus on the Task and the E stands for?',
-    options: [
-      { key: 'A', label: 'Effective communication' },
-      { key: 'B', label: 'Eat out' },
-      { key: 'C', label: 'Everything goes' },
-      { key: 'D', label: 'Effective engineering' },
-    ],
-  },
-  {
-    question:
-      'The two error prevention tools associated with the first safety principle “S” - “Support the team” are peer check, peer coach, and _____?',
-    options: [
-      { key: 'A', label: 'Debrief' },
-      { key: 'B', label: 'ARCC' },
-      { key: 'C', label: 'SBAR' },
-      { key: 'D', label: 'STAR' },
-    ],
-  },
-  {
-    question:
-      'The two error prevention tools associated with the second safety principle “A” - “Ask Questions” are ARCC and _____?',
-    options: [
-      { key: 'A', label: 'Validate and Verify' },
-      { key: 'B', label: 'SBAR' },
-      { key: 'C', label: 'ARCC' },
-      { key: 'D', label: 'STAR' },
-    ],
-  },
-  {
-    question:
-      'The two error prevention tools associated with the third safety principle “F” - “Focus on the task” are STAR and _____?',
-    options: [
-      { key: 'A', label: 'No Distraction Zone' },
-      { key: 'B', label: 'SBAR' },
-      { key: 'C', label: 'ARCC' },
-      { key: 'D', label: 'Debrief' },
-    ],
-  },
-  {
-    question:
-      'A peer check is when you 1) ask your colleagues to review your work and offer assistance in reviewing the work of others. True or False?',
-    options: [
-      { key: 'A', label: 'True' },
-      { key: 'B', label: 'False' },
-    ],
-  },
-  {
-    question:
-      'In peer coaching, you can coach to reinforce (celebrate it publicly when someone does something correctly) or coach to correct (correct someone privately if possible when something is done incorrectly). True or False?',
-    options: [
-      { key: 'A', label: 'True' },
-      { key: 'B', label: 'False' },
-    ],
-  },
-  {
-    question: 'Which of the following is a good practice for a debrief?',
-    options: [
-      { key: 'A', label: 'All three below are good practice for debrief' },
-      { key: 'B', label: 'Last only 3 minutes' },
-      {
-        key: 'C',
-        label:
-          'Senior member speaks last so that all team members will freely speak up.',
-      },
-      {
-        key: 'D',
-        label:
-          'Should be structured by asking: What went well, What did not go well, and Who will follow through?',
-      },
-    ],
-  },
-  {
-    question:
-      'Which of the following is NOT an escalation step in ARCC?',
-    options: [
-      { key: 'A', label: 'All four steps below are valid' },
-      {
-        key: 'B',
-        label:
-          'Ask a question to gently prompt the other person of a potential safety issue',
-      },
-      {
-        key: 'C',
-        label:
-          'Request a change to make the person fully aware of the risk',
-      },
-      {
-        key: 'D',
-        label:
-          'Voice a concern if the person is resistant',
-      },
-      {
-        key: 'E',
-        label:
-          'Use the chain of command if the possibility of patient harm persists',
-      },
-    ],
-  },
-  {
-    question:
-      'Which of the following is NOT an important step in STAR?',
-    options: [
-      { key: 'A', label: 'All four steps below are correct' },
-      {
-        key: 'B',
-        label:
-          'Stop – pause for two seconds to focus your attention on the task at hand',
-      },
-      {
-        key: 'C',
-        label: 'Think – consider the actions you\'re about to take',
-      },
-      {
-        key: 'D',
-        label: 'Act – concentrate and carry out the task',
-      },
-      {
-        key: 'E',
-        label:
-          'Review – check to make sure that the task was done right and you got the right result',
-      },
-    ],
-  },
-  {
-    question:
-      'Which of the following is NOT an important principle that makes an effective handoff?',
-    options: [
-      { key: 'A', label: 'All six principles below are effective' },
-      {
-        key: 'B',
-        label:
-          'Standardized and streamlined: concise communication ensures only the critical and necessary information is included.',
-      },
-      {
-        key: 'C',
-        label:
-          'Distraction free environment: conduct handoffs in a “no distraction zone”',
-      },
-      {
-        key: 'D',
-        label:
-          'Face to face/bedside (interactive): ensure the receiver can validate, verify, or ask clarifying questions.',
-      },
-      {
-        key: 'E',
-        label:
-          'Acknowledgements/repeat backs: communication without acknowledgement ISN’T communication',
-      },
-      {
-        key: 'F',
-        label:
-          'Verbal written/printed information: best retention if possible',
-      },
-      {
-        key: 'G',
-        label:
-          'Opportunity for questions/clarification: ask “What questions do you have?”',
-      },
-    ],
-  },
-  {
-    question:
-      'Which of the following is NOT a step in Read and Repeat Back communication?',
-    options: [
-      { key: 'A', label: 'All 3 below are steps in Read and Repeat Back communication' },
-      {
-        key: 'B',
-        label: 'Sender communicates information to receiver',
-      },
-      {
-        key: 'C',
-        label:
-          'Receiver listens or writes down the information and reads/repeats it back',
-      },
-      {
-        key: 'D',
-        label:
-          'Sender acknowledges the accuracy of the read-back by stating “That’s correct”',
-      },
-    ],
-  },
-  {
-    question:
-      'Which of the following is NOT a part of the SBAR technique?',
-    options: [
-      { key: 'A', label: 'All four parts below are part of the SBAR technique' },
-      {
-        key: 'B',
-        label: 'Situation: what is the situation, patient, or project?',
-      },
-      {
-        key: 'C',
-        label:
-          'Background: what is important to communicate including problems and precautions?',
-      },
-      {
-        key: 'D',
-        label:
-          'Assessment: what is my assessment of the situation, problems, and precautions?',
-      },
-      {
-        key: 'E',
-        label:
-          'Recommendations: what is my recommendation, request, or plan?',
-      },
-    ],
-  },
-  {
-    question:
-      'Which of the following is NOT a situation in which asking a clarifying question would be important?',
-    options: [
-      { key: 'A', label: 'All three below are important situations where asking a clarifying question would be important' },
-      {
-        key: 'B',
-        label: 'When in unexpected high-risk situations',
-      },
-      {
-        key: 'C',
-        label: 'When information is incomplete',
-      },
-      {
-        key: 'D',
-        label: 'When information is ambiguous',
-      },
-    ],
-  },
-];
 
 export default function Home() {
   // State Variables
@@ -258,7 +30,6 @@ export default function Home() {
   const [department, setDepartment] = useState('');
   const [role, setRole] = useState('');
   const [specialization, setSpecialization] = useState('');
-  const [showPreAssessment, setShowPreAssessment] = useState(false);
   const [showCaseStudies, setShowCaseStudies] = useState(false);
   const [showSafetyStatement, setShowSafetyStatement] = useState(true);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
@@ -273,9 +44,6 @@ export default function Home() {
 
   // State to track current question within a case study
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-  // New State to track current safety question
-  const [currentSafetyQuestionIndex, setCurrentSafetyQuestionIndex] = useState(0);
 
   // Generate Speech Function
   const generateSpeech = async () => {
@@ -386,12 +154,16 @@ export default function Home() {
 
   // Handle taking the assessment
   const handleTakeAssessment = () => {
-    setShowPreAssessment(true);
-    setShowSafetyStatement(false);
+    if (!role || !department || !specialization) {
+      setError('Please select your Role, Department, and Specialization before proceeding.');
+      return;
+    } else {
+      handleSubmitAssessment();
+    } // Added closing brace for else block
   };
 
-  // Handle submitting pre-assessment
-  const handleSubmitPreAssessment = async () => {
+  // Handle submitting the assessment
+  const handleSubmitAssessment = async () => {
     setIsLoading(true);
     setError(null);
     try {
@@ -410,11 +182,10 @@ export default function Home() {
 
       const data = await response.json();
       setCaseStudies(data.caseStudies);
-      setShowPreAssessment(false);
+      setShowSafetyStatement(false);
       setShowCaseStudies(true);
       setCurrentCaseStudyIndex(0);
       setCurrentQuestionIndex(0);
-      setCurrentSafetyQuestionIndex(0); // Reset safety question index
     } catch (err) {
       setError(err.message || 'An error occurred');
     } finally {
@@ -423,12 +194,12 @@ export default function Home() {
   };
 
   // Handle answer changes
-  const handleAnswerChange = (section, index, selectedOption) => {
+  const handleAnswerChange = (caseIndex, questionIndex, selectedOption) => {
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
-      [section]: {
-        ...prevAnswers[section],
-        [index]: selectedOption,
+      [caseIndex]: {
+        ...prevAnswers[caseIndex],
+        [questionIndex]: selectedOption,
       },
     }));
   };
@@ -449,22 +220,14 @@ export default function Home() {
 
   // Handle previous question
   const handlePreviousQuestion = () => {
-    if (showPreAssessment) {
-      if (currentSafetyQuestionIndex > 0) {
-        setCurrentSafetyQuestionIndex(currentSafetyQuestionIndex - 1);
-      }
-    } else if (currentQuestionIndex > 0) {
+    if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
 
   // Handle next question
   const handleNextQuestion = () => {
-    if (showPreAssessment) {
-      if (currentSafetyQuestionIndex < safetyQuestions.length - 1) {
-        setCurrentSafetyQuestionIndex(currentSafetyQuestionIndex + 1);
-      }
-    } else if (
+    if (
       currentCaseStudy &&
       currentCaseStudy.questions &&
       currentQuestionIndex < currentCaseStudy.questions.length - 1
@@ -474,7 +237,7 @@ export default function Home() {
   };
 
   // Handle submitting the assessment
-  const handleSubmitAssessment = () => {
+  const handleSubmitFinalAssessment = () => {
     setAssessmentComplete(true);
     setShowCaseStudies(false);
     setTimeout(() => {
@@ -487,15 +250,34 @@ export default function Home() {
       setCaseStudies([]);
       setCurrentCaseStudyIndex(0);
       setCurrentQuestionIndex(0);
-      setCurrentSafetyQuestionIndex(0);
     }, 3000);
   };
 
   // Current Case Study
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
 
-  // Current Safety Question
-  const currentSafetyQuestion = safetyQuestions[currentSafetyQuestionIndex];
+  // Example options for dropdowns
+  const departments = [
+    'Operating Room'
+    // Add other departments if needed
+  ];
+
+  const roles = [
+    'Surgeon',
+    'Anesthesiologist',
+    'Surgical Nurse',
+    'Surgical Technologist',
+    'Perfusionist',
+  ];
+
+  const specializations = [
+    'Orthopedic Surgery',
+    'Neurosurgery',
+    'General Anesthesia',
+    'Scrub Nurse',
+    'Scrub Tech',
+    'Cardiovascular Perfusion',
+  ];
 
   return (
     <Container maxWidth="md">
@@ -528,40 +310,82 @@ export default function Home() {
         {showSafetyStatement && (
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
-              <TextField
-                label="Department"
-                fullWidth
-                value={department}
-                onChange={(e) => setDepartment(e.target.value)}
-                variant="outlined"
-              />
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id="department-label">Department</InputLabel>
+                <Select
+                  labelId="department-label"
+                  label="Department"
+                  value={department}
+                  onChange={(e) => {
+                    setDepartment(e.target.value);
+                    if (error) setError(''); // Clear error if any
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {departments.map((dept) => (
+                    <MenuItem key={dept} value={dept}>
+                      {dept}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField
-                label="Role"
-                fullWidth
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                variant="outlined"
-              />
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id="role-label">Role</InputLabel>
+                <Select
+                  labelId="role-label"
+                  label="Role"
+                  value={role}
+                  onChange={(e) => {
+                    setRole(e.target.value);
+                    if (error) setError(''); // Clear error if any
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {roles.map((r) => (
+                    <MenuItem key={r} value={r}>
+                      {r}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
             <Grid item xs={12} sm={4}>
-              <TextField
-                label="Specialization"
-                fullWidth
-                value={specialization}
-                onChange={(e) => setSpecialization(e.target.value)}
-                variant="outlined"
-              />
+              <FormControl fullWidth variant="outlined">
+                <InputLabel id="specialization-label">Specialization</InputLabel>
+                <Select
+                  labelId="specialization-label"
+                  label="Specialization"
+                  value={specialization}
+                  onChange={(e) => {
+                    setSpecialization(e.target.value);
+                    if (error) setError(''); // Clear error if any
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {specializations.map((spec) => (
+                    <MenuItem key={spec} value={spec}>
+                      {spec}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
         )}
 
         {/* Take Assessment Button */}
         <Box my={4} display="flex" justifyContent="center">
-          {!showPreAssessment && !showCaseStudies && (
+          {showSafetyStatement && !showCaseStudies && (
             <Button
-              type="button"
+              type="button" // Explicitly set type to "button"
               variant="contained"
               color="primary"
               onClick={handleTakeAssessment}
@@ -583,127 +407,6 @@ export default function Home() {
         {error && (
           <Box mt={2}>
             <Alert severity="error">{error}</Alert>
-          </Box>
-        )}
-
-        {/* Safety Questions Page */}
-        {showPreAssessment && !isLoading && (
-          <Box
-            mt={4}
-            p={3}
-            sx={{
-              backgroundColor: '#fff',
-              borderRadius: '8px',
-              boxShadow: 2,
-              padding: 4,
-            }}
-          >
-            <Typography
-              variant="h5"
-              color="primary"
-              gutterBottom
-              sx={{ fontWeight: 'bold' }}
-            >
-              Safety Principles Questions
-            </Typography>
-            {safetyQuestions.length > 0 ? (
-              <Box>
-                <Box
-                  mt={2}
-                  p={2}
-                  sx={{ backgroundColor: '#f0f0f0', borderRadius: 2 }}
-                >
-                  <Typography
-                    variant="subtitle1"
-                    gutterBottom
-                    sx={{ fontWeight: 'bold' }}
-                  >
-                    {`Question ${currentSafetyQuestionIndex + 1} of ${safetyQuestions.length}`}
-                  </Typography>
-                  <Typography variant="body2" gutterBottom>
-                    {currentSafetyQuestion.question}
-                  </Typography>
-                  <RadioGroup
-                    value={
-                      selectedAnswers['preAssessment']?.[currentSafetyQuestionIndex] || ''
-                    }
-                    onChange={(e) =>
-                      handleAnswerChange('preAssessment', currentSafetyQuestionIndex, e.target.value)
-                    }
-                  >
-                    {currentSafetyQuestion.options.map((option) => (
-                      <FormControlLabel
-                        key={option.key}
-                        value={option.key}
-                        control={<Radio />}
-                        label={
-                          <Typography variant="body2">
-                            <strong>{option.key}.</strong> {option.label}
-                          </Typography>
-                        }
-                        sx={{ marginBottom: 1 }}
-                      />
-                    ))}
-                  </RadioGroup>
-                </Box>
-
-                {/* Navigation Buttons */}
-                <Box
-                  mt={4}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
-                  <Button
-                    type="button"
-                    variant="contained"
-                    color="secondary"
-                    onClick={handlePreviousQuestion}
-                    disabled={currentSafetyQuestionIndex === 0}
-                    size="small"
-                    sx={{ padding: '6px 20px', fontSize: '0.875rem', marginRight: 1 }}
-                  >
-                    Previous Question
-                  </Button>
-
-                  {currentSafetyQuestionIndex < safetyQuestions.length - 1 ? (
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="secondary"
-                      onClick={handleNextQuestion}
-                      size="small"
-                      sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
-                      disabled={
-                        !selectedAnswers['preAssessment']?.[currentSafetyQuestionIndex]
-                      }
-                    >
-                      Next Question
-                    </Button>
-                  ) : (
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="primary"
-                      onClick={handleSubmitPreAssessment}
-                      size="large"
-                      sx={{ padding: '10px 30px', fontSize: '1rem' }}
-                      disabled={
-                        !selectedAnswers['preAssessment']?.[currentSafetyQuestionIndex]
-                      }
-                    >
-                      {isLoading
-                        ? 'Submitting your pre-assessment, please wait.'
-                        : 'Submit: Part I'}
-                    </Button>
-                  )}
-                </Box>
-              </Box>
-            ) : (
-              <Typography variant="body2" color="textSecondary">
-                No pre-assessment questions available.
-              </Typography>
-            )}
           </Box>
         )}
 
@@ -754,7 +457,7 @@ export default function Home() {
                       {`Case Study ${currentCaseStudyIndex + 1}`}
                     </Typography>
                     <Button
-                      type="button"
+                      type="button" // Explicitly set type to "button"
                       variant="contained"
                       color="primary"
                       onClick={fetchAudio}
@@ -807,7 +510,7 @@ export default function Home() {
                     gutterBottom
                     sx={{ marginBottom: 3, fontSize: '1rem' }}
                   >
-                    {currentCaseStudy.scenario.replace('Multiple Choice', '')}
+                    {currentCaseStudy.scenario}
                   </Typography>
 
                   {/* Case Study Questions */}
@@ -821,8 +524,14 @@ export default function Home() {
                         boxShadow: 2,
                       }}
                     >
-                      <Typography variant="subtitle1" gutterBottom>
-                        {currentCaseStudy.questions[currentQuestionIndex].question}
+                      {/* Header for the Question */}
+                      {/* Modified Typography variant and fontSize to match options and case study */}
+                      <Typography
+                        variant="body1" // Changed from "h6" to "body1"
+                        gutterBottom
+                        sx={{ marginBottom: 2, fontSize: '1rem' }} // Added fontSize and fontWeight
+                      >
+                        {`Question ${currentQuestionIndex + 1}: ${currentCaseStudy.questions[currentQuestionIndex].question}`}
                       </Typography>
 
                       <RadioGroup
@@ -869,15 +578,11 @@ export default function Home() {
                       <Box>
                         {/* Previous Question Button */}
                         <Button
-                          type="button"
+                          type="button" // Explicitly set type to "button"
                           variant="contained"
                           color="secondary"
                           onClick={handlePreviousQuestion}
-                          disabled={
-                            showPreAssessment
-                              ? currentSafetyQuestionIndex === 0
-                              : currentQuestionIndex === 0
-                          }
+                          disabled={currentQuestionIndex === 0}
                           size="small"
                           sx={{ padding: '6px 20px', fontSize: '0.875rem', marginRight: 1 }}
                         >
@@ -886,14 +591,12 @@ export default function Home() {
                         {/* Next Question Button */}
                         {currentCaseStudy.questions.length > 1 && (
                           <Button
-                            type="button"
+                            type="button" // Explicitly set type to "button"
                             variant="contained"
                             color="secondary"
                             onClick={handleNextQuestion}
                             disabled={
-                              showPreAssessment
-                                ? currentSafetyQuestionIndex === safetyQuestions.length - 1
-                                : currentQuestionIndex === currentCaseStudy.questions.length - 1
+                              currentQuestionIndex === currentCaseStudy.questions.length - 1
                             }
                             size="small"
                             sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
@@ -906,7 +609,7 @@ export default function Home() {
                       <Box>
                         {/* Previous Case Study Button */}
                         <Button
-                          type="button"
+                          type="button" // Explicitly set type to "button"
                           variant="contained"
                           color="secondary"
                           onClick={handlePreviousCaseStudy}
@@ -919,10 +622,10 @@ export default function Home() {
                         {/* Next/Submit Case Study Button */}
                         {currentCaseStudyIndex === caseStudies.length - 1 ? (
                           <Button
-                            type="button"
+                            type="button" // Explicitly set type to "button"
                             variant="contained"
                             color="primary"
-                            onClick={handleSubmitAssessment}
+                            onClick={handleSubmitFinalAssessment}
                             size="small"
                             sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
                           >
@@ -930,7 +633,7 @@ export default function Home() {
                           </Button>
                         ) : (
                           <Button
-                            type="button"
+                            type="button" // Explicitly set type to "button"
                             variant="contained"
                             color="primary"
                             onClick={handleNextCaseStudy}
@@ -966,4 +669,3 @@ export default function Home() {
     </Container>
   );
 }
-
