@@ -385,19 +385,18 @@ export default function Home() {
         <Box my={4} display="flex" justifyContent="center">
           {showSafetyStatement && !showCaseStudies && (
             <Button
-              type="button" // Explicitly set type to "button"
+              type="button"
               variant="contained"
               color="primary"
               onClick={handleTakeAssessment}
               disabled={isLoading}
               size="large"
               sx={{
-                padding: '10px 30px',
-                fontSize: '1rem',
+                minWidth: 200,
               }}
             >
               {isLoading
-                ? 'Starting your assessment in a few minutes, please wait.'
+                ? 'Starting your assessment, please wait...'
                 : 'Take Assessment'}
             </Button>
           )}
@@ -414,7 +413,7 @@ export default function Home() {
         {isLoading && (
           <Box mt={4} display="flex" justifyContent="center">
             <Typography variant="h6" color="primary" align="center">
-              Starting your assessment in a few minutes, please wait.
+              Starting your assessment, please wait...
             </Typography>
           </Box>
         )}
@@ -457,18 +456,15 @@ export default function Home() {
                       {`Case Study ${currentCaseStudyIndex + 1}`}
                     </Typography>
                     <Button
-                      type="button" // Explicitly set type to "button"
+                      type="button"
                       variant="contained"
                       color="primary"
                       onClick={fetchAudio}
                       size="small"
                       sx={{
                         marginLeft: 2,
-                        padding: '4px 8px',
-                        fontSize: '0.75rem',
                         display: 'flex',
                         alignItems: 'center',
-                        minWidth: 'auto',
                       }}
                       disabled={isAudioLoading}
                     >
@@ -525,11 +521,10 @@ export default function Home() {
                       }}
                     >
                       {/* Header for the Question */}
-                      {/* Modified Typography variant and fontSize to match options and case study */}
                       <Typography
-                        variant="body1" // Changed from "h6" to "body1"
+                        variant="body1"
                         gutterBottom
-                        sx={{ marginBottom: 2, fontSize: '1rem' }} // Added fontSize and fontWeight
+                        sx={{ marginBottom: 2, fontSize: '1rem' }}
                       >
                         {`Question ${currentQuestionIndex + 1}: ${currentCaseStudy.questions[currentQuestionIndex].question}`}
                       </Typography>
@@ -572,73 +567,70 @@ export default function Home() {
                     <Box
                       mt={4}
                       display="flex"
+                      flexDirection={{ xs: 'column', sm: 'row' }}
                       justifyContent="space-between"
                       alignItems="center"
+                      gap={2}
                     >
-                      <Box>
+                      <Box display="flex" gap={2}>
                         {/* Previous Question Button */}
                         <Button
-                          type="button" // Explicitly set type to "button"
+                          type="button"
                           variant="contained"
                           color="secondary"
                           onClick={handlePreviousQuestion}
                           disabled={currentQuestionIndex === 0}
-                          size="small"
-                          sx={{ padding: '6px 20px', fontSize: '0.875rem', marginRight: 1 }}
+                          size="medium"
                         >
                           Previous Question
                         </Button>
                         {/* Next Question Button */}
                         {currentCaseStudy.questions.length > 1 && (
                           <Button
-                            type="button" // Explicitly set type to "button"
+                            type="button"
                             variant="contained"
                             color="secondary"
                             onClick={handleNextQuestion}
                             disabled={
                               currentQuestionIndex === currentCaseStudy.questions.length - 1
                             }
-                            size="small"
-                            sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
+                            size="medium"
                           >
                             Next Question
                           </Button>
                         )}
                       </Box>
 
-                      <Box>
+                      <Box display="flex" gap={2}>
                         {/* Previous Case Study Button */}
                         <Button
-                          type="button" // Explicitly set type to "button"
+                          type="button"
                           variant="contained"
                           color="secondary"
                           onClick={handlePreviousCaseStudy}
                           disabled={currentCaseStudyIndex === 0}
-                          size="small"
-                          sx={{ padding: '6px 20px', fontSize: '0.875rem', marginRight: 1 }}
+                          size="medium"
                         >
                           Previous Case Study
                         </Button>
                         {/* Next/Submit Case Study Button */}
                         {currentCaseStudyIndex === caseStudies.length - 1 ? (
                           <Button
-                            type="button" // Explicitly set type to "button"
+                            type="button"
                             variant="contained"
                             color="primary"
                             onClick={handleSubmitFinalAssessment}
-                            size="small"
-                            sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
+                            size="medium"
                           >
                             Submit
                           </Button>
                         ) : (
                           <Button
-                            type="button" // Explicitly set type to "button"
+                            type="button"
                             variant="contained"
                             color="primary"
                             onClick={handleNextCaseStudy}
-                            size="small"
-                            sx={{ padding: '6px 20px', fontSize: '0.875rem' }}
+                            size="medium"
                           >
                             Next Case Study
                           </Button>
