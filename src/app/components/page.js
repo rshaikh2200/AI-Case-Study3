@@ -271,7 +271,7 @@ export default function Home() {
   ];
 
   const specializations = [
-    'Orthopedic Surgery',
+    'Orthopedic',
     'Neurosurgery',
     'Vascular Surgery',
     'Transplant Surgery',
