@@ -91,7 +91,7 @@ export async function POST(request) {
 
     // Updated message with strict JSON format instructions
     const message = `Please generate 4 medical case studies (250 words) and include 3 multiple-choice questions for each case study:
-    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}. Each medical case study should strictly focus on pre-operative and peri-operative medical errors. This is the data for medical errors you can you can use create case studies: $search_results
+    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}. Each medical case study should strictly focus on pre-operative and peri-operative medical errors found here $search_results. Each character in the case study should incorporate health equiy with diverse names, races and genders. 
     Here are the approaches to incorporate:
     a. Peer Checking and Coaching
     b. Debrief
@@ -155,7 +155,7 @@ export async function POST(request) {
   "caseStudies": [
     {
       "caseStudy": "Case Study 1",
-      "scenario": "A 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, the surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
+      "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
       "questions": [
         {
           "question": "What error prevention approach could have been applied to prevent the delay in diagnosis?",
