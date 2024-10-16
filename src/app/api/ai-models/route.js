@@ -91,7 +91,9 @@ export async function POST(request) {
 
     // Updated message with strict JSON format instructions
     const message = `Please generate 4 medical case studies (150 words) and include 3 multiple-choice questions for each case study:
-    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}. The case studies should incorporate health equity with diverse names, races, genders, religion, however do not state the relegion and race directly in the case studies. 
+    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}. The case studies should incorporate health equity with diverse names, races, genders, religion. Each medical case study should focus on a different medical error: 1) Retained Sponge, 2) Missing Items on tray (equipment missing, broken, or not available), 3) bioburden on instrument, Bovey (burn events), 4) Fires where the patient was bruned (oxygen being introduced and then a spark from instrument, sets it off, a. Didnt have right oxygen mask which caused oxygen leak), 5) Patient falls (table malfunctions), 6) speciment error (a. not labeled correctly, b. discarded by accident, c. lost speciment, speciment handoff), 7) shift change ( when the count process is happening, when the procedure is almost done, surgeon is not aware of shift change), 8) site markings (wrong site procedure, limbs are okay but moreso on inside the body organs), consent (consent form is missing).
+     - Create 3 unique multiple-choice questions for each case study with 4 options. Each question should focus on a different error prevention approach and how it could have been applied to prevent the error in the case study. Ensure the questions explore different approaches without explicitly listing the prevention tools by name in the question header. Do not include hospital implementation to fix solution, only the case itself.
+    Here are the approaches to incorporate:
     a. Peer Checking and Coaching
     b. Debrief
     c. ARCC (Ask a question, Request a change, voice concern if needed, Stop the line, and activate the chain of command)
@@ -215,7 +217,7 @@ Do not include any additional text outside of the JSON structure.`;
           generationConfiguration: {
             promptTemplate: {
               textPromptTemplate: `Please use the following information:\n$search_results$\n${message}`,
-              basePromptTemplate: `Here are the case studies, error prevention tools, and medical errors:\n$search_results$\n${message}`,
+              basePromptTemplate: `Here are the case studies, and error prevention tools:\n$search_results$\n${message}`,
               inferenceConfig: {
                 textInferenceConfig: {
                   temperature: 0.3, // Lowered temperature for more deterministic output
