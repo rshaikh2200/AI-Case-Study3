@@ -91,8 +91,7 @@ export async function POST(request) {
 
     // Updated message with strict JSON format instructions
     const message = `Please generate 4 medical case studies (150 - 200 words) and include 3 multiple-choice questions for each case study:
-    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.  The case studies should incorporate health equity with diverse names, ethnicities, and relegions. However do not state the ethnicity or relegion in the case study. Do not include the team implementation to fix solution, only the case itself.  Each medical case study should focus on a different and randomly choosen medical error from this list: 1) Retained Sponge, 2) Missing Items on tray (equipment missing, broken, or not available), 3) bioburden on instrument, Bovey (burn events), 4) Fires where the patient was bruned (oxygen being introduced and then a spark from instrument, sets it off, a. Didnt have right oxygen mask which caused oxygen leak), 5) Patient falls (table malfunctions), 6) speciment error (a. not labeled correctly, b. discarded by accident, c. lost speciment, speciment handoff), 7) shift change ( when the count process is happening, when the procedure is almost done, surgeon is not aware of shift change), 8) site markings (wrong site procedure, limbs are okay but moreso on inside the body organs), consent (consent form is missing).
-    Here are the approaches to incorporate:
+    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.  The case studies should incorporate health equity with diverse names, ethnicities, and relegions. However do not state the relegion in the case study. 
     a. Peer Checking and Coaching
     b. Debrief
     c. ARCC (Ask a question, Request a change, voice concern if needed, Stop the line, and activate the chain of command)
