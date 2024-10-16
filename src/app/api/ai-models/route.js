@@ -91,7 +91,7 @@ export async function POST(request) {
 
     // Updated message with strict JSON format instructions
     const message = `Please generate 4 medical case studies (150 words) and include 3 multiple-choice questions for each case study:
-    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}. The case studies should incorporate health equity with diverse names, races, genders, religion. 
+    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}. The case studies should incorporate health equity with diverse names, races, and genders.
     Here are the approaches to incorporate:
     a. Peer Checking and Coaching
     b. Debrief
@@ -349,6 +349,7 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
 - **Formatting**: Present the prompt as a single, well-structured paragraph without any markdown or code blocks.
 - **Consistency**: Maintain consistency in descriptions, avoiding contradictions or vague terms.
 - **Descriptive Adjectives**: Utilize descriptive adjectives to enhance the visual richness of the prompt.
+- **Characters**: Characters should consist of different race, gender, and relegions.
 
 # Steps
 
