@@ -90,9 +90,8 @@ export async function POST(request) {
     const sanitizedSpecialization = sanitizeInput(specialization);
 
     // Updated message with strict JSON format instructions
-    const message = `Please generate 4 medical case studies (200-250 words) and include 3 multiple-choice questions for each case study:
-    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}. Each medical case study should strictly focus on the following pre-operative and peri-operative medical errors: Retained Sponge, Missing Items on tray (equipment missing, broken, or not available), bioburden on instrument, Bovey (burn events), Fires where the patient was bruned (oxygen being introduced and then a spark from instrument, sets it off, a. Didnt have right oxygen mask which caused oxygen leak), Patient falls (table malfunctions), speciment error (a. not labeled correctly, b. discarded by accident, c. lost speciment, speciment handoff), shift change ( when the count process is happening, when the procedure is almost done, surgeon is not aware of shift change), site markings (wrong site procedure, limbs are okay but moreso on inside the body organs), consent (consent form is missing).
-    - Create 3 unique multiple-choice questions for each case study with 4 options. Each question should focus on a different error prevention approach and how it could have been applied to prevent the error in the case study. Ensure the questions explore different approaches without explicitly listing the prevention tools by name in the question header. Do not include hospital implementation to fix solution, only the case itself.
+    const message = `Please generate 4 medical case studies (250 words) and include 3 multiple-choice questions for each case study:
+    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}. Each medical case study should strictly focus on pre-operative and peri-operative medical errors. This is the data for medical errors you can you can use create case studies: $search_results
     Here are the approaches to incorporate:
     a. Peer Checking and Coaching
     b. Debrief
