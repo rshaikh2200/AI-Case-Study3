@@ -90,7 +90,7 @@ export async function POST(request) {
     const sanitizedSpecialization = sanitizeInput(specialization);
 
     // Updated message with strict JSON format instructions
-    const message = `Please generate 4 medical case studies (150 - 200 words) and include 3 multiple-choice questions for each case study:
+    const message = `Please generate 4 medical case studies (200 - 250 words) and include 3 multiple-choice questions for each case study:
     - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.  Each case study should include a differemt medical error (ex: retained sponge, missing items on tray, bioburden on instrument, Bovey, Fires where the patient was burned, Equipment Malfunction Speciment Errors, Shift Change, Site Markings, Consent) that occured by the team or individual, however it should not include what steps were taken to resolve the issue by team or individual only provide the scenario
     a. Peer Checking and Coaching
     b. Debrief
@@ -154,7 +154,7 @@ export async function POST(request) {
   "caseStudies": [
     {
       "caseStudy": "Case Study 1",
-      "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
+      "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve." The case studies should incorporate health equity with diverse names, and genders
       "questions": [
         {
           "question": "What error prevention approach could have been applied to prevent the delay in diagnosis?",
