@@ -90,8 +90,8 @@ export async function POST(request) {
     const sanitizedSpecialization = sanitizeInput(specialization);
 
     // Updated message with strict JSON format instructions
-    const message = `Please generate 4 medical case studies (250 words) and include 3 multiple-choice questions for each case study:
-    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}. Each medical case study should strictly focus on pre-operative and peri-operative medical errors. Each character in the case study should incorporate health equiy with diverse names, races and genders. 
+    const message = `Please generate 4 medical case studies (200 words) and include 3 multiple-choice questions for each case study:
+    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}. Each medical case study should strictly focus on pre-operative and peri-operative medical errors. Each character in the case study should incorporate health equity with diverse names, races, genders, religion. The case study should not include how the team solved the issue only the case. 
     Here are the approaches to incorporate:
     a. Peer Checking and Coaching
     b. Debrief
