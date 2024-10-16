@@ -264,19 +264,27 @@ export default function Home() {
 
   const roles = [
     'Surgeon',
-    'Anesthesiologist',
-    'Surgical Nurse',
+    'Nurse',
+    'Circulator Nurse',
     'Surgical Technologist',
-    'Perfusionist',
+    
   ];
 
   const specializations = [
     'Orthopedic Surgery',
     'Neurosurgery',
-    'General Anesthesia',
+    'Vascular Surgery',
+    'Transplant Surgery',
+    'Oncological Surgery',
+    'Gynecological Surgery',
+    'ENT Surgery',
     'Scrub Nurse',
-    'Scrub Tech',
-    'Cardiovascular Perfusion',
+    'Circulating Nurse',
+    'RN First Assistant',
+    'Preoperative Nurse',
+    'Post-Anesthesia Care Unit Nurse',
+    'Perioperative Nurse Educator',
+    'Urology Surgery',
   ];
 
   return (
