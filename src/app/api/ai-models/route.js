@@ -216,7 +216,7 @@ Do not include any additional text outside of the JSON structure.`;
           generationConfiguration: {
             promptTemplate: {
               textPromptTemplate: `Please use the following information:\n$search_results$\n${message}`,
-              basePromptTemplate: `Here are the case studies and error prevention tools:\n$search_results$\n${message}`,
+              basePromptTemplate: `Here are the case studies, error prevention tools, and medical errors:\n$search_results$\n${message}`,
               inferenceConfig: {
                 textInferenceConfig: {
                   temperature: 0.3, // Lowered temperature for more deterministic output
