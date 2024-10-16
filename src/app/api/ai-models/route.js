@@ -156,7 +156,7 @@ export async function POST(request) {
   "caseStudies": [
     {
       "caseStudy": "Case Study 1",
-      "scenario": "A 65-year-old patient was scheduled for a left total knee replacement due to severe osteoarthritis. During the time-out procedure, the surgical team confirmed the correct side, but when the surgeon began the procedure, they realized they had operated on the right knee instead. The surgery was immediately halted, and the patient required a second anesthesia and additional procedure on the correct left knee.",
+      "scenario": "",
       "questions": [
         {
           "question": "What error prevention approach could have been applied to prevent the delay in diagnosis?",
