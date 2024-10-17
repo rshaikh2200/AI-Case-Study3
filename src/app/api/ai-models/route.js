@@ -92,7 +92,7 @@ export async function POST(request) {
     // Updated message with strict JSON format instructions
     const message = `Please generate 4 medical case studies (200 - 250 words) and include 3 multiple-choice questions for each case study:
     - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.  Each case study should include a different medical error (ex: a instrument left within patient, missing items, bioburden, burn events, isntrument malfunction, shift change, site markings, consent, miscoummunication) that occured, however it should not include what steps were taken to resolve the issue by team or individual only provide the scenario. The case studies should incorporate characters with diverse names, and genders. 
-    - Create 3 unique multiple-choice questions for each case study with 4 options. Each question should strictly focus on a different error prevention approach and how it could have been applied to prevent the error in the case study. Ensure the questions explore different approaches without explicitly listing the prevention tools by name in the question header. In the question, add buzzwords (in quotation marks) that can be used as hints to get the correct answer. 
+    - Create 3 unique multiple-choice questions for each case study with 4 options. Each question should strictly focus on a different error prevention approach and how it could have been applied to prevent the error in the case study. Ensure the questions explore different approaches without explicitly listing the prevention tools by name in the question header. 
     a. Peer Checking and Coaching
     b. Debrief
     c. ARCC (Ask a question, Request a change, voice concern if needed, Stop the line, and activate the chain of command)
@@ -344,7 +344,7 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
 
 - **Understand the Scenario**: Carefully read the provided scenario to grasp the context, key elements, and desired visual aspects.
 - **Detail and Clarity**: Include specific details such as settings, characters, objects, actions, and emotions to create a vivid image in the mind of the image generation model.
-- ** Realistic **: Make sure each character and object visible in the image do not overlap, and each character should have a full and realistic body. Make sure everything look as realistic as possible.
+- ** Realistic **: Make sure each character and object visible in the image do not overlap, and each character should have a full and realistic body. Make sure all body parts, veins, and etc are correct associated with correct object and character. Make sure everything look as realistic as possible.
 - **Avoid NSFW Content**: Ensure that the prompt does not contain or imply any inappropriate, offensive, or unsafe content.
 - **Language and Tone**: Use clear and concise language. Maintain a neutral and professional tone.
 - **Formatting**: Present the prompt as a single, well-structured paragraph without any markdown or code blocks.
