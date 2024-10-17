@@ -92,7 +92,7 @@ export async function POST(request) {
     // Updated message with strict JSON format instructions
     const message = `Please generate 4 medical case studies (200 - 250 words) and include 3 multiple-choice questions for each case study:
     - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.  Each case study should include a different medical error (ex: a instrument left within patient, missing items, bioburden, burn events, isntrument malfunction, shift change, site markings, consent, miscoummunication) that occured, however it should not include what steps were taken to resolve the issue by team or individual only provide the scenario. The case studies should incorporate characters with diverse names, and genders. 
-    - Create 3 unique multiple-choice questions for each case study with 4 options. Each question should strictly focus on a different error prevention approach and how it could have been applied to prevent the error in the case study. Ensure the questions explore different approaches without explicitly listing the prevention tools by name in the question header.
+    - Create 3 unique multiple-choice questions for each case study with 4 options. Each question should strictly focus on a different error prevention approach and how it could have been applied to prevent the error in the case study. Ensure the questions explore different approaches without explicitly listing the prevention tools by name in the question header. In the question, add buzzwords (in quotation marks) that can be used as hints to get the correct answer. 
     a. Peer Checking and Coaching
     b. Debrief
     c. ARCC (Ask a question, Request a change, voice concern if needed, Stop the line, and activate the chain of command)
@@ -500,5 +500,3 @@ async function fetchImagesForCaseStudies(
     throw error;
   }
 }
-
-
