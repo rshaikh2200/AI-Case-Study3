@@ -91,7 +91,7 @@ export async function POST(request) {
 
     // Updated message with strict JSON format instructions
     const message = `Please generate 4 medical case studies (200 - 250 words) and include 3 multiple-choice questions for each case study:
-    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.  Each case study should include a  medical error (ex: a instrument left within patient, missing items, bioburden, burn events, isntrument malfunction, shift change, site markings, consent, miscoummunication) that occured, however it should not include what steps were taken to resolve the issue by team or individual only provide the scenario. The case studies should incorporate characters with diverse names, and genders.  
+    - A medical case study for a ${sanitizedRole} in the ${sanitizedDepartment} department specializing in ${sanitizedSpecialization}.  Each case study should include a different medical error (ex: a instrument left within patient, missing items, bioburden, burn events, isntrument malfunction, shift change, site markings, consent, miscoummunication) that occured, however it should not include what steps were taken to resolve the issue by team or individual only provide the scenario. The case studies should incorporate characters with diverse names, and genders.  
     a. Peer Checking and Coaching
     b. Debrief
     c. ARCC (Ask a question, Request a change, voice concern if needed, Stop the line, and activate the chain of command)
