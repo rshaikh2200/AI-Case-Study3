@@ -206,7 +206,7 @@ Do not include any additional text outside of the JSON structure.`;
         type: 'KNOWLEDGE_BASE',
         knowledgeBaseConfiguration: {
           knowledgeBaseId: '8JNS4T4ALI',
-          modelArn: 'anthropic.claude-3-haiku-20240307-v1:0',
+          modelArn: 'anthropic.claude-3-haiku-20240307-v1:0:200k',
           retrievalConfiguration: {
             vectorSearchConfiguration: {
               numberOfResults: 5,
