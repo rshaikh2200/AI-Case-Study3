@@ -83,6 +83,7 @@ export async function POST(request) {
       department = 'General Department',
       role = 'General Role',
       specialization = 'General Specialization',
+      region = 'us-east-2',
     } = await request.json();
 
     const sanitizedDepartment = sanitizeInput(department);
