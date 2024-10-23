@@ -28,7 +28,7 @@ if (missingEnvVars.length > 0) {
 
 // Initialize Bedrock client
 const bedrockClient = new BedrockAgentRuntimeClient({
-  region: 'us-west-1',
+  region: 'us-east-2',
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
