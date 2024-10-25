@@ -1,8 +1,10 @@
+// route.js
+
 import { NextResponse } from 'next/server';
 import dotenv from 'dotenv';
 dotenv.config();
 import { Pinecone } from '@pinecone-database/pinecone';
-import { OpenAI } from 'openai'; // Ensure you have the OpenAI package installed
+import { OpenAI } from 'openai';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,23 +13,13 @@ function parseCaseStudies(responseText) {
   try {
     let jsonString = '';
 
-    // Attempt to parse the entire response as JSON
-    try {
-      const parsedDirect = JSON.parse(responseText);
-      if (parsedDirect.caseStudies && Array.isArray(parsedDirect.caseStudies)) {
-        jsonString = responseText;
-      } else {
-        throw new Error('Parsed JSON does not contain "caseStudies" array.');
-      }
-    } catch (directError) {
-      // If direct parsing fails, attempt to extract JSON from code fences
-      const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/i);
-      if (jsonMatch && jsonMatch[1]) {
-        jsonString = jsonMatch[1];
-      } else {
-        console.error('JSON block not found in the response:', responseText);
-        throw new Error('JSON block not found in the response.');
-      }
+    // Attempt to parse JSON from code fences
+    const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/i);
+    if (jsonMatch && jsonMatch[1]) {
+      jsonString = jsonMatch[1];
+    } else {
+      // Attempt to parse the entire response as JSON
+      jsonString = responseText;
     }
 
     // Remove comments (lines starting with //)
@@ -71,14 +63,12 @@ function parseCaseStudies(responseText) {
   }
 }
 
-
 export async function POST(request) {
   // Retrieve the API keys and environment variables from environment
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
   const PINECONE_ENV = process.env.PINECONE_ENVIRONMENT;
 
-  // Initialize Pinecone client using the modified initialization
   const pc = new Pinecone({
     apiKey: PINECONE_API_KEY,
   });
@@ -93,32 +83,19 @@ export async function POST(request) {
   const { department, role, specialization } = await request.json();
   const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization}`;
 
-  // Create an embedding for the input query using the specified logic
+  // Create an embedding for the input query
   let queryEmbedding;
   try {
-    const embeddingResponse = await fetch("https://api.openai.com/v1/embeddings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        input: query,
-        model: "text-embedding-ada-002",
-      }),
+    const embeddingResponse = await openai.embeddings.create({
+      input: query,
+      model: 'text-embedding-ada-002',
     });
 
-    if (!embeddingResponse.ok) {
-      const errorText = await embeddingResponse.text();
-      throw new Error(`Embedding API error ${embeddingResponse.status}: ${errorText}`);
-    }
-
-    const embeddingData = await embeddingResponse.json();
-    if (!embeddingData.data || !Array.isArray(embeddingData.data) || embeddingData.data.length === 0) {
+    if (!embeddingResponse.data || !Array.isArray(embeddingResponse.data) || embeddingResponse.data.length === 0) {
       throw new Error('Invalid embedding data structure.');
     }
 
-    queryEmbedding = embeddingData.data[0].embedding;
+    queryEmbedding = embeddingResponse.data[0].embedding;
   } catch (error) {
     console.error('Error creating embedding:', error);
     return NextResponse.json(
@@ -132,11 +109,11 @@ export async function POST(request) {
   try {
     const pineconeResponse = await index.query({
       vector: queryEmbedding,
-      topK: 3, // Number of similar case studies to retrieve
+      topK: 3,
       includeMetadata: true,
     });
 
-    similarCaseStudies = pineconeResponse.matches.map(match => match.metadata);
+    similarCaseStudies = pineconeResponse.matches.map((match) => match.metadata.content);
   } catch (error) {
     console.error('Error querying Pinecone:', error);
     return NextResponse.json(
@@ -146,16 +123,9 @@ export async function POST(request) {
   }
 
   // Construct the prompt with retrieved case studies
-  const retrievedCasesText = similarCaseStudies
-    .map(
-      (cs, index) =>
-        `Example Case Study ${index + 1}:\nScenario: ${cs.scenario}\nQuestions: ${cs.questions
-          .map(q => q.question)
-          .join('\n')}\n`
-    )
-    .join('\n');
+  const retrievedCasesText = similarCaseStudies.join('\n');
 
-    const META_PROMPT = `Please generate 4 medical case studies (250 words) and include 3 multiple-choice questions for each case study. Use the following ${retrievedCasesText} to help generate medical case studies:
+  const META_PROMPT = `Please generate 4 medical case studies (250 words) and include 3 multiple-choice questions for each case study. Use the following ${retrievedCasesText} to help generate medical case studies:
     - A medical case study for a ${role} in the ${department} department specializing in ${specialization}.  Each case study should include a different medical error (ex: a instrument left within patient, missing items, bioburden, burn events, isntrument malfunction, shift change, site markings, consent, miscoummunication) that occured, however it should not include what steps were taken to resolve the issue by team or individual only provide the scenario. The case studies should incorporate characters with diverse names, and genders. 
     - Create 3 unique multiple-choice questions for each case study with 4 options. Each question should strictly focus on a different error prevention approach and how it could have been applied to prevent the error in the case study. Ensure the questions explore different approaches without explicitly listing the prevention tools by name in the question header. 
     a. Peer Checking and Coaching
@@ -264,58 +234,44 @@ Ensure that:
 
 Do not include any additional text outside of the JSON structure.`;
 
-try {
-  // Make a request to OpenAI's Chat Completion API
-  const response = await fetch("https://api.openai.com/v1/chat/completions", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: "gpt-4o-mini", // You can use "gpt-4" if available
+  try {
+    // Make a request to OpenAI's Chat Completion API
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo', // Use 'gpt-4' if you have access
       messages: [
         {
-          role: "system",
+          role: 'system',
           content: META_PROMPT,
-        }
+        },
       ],
       temperature: 0,
-      max_tokens: 3500, // Increased to accommodate longer responses
-      stream: false, // Disable streaming to collect full response
-    }),
-  });
+      max_tokens: 4000,
+      stream: false,
+    });
 
-  // Handle non-OK responses from OpenAI API
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error(`OpenAI API Error ${response.status}: ${errorText}`);
-    throw new Error(`OpenAI API Error ${response.status}: ${errorText}`);
+    if (!response.choices || response.choices.length === 0) {
+      throw new Error('No choices returned from OpenAI.');
+    }
+
+    const aiResponse = response.choices[0].message.content;
+
+    if (!aiResponse) {
+      throw new Error('No content returned from OpenAI.');
+    }
+
+    // Parse the AI response using parseCaseStudies
+    const parsedCaseStudies = parseCaseStudies(aiResponse);
+
+    return NextResponse.json({ caseStudies: parsedCaseStudies });
+  } catch (error) {
+    console.error('Unexpected Error:', error);
+    return NextResponse.json(
+      { error: error.message || 'An unexpected error occurred.' },
+      { status: 500 }
+    );
   }
-
-  const data = await response.json();
-
-  if (!data || !data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
-    throw new Error('Invalid response structure from OpenAI.');
-  }
-
-  const aiResponse = data.choices[0]?.message?.content;
-  if (!aiResponse) {
-    throw new Error('No content returned from OpenAI.');
-  }
-
-  // Parse the AI response using parseCaseStudies
-  const parsedCaseStudies = parseCaseStudies(aiResponse);
-
-  return NextResponse.json({ caseStudies: parsedCaseStudies });
-} catch (error) {
-  console.error('Unexpected Error:', error);
-  return NextResponse.json(
-    { error: error.message || 'An unexpected error occurred.' },
-    { status: 500 }
-  );
 }
-}
+
 // Function to generate image prompt via OpenAI
 async function generateImagePrompt(caseStudy) { // Accept caseStudy as parameter
   // Customize META_PROMPT using caseStudy.scenario if needed
