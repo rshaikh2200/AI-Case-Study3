@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -159,7 +160,7 @@ export default function Home() {
       return;
     } else {
       handleSubmitAssessment();
-    } // Added closing brace for else block
+    }
   };
 
   // Handle submitting the assessment
@@ -258,7 +259,7 @@ export default function Home() {
 
   // Example options for dropdowns
   const departments = [
-    'Operating Room'
+    'Operating Room',
     // Add other departments if needed
   ];
 
@@ -267,7 +268,7 @@ export default function Home() {
     'Nurse',
     'Circulator Nurse',
     'Surgical Technologist',
-    
+    // Add other roles if needed
   ];
 
   const specializations = [
@@ -285,6 +286,7 @@ export default function Home() {
     'Post-Anesthesia Care Unit Nurse',
     'Perioperative Nurse Educator',
     'Urology Surgery',
+    // Add other specializations if needed
   ];
 
   return (
@@ -429,226 +431,223 @@ export default function Home() {
         {/* Case Studies Page */}
         {showCaseStudies && caseStudies.length > 0 && (
           <Box mt={4}>
-            {caseStudies.map((currentCaseStudy, caseIndex) => (
-              currentCaseStudyIndex === caseIndex && (
-                <Box key={caseIndex}>
-                  {/* Case Study Image */}
-                  {currentCaseStudy.imageUrl && (
-                    <Box mb={3} display="flex" justifyContent="center">
-                      <Box
-                        component="img"
-                        src={currentCaseStudy.imageUrl}
-                        alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
-                        sx={{
-                          width: '100%',
-                          maxWidth: '520px',
-                          height: 'auto',
-                          borderRadius: '8px',
-                          objectFit: 'contain',
-                          '@media (max-width: 600px)': {
-                            maxWidth: '100%',
-                          },
-                        }}
-                      />
-                    </Box>
-                  )}
+            {/* Current Case Study */}
+            <Box key={currentCaseStudyIndex}>
+              {/* Case Study Image */}
+              {currentCaseStudy.imageUrl && (
+                <Box mb={3} display="flex" justifyContent="center">
+                  <Box
+                    component="img"
+                    src={currentCaseStudy.imageUrl}
+                    alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
+                    sx={{
+                      width: '100%',
+                      maxWidth: '520px',
+                      height: 'auto',
+                      borderRadius: '8px',
+                      objectFit: 'contain',
+                      '@media (max-width: 600px)': {
+                        maxWidth: '100%',
+                      },
+                    }}
+                  />
+                </Box>
+              )}
 
-                  {/* Case Study Title and Audio Button */}
-                  <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Typography
-                      variant="h5"
-                      color="primary"
-                      gutterBottom
-                      sx={{ fontWeight: 'bold' }}
-                    >
-                      {`Case Study ${currentCaseStudyIndex + 1}`}
+              {/* Case Study Title and Audio Button */}
+              <Box display="flex" alignItems="center" justifyContent="space-between">
+                <Typography
+                  variant="h5"
+                  color="primary"
+                  gutterBottom
+                  sx={{ fontWeight: 'bold' }}
+                >
+                  {`Case Study ${currentCaseStudyIndex + 1}`}
+                </Typography>
+                <Button
+                  type="button"
+                  variant="contained"
+                  color="primary"
+                  onClick={fetchAudio}
+                  size="small"
+                  sx={{
+                    marginLeft: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                  disabled={isAudioLoading}
+                >
+                  {isAudioLoading ? (
+                    <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
+                      Loading...
                     </Typography>
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="primary"
-                      onClick={fetchAudio}
-                      size="small"
-                      sx={{
-                        marginLeft: 2,
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                      disabled={isAudioLoading}
-                    >
-                      {isAudioLoading ? (
-                        <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
-                          Loading...
-                        </Typography>
-                      ) : isAudioPlaying ? (
-                        <>
-                          <VolumeUpIcon fontSize="small" />
-                          <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
-                            Pause
-                          </Typography>
-                        </>
-                      ) : (
-                        <>
-                          <VolumeOffIcon fontSize="small" />
-                          <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
-                            Listen
-                          </Typography>
-                        </>
-                      )}
-                    </Button>
-                  </Box>
-
-                  {/* Audio Element */}
-                  <audio ref={audioRef} />
-
-                  {/* Audio Error Alert */}
-                  {audioError && (
-                    <Box mt={1}>
-                      <Alert severity="error">{audioError}</Alert>
-                    </Box>
+                  ) : isAudioPlaying ? (
+                    <>
+                      <VolumeUpIcon fontSize="small" />
+                      <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
+                        Pause
+                      </Typography>
+                    </>
+                  ) : (
+                    <>
+                      <VolumeOffIcon fontSize="small" />
+                      <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
+                        Listen
+                      </Typography>
+                    </>
                   )}
+                </Button>
+              </Box>
 
-                  {/* Case Study Scenario */}
+              {/* Audio Element */}
+              <audio ref={audioRef} />
+
+              {/* Audio Error Alert */}
+              {audioError && (
+                <Box mt={1}>
+                  <Alert severity="error">{audioError}</Alert>
+                </Box>
+              )}
+
+              {/* Case Study Scenario */}
+              <Typography
+                variant="body1"
+                gutterBottom
+                sx={{ marginBottom: 3, fontSize: '1rem' }}
+              >
+                {currentCaseStudy.scenario}
+              </Typography>
+
+              {/* Case Study Questions */}
+              {currentCaseStudy.questions && currentCaseStudy.questions.length > 0 ? (
+                <Box
+                  my={4}
+                  p={3}
+                  sx={{
+                    backgroundColor: '#fff',
+                    borderRadius: '8px',
+                    boxShadow: 2,
+                  }}
+                >
+                  {/* Header for the Question */}
                   <Typography
                     variant="body1"
                     gutterBottom
-                    sx={{ marginBottom: 3, fontSize: '1rem' }}
+                    sx={{ marginBottom: 2, fontSize: '1rem' }}
                   >
-                    {currentCaseStudy.scenario}
+                    {`Question ${currentQuestionIndex + 1}: ${currentCaseStudy.questions[currentQuestionIndex].question}`}
                   </Typography>
 
-                  {/* Case Study Questions */}
-                  {currentCaseStudy.questions && currentCaseStudy.questions.length > 0 ? (
-                    <Box
-                      my={4}
-                      p={3}
-                      sx={{
-                        backgroundColor: '#fff',
-                        borderRadius: '8px',
-                        boxShadow: 2,
-                      }}
-                    >
-                      {/* Header for the Question */}
-                      <Typography
-                        variant="body1"
-                        gutterBottom
-                        sx={{ marginBottom: 2, fontSize: '1rem' }}
-                      >
-                        {`Question ${currentQuestionIndex + 1}: ${currentCaseStudy.questions[currentQuestionIndex].question}`}
-                      </Typography>
-
-                      <RadioGroup
-                        value={
-                          selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] || ''
+                  <RadioGroup
+                    value={
+                      selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] || ''
+                    }
+                    onChange={(e) =>
+                      handleAnswerChange(
+                        currentCaseStudyIndex,
+                        currentQuestionIndex,
+                        e.target.value
+                      )
+                    }
+                  >
+                    {currentCaseStudy.questions[currentQuestionIndex].options.map((option) => (
+                      <FormControlLabel
+                        key={option.key}
+                        value={option.key}
+                        control={<Radio />}
+                        label={
+                          <Typography variant="body2">
+                            <strong>{option.key}.</strong> {option.label}
+                          </Typography>
                         }
-                        onChange={(e) =>
-                          handleAnswerChange(
-                            currentCaseStudyIndex,
-                            currentQuestionIndex,
-                            e.target.value
-                          )
-                        }
-                      >
-                        {currentCaseStudy.questions[currentQuestionIndex].options.map((option) => (
-                          <FormControlLabel
-                            key={option.key}
-                            value={option.key}
-                            control={<Radio />}
-                            label={
-                              <Typography variant="body2">
-                                <strong>{option.key}.</strong> {option.label}
-                              </Typography>
-                            }
-                            sx={{ marginBottom: 1 }}
-                          />
-                        ))}
-                      </RadioGroup>
-                    </Box>
-                  ) : (
-                    <Typography variant="body2" color="textSecondary">
-                      No questions available for this case study.
-                    </Typography>
-                  )}
-
-                  {/* Navigation Buttons */}
-                  {currentCaseStudy.questions && currentCaseStudy.questions.length > 0 && (
-                    <Box
-                      mt={4}
-                      display="flex"
-                      flexDirection={{ xs: 'column', sm: 'row' }}
-                      justifyContent="space-between"
-                      alignItems="center"
-                      gap={2}
-                    >
-                      <Box display="flex" gap={2}>
-                        {/* Previous Question Button */}
-                        <Button
-                          type="button"
-                          variant="contained"
-                          color="secondary"
-                          onClick={handlePreviousQuestion}
-                          disabled={currentQuestionIndex === 0}
-                          size="medium"
-                        >
-                          Previous Question
-                        </Button>
-                        {/* Next Question Button */}
-                        {currentCaseStudy.questions.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="contained"
-                            color="secondary"
-                            onClick={handleNextQuestion}
-                            disabled={
-                              currentQuestionIndex === currentCaseStudy.questions.length - 1
-                            }
-                            size="medium"
-                          >
-                            Next Question
-                          </Button>
-                        )}
-                      </Box>
-
-                      <Box display="flex" gap={2}>
-                        {/* Previous Case Study Button */}
-                        <Button
-                          type="button"
-                          variant="contained"
-                          color="secondary"
-                          onClick={handlePreviousCaseStudy}
-                          disabled={currentCaseStudyIndex === 0}
-                          size="medium"
-                        >
-                          Previous Case Study
-                        </Button>
-                        {/* Next/Submit Case Study Button */}
-                        {currentCaseStudyIndex === caseStudies.length - 1 ? (
-                          <Button
-                            type="button"
-                            variant="contained"
-                            color="primary"
-                            onClick={handleSubmitFinalAssessment}
-                            size="medium"
-                          >
-                            Submit
-                          </Button>
-                        ) : (
-                          <Button
-                            type="button"
-                            variant="contained"
-                            color="primary"
-                            onClick={handleNextCaseStudy}
-                            size="medium"
-                          >
-                            Next Case Study
-                          </Button>
-                        )}
-                      </Box>
-                    </Box>
-                  )}
+                        sx={{ marginBottom: 1 }}
+                      />
+                    ))}
+                  </RadioGroup>
                 </Box>
-              )
-            ))}
+              ) : (
+                <Typography variant="body2" color="textSecondary">
+                  No questions available for this case study.
+                </Typography>
+              )}
+
+              {/* Navigation Buttons */}
+              {currentCaseStudy.questions && currentCaseStudy.questions.length > 0 && (
+                <Box
+                  mt={4}
+                  display="flex"
+                  flexDirection={{ xs: 'column', sm: 'row' }}
+                  justifyContent="space-between"
+                  alignItems="center"
+                  gap={2}
+                >
+                  <Box display="flex" gap={2}>
+                    {/* Previous Question Button */}
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="secondary"
+                      onClick={handlePreviousQuestion}
+                      disabled={currentQuestionIndex === 0}
+                      size="medium"
+                    >
+                      Previous Question
+                    </Button>
+                    {/* Next Question Button */}
+                    {currentCaseStudy.questions.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="contained"
+                        color="secondary"
+                        onClick={handleNextQuestion}
+                        disabled={
+                          currentQuestionIndex === currentCaseStudy.questions.length - 1
+                        }
+                        size="medium"
+                      >
+                        Next Question
+                      </Button>
+                    )}
+                  </Box>
+
+                  <Box display="flex" gap={2}>
+                    {/* Previous Case Study Button */}
+                    <Button
+                      type="button"
+                      variant="contained"
+                      color="secondary"
+                      onClick={handlePreviousCaseStudy}
+                      disabled={currentCaseStudyIndex === 0}
+                      size="medium"
+                    >
+                      Previous Case Study
+                    </Button>
+                    {/* Next/Submit Case Study Button */}
+                    {currentCaseStudyIndex === caseStudies.length - 1 ? (
+                      <Button
+                        type="button"
+                        variant="contained"
+                        color="primary"
+                        onClick={handleSubmitFinalAssessment}
+                        size="medium"
+                      >
+                        Submit
+                      </Button>
+                    ) : (
+                      <Button
+                        type="button"
+                        variant="contained"
+                        color="primary"
+                        onClick={handleNextCaseStudy}
+                        size="medium"
+                      >
+                        Next Case Study
+                      </Button>
+                    )}
+                  </Box>
+                </Box>
+              )}
+            </Box>
 
             {/* Assessment Completion Message */}
             {assessmentComplete && (
