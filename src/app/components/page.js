@@ -85,12 +85,14 @@ export default function Home() {
   // Fetch Audio and Toggle Play/Pause
   const fetchAudio = async () => {
     if (isAudioPlaying) {
-      audioRef.current.pause();
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
       setIsAudioPlaying(false);
     } else {
       // Generate new speech URL for the current case study
       const url = await generateSpeech();
-      if (url) {
+      if (url && audioRef.current) {
         playAudio(url);
       }
     }
@@ -177,11 +179,16 @@ export default function Home() {
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
-          `Failed to fetch case studies: ${errorData.message || 'Unknown error'}`
+          `Failed to fetch case studies: ${errorData.error || 'Unknown error'}`
         );
       }
 
       const data = await response.json();
+
+      if (!data.caseStudies || !Array.isArray(data.caseStudies)) {
+        throw new Error('Invalid data format received from server.');
+      }
+
       setCaseStudies(data.caseStudies);
       setShowSafetyStatement(false);
       setShowCaseStudies(true);
@@ -189,6 +196,7 @@ export default function Home() {
       setCurrentQuestionIndex(0);
     } catch (err) {
       setError(err.message || 'An error occurred');
+      console.error('Error fetching case studies:', err);
     } finally {
       setIsLoading(false);
     }
@@ -429,7 +437,7 @@ export default function Home() {
         )}
 
         {/* Case Studies Page */}
-        {showCaseStudies && caseStudies.length > 0 && (
+        {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
           <Box mt={4}>
             {/* Current Case Study */}
             <Box key={currentCaseStudyIndex}>
@@ -664,7 +672,17 @@ export default function Home() {
             )}
           </Box>
         )}
+
+        {/* Handle Empty Case Studies */}
+        {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
+          <Box mt={4}>
+            <Alert severity="warning">
+              No case studies available at the moment. Please try again later.
+            </Alert>
+          </Box>
+        )}
       </Box>
     </Container>
   );
 }
+
