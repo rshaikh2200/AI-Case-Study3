@@ -1,189 +1,34 @@
-import {
-  BedrockAgentRuntimeClient,
-  RetrieveAndGenerateCommand,
-} from '@aws-sdk/client-bedrock-agent-runtime';
-import dotenv from 'dotenv';
 import { NextResponse } from 'next/server';
-import axios from 'axios';
-import FormData from 'form-data';
+import dotenv from 'dotenv';
+dotenv.config();
+import { Pinecone } from '@pinecone-database/pinecone';
+import { OpenAI } from 'openai'; // Ensure you have the OpenAI package installed
 
-// Load environment variables
-dotenv.config({ path: '.env.local' });
+export const dynamic = 'force-dynamic';
 
-// Validate essential environment variables
-const requiredEnvVars = [
-  'AWS_ACCESS_KEY_ID',
-  'AWS_SECRET_ACCESS_KEY',
-  'OPENAI_API_KEY',
-  'STABILITY_API_KEY',
-];
-
-const missingEnvVars = requiredEnvVars.filter((varName) => !process.env[varName]);
-
-if (missingEnvVars.length > 0) {
-  throw new Error(
-    `Missing required environment variables: ${missingEnvVars.join(', ')}`
-  );
-}
-
-// Initialize Bedrock client
-const bedrockClient = new BedrockAgentRuntimeClient({
-  region: 'us-east-1',
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
-});
-
-// Sanitize input to prevent problematic content
-const sanitizeInput = (text = '') => {
-  const restrictedWords = ['forbiddenWord1', 'forbiddenWord2'];
-  return restrictedWords.reduce(
-    (acc, word) => acc.replace(new RegExp(word, 'gi'), '***'),
-    text
-  );
-};
-
-// Sanitize the scenario for safe image generation (specific to Case Study 3)
-function sanitizeScenario(scenario) {
-  const restrictedWords = ['error', 'failure'];
-  let sanitizedScenario = scenario;
-
-  restrictedWords.forEach((word) => {
-    const regex = new RegExp(`\\b${word}\\b`, 'gi');
-    sanitizedScenario = sanitizedScenario.replace(regex, 'issue');
-  });
-
-  sanitizedScenario = sanitizedScenario.replace(
-    /(severe pain|irreversible damage|long-term disability|failed to recognize|muscle and nerve damage)/gi,
-    'discomfort, functional issues, delayed diagnosis, and long-term functional limitations'
-  );
-
-  return sanitizedScenario;
-}
-
-// Helper function to trim text to 15-20 words
-function trimToWordCount(text, minWords = 15, maxWords = 20) {
-  const words = text.trim().split(/\s+/);
-  const wordCount = words.length;
-
-  if (wordCount <= maxWords) {
-    // If word count is within the limit, return as is
-    return text;
-  }
-
-  // Trim to the maximum word limit
-  const trimmed = words.slice(0, maxWords).join(' ');
-  return `${trimmed}...`; // Add ellipsis to indicate trimming
-}
-
-export async function POST(request) {
-  try {
-    const {
-      department = 'General Department',
-      role = 'General Role',
-      specialization = 'General Specialization',
-    } = await request.json();
-
-    const sanitizedDepartment = sanitizeInput(department);
-    const sanitizedRole = sanitizeInput(role);
-    const sanitizedSpecialization = sanitizeInput(specialization);
-
-    // Updated message with strict JSON format instructions
-    const message = `tell me a story`;
-
-
-    const input = {
-      input: { text: message },
-      retrieveAndGenerateConfiguration: {
-        type: 'KNOWLEDGE_BASE',
-        knowledgeBaseConfiguration: {
-          knowledgeBaseId: '8JNS4T4ALI',
-          modelArn: 'us.anthropic.claude-3-haiku-20240307-v1:0',
-          retrievalConfiguration: {
-            vectorSearchConfiguration: {
-              numberOfResults: 5,
-              overrideSearchType: 'SEMANTIC',
-            },
-          },
-          generationConfiguration: {
-            promptTemplate: {
-              textPromptTemplate: `Please use the following information:\n$search_results$\n${message}`,
-              basePromptTemplate: `Here are the case studies, and error prevention tools:\n$search_results$\n${message}`,
-              inferenceConfig: {
-                textInferenceConfig: {
-                  temperature: 0.3, // Lowered temperature for more deterministic output
-                  topP: 0.8,
-                  maxTokens: 4096, // Increased maxTokens to accommodate JSON
-                },
-              },
-            },
-          },
-        },
-      },
-    };
-
-    const command = new RetrieveAndGenerateCommand(input);
-    const response = await bedrockClient.send(command);
-
-
-    if (!response?.output?.text) {
-      throw new Error('No valid text found in the model response.');
-    }
-
-    const caseStudies = parseCaseStudies(response.output.text);
-
-    if (caseStudies.length === 0) {
-      throw new Error(
-        'Failed to parse case studies, scenarios, or questions from the response.'
-      );
-    }
-
-    console.log('Case studies parsed successfully. Now generating image prompts...');
-    // Generate image prompts via OpenAI for each case study
-    const caseStudiesWithImagePrompts = await Promise.all(
-      caseStudies.map(async (caseStudy) => {
-        try {
-          const imagePromptResponse = await generateImagePrompt(caseStudy); // Pass entire caseStudy
-          const generatedImagePrompt = imagePromptResponse.prompt;
-
-        
-          return {
-            ...caseStudy,
-            imagePrompt: generatedImagePrompt,
-          };
-        } catch (error) {
-          console.error(`Error generating image prompt for ${caseStudy.caseStudy}:`, error.message);
-          return { ...caseStudy, imagePrompt: null };
-        }
-      })
-    );
-
-    // Now fetch images using the generated image prompts
-    const caseStudiesWithImages = await fetchImagesForCaseStudies(caseStudiesWithImagePrompts);
-
-    return NextResponse.json({ caseStudies: caseStudiesWithImages });
-  } catch (err) {
-    console.error('Error invoking RetrieveAndGenerateCommand:', err.message || err);
-    return NextResponse.json(
-      {
-        error: `Failed to fetch case studies: ${err.message || 'Unknown error'}`,
-      },
-      { status: 500 }
-    );
-  }
-}
-
+// Parsing function to extract and validate case studies
 function parseCaseStudies(responseText) {
   try {
-    // Extract the JSON content within code fences
-    const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/i);
-    if (!jsonMatch || jsonMatch.length < 2) {
-      console.error('JSON block not found in the response:', responseText);
-      throw new Error('JSON block not found in the response.');
-    }
+    let jsonString = '';
 
-    let jsonString = jsonMatch[1];
+    // Attempt to parse the entire response as JSON
+    try {
+      const parsedDirect = JSON.parse(responseText);
+      if (parsedDirect.caseStudies && Array.isArray(parsedDirect.caseStudies)) {
+        jsonString = responseText;
+      } else {
+        throw new Error('Parsed JSON does not contain "caseStudies" array.');
+      }
+    } catch (directError) {
+      // If direct parsing fails, attempt to extract JSON from code fences
+      const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/i);
+      if (jsonMatch && jsonMatch[1]) {
+        jsonString = jsonMatch[1];
+      } else {
+        console.error('JSON block not found in the response:', responseText);
+        throw new Error('JSON block not found in the response.');
+      }
+    }
 
     // Remove comments (lines starting with //)
     jsonString = jsonString.replace(/\/\/.*$/gm, '');
@@ -226,6 +71,251 @@ function parseCaseStudies(responseText) {
   }
 }
 
+
+export async function POST(request) {
+  // Retrieve the API keys and environment variables from environment
+  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+  const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
+  const PINECONE_ENV = process.env.PINECONE_ENVIRONMENT;
+
+  // Initialize Pinecone client using the modified initialization
+  const pc = new Pinecone({
+    apiKey: PINECONE_API_KEY,
+  });
+  const index = pc.Index('rag').namespace('ns1'); // Ensure 'rag' is your index name and 'ns1' is your namespace
+
+  // Initialize OpenAI client
+  const openai = new OpenAI({
+    apiKey: OPENAI_API_KEY,
+  });
+
+  // Extract request body
+  const { department, role, specialization } = await request.json();
+  const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization}`;
+
+  // Create an embedding for the input query using the specified logic
+  let queryEmbedding;
+  try {
+    const embeddingResponse = await fetch("https://api.openai.com/v1/embeddings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        input: query,
+        model: "text-embedding-ada-002",
+      }),
+    });
+
+    if (!embeddingResponse.ok) {
+      const errorText = await embeddingResponse.text();
+      throw new Error(`Embedding API error ${embeddingResponse.status}: ${errorText}`);
+    }
+
+    const embeddingData = await embeddingResponse.json();
+    if (!embeddingData.data || !Array.isArray(embeddingData.data) || embeddingData.data.length === 0) {
+      throw new Error('Invalid embedding data structure.');
+    }
+
+    queryEmbedding = embeddingData.data[0].embedding;
+  } catch (error) {
+    console.error('Error creating embedding:', error);
+    return NextResponse.json(
+      { error: 'Failed to create embedding for the query.' },
+      { status: 500 }
+    );
+  }
+
+  // Query Pinecone for similar case studies
+  let similarCaseStudies = [];
+  try {
+    const pineconeResponse = await index.query({
+      vector: queryEmbedding,
+      topK: 3, // Number of similar case studies to retrieve
+      includeMetadata: true,
+    });
+
+    similarCaseStudies = pineconeResponse.matches.map(match => match.metadata);
+  } catch (error) {
+    console.error('Error querying Pinecone:', error);
+    return NextResponse.json(
+      { error: 'Failed to retrieve similar case studies from Pinecone.' },
+      { status: 500 }
+    );
+  }
+
+  // Construct the prompt with retrieved case studies
+  const retrievedCasesText = similarCaseStudies
+    .map(
+      (cs, index) =>
+        `Example Case Study ${index + 1}:\nScenario: ${cs.scenario}\nQuestions: ${cs.questions
+          .map(q => q.question)
+          .join('\n')}\n`
+    )
+    .join('\n');
+
+    const META_PROMPT = `Please generate 4 medical case studies (250 words) and include 3 multiple-choice questions for each case study. Use the following ${retrievedCasesText} to help generate medical case studies:
+    - A medical case study for a ${role} in the ${department} department specializing in ${specialization}.  Each case study should include a different medical error (ex: a instrument left within patient, missing items, bioburden, burn events, isntrument malfunction, shift change, site markings, consent, miscoummunication) that occured, however it should not include what steps were taken to resolve the issue by team or individual only provide the scenario. The case studies should incorporate characters with diverse names, and genders. 
+    - Create 3 unique multiple-choice questions for each case study with 4 options. Each question should strictly focus on a different error prevention approach and how it could have been applied to prevent the error in the case study. Ensure the questions explore different approaches without explicitly listing the prevention tools by name in the question header. 
+    a. Peer Checking and Coaching
+    b. Debrief
+    c. ARCC (Ask a question, Request a change, voice concern if needed, Stop the line, and activate the chain of command)
+    d. Validate and Verify
+    e. STAR (Stop, Think, Act, Review)
+    f. No Distraction Zone
+    g. Effective Handoffs
+    h. Read and Repeat Backs; request and give acknowledgement
+    i. Ask clarifying questions
+    j. Using Alpha Numeric language
+    k. SBAR (Situation, Background, Assessment, Recommendation
+    
+    Ensure the following format is strictly followed and output the entire response as valid JSON.
+
+\\\`\\\`\\\`json
+{
+  "caseStudies": [
+    {
+      "caseStudy": "Case Study 1",
+      "scenario": "Description of the case study scenario.",
+      "questions": [
+        {
+          "question": "Question 1 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          }
+        },
+        {
+          "question": "Question 2 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          }
+        },
+        {
+          "question": "Question 3 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          }
+        }
+      ]
+    }
+    // Repeat for Case Study 2, 3, and 4
+  ]
+}
+\\\`\\\`\\\`
+
+**Example:**
+
+\\\`\\\`\\\`json
+{
+  "caseStudies": [
+    {
+      "caseStudy": "Case Study 1",
+      "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve." The case studies should incorporate health equity with diverse names, and genders
+      "questions": [
+        {
+          "question": "What error prevention approach could have been applied to prevent the delay in diagnosis?",
+          "options": {
+            "A": "Peer Checking and Coaching",
+            "B": "Debrief",
+            "C": "ARCC",
+            "D": "Validate and Verify"
+          }
+        },
+        {
+          "question": "Which approach focuses on stopping the line to address concerns immediately?",
+          "options": {
+            "A": "STAR",
+            "B": "No Distraction Zone",
+            "C": "ARCC",
+            "D": "Effective Handoffs"
+          }
+        },
+        {
+          "question": "How can effective handoffs prevent such errors in the future?",
+          "options": {
+            "A": "By asking clarifying questions",
+            "B": "By using Alpha Numeric language",
+            "C": "By implementing SBAR",
+            "D": "All of the above"
+          }
+        }
+      ]
+    }
+    // Additional case studies...
+  ]
+}
+\\\`\\\`\\\`
+
+Ensure that:
+
+- The JSON is **well-formatted** and **free of any syntax errors**.
+- There are **no comments** (e.g., lines starting with \\\`//\\\`), **no trailing commas**, and **no additional text** outside the JSON block.
+- The JSON is enclosed within \\\`\\\`\\\`json and \\\`\\\`\\\` code fences.
+
+Do not include any additional text outside of the JSON structure.`;
+
+try {
+  // Make a request to OpenAI's Chat Completion API
+  const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${OPENAI_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: "gpt-4o-mini", // You can use "gpt-4" if available
+      messages: [
+        {
+          role: "system",
+          content: META_PROMPT,
+        }
+      ],
+      temperature: 0,
+      max_tokens: 3500, // Increased to accommodate longer responses
+      stream: false, // Disable streaming to collect full response
+    }),
+  });
+
+  // Handle non-OK responses from OpenAI API
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(`OpenAI API Error ${response.status}: ${errorText}`);
+    throw new Error(`OpenAI API Error ${response.status}: ${errorText}`);
+  }
+
+  const data = await response.json();
+
+  if (!data || !data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
+    throw new Error('Invalid response structure from OpenAI.');
+  }
+
+  const aiResponse = data.choices[0]?.message?.content;
+  if (!aiResponse) {
+    throw new Error('No content returned from OpenAI.');
+  }
+
+  // Parse the AI response using parseCaseStudies
+  const parsedCaseStudies = parseCaseStudies(aiResponse);
+
+  return NextResponse.json({ caseStudies: parsedCaseStudies });
+} catch (error) {
+  console.error('Unexpected Error:', error);
+  return NextResponse.json(
+    { error: error.message || 'An unexpected error occurred.' },
+    { status: 500 }
+  );
+}
+}
 // Function to generate image prompt via OpenAI
 async function generateImagePrompt(caseStudy) { // Accept caseStudy as parameter
   // Customize META_PROMPT using caseStudy.scenario if needed
