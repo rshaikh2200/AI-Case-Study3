@@ -82,7 +82,7 @@ export async function POST(request) {
   const pc = new Pinecone({
     apiKey: PINECONE_API_KEY,
   });
-  const index = pc.Index('rag').namespace('ns1'); // Ensure 'rag' is your index name and 'ns1' is your namespace
+  const index = pc.Index('rag-riz').namespace('ns1'); // Ensure 'rag' is your index name and 'ns1' is your namespace
 
   // Initialize OpenAI client
   const openai = new OpenAI({
