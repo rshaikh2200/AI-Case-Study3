@@ -36,6 +36,9 @@ export default function Home() {
   const [showSafetyStatement, setShowSafetyStatement] = useState(true);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
 
+  // New state variable to control the visibility of Google Translate menu
+  const [showTranslate, setShowTranslate] = useState(true);
+
   // Audio-related states
   const [audioUrl, setAudioUrl] = useState(null);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
@@ -163,6 +166,8 @@ export default function Home() {
       return;
     } else {
       handleSubmitAssessment();
+      // Hide the Google Translate menu after clicking the button
+      setShowTranslate(false);
     }
   };
 
@@ -302,9 +307,21 @@ export default function Home() {
   useEffect(() => {
     window.googleTranslateElementInit = () => {
       new window.google.translate.TranslateElement(
-        { pageLanguage: 'en' },
+        {
+          pageLanguage: 'en',       // Set the base language to English
+          autoDisplay: false,       // Prevent automatic translation based on browser settings
+        },
         'google_translate_element'
       );
+
+      // Force the language to English after initialization
+      setTimeout(() => {
+        const select = document.querySelector('.goog-te-combo');
+        if (select) {
+          select.value = 'en';
+          select.dispatchEvent(new Event('change'));
+        }
+      }, 1000); // Delay to ensure the translate element has loaded
     };
   }, []);
 
@@ -325,27 +342,6 @@ export default function Home() {
         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
         strategy="afterInteractive" // Ensures the script loads after the page is interactive
       />
-
-      {/* Google Translate Element with Responsive Styles */}
-      <Box
-        id="google_translate_element"
-        sx={{
-          position: 'fixed',
-          // Responsive positioning: bottom center on extra-small screens, top-right on small and larger screens
-          bottom: { xs: 16, sm: 'auto' },
-          top: { xs: 'auto', sm: 100 },
-          left: { xs: '50%', sm: 'auto' },
-          right: { xs: 'auto', sm: 16 },
-          transform: { xs: 'translateX(-50%)', sm: 'none' },
-          zIndex: 1000,
-          backgroundColor: 'rgba(255, 255, 255, 0.8)', // Slightly more opaque for better visibility
-          borderRadius: '10px',
-          padding: '5px',
-          boxShadow: 3, // Optional: Adds a subtle shadow for better separation
-          // Adjust the width based on screen size
-          width: { xs: '80%', sm: 'auto' },
-        }}
-      ></Box>
 
       <Container maxWidth="md">
         <Box
@@ -446,6 +442,19 @@ export default function Home() {
                 </FormControl>
               </Grid>
             </Grid>
+          )}
+
+          {/* Google Translate Element */}
+          {showTranslate && (
+            <Box
+              id="google_translate_element"
+              sx={{
+                marginTop: 4, // Add some spacing above the translate menu
+                marginBottom: 4, // Add some spacing below the translate menu
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            ></Box>
           )}
 
           {/* Take Assessment Button */}
