@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -20,6 +19,8 @@ import {
 } from '@mui/material';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import Script from 'next/script'; // Import Script from next/script
+import Head from 'next/head'; // Import Head to include CSS in head
 
 export default function Home() {
   // State Variables
@@ -297,392 +298,441 @@ export default function Home() {
     // Add other specializations if needed
   ];
 
+  // Google Translate Initialization
+  useEffect(() => {
+    window.googleTranslateElementInit = () => {
+      new window.google.translate.TranslateElement(
+        { pageLanguage: 'en' },
+        'google_translate_element'
+      );
+    };
+  }, []);
+
   return (
-    <Container maxWidth="md">
+    <>
+      {/* Head section to include Google Translate CSS */}
+      <Head>
+        {/* Google Translate CSS */}
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.26tY-h6gH9w.L.W.O/am=CAM/d=0/rs=AN8SPfpIXxhebB2A47D9J-MACsXmFF6Vew/m=el_main_css"
+        />
+      </Head>
+
+      {/* Google Translate Script */}
+      <Script
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        strategy="afterInteractive" // Ensures the script loads after the page is interactive
+      />
+
+      {/* Google Translate Element with Responsive Styles */}
       <Box
-        component={Paper}
-        p={5}
-        my={6}
-        sx={{ backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}
-      >
-        {/* Safety Statement */}
-        {showSafetyStatement && (
-          <Typography
-            variant="body1"
-            gutterBottom
-            sx={{
-              textAlign: 'center',
-              fontWeight: 'bold',
-              marginBottom: 4,
-            }}
-          >
-            Avoidable medical errors in hospitals are the third leading cause of
-            death in the USA. 99% of avoidable medical errors can be traced back to the
-            misuse or lack of use of the 4 safety principles and corresponding 11
-            error prevention tools (EPTs). By understanding and using this safety
-            language, harm to patients can be drastically reduced.
-          </Typography>
-        )}
+        id="google_translate_element"
+        sx={{
+          position: 'fixed',
+          // Responsive positioning: bottom center on extra-small screens, top-right on small and larger screens
+          bottom: { xs: 16, sm: 'auto' },
+          top: { xs: 'auto', sm: 100 },
+          left: { xs: '50%', sm: 'auto' },
+          right: { xs: 'auto', sm: 16 },
+          transform: { xs: 'translateX(-50%)', sm: 'none' },
+          zIndex: 1000,
+          backgroundColor: 'rgba(255, 255, 255, 0.8)', // Slightly more opaque for better visibility
+          borderRadius: '10px',
+          padding: '5px',
+          boxShadow: 3, // Optional: Adds a subtle shadow for better separation
+          // Adjust the width based on screen size
+          width: { xs: '80%', sm: 'auto' },
+        }}
+      ></Box>
 
-        {/* Department, Role, Specialization Fields */}
-        {showSafetyStatement && (
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel id="department-label">Department</InputLabel>
-                <Select
-                  labelId="department-label"
-                  label="Department"
-                  value={department}
-                  onChange={(e) => {
-                    setDepartment(e.target.value);
-                    if (error) setError(''); // Clear error if any
-                  }}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {departments.map((dept) => (
-                    <MenuItem key={dept} value={dept}>
-                      {dept}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel id="role-label">Role</InputLabel>
-                <Select
-                  labelId="role-label"
-                  label="Role"
-                  value={role}
-                  onChange={(e) => {
-                    setRole(e.target.value);
-                    if (error) setError(''); // Clear error if any
-                  }}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {roles.map((r) => (
-                    <MenuItem key={r} value={r}>
-                      {r}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel id="specialization-label">Specialization</InputLabel>
-                <Select
-                  labelId="specialization-label"
-                  label="Specialization"
-                  value={specialization}
-                  onChange={(e) => {
-                    setSpecialization(e.target.value);
-                    if (error) setError(''); // Clear error if any
-                  }}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {specializations.map((spec) => (
-                    <MenuItem key={spec} value={spec}>
-                      {spec}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-        )}
-
-        {/* Take Assessment Button */}
-        <Box my={4} display="flex" justifyContent="center">
-          {showSafetyStatement && !showCaseStudies && (
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              onClick={handleTakeAssessment}
-              disabled={isLoading}
-              size="large"
+      <Container maxWidth="md">
+        <Box
+          component={Paper}
+          p={5}
+          my={6}
+          sx={{ backgroundColor: '#f9f9f9', borderRadius: 2, boxShadow: 3 }}
+        >
+          {/* Safety Statement */}
+          {showSafetyStatement && (
+            <Typography
+              variant="body1"
+              gutterBottom
               sx={{
-                minWidth: 200,
+                textAlign: 'center',
+                fontWeight: 'bold',
+                marginBottom: 4,
               }}
             >
-              {isLoading
-                ? 'Starting your assessment, please wait...'
-                : 'Take Assessment'}
-            </Button>
-          )}
-        </Box>
-
-        {/* Error Alert */}
-        {error && (
-          <Box mt={2}>
-            <Alert severity="error">{error}</Alert>
-          </Box>
-        )}
-
-        {/* Loading Indicator */}
-        {isLoading && (
-          <Box mt={4} display="flex" justifyContent="center">
-            <Typography variant="h6" color="primary" align="center">
-              Starting your assessment, please wait...
+              Avoidable medical errors in hospitals are the third leading cause of
+              death in the USA. 99% of avoidable medical errors can be traced back to the
+              misuse or lack of use of the 4 safety principles and corresponding 11
+              error prevention tools (EPTs). By understanding and using this safety
+              language, harm to patients can be drastically reduced.
             </Typography>
-          </Box>
-        )}
+          )}
 
-        {/* Case Studies Page */}
-        {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
-          <Box mt={4}>
-            {/* Current Case Study */}
-            <Box key={currentCaseStudyIndex}>
-              {/* Case Study Image */}
-              {currentCaseStudy.imageUrl && (
-                <Box mb={3} display="flex" justifyContent="center">
-                  <Box
-                    component="img"
-                    src={currentCaseStudy.imageUrl}
-                    alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
-                    sx={{
-                      width: '100%',
-                      maxWidth: '520px',
-                      height: 'auto',
-                      borderRadius: '8px',
-                      objectFit: 'contain',
-                      '@media (max-width: 600px)': {
-                        maxWidth: '100%',
-                      },
+          {/* Department, Role, Specialization Fields */}
+          {showSafetyStatement && (
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel id="department-label">Department</InputLabel>
+                  <Select
+                    labelId="department-label"
+                    label="Department"
+                    value={department}
+                    onChange={(e) => {
+                      setDepartment(e.target.value);
+                      if (error) setError(''); // Clear error if any
                     }}
-                  />
-                </Box>
-              )}
-
-              {/* Case Study Title and Audio Button */}
-              <Box display="flex" alignItems="center" justifyContent="space-between">
-                <Typography
-                  variant="h5"
-                  color="primary"
-                  gutterBottom
-                  sx={{ fontWeight: 'bold' }}
-                >
-                  {`Case Study ${currentCaseStudyIndex + 1}`}
-                </Typography>
-                <Button
-                  type="button"
-                  variant="contained"
-                  color="primary"
-                  onClick={fetchAudio}
-                  size="small"
-                  sx={{
-                    marginLeft: 2,
-                    display: 'flex',
-                    alignItems: 'center',
-                  }}
-                  disabled={isAudioLoading}
-                >
-                  {isAudioLoading ? (
-                    <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
-                      Loading...
-                    </Typography>
-                  ) : isAudioPlaying ? (
-                    <>
-                      <VolumeUpIcon fontSize="small" />
-                      <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
-                        Pause
-                      </Typography>
-                    </>
-                  ) : (
-                    <>
-                      <VolumeOffIcon fontSize="small" />
-                      <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
-                        Listen
-                      </Typography>
-                    </>
-                  )}
-                </Button>
-              </Box>
-
-              {/* Audio Element */}
-              <audio ref={audioRef} />
-
-              {/* Audio Error Alert */}
-              {audioError && (
-                <Box mt={1}>
-                  <Alert severity="error">{audioError}</Alert>
-                </Box>
-              )}
-
-              {/* Case Study Scenario */}
-              <Typography
-                variant="body1"
-                gutterBottom
-                sx={{ marginBottom: 3, fontSize: '1rem' }}
-              >
-                {currentCaseStudy.scenario}
-              </Typography>
-
-              {/* Case Study Questions */}
-              {currentCaseStudy.questions && currentCaseStudy.questions.length > 0 ? (
-                <Box
-                  my={4}
-                  p={3}
-                  sx={{
-                    backgroundColor: '#fff',
-                    borderRadius: '8px',
-                    boxShadow: 2,
-                  }}
-                >
-                  {/* Header for the Question */}
-                  <Typography
-                    variant="body1"
-                    gutterBottom
-                    sx={{ marginBottom: 2, fontSize: '1rem' }}
                   >
-                    {`Question ${currentQuestionIndex + 1}: ${currentCaseStudy.questions[currentQuestionIndex].question}`}
-                  </Typography>
-
-                  <RadioGroup
-                    value={
-                      selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] || ''
-                    }
-                    onChange={(e) =>
-                      handleAnswerChange(
-                        currentCaseStudyIndex,
-                        currentQuestionIndex,
-                        e.target.value
-                      )
-                    }
-                  >
-                    {currentCaseStudy.questions[currentQuestionIndex].options.map((option) => (
-                      <FormControlLabel
-                        key={option.key}
-                        value={option.key}
-                        control={<Radio />}
-                        label={
-                          <Typography variant="body2">
-                            <strong>{option.key}.</strong> {option.label}
-                          </Typography>
-                        }
-                        sx={{ marginBottom: 1 }}
-                      />
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {departments.map((dept) => (
+                      <MenuItem key={dept} value={dept}>
+                        {dept}
+                      </MenuItem>
                     ))}
-                  </RadioGroup>
-                </Box>
-              ) : (
-                <Typography variant="body2" color="textSecondary">
-                  No questions available for this case study.
-                </Typography>
-              )}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel id="role-label">Role</InputLabel>
+                  <Select
+                    labelId="role-label"
+                    label="Role"
+                    value={role}
+                    onChange={(e) => {
+                      setRole(e.target.value);
+                      if (error) setError(''); // Clear error if any
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {roles.map((r) => (
+                      <MenuItem key={r} value={r}>
+                        {r}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel id="specialization-label">Specialization</InputLabel>
+                  <Select
+                    labelId="specialization-label"
+                    label="Specialization"
+                    value={specialization}
+                    onChange={(e) => {
+                      setSpecialization(e.target.value);
+                      if (error) setError(''); // Clear error if any
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {specializations.map((spec) => (
+                      <MenuItem key={spec} value={spec}>
+                        {spec}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+          )}
 
-              {/* Navigation Buttons */}
-              {currentCaseStudy.questions && currentCaseStudy.questions.length > 0 && (
-                <Box
-                  mt={4}
-                  display="flex"
-                  flexDirection={{ xs: 'column', sm: 'row' }}
-                  justifyContent="space-between"
-                  alignItems="center"
-                  gap={2}
+          {/* Take Assessment Button */}
+          <Box my={4} display="flex" justifyContent="center">
+            {showSafetyStatement && !showCaseStudies && (
+              <Button
+                type="button"
+                variant="contained"
+                color="primary"
+                onClick={handleTakeAssessment}
+                disabled={isLoading}
+                size="large"
+                sx={{
+                  minWidth: 200,
+                }}
+              >
+                {isLoading
+                  ? 'Starting your assessment, please wait...'
+                  : 'Take Assessment'}
+              </Button>
+            )}
+          </Box>
+
+          {/* Error Alert */}
+          {error && (
+            <Box mt={2}>
+              <Alert severity="error">{error}</Alert>
+            </Box>
+          )}
+
+          {/* Loading Indicator */}
+          {isLoading && (
+            <Box mt={4} display="flex" justifyContent="center">
+              <Typography variant="h6" color="primary" align="center">
+                Starting your assessment, please wait...
+              </Typography>
+            </Box>
+          )}
+
+          {/* Case Studies Page */}
+          {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
+            <Box mt={4}>
+              {/* Current Case Study */}
+              <Box key={currentCaseStudyIndex}>
+                {/* Case Study Image */}
+                {currentCaseStudy.imageUrl && (
+                  <Box mb={3} display="flex" justifyContent="center">
+                    <Box
+                      component="img"
+                      src={currentCaseStudy.imageUrl}
+                      alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
+                      sx={{
+                        width: '100%',
+                        maxWidth: '520px',
+                        height: 'auto',
+                        borderRadius: '8px',
+                        objectFit: 'contain',
+                        '@media (max-width: 600px)': {
+                          maxWidth: '100%',
+                        },
+                      }}
+                    />
+                  </Box>
+                )}
+
+                {/* Case Study Title and Audio Button */}
+                <Box display="flex" alignItems="center" justifyContent="space-between">
+                  <Typography
+                    variant="h5"
+                    color="primary"
+                    gutterBottom
+                    sx={{ fontWeight: 'bold' }}
+                  >
+                    {`Case Study ${currentCaseStudyIndex + 1}`}
+                  </Typography>
+                  <Button
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                    onClick={fetchAudio}
+                    size="small"
+                    sx={{
+                      marginLeft: 2,
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                    disabled={isAudioLoading}
+                  >
+                    {isAudioLoading ? (
+                      <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
+                        Loading...
+                      </Typography>
+                    ) : isAudioPlaying ? (
+                      <>
+                        <VolumeUpIcon fontSize="small" />
+                        <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
+                          Pause
+                        </Typography>
+                      </>
+                    ) : (
+                      <>
+                        <VolumeOffIcon fontSize="small" />
+                        <Typography variant="caption" sx={{ marginLeft: 0.5 }}>
+                          Listen
+                        </Typography>
+                      </>
+                    )}
+                  </Button>
+                </Box>
+
+                {/* Audio Element */}
+                <audio ref={audioRef} />
+
+                {/* Audio Error Alert */}
+                {audioError && (
+                  <Box mt={1}>
+                    <Alert severity="error">{audioError}</Alert>
+                  </Box>
+                )}
+
+                {/* Case Study Scenario */}
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  sx={{ marginBottom: 3, fontSize: '1rem' }}
                 >
-                  <Box display="flex" gap={2}>
-                    {/* Previous Question Button */}
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="secondary"
-                      onClick={handlePreviousQuestion}
-                      disabled={currentQuestionIndex === 0}
-                      size="medium"
+                  {currentCaseStudy.scenario}
+                </Typography>
+
+                {/* Case Study Questions */}
+                {currentCaseStudy.questions && currentCaseStudy.questions.length > 0 ? (
+                  <Box
+                    my={4}
+                    p={3}
+                    sx={{
+                      backgroundColor: '#fff',
+                      borderRadius: '8px',
+                      boxShadow: 2,
+                    }}
+                  >
+                    {/* Header for the Question */}
+                    <Typography
+                      variant="body1"
+                      gutterBottom
+                      sx={{ marginBottom: 2, fontSize: '1rem' }}
                     >
-                      Previous Question
-                    </Button>
-                    {/* Next Question Button */}
-                    {currentCaseStudy.questions.length > 1 && (
+                      {`Question ${currentQuestionIndex + 1}: ${currentCaseStudy.questions[currentQuestionIndex].question}`}
+                    </Typography>
+
+                    <RadioGroup
+                      value={
+                        selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] || ''
+                      }
+                      onChange={(e) =>
+                        handleAnswerChange(
+                          currentCaseStudyIndex,
+                          currentQuestionIndex,
+                          e.target.value
+                        )
+                      }
+                    >
+                      {currentCaseStudy.questions[currentQuestionIndex].options.map((option) => (
+                        <FormControlLabel
+                          key={option.key}
+                          value={option.key}
+                          control={<Radio />}
+                          label={
+                            <Typography variant="body2">
+                              <strong>{option.key}.</strong> {option.label}
+                            </Typography>
+                          }
+                          sx={{ marginBottom: 1 }}
+                        />
+                      ))}
+                    </RadioGroup>
+                  </Box>
+                ) : (
+                  <Typography variant="body2" color="textSecondary">
+                    No questions available for this case study.
+                  </Typography>
+                )}
+
+                {/* Navigation Buttons */}
+                {currentCaseStudy.questions && currentCaseStudy.questions.length > 0 && (
+                  <Box
+                    mt={4}
+                    display="flex"
+                    flexDirection={{ xs: 'column', sm: 'row' }}
+                    justifyContent="space-between"
+                    alignItems="center"
+                    gap={2}
+                  >
+                    <Box display="flex" gap={2}>
+                      {/* Previous Question Button */}
                       <Button
                         type="button"
                         variant="contained"
                         color="secondary"
-                        onClick={handleNextQuestion}
-                        disabled={
-                          currentQuestionIndex === currentCaseStudy.questions.length - 1
-                        }
+                        onClick={handlePreviousQuestion}
+                        disabled={currentQuestionIndex === 0}
                         size="medium"
                       >
-                        Next Question
+                        Previous Question
                       </Button>
-                    )}
-                  </Box>
+                      {/* Next Question Button */}
+                      {currentCaseStudy.questions.length > 1 && (
+                        <Button
+                          type="button"
+                          variant="contained"
+                          color="secondary"
+                          onClick={handleNextQuestion}
+                          disabled={
+                            currentQuestionIndex === currentCaseStudy.questions.length - 1
+                          }
+                          size="medium"
+                        >
+                          Next Question
+                        </Button>
+                      )}
+                    </Box>
 
-                  <Box display="flex" gap={2}>
-                    {/* Previous Case Study Button */}
-                    <Button
-                      type="button"
-                      variant="contained"
-                      color="secondary"
-                      onClick={handlePreviousCaseStudy}
-                      disabled={currentCaseStudyIndex === 0}
-                      size="medium"
-                    >
-                      Previous Case Study
-                    </Button>
-                    {/* Next/Submit Case Study Button */}
-                    {currentCaseStudyIndex === caseStudies.length - 1 ? (
+                    <Box display="flex" gap={2}>
+                      {/* Previous Case Study Button */}
                       <Button
                         type="button"
                         variant="contained"
-                        color="primary"
-                        onClick={handleSubmitFinalAssessment}
+                        color="secondary"
+                        onClick={handlePreviousCaseStudy}
+                        disabled={currentCaseStudyIndex === 0}
                         size="medium"
                       >
-                        Submit
+                        Previous Case Study
                       </Button>
-                    ) : (
-                      <Button
-                        type="button"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleNextCaseStudy}
-                        size="medium"
-                      >
-                        Next Case Study
-                      </Button>
-                    )}
+                      {/* Next/Submit Case Study Button */}
+                      {currentCaseStudyIndex === caseStudies.length - 1 ? (
+                        <Button
+                          type="button"
+                          variant="contained"
+                          color="primary"
+                          onClick={handleSubmitFinalAssessment}
+                          size="medium"
+                        >
+                          Submit
+                        </Button>
+                      ) : (
+                        <Button
+                          type="button"
+                          variant="contained"
+                          color="primary"
+                          onClick={handleNextCaseStudy}
+                          size="medium"
+                        >
+                          Next Case Study
+                        </Button>
+                      )}
+                    </Box>
                   </Box>
+                )}
+              </Box>
+
+              {/* Assessment Completion Message */}
+              {assessmentComplete && (
+                <Box mt={4}>
+                  <Typography
+                    variant="h4"
+                    color="success.main"
+                    gutterBottom
+                    sx={{ textAlign: 'center' }}
+                  >
+                    You have successfully completed the safety assessment!
+                  </Typography>
                 </Box>
               )}
             </Box>
+          )}
 
-            {/* Assessment Completion Message */}
-            {assessmentComplete && (
-              <Box mt={4}>
-                <Typography
-                  variant="h4"
-                  color="success.main"
-                  gutterBottom
-                  sx={{ textAlign: 'center' }}
-                >
-                  You have successfully completed the safety assessment!
-                </Typography>
-              </Box>
-            )}
-          </Box>
-        )}
-
-        {/* Handle Empty Case Studies */}
-        {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
-          <Box mt={4}>
-            <Alert severity="warning">
-              No case studies available at the moment. Please try again later.
-            </Alert>
-          </Box>
-        )}
-      </Box>
-    </Container>
+          {/* Handle Empty Case Studies */}
+          {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
+            <Box mt={4}>
+              <Alert severity="warning">
+                No case studies available at the moment. Please try again later.
+              </Alert>
+            </Box>
+          )}
+        </Box>
+      </Container>
+    </>
   );
 }
 
