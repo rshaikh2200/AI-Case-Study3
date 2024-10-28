@@ -13,19 +13,18 @@ function parseCaseStudies(responseText) {
   try {
     let jsonString = '';
 
-    // Attempt to parse JSON from code fences
     const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/i);
     if (jsonMatch && jsonMatch[1]) {
       jsonString = jsonMatch[1];
     } else {
-      // Attempt to parse the entire response as JSON
+      
       jsonString = responseText;
     }
 
-    // Remove comments (lines starting with //)
+    
     jsonString = jsonString.replace(/\/\/.*$/gm, '');
 
-    // Remove trailing commas before closing brackets/braces
+  
     jsonString = jsonString.replace(/,\s*([}\]])/g, '$1');
 
     // Parse the cleaned JSON string
@@ -72,7 +71,7 @@ export async function POST(request) {
   const pc = new Pinecone({
     apiKey: PINECONE_API_KEY,
   });
-  const index = pc.Index('rag-riz').namespace('ns1'); // Ensure 'rag' is your index name and 'ns1' is your namespace
+  const index = pc.Index('rag-riz').namespace('ns1');
 
   // Initialize OpenAI client
   const openai = new OpenAI({
@@ -104,7 +103,7 @@ export async function POST(request) {
     );
   }
 
-  // Query Pinecone for similar case studies
+ 
   let similarCaseStudies = [];
   try {
     const pineconeResponse = await index.query({
@@ -122,7 +121,6 @@ export async function POST(request) {
     );
   }
 
-  // Construct the prompt with retrieved case studies
   const retrievedCasesText = similarCaseStudies.join('\n');
 
   const META_PROMPT = `Please generate 4 medical case studies (250 words) and include 3 multiple-choice questions for each case study. Use the following ${retrievedCasesText} to help generate medical case studies:
