@@ -15,7 +15,7 @@ import {
   deleteDoc,
   doc,
 } from 'firebase/firestore';
-import { firestore } from '@/firebase'; // Adjusted import path to match your project structure
+import { firestore } from 'src/app/firebase'; // Adjusted import path to match your project structure
 
 // Import jsPDF for PDF generation
 import jsPDF from 'jspdf';
