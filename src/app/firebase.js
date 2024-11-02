@@ -1,27 +1,20 @@
-// Import the required Firebase services
-import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore'
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
-// Your Firebase configuration
+// Your Firebase configuration object
 const firebaseConfig = {
-  apiKey: "AIzaSyCh9UeRMItvnBkzqvMCiiWzACxKY6VtUW4",
-  authDomain: "customer-support-ai-5f79b.firebaseapp.com",
-  projectId: "customer-support-ai-5f79b",
-  storageBucket: "customer-support-ai-5f79b.appspot.com",
-  messagingSenderId: "465064621200",
-  appId: "1:465064621200:web:cbab774cf96434db3d1415"
+  apiKey: "AIzaSyBshOEPaoUB0cXbKPoGHzX8Wa9ZRImJGQ4",
+  authDomain: "coachcareai.firebaseapp.com",
+  projectId: "coachcareai",
+  storageBucket: "coachcareai.appspot.com",
+  messagingSenderId: "661748615150",
+  appId: "1:661748615150:web:82bdd52b90a28f26b3f0ff"
 };
 
+// Initialize Firebase app only if no app has been initialized yet
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
+// Initialize Firestore
+const firestore = getFirestore(app);
 
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// Initialize Google Auth Provider
-const googleProvider = new GoogleAuthProvider();
-
-// Export the auth and googleProvider
-export { auth, googleProvider, db };
+export { app, firestore };
