@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-
 import Script from 'next/script';
 import Head from 'next/head';
+import Link from 'next/link';
 
 // Import Firestore functions
 import {
@@ -14,6 +14,7 @@ import {
   query,
   deleteDoc,
   doc,
+  setDoc,
 } from 'firebase/firestore';
 import { firestore } from '../firebase';
 
@@ -31,13 +32,14 @@ export default function Home() {
   const [department, setDepartment] = useState('');
   const [role, setRole] = useState('');
   const [specialization, setSpecialization] = useState('');
-  const [userType, setUserType] = useState(''); // New state variable for user type
+  const [userType, setUserType] = useState('');
   const [showCaseStudies, setShowCaseStudies] = useState(false);
   const [showSafetyStatement, setShowSafetyStatement] = useState(true);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
   const [aiResponse, setAiResponse] = useState(null);
-
-  // New state variable to control the visibility of Google Translate menu
+  const [userID, setUserID] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [language, setLanguage] = useState('english');
   const [showTranslate, setShowTranslate] = useState(true);
 
   // Audio-related states
@@ -55,13 +57,16 @@ export default function Home() {
   const [feedbackMessages, setFeedbackMessages] = useState({});
   const [attempts, setAttempts] = useState({});
 
-  // *** New state variables for score and result details ***
+  // State variables for score and result details
   const [totalScore, setTotalScore] = useState(0);
   const [resultDetails, setResultDetails] = useState([]);
 
-  // *** New state variables for unanswered questions ***
-  const [unansweredQuestions, setUnansweredQuestions] = useState([]);
-  const [showUnansweredModal, setShowUnansweredModal] = useState(false);
+  // State variable to track current result case study
+  const [currentResultCaseStudyIndex, setCurrentResultCaseStudyIndex] = useState(0);
+
+  // State variables for sessionID and workflowData
+  const [sessionID, setSessionID] = useState('');
+  const [workflowData, setWorkflowData] = useState([]);
 
   // Generate Speech Function
   const generateSpeech = async () => {
@@ -176,6 +181,9 @@ export default function Home() {
   const saveUserInputs = async () => {
     try {
       await addDoc(collection(firestore, 'user_profile'), {
+        userID,
+        language,
+        fullName,
         userType,
         department,
         role,
@@ -186,6 +194,21 @@ export default function Home() {
       console.error('Error saving user inputs:', error.message);
       setError('Failed to save your inputs. Please try again.');
       throw error; // Propagate error to handleSubmitFinalAssessment
+    }
+  };
+
+  // Function to save AI response to Firestore
+  const saveAiResponse = async () => {
+    if (!aiResponse) return;
+
+    try {
+      // Save aiResponse inside an object
+      await addDoc(collection(firestore, 'ai_responses'), { aiResponse });
+      console.log('AI response saved successfully.');
+    } catch (error) {
+      console.error('Error saving AI response:', error.message);
+      setError('Failed to save AI response. Please try again.');
+      throw error;
     }
   };
 
@@ -206,10 +229,10 @@ export default function Home() {
         });
       });
 
-      // Commit both batches
-      await Promise.all([allCaseStudiesBatch.commit()]);
+      // Commit the batch
+      await allCaseStudiesBatch.commit();
 
-      console.log('Case studies saved to both collections successfully.');
+      console.log('Case studies saved to all_case_studies collection successfully.');
     } catch (error) {
       console.error('Error saving case studies:', error.message);
       setError('Failed to save case studies. Please try again.');
@@ -217,17 +240,28 @@ export default function Home() {
     }
   };
 
-  const saveAiResponse = async () => {
-    if (!aiResponse) return;
-
+  // Function to save session data to Firestore
+  const saveSessionData = async (sessionID) => {
     try {
-      // Save aiResponse inside an object
-      await addDoc(collection(firestore, 'ai_responses'), { aiResponse });
-      console.log('AI response saved successfully.');
+      await addDoc(collection(firestore, 'session table'), {
+        sessionID: sessionID,
+        employeeID: userID,
+        startTime: new Date(),
+      });
+      console.log('Session data saved successfully.');
     } catch (error) {
-      console.error('Error saving AI response:', error.message);
-      setError('Failed to save AI response. Please try again.');
-      throw error;
+      console.error('Error saving session data:', error);
+      // Handle error if needed
+    }
+  };
+
+  // Function to save workflow data to Firestore
+  const saveWorkflowData = async (data) => {
+    try {
+      const docRef = doc(firestore, 'workflowData', `${sessionID}_${data.workflowID}`);
+      await setDoc(docRef, data, { merge: true });
+    } catch (error) {
+      console.error('Error saving workflow data:', error);
     }
   };
 
@@ -247,6 +281,13 @@ export default function Home() {
       setError('Please select your Specialization before proceeding.');
       return;
     }
+
+    // Save user inputs when the assessment starts
+    saveUserInputs();
+
+    const randomSessionID = Math.floor(100000 + Math.random() * 900000).toString();
+    setSessionID(randomSessionID);
+    saveSessionData(randomSessionID);
 
     handleSubmitAssessment();
     // Hide the Google Translate menu after clicking the button
@@ -281,6 +322,23 @@ export default function Home() {
       setCaseStudies(data.caseStudies);
       setAiResponse(data.aiResponse); // New line added
 
+      // Generate workflow data
+      const workflowNames = ['Take Assessment'];
+
+      data.caseStudies.forEach((caseStudy, caseIndex) => {
+        caseStudy.questions.forEach((question, questionIndex) => {
+          const workflowName = `Case${caseIndex + 1}-Question${questionIndex + 1}`;
+          workflowNames.push(workflowName);
+        });
+      });
+
+      const workflows = workflowNames.map((name) => ({
+        workflowID: Math.floor(100000 + Math.random() * 900000).toString(),
+        workflowName: name,
+      }));
+
+      setWorkflowData(workflows);
+
       await saveAiResponse(); // Save AI response
 
       setShowSafetyStatement(false);
@@ -293,6 +351,21 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Function to get Workflow ID
+  const getWorkflowID = (caseIndex, questionIndex) => {
+    let count = 1; // Start from 1 because 'Take Assessment' is at index 0
+    for (let i = 0; i < caseIndex; i++) {
+      count += caseStudies[i].questions.length;
+    }
+    count += questionIndex;
+    return workflowData[count]?.workflowID || '';
+  };
+
+  // Function to get Workflow Name
+  const getWorkflowName = (caseIndex, questionIndex) => {
+    return `Case${caseIndex + 1}-Question${questionIndex + 1}`;
   };
 
   // Modified handleAnswerChange function
@@ -323,7 +396,9 @@ export default function Home() {
     let feedbackMessageNew = '';
     let hintToShow = '';
 
-    if (selectedOption === correctKey) {
+    const isCorrect = selectedOption === correctKey;
+
+    if (isCorrect) {
       feedbackMessageNew = 'Correct Answer';
       hintToShow = ''; // No hint needed when correct
     } else {
@@ -362,45 +437,37 @@ export default function Home() {
         [questionIndex]: selectedOption,
       },
     }));
-  };
 
-  // Handle previous case study
-  const handlePreviousCaseStudy = () => {
-    setError(null); // Clear error if any
-    if (currentCaseStudyIndex > 0) {
-      setCurrentCaseStudyIndex(currentCaseStudyIndex - 1);
+    // Get Workflow ID and Name
+    const workflowID = getWorkflowID(caseIndex, questionIndex);
+    const workflowName = getWorkflowName(caseIndex, questionIndex);
+    const timestamp = new Date();
+    const isFirstAttempt = currentAttempts === 0;
+
+    const dataToSave = {
+      workflowID: workflowID,
+      sessionID: sessionID,
+      workflowName: workflowName,
+    };
+
+    if (isFirstAttempt) {
+      dataToSave.attempt1Selection = 'yes';
+      dataToSave.attempt1Timestamp = timestamp;
+      dataToSave.attempt1Answer = selectedOption;
+      dataToSave.attempt1Result = isCorrect ? 'Correct' : 'Incorrect';
+      dataToSave.secondAttemptMade = 'no'; // Record that second attempt was not made yet
+    } else {
+      dataToSave.attempt2Selection = 'yes';
+      dataToSave.attempt2Timestamp = timestamp;
+      dataToSave.attempt2Answer = selectedOption;
+      dataToSave.attempt2Result = isCorrect ? 'Correct' : 'Incorrect';
+      dataToSave.secondAttemptMade = 'yes'; // Record that second attempt was made
     }
+
+    saveWorkflowData(dataToSave);
   };
 
-  // Handle next case study
-  const handleNextCaseStudy = () => {
-    setError(null); // Clear error if any
-    if (currentCaseStudyIndex < caseStudies.length - 1) {
-      setCurrentCaseStudyIndex(currentCaseStudyIndex + 1);
-    }
-  };
-
-  // Handle previous question
-  const handlePreviousQuestion = () => {
-    setError(null); // Clear error if any
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-    }
-  };
-
-  // Handle next question
-  const handleNextQuestion = () => {
-    setError(null); // Clear error if any
-    if (
-      currentCaseStudy &&
-      currentCaseStudy.questions &&
-      currentQuestionIndex < currentCaseStudy.questions.length - 1
-    ) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    }
-  };
-
-  // *** New function to calculate the score ***
+  // Function to calculate the score
   const calculateScore = () => {
     let score = 0;
     let totalQuestions = 0;
@@ -411,6 +478,7 @@ export default function Home() {
       const caseDetail = {
         caseStudyNumber: caseIndex + 1,
         questions: [],
+        patientName: caseStudy.patientName || 'Patient: Unknown',
       };
 
       const questions = caseStudy.questions;
@@ -425,20 +493,19 @@ export default function Home() {
         const currentAttempts = attempts[key] || 0;
         const feedbackMessage = feedbackMessages[caseIndex]?.[questionIndex];
 
-        let points = 0;
+        let isCorrect = false;
         if (feedbackMessage?.message === 'Correct Answer') {
-          points = 1;
+          isCorrect = true;
           score += 1;
         } else {
-          // The user did not get the correct answer within 3 attempts
-          points = 0;
+          isCorrect = false;
         }
 
         caseDetail.questions.push({
           questionNumber: questionIndex + 1,
+          questionText: question.question,
           selectedAnswer: userAnswer || 'No Answer',
-          correctAnswer: correctKey,
-          pointsReceived: points,
+          isCorrect: isCorrect,
         });
       });
 
@@ -450,35 +517,9 @@ export default function Home() {
     setResultDetails(details);
   };
 
-  // *** New function to check for unanswered questions ***
-  const checkUnansweredQuestions = () => {
-    const unanswered = [];
-
-    caseStudies.forEach((caseStudy, caseIndex) => {
-      caseStudy.questions.forEach((question, questionIndex) => {
-        const userAnswer = selectedAnswers[caseIndex]?.[questionIndex];
-        if (!userAnswer) {
-          unanswered.push({
-            caseIndex,
-            questionIndex,
-            questionText: question.question,
-          });
-        }
-      });
-    });
-
-    return unanswered;
-  };
-
   // Handle submitting the final assessment
   const handleSubmitFinalAssessment = () => {
-    const unanswered = checkUnansweredQuestions();
-    if (unanswered.length > 0) {
-      setUnansweredQuestions(unanswered);
-      setShowUnansweredModal(true);
-    } else {
-      proceedWithSubmission();
-    }
+    proceedWithSubmission();
   };
 
   // Function to proceed with submission
@@ -486,12 +527,29 @@ export default function Home() {
     setIsLoading(true);
     setError(null);
     try {
-      await saveUserInputs(); // Save user inputs
       await saveCaseStudies(); // Save case studies to both collections
+      await saveAiResponse(); // Save AI response
+
+      // Save Submit Button Timestamp
+      const lastCaseIndex = caseStudies.length - 1;
+      const lastQuestionIndex = caseStudies[lastCaseIndex].questions.length - 1;
+      const workflowID = getWorkflowID(lastCaseIndex, lastQuestionIndex);
+      const workflowName = getWorkflowName(lastCaseIndex, lastQuestionIndex);
+      const timestamp = new Date();
+
+      const dataToSave = {
+        workflowID: workflowID,
+        sessionID: sessionID,
+        workflowName: workflowName,
+        submitButtonTimestamp: timestamp,
+      };
+
+      await saveWorkflowData(dataToSave);
+
       setAssessmentComplete(true);
       setShowCaseStudies(false);
       setShowSafetyStatement(false);
-      calculateScore(); // *** Calculate the score after assessment completion ***
+      calculateScore(); // Calculate the score after assessment completion
     } catch (err) {
       setError(err.message || 'An error occurred during submission.');
       console.error('Error during submission:', err);
@@ -500,7 +558,46 @@ export default function Home() {
     }
   };
 
-  // New handler to navigate back to main page and clear current_session_case_studies
+  // Handle Next Button Click
+  const handleNext = () => {
+    setError(null); // Clear error if any
+    // Check if user has selected an answer
+    if (
+      !selectedAnswers[currentCaseStudyIndex] ||
+      !selectedAnswers[currentCaseStudyIndex][currentQuestionIndex]
+    ) {
+      setError('Please select an answer');
+      return;
+    }
+
+    // Get Workflow ID and Name
+    const workflowID = getWorkflowID(currentCaseStudyIndex, currentQuestionIndex);
+    const workflowName = getWorkflowName(currentCaseStudyIndex, currentQuestionIndex);
+    const timestamp = new Date();
+
+    const dataToSave = {
+      workflowID: workflowID,
+      sessionID: sessionID,
+      workflowName: workflowName,
+      nextButtonTimestamp: timestamp,
+    };
+
+    saveWorkflowData(dataToSave);
+
+    if (!isLastQuestion) {
+      // Move to next question in the current case study
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else if (!isLastCaseStudy) {
+      // Move to first question of next case study
+      setCurrentCaseStudyIndex(currentCaseStudyIndex + 1);
+      setCurrentQuestionIndex(0);
+    } else {
+      // Last question of last case study, proceed to submit
+      handleSubmitFinalAssessment();
+    }
+  };
+
+  // Handler to navigate back to main page and clear current session data
   const handleBackToMainPage = async () => {
     setIsLoading(true);
     setError(null);
@@ -520,6 +617,10 @@ export default function Home() {
       setAssessmentComplete(false);
       setShowSafetyStatement(true);
       setShowCaseStudies(false);
+      setResultDetails([]);
+      setTotalScore(0);
+      setCurrentResultCaseStudyIndex(0);
+      setFullName('');
     } catch (err) {
       setError(err.message || 'Failed to navigate back to the main page.');
       console.error('Error navigating back:', err);
@@ -542,7 +643,7 @@ export default function Home() {
     await batch.commit();
   };
 
-  // *** Modified handlePrint function ***
+  // Modified handlePrint function
   const handlePrint = async () => {
     setIsLoading(true);
     setError(null);
@@ -605,7 +706,7 @@ export default function Home() {
         caseStudy.questions.forEach((question, qIndex) => {
           const questionNumber = qIndex + 1;
           const questionText = question.question;
-          const options = question.options; // Assuming options is an array of { key: 'A', label: 'Option1' }
+          const options = question.options;
 
           // Add Question Number and Text
           docPDF.setFontSize(12);
@@ -641,9 +742,9 @@ export default function Home() {
         const tableColumn = ['Question #', 'User Answer', 'Correct Answer', 'Points Received'];
         const tableRows = caseDetail.questions.map((q) => [
           q.questionNumber.toString(),
-          q.selectedAnswer,
-          q.correctAnswer,
-          q.pointsReceived.toString(),
+          `${q.selectedAnswer}. ${getOptionLabel(q.questionNumber)}`,
+          `${aiResponse[index].questions[q.questionNumber - 1].correctAnswer}`,
+          q.isCorrect ? '1' : '0',
         ]);
 
         // Calculate the height required for the table
@@ -683,8 +784,6 @@ export default function Home() {
         }
       });
 
-      // Optionally, add a summary or additional notes here
-
       // Save the PDF
       docPDF.save('coachcare_ai_safety_assessment.pdf');
     } catch (err) {
@@ -695,10 +794,9 @@ export default function Home() {
     }
   };
 
-  // *** New function to handle page refresh ***
+  // Function to handle page refresh
   const handlePageRefresh = async () => {
     try {
-      await deleteAllDocumentsInCollection('user_profile');
       await deleteAllDocumentsInCollection('all_case_studies');
       await deleteAllDocumentsInCollection('ai_responses');
 
@@ -713,12 +811,16 @@ export default function Home() {
       setAssessmentComplete(false);
       setShowSafetyStatement(true);
       setShowCaseStudies(false);
+      setResultDetails([]);
+      setTotalScore(0);
+      setCurrentResultCaseStudyIndex(0);
+      setFullName('');
     } catch (err) {
       console.error('Error during page refresh cleanup:', err);
     }
   };
 
-  // *** useEffect to detect page refresh and perform cleanup ***
+  // useEffect to detect page refresh and perform cleanup
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const navigationEntries = window.performance.getEntriesByType('navigation');
@@ -732,10 +834,13 @@ export default function Home() {
   // Current Case Study
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
 
+  // Determine if current question is the last question
+  const isLastQuestion =
+    currentQuestionIndex === currentCaseStudy?.questions.length - 1;
+  const isLastCaseStudy = currentCaseStudyIndex === caseStudies.length - 1;
+
   // Example options for dropdowns based on userType
-  const clinicalDepartments = [
-    'Operating Room',
-  ];
+  const clinicalDepartments = ['Operating Room'];
 
   const nonClinicalDepartments = [
     'Communication',
@@ -777,6 +882,12 @@ export default function Home() {
     // Add other specializations if needed
   ];
 
+  // Generate random 6-digit user ID on component mount
+  useEffect(() => {
+    const randomID = Math.floor(100000 + Math.random() * 900000).toString();
+    setUserID(randomID);
+  }, []);
+
   // Determine which departments and roles to use based on userType
   let departmentsToUse = [];
   let rolesToUse = [];
@@ -789,33 +900,69 @@ export default function Home() {
     rolesToUse = nonClinicalRoles;
   }
 
-  // Google Translate Initialization
   useEffect(() => {
+    // Initialize Google Translate
     window.googleTranslateElementInit = () => {
       new window.google.translate.TranslateElement(
         {
-          pageLanguage: 'en', // Set the base language to English
-          autoDisplay: false, // Prevent automatic translation based on browser settings
-          includedLanguages: 'en,es', // Only include English and Spanish
+          pageLanguage: 'en',
+          autoDisplay: false,
+          includedLanguages: 'en,es', // Customize as needed
         },
         'google_translate_element'
       );
-
-      // Force the language to English after initialization
-      setTimeout(() => {
-        const select = document.querySelector('.goog-te-combo');
-        if (select) {
-          select.value = 'en';
-          select.dispatchEvent(new Event('change'));
-        }
-      }, 1000); // Delay to ensure the translate element has loaded
+    };
+  
+    // Listen for language changes
+    const handleLanguageChange = () => {
+      const languageDropdown = document.querySelector('.goog-te-combo');
+      if (languageDropdown) {
+        setLanguage(languageDropdown.value);
+      }
+    };
+  
+    // Add event listener to capture language changes
+    const languageDropdown = document.querySelector('.goog-te-combo');
+    if (languageDropdown) {
+      languageDropdown.addEventListener('change', handleLanguageChange);
+    }
+  
+    return () => {
+      // Cleanup event listener on component unmount
+      if (languageDropdown) {
+        languageDropdown.removeEventListener('change', handleLanguageChange);
+      }
     };
   }, []);
+  
+
+
+  // Helper function to get the full label of an option
+  const getOptionLabel = (questionNumber, isCorrect = false) => {
+    const caseIndex = isCorrect
+      ? resultDetails[currentResultCaseStudyIndex].caseStudyNumber - 1
+      : currentResultCaseStudyIndex;
+    const questionIndex = questionNumber - 1;
+    const question = isCorrect
+      ? resultDetails[currentResultCaseStudyIndex]?.questions[questionIndex]
+      : selectedAnswers[currentCaseStudyIndex]?.[questionIndex];
+    if (!question) return '';
+
+    const selectedOptionKey = isCorrect
+      ? aiResponse[caseIndex].questions[questionIndex].correctAnswer.split(')')[0].trim()
+      : selectedAnswers[currentCaseStudyIndex]?.[questionIndex];
+
+    const option = caseStudies[caseIndex]?.questions[questionIndex]?.options.find(
+      (opt) => opt.key === selectedOptionKey
+    );
+    return option ? option.label : '';
+  };
 
   return (
     <>
-      {/* Head section to include Google Translate CSS */}
+      {/* Head section to include Google Translate CSS and set the page title */}
       <Head>
+        <title>Medical Safety Assessment</title>
         {/* Google Translate CSS */}
         <link
           rel="stylesheet"
@@ -823,31 +970,63 @@ export default function Home() {
           href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.26tY-h6gH9w.L.W.O/am=CAM/d=0/rs=AN8SPfpIXxhebB2A47D9J-MACsXmFF6Vew/m=el_main_css"
         />
       </Head>
-  
-      {/* Google Translate Script */}
+
+      {/* Define the Google Translate callback function before the script loads */}
+      <Script id="google-translate-init" strategy="beforeInteractive">
+        {`
+          function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+              pageLanguage: 'en',
+              includedLanguages: 'en,es',
+              layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+          }
+        `}
+      </Script>
+
+      {/* Load the Google Translate script after the callback is defined */}
       <Script
         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-        strategy="afterInteractive" // Ensures the script loads after the page is interactive
+        strategy="afterInteractive"
       />
-  
+
       <div className="container">
         <div className="content-wrapper">
-          {/* Safety Statement */}
-          {showSafetyStatement && (
-            <h2 className="safety-statement">
-              Avoidable medical errors in hospitals are the third leading cause of
-              death in the USA. 99% of avoidable medical errors can be traced back to the
-              misuse or lack of use of the 4 safety principles and corresponding 11
-              error prevention tools (EPTs). By understanding and using this safety
-              language, harm to patients can be drastically reduced.
-            </h2>
+          {/* Header Image */}
+          <div className="image-container">
+            <img src="/Picture1.jpg" alt="Medical Assessment" className="header-image" />
+          </div>
+
+          {/* Conditionally Render Google Translate Element with Language Header */}
+          {showTranslate && (
+            <div className="google-translate-element"></div>
           )}
-  
+
           {/* Enhanced Form Container */}
           {showSafetyStatement && (
             <div className="form-container">
-              <div className="form-grid">
-                {/* User Type Select */}
+              {/* User ID Display */}
+              <div className="form-field user-id">
+                <label>User ID:</label>
+                <span>{userID}</span>
+              </div>
+
+              {/* Full Name Input */}
+              <div className="form-field">
+                <label htmlFor="fullName">Full Name:</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder="Enter your full name"
+                />
+              </div>
+
+              {/* Professional Information */}
+              <div className="professional-info">
+                <h2>Professional Information</h2>
+
                 <div className="form-item">
                   <label htmlFor="user-type-select">User Type</label>
                   <select
@@ -866,7 +1045,7 @@ export default function Home() {
                     <option value="non-clinical">Non-Clinical</option>
                   </select>
                 </div>
-                {/* Department Select */}
+
                 <div className="form-item">
                   <label htmlFor="department-select">Department</label>
                   <select
@@ -886,7 +1065,7 @@ export default function Home() {
                     ))}
                   </select>
                 </div>
-                {/* Role Select */}
+
                 <div className="form-item">
                   <label htmlFor="role-select">Role</label>
                   <select
@@ -906,6 +1085,7 @@ export default function Home() {
                     ))}
                   </select>
                 </div>
+
                 {/* Specialization Select - only show if userType is 'clinical' */}
                 {userType === 'clinical' && (
                   <div className="form-item">
@@ -918,7 +1098,7 @@ export default function Home() {
                         if (error) setError(''); // Clear error if any
                       }}
                     >
-                      <option value="">None</option>
+                      <option value="">Select Specialization</option>
                       {specializations.map((spec) => (
                         <option key={spec} value={spec}>
                           {spec}
@@ -930,12 +1110,7 @@ export default function Home() {
               </div>
             </div>
           )}
-  
-          {/* Google Translate Element */}
-          {showTranslate && (
-            <div id="google_translate_element" className="google-translate-element"></div>
-          )}
-  
+
           {/* Take Assessment Button */}
           <div className="button-container">
             {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
@@ -951,14 +1126,10 @@ export default function Home() {
               </button>
             )}
           </div>
-  
+
           {/* Error Alert */}
-          {error && (
-            <div className="error-alert">
-              {error}
-            </div>
-          )}
-  
+          {error && <div className="error-alert">{error}</div>}
+
           {/* Case Studies Page */}
           {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
             <div className="case-studies">
@@ -970,10 +1141,11 @@ export default function Home() {
                     <img
                       src={caseStudies[currentCaseStudyIndex].imageUrl}
                       alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
+                      className="header-image"
                     />
                   </div>
                 )}
-  
+
                 {/* Case Study Title and Audio Button */}
                 <div className="case-study-header">
                   <h3>{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
@@ -988,40 +1160,39 @@ export default function Home() {
                     ) : isAudioPlaying ? (
                       <>
                         <span className="icon-volume-up"></span>
-                        <span>Pause</span>
+                        Pause
                       </>
                     ) : (
                       <>
                         <span className="icon-volume-off"></span>
-                        <span>Listen</span>
+                        Listen
                       </>
                     )}
                   </button>
                 </div>
-  
+
                 {/* Audio Element */}
                 <audio ref={audioRef} />
-  
+
                 {/* Audio Error Alert */}
-                {audioError && (
-                  <div className="audio-error">
-                    {audioError}
-                  </div>
-                )}
-  
+                {audioError && <div className="audio-error">{audioError}</div>}
+
                 {/* Case Study Scenario */}
                 <p className="case-study-scenario">
                   {caseStudies[currentCaseStudyIndex].scenario}
                 </p>
-  
+
                 {/* Case Study Questions */}
-                {caseStudies[currentCaseStudyIndex].questions && caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
+                {caseStudies[currentCaseStudyIndex].questions &&
+                caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
                   <div className="question-section">
                     {/* Header for the Question */}
                     <h4 className="question-header">
-                      {`Question ${currentQuestionIndex + 1}: ${caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question}`}
+                      {`Question ${currentQuestionIndex + 1}: ${
+                        caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
+                      }`}
                     </h4>
-  
+
                     <div className="options-group">
                       {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
                         (option) => {
@@ -1032,7 +1203,7 @@ export default function Home() {
                               ?.message || '';
                           const isCorrect = feedbackMessage === 'Correct Answer';
                           const maxAttemptsReached = currentAttempts >= 3 || isCorrect;
-  
+
                           return (
                             <div className="option-item" key={option.key}>
                               <label>
@@ -1049,11 +1220,12 @@ export default function Home() {
                                   }
                                   disabled={maxAttemptsReached}
                                   checked={
-                                    selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] === option.key
+                                    selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
+                                    option.key
                                   }
                                 />
                                 <span>
-                                  <strong>{option.key}.</strong> {option.label}
+                                  <strong>{`${option.key}.`}</strong> {option.label}
                                 </span>
                               </label>
                             </div>
@@ -1061,21 +1233,19 @@ export default function Home() {
                         }
                       )}
                     </div>
-  
+
                     {/* Display feedback message */}
                     {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
                       <div className="feedback-section">
                         <div
                           className={`feedback-message ${
-                            feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message === 'Correct Answer'
+                            feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
+                              .message === 'Correct Answer'
                               ? 'success'
                               : 'info'
                           }`}
                         >
-                          {
-                            feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
-                              .message
-                          }
+                          {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message}
                         </div>
                         {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
                           <div className="hint">
@@ -1090,190 +1260,106 @@ export default function Home() {
                     )}
                   </div>
                 ) : (
-                  <p className="no-questions">
-                    No questions available for this case study.
-                  </p>
+                  <p className="no-questions">No questions available for this case study.</p>
                 )}
-  
-                {/* Navigation Buttons */}
-                {caseStudies[currentCaseStudyIndex].questions && caseStudies[currentCaseStudyIndex].questions.length > 0 && (
-                  <div className="navigation-buttons">
-                    <div className="nav-group">
-                      {/* Previous Question Button */}
+
+                {/* Navigation Button */}
+                {caseStudies[currentCaseStudyIndex].questions &&
+                  caseStudies[currentCaseStudyIndex].questions.length > 0 && (
+                    <div className="navigation-buttons">
                       <button
                         type="button"
-                        className="nav-button"
-                        onClick={handlePreviousQuestion}
-                        disabled={currentQuestionIndex === 0}
+                        className="next-button"
+                        onClick={handleNext}
                       >
-                        Previous Question
+                        {isLastQuestion && isLastCaseStudy ? 'Submit' : 'Next'}
                       </button>
-                      {/* Next Question Button */}
-                      {caseStudies[currentCaseStudyIndex].questions.length > 1 && (
-                        <button
-                          type="button"
-                          className="nav-button"
-                          onClick={handleNextQuestion}
-                          disabled={
-                            currentQuestionIndex ===
-                            caseStudies[currentCaseStudyIndex].questions.length - 1
-                          }
-                        >
-                          Next Question
-                        </button>
-                      )}
                     </div>
-                    <div className="nav-group">
-                      {/* Previous Case Study Button */}
-                      <button
-                        type="button"
-                        className="nav-button"
-                        onClick={handlePreviousCaseStudy}
-                        disabled={currentCaseStudyIndex === 0}
-                      >
-                        Previous Case Study
-                      </button>
-                      {/* Next/Submit Case Study Button */}
-                      {currentCaseStudyIndex === caseStudies.length - 1 ? (
-                        <button
-                          type="button"
-                          className="submit-button"
-                          onClick={handleSubmitFinalAssessment}
-                          disabled={isLoading}
-                        >
-                          {isLoading ? 'Submitting...' : 'Submit'}
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          className="nav-button"
-                          onClick={handleNextCaseStudy}
-                        >
-                          Next Case Study
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                )}
+                  )}
               </div>
             </div>
           )}
-  
+
           {/* Assessment Completion Form */}
           {assessmentComplete && (
             <div className="assessment-complete">
+              {/* Result Container with Score and Message */}
               <div className="result-container">
                 {/* Score Circle */}
                 <div className="score-circle">
-                  <span>{`${totalScore}%`}</span>
+                  <span>{totalScore}%</span>
                 </div>
-  
-                {/* Detailed Results */}
-                {resultDetails.map((caseDetail) => (
-                  <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail">
-                    <h4>{`Case Study ${caseDetail.caseStudyNumber}`}</h4>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Question #</th>
-                          <th>Selected Answer</th>
-                          <th>Correct Answer</th>
-                          <th>Points Received</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {caseDetail.questions.map((questionDetail) => (
-                          <tr key={`question-${questionDetail.questionNumber}`}>
-                            <td>{questionDetail.questionNumber}</td>
-                            <td>{questionDetail.selectedAnswer}</td>
-                            <td>{questionDetail.correctAnswer}</td>
-                            <td>{questionDetail.pointsReceived}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                ))}
-  
-                <div className="result-buttons">
-                  <button
-                    type="button"
-                    className="main-button"
-                    onClick={handleBackToMainPage}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? 'Processing...' : 'Return to Main'}
-                  </button>
-                  <button
-                    type="button"
-                    className="print-button"
-                    onClick={handlePrint}
-                  >
-                    <span className="icon-print"></span>
-                    Print Assessment Report
-                  </button>
+
+                {/* Conditional Message Based on Score */}
+                {totalScore >= 70 ? (
+                  <h2>Congrats! You passed the safety assessment.</h2>
+                ) : (
+                  <h2>Your score must be above 70% to receive a completion certificate.</h2>
+                )}
+              </div>
+
+              {/* Case Study Results */}
+              {resultDetails.map((caseDetail, index) => (
+                <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail">
+                  <h4>{`Question ${caseDetail.questions[0].questionNumber}`}</h4>
+                  {caseDetail.questions.map((q) => (
+                    <div key={`question-${q.questionNumber}`} className="question-summary">
+                      {/* Header with Question Number and Status Icon */}
+                      <div className="question-header-summary">
+                        <h4>{`Question ${q.questionNumber}`}</h4>
+                        <span>
+                          {q.isCorrect ? '✅' : '❌'}
+                        </span>
+                      </div>
+
+                      {/* Question Text */}
+                      <p className="question-text">{q.questionText}</p>
+
+                      {/* Your Answer */}
+                      <h5>Your Answer:</h5>
+                      <p className="user-answer">{q.selectedAnswer !== 'No Answer' ? q.selectedAnswer : 'No Answer'}</p>
+                    </div>
+                  ))}
                 </div>
+              ))}
+
+              {/* Result Buttons */}
+              <div className="result-buttons">
+                <button
+                  className="main-button"
+                  onClick={handleBackToMainPage}
+                  disabled={isLoading}
+                >
+                  Return to Main
+                </button>
+                <button
+                  className="print-button"
+                  onClick={handlePrint}
+                  disabled={isLoading}
+                >
+                  🖨️ Print Assessment Report
+                </button>
               </div>
             </div>
           )}
-  
+
           {/* Handle Empty Case Studies */}
           {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
             <div className="no-case-studies">
               No case studies available at the moment. Please try again later.
             </div>
           )}
-  
-          {/* Modal for Unanswered Questions */}
-          {showUnansweredModal && (
-            <div className="modal-overlay">
-              <div className="modal-content">
-                <h3>You have not selected an option for the following questions:</h3>
-                <ul>
-                  {unansweredQuestions.map((item, index) => (
-                    <li key={index}>
-                      {`Case Study ${item.caseIndex + 1}, Question ${item.questionIndex + 1}: ${item.questionText}`}
-                    </li>
-                  ))}
-                </ul>
-                <div className="modal-buttons">
-                  <button
-                    className="modal-button"
-                    onClick={() => setShowUnansweredModal(false)}
-                  >
-                    Return
-                  </button>
-                  <button
-                    className="modal-button"
-                    onClick={() => {
-                      setShowUnansweredModal(false);
-                      proceedWithSubmission();
-                    }}
-                  >
-                    Continue
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
-  
+
         {/* Footer */}
         <footer className="footer">
-          <p>© CoachCare.ai | Email: rizwanshaikh2200@gmail.com | Phone: (404) 980-4465</p>
+          <p>
+            © CoachCare.ai | Email: rizwanshaikh2200@gmail.com | Phone:{' '}
+            (404) 980-4465
+          </p>
         </footer>
       </div>
-  
-      <style jsx>{`
-        .footer {
-          text-align: center;
-          padding: 1rem;
-          font-size: 0.9rem;
-          color: #777;
-          border-top: 1px solid #eaeaea;
-          margin-top: 2rem;
-        }
-      `}</style>
     </>
   );
-}  
+}
+
