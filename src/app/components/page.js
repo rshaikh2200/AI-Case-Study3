@@ -182,8 +182,8 @@ export default function Home() {
     try {
       await addDoc(collection(firestore, 'user_profile'), {
         userID,
-        language,
         fullName,
+        language,
         userType,
         department,
         role,
@@ -479,6 +479,7 @@ export default function Home() {
         caseStudyNumber: caseIndex + 1,
         questions: [],
         patientName: caseStudy.patientName || 'Patient: Unknown',
+        caseStudyText: caseStudy.scenario || 'No Scenario',
       };
 
       const questions = caseStudy.questions;
@@ -661,55 +662,84 @@ export default function Home() {
       const margin = 10;
       let yPosition = margin;
 
+      // Add User Information
+      docPDF.setFontSize(10);
+      docPDF.setFont('helvetica', 'bold');
+      docPDF.text(`Full Name: ${fullName}`, margin, yPosition);
+      yPosition += 6;
+      docPDF.text(`User ID: ${userID}`, margin, yPosition);
+      yPosition += 6;
+      docPDF.text(`Assessment Date: ${new Date().toLocaleDateString()}`, margin, yPosition);
+      yPosition += 8; // Added margin space here
+
       // Add Title
-      docPDF.setFontSize(18);
+      docPDF.setFontSize(14);
       docPDF.setFont('helvetica', 'bold');
       docPDF.text('Safety Assessment Report', pageWidth / 2, yPosition, {
         align: 'center',
       });
-      yPosition += 10;
+      yPosition += 8;
 
       // Add Total Score
-      docPDF.setFontSize(14);
+      docPDF.setFontSize(12);
       docPDF.setFont('helvetica', 'normal');
       docPDF.text(`Total Score: ${totalScore}%`, pageWidth / 2, yPosition, {
         align: 'center',
       });
-      yPosition += 10;
+      yPosition += 8;
 
       // Add a horizontal line
-      docPDF.setLineWidth(0.5);
+      docPDF.setLineWidth(0.3);
       docPDF.line(margin, yPosition, pageWidth - margin, yPosition);
-      yPosition += 10;
+      yPosition += 8;
 
-      // Iterate through each case study to add details and tables
+      // Iterate through each case study to add details
       resultDetails.forEach((caseDetail, index) => {
+        // Add a new page for each case study except the first one
+        if (index !== 0) {
+          docPDF.addPage();
+          yPosition = margin;
+        }
+
         const caseStudy = caseStudies[index];
 
         // Add Case Study Title
-        docPDF.setFontSize(16);
+        docPDF.setFontSize(12);
         docPDF.setFont('helvetica', 'bold');
         docPDF.text(`Case Study ${caseDetail.caseStudyNumber}`, margin, yPosition);
-        yPosition += 8;
+        yPosition += 6;
 
         // Add Scenario
-        docPDF.setFontSize(12);
+        docPDF.setFontSize(10);
         docPDF.setFont('helvetica', 'normal');
         const splitScenarioText = docPDF.splitTextToSize(
           caseStudy.scenario,
           pageWidth - 2 * margin
         );
         docPDF.text(splitScenarioText, margin, yPosition);
-        yPosition += splitScenarioText.length * 6 + 4; // Adjust spacing based on number of lines
+        yPosition += splitScenarioText.length * 5 + 2; // Adjust spacing based on number of lines
 
-        // Iterate through each question to add question text and options
-        caseStudy.questions.forEach((question, qIndex) => {
-          const questionNumber = qIndex + 1;
-          const questionText = question.question;
-          const options = question.options;
+        // Iterate through each question to add question text, user answer, and correct answer
+        caseDetail.questions.forEach((question) => {
+          const questionNumber = question.questionNumber;
+          const questionText = question.questionText;
+          const userAnswerKey = question.selectedAnswer;
+          const correctAnswerKey = aiResponse[caseDetail.caseStudyNumber - 1].questions[questionNumber - 1].correctAnswer.split(')')[0].trim();
+
+          // Retrieve full text for user answer
+          const userOption = caseStudies[index].questions[questionNumber - 1].options.find(
+            (opt) => opt.key === userAnswerKey
+          );
+          const userAnswerText = userOption ? `${userOption.key}. ${userOption.label}` : 'No Answer';
+
+          // Retrieve full text for correct answer
+          const correctOption = caseStudies[index].questions[questionNumber - 1].options.find(
+            (opt) => opt.key === correctAnswerKey
+          );
+          const correctAnswerText = correctOption ? `${correctOption.key}. ${correctOption.label}` : 'No Answer';
 
           // Add Question Number and Text
-          docPDF.setFontSize(12);
+          docPDF.setFontSize(10);
           docPDF.setFont('helvetica', 'bold');
           const questionHeader = `Question ${questionNumber}: ${questionText}`;
           const splitQuestionHeader = docPDF.splitTextToSize(
@@ -717,75 +747,53 @@ export default function Home() {
             pageWidth - 2 * margin
           );
           docPDF.text(splitQuestionHeader, margin, yPosition);
-          yPosition += splitQuestionHeader.length * 6 + 2;
+          yPosition += splitQuestionHeader.length * 4 + 2;
 
-          // Add Options
-          docPDF.setFontSize(11);
+          // Add Your Answer
+          docPDF.setFontSize(10);
+          docPDF.setFont('helvetica', 'bold');
+          docPDF.text('Your Answer:', margin + 2, yPosition);
+          yPosition += 4;
+
+          docPDF.setFontSize(10);
           docPDF.setFont('helvetica', 'normal');
-          options.forEach((option) => {
-            const optionText = `${option.key}. ${option.label}`;
-            const splitOptionText = docPDF.splitTextToSize(optionText, pageWidth - 2 * margin);
-            docPDF.text(splitOptionText, margin + 5, yPosition);
-            yPosition += splitOptionText.length * 5 + 1;
-          });
+          const splitUserAnswer = docPDF.splitTextToSize(
+            userAnswerText,
+            pageWidth - 2 * margin - 4
+          );
+          docPDF.text(splitUserAnswer, margin + 4, yPosition);
+          yPosition += splitUserAnswer.length * 4 + 2;
 
-          yPosition += 2; // Add some spacing after options
+          // Add Correct Answer
+          docPDF.setFontSize(10);
+          docPDF.setFont('helvetica', 'bold');
+          docPDF.text('Correct Answer:', margin + 2, yPosition);
+          yPosition += 4;
 
-          // Check if yPosition exceeds page height, add new page if necessary
-          if (yPosition > pageHeight - margin - 30) {
-            docPDF.addPage();
-            yPosition = margin;
+          docPDF.setFontSize(10);
+          docPDF.setFont('helvetica', 'normal');
+          const splitCorrectAnswer = docPDF.splitTextToSize(
+            correctAnswerText,
+            pageWidth - 2 * margin - 4
+          );
+          docPDF.text(splitCorrectAnswer, margin + 4, yPosition);
+          yPosition += splitCorrectAnswer.length * 4 + 6;
+
+          // Check if yPosition exceeds page height, adjust if necessary
+          if (yPosition > pageHeight - margin - 20) {
+            // Avoid adding extra blank pages
+            // If content exceeds, reduce font size or truncate (optional)
+            // For simplicity, we'll assume content fits due to smaller font size
+            yPosition = pageHeight - margin - 20;
           }
         });
 
-        // Prepare Table Data
-        const tableColumn = ['Question #', 'User Answer', 'Correct Answer', 'Points Received'];
-        const tableRows = caseDetail.questions.map((q) => [
-          q.questionNumber.toString(),
-          `${q.selectedAnswer}. ${getOptionLabel(q.questionNumber)}`,
-          `${aiResponse[index].questions[q.questionNumber - 1].correctAnswer}`,
-          q.isCorrect ? '1' : '0',
-        ]);
-
-        // Calculate the height required for the table
-        const tableOptions = {
-          startY: yPosition,
-          head: [tableColumn],
-          body: tableRows,
-          theme: 'grid',
-          styles: { fontSize: 10, cellPadding: 3 },
-          headStyles: { fillColor: [22, 160, 133], halign: 'center' },
-          columnStyles: {
-            0: { halign: 'center', cellWidth: 20 }, // Question #
-            1: { halign: 'center', cellWidth: 40 }, // User Answer
-            2: { halign: 'center', cellWidth: 40 }, // Correct Answer
-            3: { halign: 'center', cellWidth: 30 }, // Points Received
-          },
-          margin: { left: margin, right: margin },
-          didDrawPage: (data) => {
-            // Optionally add headers or footers here
-          },
-        };
-
-        // Add Table using autoTable
-        docPDF.autoTable(tableOptions);
-        yPosition = docPDF.lastAutoTable.finalY + 10; // Update yPosition after table
-
-        // Check if the next content exceeds the page height
-        if (yPosition > pageHeight - margin) {
-          docPDF.addPage();
-          yPosition = margin;
-        }
-
-        // Optionally, add spacing or other content between case studies
-        if (index < resultDetails.length - 1) {
-          docPDF.addPage();
-          yPosition = margin;
-        }
+        // No spacing between case studies since each is on a new page
       });
 
-      // Save the PDF
-      docPDF.save('coachcare_ai_safety_assessment.pdf');
+      // Save the PDF with a dynamic filename
+      const fileName = `Safety_Assessment_Report_${fullName.replace(/\s+/g, '_')}_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`;
+      docPDF.save(fileName);
     } catch (err) {
       setError(err.message || 'Failed to generate PDF.');
       console.error('Error generating PDF:', err);
@@ -799,6 +807,9 @@ export default function Home() {
     try {
       await deleteAllDocumentsInCollection('all_case_studies');
       await deleteAllDocumentsInCollection('ai_responses');
+      await deleteAllDocumentsInCollection('session table');
+      await deleteAllDocumentsInCollection('user_profile');
+      await deleteAllDocumentsInCollection('workflowData');
 
       setUserType('');
       setDepartment('');
@@ -900,14 +911,16 @@ export default function Home() {
     rolesToUse = nonClinicalRoles;
   }
 
+  
+
   useEffect(() => {
     // Initialize Google Translate
     window.googleTranslateElementInit = () => {
       new window.google.translate.TranslateElement(
         {
           pageLanguage: 'en',
-          autoDisplay: false,
           includedLanguages: 'en,es', // Customize as needed
+          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
         },
         'google_translate_element'
       );
@@ -925,6 +938,8 @@ export default function Home() {
     const languageDropdown = document.querySelector('.goog-te-combo');
     if (languageDropdown) {
       languageDropdown.addEventListener('change', handleLanguageChange);
+      // Increase font size of the dropdown options
+      languageDropdown.style.fontSize = '20px'; // Adjust size as needed
     }
   
     return () => {
@@ -934,28 +949,13 @@ export default function Home() {
       }
     };
   }, []);
-  
-
 
   // Helper function to get the full label of an option
-  const getOptionLabel = (questionNumber, isCorrect = false) => {
-    const caseIndex = isCorrect
-      ? resultDetails[currentResultCaseStudyIndex].caseStudyNumber - 1
-      : currentResultCaseStudyIndex;
-    const questionIndex = questionNumber - 1;
-    const question = isCorrect
-      ? resultDetails[currentResultCaseStudyIndex]?.questions[questionIndex]
-      : selectedAnswers[currentCaseStudyIndex]?.[questionIndex];
-    if (!question) return '';
-
-    const selectedOptionKey = isCorrect
-      ? aiResponse[caseIndex].questions[questionIndex].correctAnswer.split(')')[0].trim()
-      : selectedAnswers[currentCaseStudyIndex]?.[questionIndex];
-
+  const getOptionLabel = (caseIndex, questionIndex, optionKey) => {
     const option = caseStudies[caseIndex]?.questions[questionIndex]?.options.find(
-      (opt) => opt.key === selectedOptionKey
+      (opt) => opt.key === optionKey
     );
-    return option ? option.label : '';
+    return option ? `${option.key}. ${option.label}` : 'No Answer';
   };
 
   return (
@@ -992,14 +992,98 @@ export default function Home() {
 
       <div className="container">
         <div className="content-wrapper">
-          {/* Header Image */}
+          {/* Image and Assessment Complete Form Container */}
           <div className="image-container">
+            {/* Header Image */}
             <img src="/Picture1.jpg" alt="Medical Assessment" className="header-image" />
+
+            {/* Assessment Completion Form */}
+            {assessmentComplete && (
+              <div className="assessment-complete">
+                {/* Result Container with Score and Message */}
+                <div className="result-container">
+                  {/* Score Circle */}
+                  <div className="score-circle">
+                    <span>{totalScore}%</span>
+                  </div>
+                </div>
+
+                {/* Case Study Results */}
+                {resultDetails.map((caseDetail) => (
+                  <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail">
+                    {/* Header for Each Case Study */}
+                    <h3>{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
+
+                    {/* Display Case Study Content */}
+                    <p className="case-study-text">{caseDetail.caseStudyText}</p>
+
+                    {caseDetail.questions.map((q) => (
+                      <div key={`question-${q.questionNumber}`} className="question-summary">
+                        {/* Header with Question Number and Status Icon */}
+                        <div className="question-header-summary">
+                          <h4>{`Question ${q.questionNumber}`}</h4>
+                          <span>
+                            {q.isCorrect ? '✅' : '❌'}
+                          </span>
+                        </div>
+
+                        {/* Question Text */}
+                        <p className="question-text">{q.questionText}</p>
+
+                        {/* Your Answer */}
+                        <h5>Your Answer:</h5>
+                        <p className="user-answer">
+                          {q.selectedAnswer !== 'No Answer'
+                            ? getOptionLabel(
+                                caseDetail.caseStudyNumber - 1,
+                                q.questionNumber - 1,
+                                q.selectedAnswer
+                              )
+                            : 'No Answer'}
+                        </p>
+
+                        {/* Correct Answer */}
+                        <h5>Correct Answer:</h5>
+                        <p className="correct-answer">
+                          {getOptionLabel(
+                            caseDetail.caseStudyNumber - 1,
+                            q.questionNumber - 1,
+                            aiResponse[caseDetail.caseStudyNumber - 1].questions[q.questionNumber - 1].correctAnswer.split(')')[0].trim()
+                          )}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+
+                {/* Result Buttons */}
+                <div className="result-buttons">
+                  <button
+                    className="main-button"
+                    onClick={handleBackToMainPage}
+                    disabled={isLoading}
+                  >
+                    Return to Main
+                  </button>
+                  <button
+                    className="print-button"
+                    onClick={handlePrint}
+                    disabled={isLoading}
+                  >
+                    🖨️ Print Assessment Report
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Conditionally Render Google Translate Element with Language Header */}
+          {/* Conditionally Render Google Translate Element above the "Take Assessment" button */}
           {showTranslate && (
-            <div className="google-translate-element"></div>
+            <div
+              id="google_translate_element"
+              className="google-translate-element"
+              style={{ marginBottom: '20px' }}
+            ></div>
           )}
 
           {/* Enhanced Form Container */}
@@ -1280,69 +1364,6 @@ export default function Home() {
             </div>
           )}
 
-          {/* Assessment Completion Form */}
-          {assessmentComplete && (
-            <div className="assessment-complete">
-              {/* Result Container with Score and Message */}
-              <div className="result-container">
-                {/* Score Circle */}
-                <div className="score-circle">
-                  <span>{totalScore}%</span>
-                </div>
-
-                {/* Conditional Message Based on Score */}
-                {totalScore >= 70 ? (
-                  <h2>Congrats! You passed the safety assessment.</h2>
-                ) : (
-                  <h2>Your score must be above 70% to receive a completion certificate.</h2>
-                )}
-              </div>
-
-              {/* Case Study Results */}
-              {resultDetails.map((caseDetail, index) => (
-                <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail">
-                  <h4>{`Question ${caseDetail.questions[0].questionNumber}`}</h4>
-                  {caseDetail.questions.map((q) => (
-                    <div key={`question-${q.questionNumber}`} className="question-summary">
-                      {/* Header with Question Number and Status Icon */}
-                      <div className="question-header-summary">
-                        <h4>{`Question ${q.questionNumber}`}</h4>
-                        <span>
-                          {q.isCorrect ? '✅' : '❌'}
-                        </span>
-                      </div>
-
-                      {/* Question Text */}
-                      <p className="question-text">{q.questionText}</p>
-
-                      {/* Your Answer */}
-                      <h5>Your Answer:</h5>
-                      <p className="user-answer">{q.selectedAnswer !== 'No Answer' ? q.selectedAnswer : 'No Answer'}</p>
-                    </div>
-                  ))}
-                </div>
-              ))}
-
-              {/* Result Buttons */}
-              <div className="result-buttons">
-                <button
-                  className="main-button"
-                  onClick={handleBackToMainPage}
-                  disabled={isLoading}
-                >
-                  Return to Main
-                </button>
-                <button
-                  className="print-button"
-                  onClick={handlePrint}
-                  disabled={isLoading}
-                >
-                  🖨️ Print Assessment Report
-                </button>
-              </div>
-            </div>
-          )}
-
           {/* Handle Empty Case Studies */}
           {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
             <div className="no-case-studies">
@@ -1362,4 +1383,5 @@ export default function Home() {
     </>
   );
 }
+
 
