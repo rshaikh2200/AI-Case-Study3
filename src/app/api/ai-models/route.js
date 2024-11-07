@@ -354,12 +354,12 @@ Ensure that:
 Do not include any additional text outside of the JSON structure.`;
   } else if (userType === 'non-clinical') {
     // New prompt for non-clinical roles
-    META_PROMPT = `Please generate 4 medical case studies, each approximately 150 words, featuring a scenario for a ${role} in the ${department} department. Each case study should:
+    META_PROMPT = `Please generate 4 non-clinical medical case studies, each approximately 150 words, featuring a scenario for a ${role} in the ${department} department. Each case study should:
 
-Include a different medical error that occurred by the ${role} or by the team.
+Include a different non-clinical communication error that occurred by the ${role} or by the team.
 Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
-The medical studies should be detailed and focus on the situation, medical error, and consequences.
-The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
+The medical studies should be detailed and focus on the situation, communication error, and consequences.
+The case study should use different styles of narrating such as including emotions between characters, describe the environment, include a mix of non-clinical employees, and be more descriptive. Use formal and English.
 Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
 For each case study, create 3 unique multiple-choice questions that:
 
@@ -461,46 +461,164 @@ Definition: Situation, Background, Assessment, Recommendation.
   "caseStudies": [
     {
       "caseStudy": "Case Study 1",
-      "scenario": ": "Dr. Patel (he/him), an orthopedic surgeon, was finishing up a knee replacement surgery when the patient’s implant arrived. In the rush to keep things on schedule, he quickly began installing it without double-checking the lot number. Minutes later, the scrub nurse noticed the implant package didn't match the patient’s chart. Dr. Patel’s colleague, Dr. Lin (she/her), was nearby and always emphasized the importance of a final check before any major step."
+      "scenario": "Susan was updating the intranet home page with a long and detailed safety alert that needed to go out immediately based on a safety event that had recently occurred at one of the system’s hospitals. She was rushing between tasks and quickly published the page for all 50,000 employees. Moments later, she got an angry email from the system Chief Medical Officer informing her that she got the part number wrong and that this was causing staff to place orders on the wrong product. Her cubicle neighbor Mike was an excellent proofreader and was always happy to assist his coworker when asked.",
       "questions": [
         {
-          "question": "Dr. Patel could have avoided this mix-up by practicing which Error Prevention Tool, which focuses on verifying actions with a double-check or comparison?"
+          "question": "Susan could have prevented potential harm to patients by practicing which of the following Error Prevention Tools?",
           "options": {
-            "A": "Peer Checking and Coaching",
+            "A": "Peer Check/ Peer Coach",
             "B": "Debrief",
             "C": "ARCC",
             "D": "Validate and Verify"
-          }
-            correct answer: C) Validate and Verify
-            "Hint": "Double-checking and confirming accuracy before proceeding."
+          },
+          correct answer: A) Peer Check/ Peer Coach
+          "Hint": "Double-checking and confirming accuracy before proceeding."
         },
         {
-          "question": "If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focus on stopping and adressing concern would he be applying ",
+          "question": "How could Mike have assisted Susan to prevent the error?",
+          "options": {
+            "A": "By taking over her tasks",
+            "B": "By proofreading the safety alert before publication",
+            "C": "By informing the Chief Medical Officer",
+            "D": "By delaying the publication"
+          },
+          correct answer: B) By proofreading the safety alert before publication
+          "Hint": "Utilizing proofreading as a method to catch errors."
+        },
+        {
+          "question": "What is the primary benefit of having a Peer Coach in a high-stakes environment?",
+          "options": {
+            "A": "Increases workload",
+            "B": "Provides emotional support",
+            "C": "Enhances error detection and prevention",
+            "D": "Reduces the need for management oversight"
+          },
+          correct answer: C) Enhances error detection and prevention
+          "hint": "Focuses on minimizing mistakes through collaboration."
+        }
+      ]
+    },
+    {
+      "caseStudy": "Case Study 2",
+      "scenario": "The communications department head (Mary) held a weekly meeting with her direct reports. This meeting often started late and often ran over. The meeting did not include an agenda and the attendees were not sure what or how they should prepare in advance. Mary often observed that surgeons who are often very competitive about perfecting their craft would take a moment at the end of surgery procedures to ask their staff 3 questions: what went well, how do we improve, and how do we get there. At the following meeting, Mary decided to incorporate this best practice.",
+      "questions": [
+        {
+          "question": "Mary and the surgeon are using which of the Error Prevention Tools?",
+          "options": {
+            "A": "Peer Check/ Peer Coach",
+            "B": "Debrief",
+            "C": "ARCC",
+            "D": "Validate and Verify"
+          },
+          correct answer: B) Debrief
+          "Hint": "What went well and areas for improvement."
+        },
+        {
+          "question": "What was the main issue with Mary's original meetings?",
+          "options": {
+            "A": "Too many attendees",
+            "B": "Lack of structure and clarity",
+            "C": "Inadequate technology",
+            "D": "Insufficient time allocation"
+          },
+          correct answer: B) Lack of structure and clarity
+          "Hint": "Meetings lacked agenda and preparation guidance."
+        },
+        {
+          "question": "By incorporating debriefing techniques, Mary aims to improve meetings by:",
+          "options": {
+            "A": "Increasing meeting frequency",
+            "B": "Enhancing communication and continuous improvement",
+            "C": "Reducing the number of topics discussed",
+            "D": "Extending meeting durations"
+          },
+          correct answer: B) Enhancing communication and continuous improvement
+          "Hint": "Focuses on reflecting and improving processes."
+        }
+      ]
+    },
+    {
+      "caseStudy": "Case Study 3",
+      "scenario": "Paul was a senior member of the communications department and very politically active. His political party was pressuring him to use his access to the 50,000 plus employees to send out political advertisements right before the election. Paul was hesitant about abusing his power and reach but proceeded anyway. Tony (Paul’s Boss) had to fire Tony for this action. “If you would have escalated this to me Tony, I could have reminded you about how we as a nonprofit cannot endorse candidates.” Tony was hesitant but did not voice his concern up to his superior.",
+      "questions": [
+        {
+          "question": "Tony could have relied on which of the following Error Prevention Tools to guide him in this tough situation?",
           "options": {
             "A": "STAR",
             "B": "No Distraction Zone",
             "C": "ARCC",
             "D": "Effective Handoffs"
-          }
-            correct answer: C) ARCC
-            "Hint": "Voice concern and activate chain of command."
+          },
+          correct answer: C) ARCC
+          "Hint": "Voice concern and activate chain of command."
         },
         {
-          "question": "After the surgery, Dr. Patel and his team discussed ways to prevent future errors. This reflection represents which Error Prevention Tool, designed to identify improvements and assign follow-up actions?",
+          "question": "What does ARCC stand for in the context of error prevention?",
           "options": {
-            "A": "ARCC",
+            "A": "Ask, Report, Correct, Confirm",
+            "B": "Anticipate, React, Communicate, Control",
+            "C": "Alert, Raise, Consult, Change",
+            "D": "Assess, Respond, Coordinate, Communicate"
+          },
+          correct answer: A) Ask, Report, Correct, Confirm
+          "Hint": "Steps involved in addressing and escalating concerns."
+        },
+        {
+          "question": "What was the consequence of Tony not using the ARCC tool?",
+          "options": {
+            "A": "He was promoted",
+            "B": "He successfully sent the advertisements",
+            "C": "He was fired for not escalating the issue",
+            "D": "Nothing happened"
+          },
+          correct answer: C) He was fired for not escalating the issue
+          "Hint": "Failure to follow proper escalation procedures led to negative outcomes."
+        }
+      ]
+    },
+    {
+      "caseStudy": "Case Study 4",
+      "scenario": "Tina was trying to send out a mass communication regarding an upcoming directors and above meeting. She was asked to send a “save the date” on Monday for the event on Friday. Tina got it backwards and ended up sending it on Friday for the event on Monday. Tina knows that whenever numbers and especially dates are involved to always double check. Tina could have prevented this error by using which of the following Error prevention tools.",
+      "questions": [
+        {
+          "question": "Tina could have prevented this error by using which of the following Error prevention tools?",
+          "options": {
+            "A": "Peer Check/ Peer Coach",
             "B": "Debrief",
-            "C": "No Distraction Zone",
-            "D": "Read and Repeat Backs"
-          }
-            correct answer: B) Debrief 
-            "Hint": "What went well and areas for improvement."
+            "C": "Validate and Verify",
+            "D": "ARCC"
+          },
+          correct answer: C) Validate and Verify
+          "Hint": "Double-checking and confirming accuracy before proceeding."
+        },
+        {
+          "question": "What specific action should Tina have taken to avoid the date mix-up?",
+          "options": {
+            "A": "Ask a coworker to review the dates",
+            "B": "Use a calendar tool to verify dates",
+            "C": "Validate the dates before sending",
+            "D": "All of the above"
+          },
+          correct answer: D) All of the above
+          "Hint": "Multiple validation steps can prevent errors."
+        },
+        {
+          "question": "Why is it important to validate and verify information in communications?",
+          "options": {
+            "A": "To ensure accuracy and reliability",
+            "B": "To increase workload",
+            "C": "To delay communication",
+            "D": "To reduce the need for proofreading"
+          },
+          correct answer: A) To ensure accuracy and reliability
+          "Hint": "Maintaining trust through accurate information dissemination."
         }
       ]
     }
-    // Additional case studies...
+    // Add additional case studies here following the same structure...
   ]
 }
+
 \`\`\`
 
 Ensure that:
@@ -559,3 +677,4 @@ Do not include any additional text outside of the JSON structure.`;
     );
   }
 }
+
