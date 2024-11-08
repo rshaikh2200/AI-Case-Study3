@@ -376,7 +376,7 @@ export default function Home() {
     const previousFeedback = feedbackMessages[caseIndex]?.[questionIndex];
 
     if (
-      currentAttempts >= 3 ||
+      currentAttempts >= 2 ||
       (previousFeedback && previousFeedback.message === 'Correct Answer')
     ) {
       // User has reached maximum attempts or already answered correctly
@@ -402,7 +402,7 @@ export default function Home() {
       feedbackMessageNew = 'Correct Answer';
       hintToShow = ''; // No hint needed when correct
     } else {
-      const attemptsLeft = 2 - currentAttempts;
+      const attemptsLeft = 1 - currentAttempts;
       hintToShow = hint; // Show hint on every incorrect attempt
       if (attemptsLeft > 0) {
         feedbackMessageNew = `Incorrect Answer. ${attemptsLeft} tries left.`;
@@ -957,19 +957,48 @@ export default function Home() {
     );
     return option ? `${option.key}. ${option.label}` : 'No Answer';
   };
+  // Apply custom styles to Google Translate dropdown after it loads
+  useEffect(() => {
+    const applyCustomStyles = () => {
+      const translateSelect = document.querySelector('.goog-te-combo');
+      if (translateSelect) {
+        translateSelect.style.fontSize = '64px';
+        translateSelect.style.padding = '10px';
+        translateSelect.style.height = '45px';
+        translateSelect.style.width = '220px'; // Adjust width as needed
+        translateSelect.style.backgroundColor = '#f0f0f0'; // Optional: Change background color
+        translateSelect.style.borderRadius = '5px'; // Optional: Add border radius
+        translateSelect.style.border = '1px solid #ccc'; // Optional: Add border
+
+        // Optionally, style the container to better fit the enlarged dropdown
+        const container = document.querySelector('.google-translate-element');
+        if (container) {
+          container.style.display = 'inline-block';
+          container.style.marginBottom = '20px';
+        }
+
+        // Clear the interval once styles are applied
+        clearInterval(styleInterval);
+      }
+    };
+
+    // Check every 500ms if the dropdown has been rendered
+    const styleInterval = setInterval(applyCustomStyles, 500);
+
+    // Clear interval on component unmount
+    return () => clearInterval(styleInterval);
+  }, [showTranslate]);
 
   return (
     <>
       {/* Head section to include Google Translate CSS and set the page title */}
       <Head>
         <title>Medical Safety Assessment</title>
-        {/* Google Translate CSS */}
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.26tY-h6gH9w.L.W.O/am=CAM/d=0/rs=AN8SPfpIXxhebB2A47D9J-MACsXmFF6Vew/m=el_main_css"
-        />
+          
+
       </Head>
+        
+      
 
       {/* Define the Google Translate callback function before the script loads */}
       <Script id="google-translate-init" strategy="beforeInteractive">
@@ -1082,7 +1111,6 @@ export default function Home() {
             <div
               id="google_translate_element"
               className="google-translate-element"
-              style={{ marginBottom: '20px' }}
             ></div>
           )}
 
@@ -1383,5 +1411,3 @@ export default function Home() {
     </>
   );
 }
-
-
