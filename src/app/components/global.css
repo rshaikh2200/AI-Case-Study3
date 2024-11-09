@@ -716,6 +716,41 @@
     flex-direction: column;
     gap: 1rem;
   }
+
+  /* Adjustments for Score Circle, Score, and Result Header */
+  
+  /* Change flex direction to column for better stacking */
+  .score-info {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  /* Reduce size of score circle */
+  .score-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  /* Reduce font size inside score circle */
+  .score-circle span {
+    font-size: 1.2rem;
+  }
+
+  /* Adjust Result Header font size if using h2 or h3 inside .result-container */
+  .result-container h2,
+  .result-container h3 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .assessment-button,
+  .main-button,
+  .print-button,
+  .audio-button {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -736,12 +771,18 @@
   }
 
   .score-circle {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
   }
 
   .score-circle span {
-    font-size: 2rem;
+    font-size: 1rem;
+  }
+
+  /* Further adjust Result Header font size */
+  .result-container h2,
+  .result-container h3 {
+    font-size: 1.1rem;
   }
 }
 
