@@ -59,6 +59,7 @@ export default function Home() {
 
   // State variables for score and result details
   const [totalScore, setTotalScore] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0); // New state for correct answers
   const [resultDetails, setResultDetails] = useState([]);
 
   // State variable to track current result case study
@@ -515,6 +516,7 @@ export default function Home() {
 
     const percentageScore = Math.round((score / totalQuestions) * 100);
     setTotalScore(percentageScore);
+    setCorrectCount(score); // Set the correct answers count
     setResultDetails(details);
   };
 
@@ -620,6 +622,7 @@ export default function Home() {
       setShowCaseStudies(false);
       setResultDetails([]);
       setTotalScore(0);
+      setCorrectCount(0); // Reset correct answers count
       setCurrentResultCaseStudyIndex(0);
       setFullName('');
     } catch (err) {
@@ -824,10 +827,12 @@ export default function Home() {
       setShowCaseStudies(false);
       setResultDetails([]);
       setTotalScore(0);
+      setCorrectCount(0); // Reset correct answers count
       setCurrentResultCaseStudyIndex(0);
       setFullName('');
     } catch (err) {
-      console.error('Error during page refresh cleanup:', err);
+      setError(err.message || 'Failed to navigate back to the main page.');
+      console.error('Error navigating back:', err);
     }
   };
 
@@ -876,6 +881,7 @@ export default function Home() {
   ];
 
   const specializations = [
+    'General Surgery',
     'Orthopedic',
     'Neurosurgery',
     'Vascular Surgery',
@@ -991,14 +997,9 @@ export default function Home() {
 
   return (
     <>
-      {/* Head section to include Google Translate CSS and set the page title */}
       <Head>
-        <title>Medical Safety Assessment</title>
-          
-
+        <title>Healthcare Medical Safety</title>
       </Head>
-        
-      
 
       {/* Define the Google Translate callback function before the script loads */}
       <Script id="google-translate-init" strategy="beforeInteractive">
@@ -1007,6 +1008,7 @@ export default function Home() {
             new google.translate.TranslateElement({
               pageLanguage: 'en',
               includedLanguages: 'en,es',
+              font-size: 12rem,
               layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
           }
@@ -1027,15 +1029,37 @@ export default function Home() {
             <img src="/Picture1.jpg" alt="Medical Assessment" className="header-image" />
 
             {/* Assessment Completion Form */}
-            {assessmentComplete && (
-              <div className="assessment-complete">
-                {/* Result Container with Score and Message */}
-                <div className="result-container">
-                  {/* Score Circle */}
-                  <div className="score-circle">
-                    <span>{totalScore}%</span>
-                  </div>
-                </div>
+{assessmentComplete && (
+  <div className="assessment-complete">
+    {/* Result Container with Score and Message */}
+    <div className="result-container">
+      <div className="score-info">
+        {/* Score Header */}
+        <div className="score-header">
+          <strong>Score:</strong>
+        </div>
+
+        {/* Number of Correct Answers */}
+        <div className="correct-answers">
+          {correctCount} out of 11
+        </div>
+
+        {/* Score Circle */}
+        <div className="score-circle">
+          <span>{totalScore}%</span>
+        </div>
+
+        {/* Result Header */}
+        <div className="result-header">
+          <strong>Result:</strong>
+        </div>
+
+        {/* Pass or Fail */}
+        <div className={`pass-fail ${totalScore >= 70 ? 'pass' : 'fail'}`}>
+          {totalScore >= 70 ? 'Pass' : 'Fail'}
+        </div>
+      </div>
+    </div>
 
                 {/* Case Study Results */}
                 {resultDetails.map((caseDetail) => (
@@ -1051,9 +1075,7 @@ export default function Home() {
                         {/* Header with Question Number and Status Icon */}
                         <div className="question-header-summary">
                           <h4>{`Question ${q.questionNumber}`}</h4>
-                          <span>
-                            {q.isCorrect ? '✅' : '❌'}
-                          </span>
+                          <span>{q.isCorrect ? '✅' : '❌'}</span>
                         </div>
 
                         {/* Question Text */}
@@ -1108,33 +1130,12 @@ export default function Home() {
 
           {/* Conditionally Render Google Translate Element above the "Take Assessment" button */}
           {showTranslate && (
-            <div
-              id="google_translate_element"
-              className="google-translate-element"
-            ></div>
+            <div id="google_translate_element" className="google-translate-element"></div>
           )}
 
           {/* Enhanced Form Container */}
           {showSafetyStatement && (
             <div className="form-container">
-              {/* User ID Display */}
-              <div className="form-field user-id">
-                <label>User ID:</label>
-                <span>{userID}</span>
-              </div>
-
-              {/* Full Name Input */}
-              <div className="form-field">
-                <label htmlFor="fullName">Full Name:</label>
-                <input
-                  type="text"
-                  id="fullName"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Enter your full name"
-                />
-              </div>
-
               {/* Professional Information */}
               <div className="professional-info">
                 <h2>Professional Information</h2>
@@ -1234,7 +1235,7 @@ export default function Home() {
               >
                 {isLoading
                   ? 'Starting your assessment, please wait...'
-                  : 'Take Assessment'}
+                  : 'Generate My Personalized Training Scenarios'}
               </button>
             )}
           </div>
@@ -1403,8 +1404,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="footer">
           <p>
-            © CoachCare.ai | Email: rizwanshaikh2200@gmail.com | Phone:{' '}
-            (404) 980-4465
+            © CoachCare.ai | Email: rizwanshaikh2200@gmail.com | Phone: (404) 980-4465
           </p>
         </footer>
       </div>
