@@ -1028,6 +1028,17 @@ export default function Home() {
             {/* Header Image */}
             <img src="/Picture1.jpg" alt="Medical Assessment" className="header-image" />
 
+             {/* Conditionally render safety text only if the assessment form is shown */}
+          {showSafetyStatement && (
+            <p className="safety-text">
+              Avoidable medical error is a leading cause of death in the USA. Something as simple as
+              using safety language has been proven to decrease harm to patients. The scenarios generated
+              below are from real case studies that have been published in the literature and are customized
+              just for you in order to make the safety language more relevant. Thank you for doing your
+              part to put the care back in healthcare.
+            </p>
+          )}
+
             {/* Assessment Completion Form */}
 {assessmentComplete && (
   <div className="assessment-complete">
@@ -1041,7 +1052,7 @@ export default function Home() {
 
         {/* Number of Correct Answers */}
         <div className="correct-answers">
-          {correctCount} out of 11
+          {correctCount} out of 12
         </div>
 
         {/* Score Circle */}
@@ -1404,10 +1415,11 @@ export default function Home() {
         {/* Footer */}
         <footer className="footer">
           <p>
-            © CoachCare.ai | Email: rizwanshaikh2200@gmail.com | Phone: (404) 980-4465
+            © Property of CoachCare.ai 
           </p>
         </footer>
       </div>
     </>
   );
 }
+
