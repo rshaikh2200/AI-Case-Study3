@@ -1034,8 +1034,7 @@ export default function Home() {
               Avoidable medical error is a leading cause of death in the USA. Something as simple as
               using safety language has been proven to decrease harm to patients. The scenarios generated
               below are from real case studies that have been published in the literature and are customized
-              just for you in order to make the safety language more relevant. Thank you for doing your
-              part to put the care back in healthcare.
+              just for you in order to make the safety language more relevant. Thank you for doing your part to put more care into healthcare.
             </p>
           )}
 
@@ -1415,7 +1414,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="footer">
           <p>
-            © Property of CoachCare.ai 
+            © CoachCare.ai 
           </p>
         </footer>
       </div>
