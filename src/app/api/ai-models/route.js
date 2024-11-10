@@ -196,58 +196,89 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each approximately 150 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each 100-110 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
 
-Include a different medical error that occurred by the ${role} or by the team.
-Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
-The medical studies should be detailed and focus on the situation, medical error, and consequences.
-The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
-Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
-For each case study, create 3 unique multiple-choice questions that:
+- **Include the following details before the case study:**
+  - **Role:** Specify the role of the individual involved.
+  - **Department:** Indicate the department where the scenario takes place.
+  - **Specialization:** Mention the specialization of the role.
 
-Have 4 option choices each.
-Provide the correct answer choice and answer for each question.
-In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user.
-The question should be strictly from the perspective of the ${role}.
-Each question should strictly focus on a different error prevention approach and how it could have been applied to prevent the error in the case study. Ensure the questions explore different approaches.
-Include clues by using buzzwords or synonyms from the correct answer's definition.
-Do not explicitly mention the prevention tools by name in the question header.
-Error Prevention Tools and Definitions:
+- **Case Study Content:**
+  - Include a different medical error that occurred by the ${role} or by the team.
+  - Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
+  - The medical studies should be detailed and focus on the situation, medical error, and consequences.
+  - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
+  - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
+
+- **For each case study, create 3 unique multiple-choice questions that:**
+  - Have 4 option choices each.
+  - Provide the correct answer choice and answer in the format: correct answer: C) Validate and Verify
+  - Provide the hint in the format: Hint: Double-checking and confirming accuracy before proceeding.
+  - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
+  - The question should be strictly from the perspective of the ${role}.
+  - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
+  - Include clues by using buzzwords or synonyms from the correct answer's definition.
+  - Do not explicitly mention the prevention tools by name in the question header.
+
+- **Strictly follow the Question Structure Below:**
+  - **Question Structure**
+  
+    **Case Study 1:**
+    - Question 1: Focuses on Peer Checking and Coaching
+    - Question 2: Focuses on Debrief
+    - Question 3: Focuses on ARCC
+
+    **Case Study 2:**
+    - Question 1: Focuses on Validate and Verify
+    - Question 2: Focuses on STAR
+    - Question 3: Focuses on No Distraction Zone
+
+    **Case Study 3:**
+    - Question 1: Focuses on Effective Handoffs
+    - Question 2: Focuses on Read and Repeat Back
+    - Question 3: Focuses on Ask Clarifying Questions
+
+    **Case Study 4:**
+    - Question 1: Focuses on Alphanumeric Language
+    - Question 2: Focuses on SBAR
+    - Question 3: Focuses on Using a Random Error Prevention Tool.
+
+- **Use the following 11 Error Prevention Tools and Definitions:**
 
 a. Peer Checking and Coaching
+    Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
 
-Definition: Ask your colleagues to review your work and offer assistance in reviewing the work of others.
 b. Debrief
+    Definition: Reflect on what went well, what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
 
-Definition: Reflect on what went well, what didn't, how to improve, and who will follow through.
 c. ARCC
+    Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
 
-Definition: Ask a question, Request a change, voice Concern if needed, Stop the line, and activate the Chain of command.
 d. Validate and Verify
+    Definition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).
 
-Definition: Double-check information and confirm accuracy before proceeding.
 e. STAR
+    Definition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).
 
-Definition: Stop, Think, Act, Review.
 f. No Distraction Zone
+    Definition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like "Stand by" or "Hold on".
 
-Definition: Eliminate interruptions and focus fully on the task at hand.
 g. Effective Handoffs
+    Definition: Six important principles that make an Effective Handoffs: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
 
-Definition: Ensure clear and complete communication during transitions in care.
-h. Read and Repeat Backs; Request and Give Acknowledgement
+h. Read and Repeat Back
+    Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
 
-Definition: Repeat information back to confirm understanding and acknowledge receipt.
 i. Ask Clarifying Questions
+    Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
 
-Definition: Inquire further to eliminate ambiguities and ensure clarity.
 j. Using Alphanumeric Language
+    Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
 
-Definition: Use letters and numbers together to prevent miscommunication (e.g., saying "M as in Mike").
 k. SBAR
+    Definition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions.), Recommendations (what is my recommendation, request, or plan?)
 
-Definition: Situation, Background, Assessment, Recommendation.
-    Ensure the following format is strictly followed and output the entire response as valid JSON.
+Ensure the following format is strictly followed and output the entire response as valid JSON.
 
 \`\`\`json
 {
@@ -263,9 +294,9 @@ Definition: Situation, Background, Assessment, Recommendation.
             "B": "Option B",
             "C": "Option C",
             "D": "Option D"
-          }
-            correct answer: question 1 correct answer choice and answer
-            Hint: definition of error prevention tool corresponding to correct answer choice
+          },
+          "correct answer": "C) Validate and Verify",
+          "Hint": "Double-checking and confirming accuracy before proceeding."
         },
         {
           "question": "Question 2 text",
@@ -274,9 +305,9 @@ Definition: Situation, Background, Assessment, Recommendation.
             "B": "Option B",
             "C": "Option C",
             "D": "Option D"
-          }
-            correct answer: question 2 correct answer choice and answer
-            Hint: definition of error prevention tool corresponding to correct answer choice
+          },
+          "correct answer": "C) ARCC",
+          "Hint": "Voice concern and activate chain of command."
         },
         {
           "question": "Question 3 text",
@@ -285,16 +316,147 @@ Definition: Situation, Background, Assessment, Recommendation.
             "B": "Option B",
             "C": "Option C",
             "D": "Option D"
-          }
-            correct answer: question 3 correct answer choice and answer
-            Hint: definition of error prevention tool corresponding to correct answer choice
+          },
+          "correct answer": "B) Debrief",
+          "Hint": "What went well and areas for improvement."
+        }
+      ]
+    },
+    {
+      "caseStudy": "Case Study 2",
+      "scenario": "Description of the case study scenario.",
+      "questions": [
+        {
+          "question": "Question 1 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          },
+          "correct answer": "C) Validate and Verify",
+          "Hint": "Double-checking and confirming accuracy before proceeding."
+        },
+        {
+          "question": "Question 2 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          },
+          "correct answer": "A) STAR",
+          "Hint": "Pause, consider, execute, and review your actions."
+        },
+        {
+          "question": "Question 3 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          },
+          "correct answer": "B) No Distraction Zone",
+          "Hint": "Eliminate interruptions and focus fully on the task at hand."
+        }
+      ]
+    },
+    {
+      "caseStudy": "Case Study 3",
+      "scenario": "Description of the case study scenario.",
+      "questions": [
+        {
+          "question": "Question 1 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          },
+          "correct answer": "A) Effective Handoffs",
+          "Hint": "Ensure clear and complete communication during transitions in care."
+        },
+        {
+          "question": "Question 2 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          },
+          "correct answer": "C) Read and Repeat Back",
+          "Hint": "Confirm understanding by repeating information back accurately."
+        },
+        {
+          "question": "Question 3 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          },
+          "correct answer": "B) Ask Clarifying Questions",
+          "Hint": "Inquire further to eliminate ambiguities and ensure clarity."
+        }
+      ]
+    },
+    {
+      "caseStudy": "Case Study 4",
+      "scenario": "Description of the case study scenario.",
+      "questions": [
+        {
+          "question": "Question 1 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          },
+          "correct answer": "D) Using Alphanumeric Language",
+          "Hint": "Use letters and numbers together to prevent miscommunication."
+        },
+        {
+          "question": "Question 2 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          },
+          "correct answer": "A) SBAR",
+          "Hint": "Structure communication into Situation, Background, Assessment, Recommendations."
+        },
+        {
+          "question": "Question 3 text",
+          "options": {
+            "A": "Option A",
+            "B": "Option B",
+            "C": "Option C",
+            "D": "Option D"
+          },
+          "correct answer": "E) Peer Checking and Coaching",
+          "Hint": "Collaborate with colleagues to review and assist in tasks."
         }
       ]
     }
-    // Repeat for Case Study 2, 3, and 4
   ]
 }
 \`\`\`
+
+**Ensure that:**
+
+- The JSON is **well-formatted** and **free of any syntax errors**.
+- There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
+- The JSON is enclosed within \`\`\`json and \`\`\` code fences.
+
+Do not include any additional text outside of the JSON structure.
+
+**Note:**
+
+- Each **Error Prevention Tool** is used **exactly once** across all case studies and questions.
+- **No repetition** of the same **Error Prevention Tool** occurs within the same case study or across different case studies.
+- All **case studies** are **unique** and focus on **distinct Error Prevention Tools**.
+- The **Question Structure** is strictly followed to ensure consistency and adherence to the specified guidelines.
 
 **Example:**
 
@@ -303,29 +465,29 @@ Definition: Situation, Background, Assessment, Recommendation.
   "caseStudies": [
     {
       "caseStudy": "Case Study 1",
-      "scenario": ": "Dr. Patel (he/him), an orthopedic surgeon, was finishing up a knee replacement surgery when the patient’s implant arrived. In the rush to keep things on schedule, he quickly began installing it without double-checking the lot number. Minutes later, the scrub nurse noticed the implant package didn't match the patient’s chart. Dr. Patel’s colleague, Dr. Lin (she/her), was nearby and always emphasized the importance of a final check before any major step."
+      "scenario": "Dr. Patel (he/him), an orthopedic surgeon, was finishing up a knee replacement surgery when the patient’s implant arrived. In the rush to keep things on schedule, he quickly began installing it without double-checking the lot number. Minutes later, the scrub nurse noticed the implant package didn't match the patient’s chart. Dr. Patel’s colleague, Dr. Lin (she/her), was nearby and always emphasized the importance of a final check before any major step.",
       "questions": [
         {
-          "question": "Dr. Patel could have avoided this mix-up by practicing which Error Prevention Tool, which focuses on verifying actions with a double-check or comparison?"
+          "question": "Dr. Patel could have avoided this mix-up by practicing which Error Prevention Tool, which focuses on verifying actions with a double-check or comparison?",
           "options": {
             "A": "Peer Checking and Coaching",
             "B": "Debrief",
             "C": "ARCC",
             "D": "Validate and Verify"
-          }
-            correct answer: C) Validate and Verify
-            "Hint": "Double-checking and confirming accuracy before proceeding."
+          },
+          "correct answer": "D) Validate and Verify",
+          "Hint": "Double-checking and confirming accuracy before proceeding."
         },
         {
-          "question": "If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focus on stopping and adressing concern would he be applying ",
+          "question": "If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying?",
           "options": {
             "A": "STAR",
             "B": "No Distraction Zone",
             "C": "ARCC",
             "D": "Effective Handoffs"
-          }
-            correct answer: C) ARCC
-            "Hint": "Voice concern and activate chain of command."
+          },
+          "correct answer": "C) ARCC",
+          "Hint": "Voice concern and activate chain of command."
         },
         {
           "question": "After the surgery, Dr. Patel and his team discussed ways to prevent future errors. This reflection represents which Error Prevention Tool, designed to identify improvements and assign follow-up actions?",
@@ -333,10 +495,10 @@ Definition: Situation, Background, Assessment, Recommendation.
             "A": "ARCC",
             "B": "Debrief",
             "C": "No Distraction Zone",
-            "D": "Read and Repeat Backs"
-          }
-            correct answer: B) Debrief 
-            "Hint": "What went well and areas for improvement."
+            "D": "Read and Repeat Back"
+          },
+          "correct answer": "B) Debrief",
+          "Hint": "What went well and areas for improvement."
         }
       ]
     }
@@ -354,58 +516,89 @@ Ensure that:
 Do not include any additional text outside of the JSON structure.`;
   } else if (userType === 'non-clinical') {
     // New prompt for non-clinical roles
-    META_PROMPT = `Please generate 4 non-clinical medical case studies, each approximately 150 words, featuring a scenario for a ${role} in the ${department} department. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each 100-110 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
 
-Include a different non-clinical communication error that occurred by the ${role} or by the team.
-Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
-The medical studies should be detailed and focus on the situation, communication error, and consequences.
-The case study should use different styles of narrating such as including emotions between characters, describe the environment, include a mix of non-clinical employees, and be more descriptive. Use formal and English.
-Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
-For each case study, create 3 unique multiple-choice questions that:
+- **Include the following details before the case study:**
+  - **Role:** Specify the role of the individual involved.
+  - **Department:** Indicate the department where the scenario takes place.
+  - **Specialization:** Mention the specialization of the role.
 
-Have 4 option choices each.
-Provide the correct answer choice and answer for each question.
-In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user.
-The question should be strictly from the perspective of the ${role}.
-Each question should strictly focus on a different error prevention approach and how it could have been applied to prevent the error in the case study. Ensure the questions explore different approaches.
-Include clues by using buzzwords or synonyms from the correct answer's definition.
-Do not explicitly mention the prevention tools by name in the question header.
-Error Prevention Tools and Definitions:
+- **Case Study Content:**
+  - Include a different medical error that occurred by the ${role} or by the team.
+  - Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
+  - The medical studies should be detailed and focus on the situation, medical error, and consequences.
+  - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
+  - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
+
+- **For each case study, create 3 unique multiple-choice questions that:**
+  - Have 4 option choices each.
+  - Provide the correct answer choice and answer in the format: correct answer: C) Validate and Verify
+  - Provide the hint in the format: Hint: Double-checking and confirming accuracy before proceeding.
+  - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
+  - The question should be strictly from the perspective of the ${role}.
+  - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
+  - Include clues by using buzzwords or synonyms from the correct answer's definition.
+  - Do not explicitly mention the prevention tools by name in the question header.
+
+- **Strictly follow the Question Structure Below:**
+  - **Question Structure**
+  
+    **Case Study 1:**
+    - Question 1: Focuses on Peer Checking and Coaching
+    - Question 2: Focuses on Debrief
+    - Question 3: Focuses on ARCC
+
+    **Case Study 2:**
+    - Question 1: Focuses on Validate and Verify
+    - Question 2: Focuses on STAR
+    - Question 3: Focuses on No Distraction Zone
+
+    **Case Study 3:**
+    - Question 1: Focuses on Effective Handoffs
+    - Question 2: Focuses on Read and Repeat Back
+    - Question 3: Focuses on Ask Clarifying Questions
+
+    **Case Study 4:**
+    - Question 1: Focuses on Alphanumeric Language
+    - Question 2: Focuses on SBAR
+    - Question 3: Focuses on Using a Random Error Prevention Tool.
+
+- **Use the following 11 Error Prevention Tools and Definitions:**
 
 a. Peer Checking and Coaching
+    Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
 
-Definition: Ask your colleagues to review your work and offer assistance in reviewing the work of others.
 b. Debrief
+    Definition: Reflect on what went well, what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
 
-Definition: Reflect on what went well, what didn't, how to improve, and who will follow through.
 c. ARCC
+    Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
 
-Definition: Ask a question, Request a change, voice Concern if needed, Stop the line, and activate the Chain of command.
 d. Validate and Verify
+    Definition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).
 
-Definition: Double-check information and confirm accuracy before proceeding.
 e. STAR
+    Definition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).
 
-Definition: Stop, Think, Act, Review.
 f. No Distraction Zone
+    Definition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like "Stand by" or "Hold on".
 
-Definition: Eliminate interruptions and focus fully on the task at hand.
 g. Effective Handoffs
+    Definition: Six important principles that make an Effective Handoffs: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
 
-Definition: Ensure clear and complete communication during transitions in care.
-h. Read and Repeat Backs; Request and Give Acknowledgement
+h. Read and Repeat Back
+    Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
 
-Definition: Repeat information back to confirm understanding and acknowledge receipt.
 i. Ask Clarifying Questions
+    Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
 
-Definition: Inquire further to eliminate ambiguities and ensure clarity.
 j. Using Alphanumeric Language
+    Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
 
-Definition: Use letters and numbers together to prevent miscommunication (e.g., saying "M as in Mike").
 k. SBAR
+    Definition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions.), Recommendations (what is my recommendation, request, or plan?)
 
-Definition: Situation, Background, Assessment, Recommendation.
-    Ensure the following format is strictly followed and output the entire response as valid JSON.
+Ensure the following format is strictly followed and output the entire response as valid JSON.
 
 \`\`\`json
 {
@@ -464,161 +657,44 @@ Definition: Situation, Background, Assessment, Recommendation.
       "scenario": "Susan was updating the intranet home page with a long and detailed safety alert that needed to go out immediately based on a safety event that had recently occurred at one of the system’s hospitals. She was rushing between tasks and quickly published the page for all 50,000 employees. Moments later, she got an angry email from the system Chief Medical Officer informing her that she got the part number wrong and that this was causing staff to place orders on the wrong product. Her cubicle neighbor Mike was an excellent proofreader and was always happy to assist his coworker when asked.",
       "questions": [
         {
-          "question": "Susan could have prevented potential harm to patients by practicing which of the following Error Prevention Tools?",
+          "question": "Susan could have prevented potential harm to patients by utilizing which of the following strategies involving peer support?",
           "options": {
-            "A": "Peer Check/ Peer Coach",
-            "B": "Debrief",
-            "C": "ARCC",
-            "D": "Validate and Verify"
+            "A": "Debrief",
+            "B": "ARCC",
+            "C": "Peer Checking and Coaching",
+            "D": "STAR"
           },
-          correct answer: A) Peer Check/ Peer Coach
-          "Hint": "Double-checking and confirming accuracy before proceeding."
+          correct answer: C) Peer Checking and Coaching
+          "Hint": "Encouraging colleagues to review and assist in confirming decisions."
         },
         {
-          "question": "How could Mike have assisted Susan to prevent the error?",
+          "question": "After publishing the incorrect safety alert, Susan could have engaged in which of the following to analyze and learn from the mistake?",
           "options": {
-            "A": "By taking over her tasks",
-            "B": "By proofreading the safety alert before publication",
-            "C": "By informing the Chief Medical Officer",
-            "D": "By delaying the publication"
+            "A": "Debrief",
+            "B": "ARCC",
+            "C": "Peer Checking and Coaching",
+            "D": "STAR"
           },
-          correct answer: B) By proofreading the safety alert before publication
-          "Hint": "Utilizing proofreading as a method to catch errors."
-        },
-        {
-          "question": "What is the primary benefit of having a Peer Coach in a high-stakes environment?",
-          "options": {
-            "A": "Increases workload",
-            "B": "Provides emotional support",
-            "C": "Enhances error detection and prevention",
-            "D": "Reduces the need for management oversight"
-          },
-          correct answer: C) Enhances error detection and prevention
-          "hint": "Focuses on minimizing mistakes through collaboration."
-        }
-      ]
-    },
-    {
-      "caseStudy": "Case Study 2",
-      "scenario": "The communications department head (Mary) held a weekly meeting with her direct reports. This meeting often started late and often ran over. The meeting did not include an agenda and the attendees were not sure what or how they should prepare in advance. Mary often observed that surgeons who are often very competitive about perfecting their craft would take a moment at the end of surgery procedures to ask their staff 3 questions: what went well, how do we improve, and how do we get there. At the following meeting, Mary decided to incorporate this best practice.",
-      "questions": [
-        {
-          "question": "Mary and the surgeon are using which of the Error Prevention Tools?",
-          "options": {
-            "A": "Peer Check/ Peer Coach",
-            "B": "Debrief",
-            "C": "ARCC",
-            "D": "Validate and Verify"
-          },
-          correct answer: B) Debrief
+          correct answer: A) Debrief
           "Hint": "What went well and areas for improvement."
         },
         {
-          "question": "What was the main issue with Mary's original meetings?",
+          "question": "What communication framework could Susan have used to express concerns and prevent errors effectively?",
           "options": {
-            "A": "Too many attendees",
-            "B": "Lack of structure and clarity",
-            "C": "Inadequate technology",
-            "D": "Insufficient time allocation"
+            "A": "Debrief",
+            "B": "ARCC",
+            "C": "Peer Checking and Coaching",
+            "D": "STAR"
           },
-          correct answer: B) Lack of structure and clarity
-          "Hint": "Meetings lacked agenda and preparation guidance."
-        },
-        {
-          "question": "By incorporating debriefing techniques, Mary aims to improve meetings by:",
-          "options": {
-            "A": "Increasing meeting frequency",
-            "B": "Enhancing communication and continuous improvement",
-            "C": "Reducing the number of topics discussed",
-            "D": "Extending meeting durations"
-          },
-          correct answer: B) Enhancing communication and continuous improvement
-          "Hint": "Focuses on reflecting and improving processes."
-        }
-      ]
-    },
-    {
-      "caseStudy": "Case Study 3",
-      "scenario": "Paul was a senior member of the communications department and very politically active. His political party was pressuring him to use his access to the 50,000 plus employees to send out political advertisements right before the election. Paul was hesitant about abusing his power and reach but proceeded anyway. Tony (Paul’s Boss) had to fire Tony for this action. “If you would have escalated this to me Tony, I could have reminded you about how we as a nonprofit cannot endorse candidates.” Tony was hesitant but did not voice his concern up to his superior.",
-      "questions": [
-        {
-          "question": "Tony could have relied on which of the following Error Prevention Tools to guide him in this tough situation?",
-          "options": {
-            "A": "STAR",
-            "B": "No Distraction Zone",
-            "C": "ARCC",
-            "D": "Effective Handoffs"
-          },
-          correct answer: C) ARCC
+          correct answer: B) ARCC
           "Hint": "Voice concern and activate chain of command."
-        },
-        {
-          "question": "What does ARCC stand for in the context of error prevention?",
-          "options": {
-            "A": "Ask, Report, Correct, Confirm",
-            "B": "Anticipate, React, Communicate, Control",
-            "C": "Alert, Raise, Consult, Change",
-            "D": "Assess, Respond, Coordinate, Communicate"
-          },
-          correct answer: A) Ask, Report, Correct, Confirm
-          "Hint": "Steps involved in addressing and escalating concerns."
-        },
-        {
-          "question": "What was the consequence of Tony not using the ARCC tool?",
-          "options": {
-            "A": "He was promoted",
-            "B": "He successfully sent the advertisements",
-            "C": "He was fired for not escalating the issue",
-            "D": "Nothing happened"
-          },
-          correct answer: C) He was fired for not escalating the issue
-          "Hint": "Failure to follow proper escalation procedures led to negative outcomes."
         }
       ]
-    },
-    {
-      "caseStudy": "Case Study 4",
-      "scenario": "Tina was trying to send out a mass communication regarding an upcoming directors and above meeting. She was asked to send a “save the date” on Monday for the event on Friday. Tina got it backwards and ended up sending it on Friday for the event on Monday. Tina knows that whenever numbers and especially dates are involved to always double check. Tina could have prevented this error by using which of the following Error prevention tools.",
-      "questions": [
-        {
-          "question": "Tina could have prevented this error by using which of the following Error prevention tools?",
-          "options": {
-            "A": "Peer Check/ Peer Coach",
-            "B": "Debrief",
-            "C": "Validate and Verify",
-            "D": "ARCC"
-          },
-          correct answer: C) Validate and Verify
-          "Hint": "Double-checking and confirming accuracy before proceeding."
-        },
-        {
-          "question": "What specific action should Tina have taken to avoid the date mix-up?",
-          "options": {
-            "A": "Ask a coworker to review the dates",
-            "B": "Use a calendar tool to verify dates",
-            "C": "Validate the dates before sending",
-            "D": "All of the above"
-          },
-          correct answer: D) All of the above
-          "Hint": "Multiple validation steps can prevent errors."
-        },
-        {
-          "question": "Why is it important to validate and verify information in communications?",
-          "options": {
-            "A": "To ensure accuracy and reliability",
-            "B": "To increase workload",
-            "C": "To delay communication",
-            "D": "To reduce the need for proofreading"
-          },
-          correct answer: A) To ensure accuracy and reliability
-          "Hint": "Maintaining trust through accurate information dissemination."
-        }
-      ]
+      // Additional case studies...
     }
-    // Add additional case studies here following the same structure...
   ]
 }
-
+    
 \`\`\`
 
 Ensure that:
@@ -677,4 +753,5 @@ Do not include any additional text outside of the JSON structure.`;
     );
   }
 }
+
 
