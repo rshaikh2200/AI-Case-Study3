@@ -59,6 +59,7 @@ export default function Home() {
 
   // State variables for score and result details
   const [totalScore, setTotalScore] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0); // New state for correct answers
   const [resultDetails, setResultDetails] = useState([]);
 
   // State variable to track current result case study
@@ -203,12 +204,14 @@ export default function Home() {
 
     try {
       // Save aiResponse inside an object
-      await addDoc(collection(firestore, 'ai_responses'), { aiResponse });
+      await addDoc(collection(firestore, 'ai_responses'), { 
+        aiResponse,
+        sessionID,
+        
+      });
       console.log('AI response saved successfully.');
     } catch (error) {
       console.error('Error saving AI response:', error.message);
-      setError('Failed to save AI response. Please try again.');
-      throw error;
     }
   };
 
@@ -226,6 +229,8 @@ export default function Home() {
         const allCaseStudiesDocRef = doc(allCaseStudiesCollection);
         allCaseStudiesBatch.set(allCaseStudiesDocRef, {
           ...caseStudy,
+          sessionID,
+    
         });
       });
 
@@ -318,9 +323,11 @@ export default function Home() {
         throw new Error('Invalid data format received from server.');
       }
 
-      // Set both caseStudies and aiResponse
-      setCaseStudies(data.caseStudies);
-      setAiResponse(data.aiResponse); // New line added
+      const { caseStudies, aiResponse } = data;
+
+      // Set both caseStudies and aiResponse without merging imageUrl
+      setCaseStudies(caseStudies);
+      setAiResponse(aiResponse);
 
       // Generate workflow data
       const workflowNames = ['Take Assessment'];
@@ -376,7 +383,7 @@ export default function Home() {
     const previousFeedback = feedbackMessages[caseIndex]?.[questionIndex];
 
     if (
-      currentAttempts >= 3 ||
+      currentAttempts >= 2 ||
       (previousFeedback && previousFeedback.message === 'Correct Answer')
     ) {
       // User has reached maximum attempts or already answered correctly
@@ -402,7 +409,7 @@ export default function Home() {
       feedbackMessageNew = 'Correct Answer';
       hintToShow = ''; // No hint needed when correct
     } else {
-      const attemptsLeft = 2 - currentAttempts;
+      const attemptsLeft = 1 - currentAttempts;
       hintToShow = hint; // Show hint on every incorrect attempt
       if (attemptsLeft > 0) {
         feedbackMessageNew = `Incorrect Answer. ${attemptsLeft} tries left.`;
@@ -515,6 +522,7 @@ export default function Home() {
 
     const percentageScore = Math.round((score / totalQuestions) * 100);
     setTotalScore(percentageScore);
+    setCorrectCount(score); // Set the correct answers count
     setResultDetails(details);
   };
 
@@ -604,7 +612,6 @@ export default function Home() {
     setError(null);
     try {
       await deleteAllDocumentsInCollection('user_profile');
-      await deleteAllDocumentsInCollection('all_case_studies');
       await deleteAllDocumentsInCollection('ai_responses');
 
       setUserType('');
@@ -620,6 +627,7 @@ export default function Home() {
       setShowCaseStudies(false);
       setResultDetails([]);
       setTotalScore(0);
+      setCorrectCount(0); // Reset correct answers count
       setCurrentResultCaseStudyIndex(0);
       setFullName('');
     } catch (err) {
@@ -805,8 +813,6 @@ export default function Home() {
   // Function to handle page refresh
   const handlePageRefresh = async () => {
     try {
-      await deleteAllDocumentsInCollection('all_case_studies');
-      await deleteAllDocumentsInCollection('ai_responses');
       await deleteAllDocumentsInCollection('session table');
       await deleteAllDocumentsInCollection('user_profile');
       await deleteAllDocumentsInCollection('workflowData');
@@ -824,10 +830,12 @@ export default function Home() {
       setShowCaseStudies(false);
       setResultDetails([]);
       setTotalScore(0);
+      setCorrectCount(0); // Reset correct answers count
       setCurrentResultCaseStudyIndex(0);
       setFullName('');
     } catch (err) {
-      console.error('Error during page refresh cleanup:', err);
+      setError(err.message || 'Failed to navigate back to the main page.');
+      console.error('Error navigating back:', err);
     }
   };
 
@@ -876,6 +884,7 @@ export default function Home() {
   ];
 
   const specializations = [
+    'General Surgery',
     'Orthopedic',
     'Neurosurgery',
     'Vascular Surgery',
@@ -957,18 +966,42 @@ export default function Home() {
     );
     return option ? `${option.key}. ${option.label}` : 'No Answer';
   };
+  // Apply custom styles to Google Translate dropdown after it loads
+  useEffect(() => {
+    const applyCustomStyles = () => {
+      const translateSelect = document.querySelector('.goog-te-combo');
+      if (translateSelect) {
+        translateSelect.style.fontSize = '64px';
+        translateSelect.style.padding = '10px';
+        translateSelect.style.height = '45px';
+        translateSelect.style.width = '220px'; // Adjust width as needed
+        translateSelect.style.backgroundColor = '#f0f0f0'; // Optional: Change background color
+        translateSelect.style.borderRadius = '5px'; // Optional: Add border radius
+        translateSelect.style.border = '1px solid #ccc'; // Optional: Add border
+
+        // Optionally, style the container to better fit the enlarged dropdown
+        const container = document.querySelector('.google-translate-element');
+        if (container) {
+          container.style.display = 'inline-block';
+          container.style.marginBottom = '20px';
+        }
+
+        // Clear the interval once styles are applied
+        clearInterval(styleInterval);
+      }
+    };
+
+    // Check every 500ms if the dropdown has been rendered
+    const styleInterval = setInterval(applyCustomStyles, 500);
+
+    // Clear interval on component unmount
+    return () => clearInterval(styleInterval);
+  }, [showTranslate]);
 
   return (
     <>
-      {/* Head section to include Google Translate CSS and set the page title */}
       <Head>
-        <title>Medical Safety Assessment</title>
-        {/* Google Translate CSS */}
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://www.gstatic.com/_/translate_http/_/ss/k=translate_http.tr.26tY-h6gH9w.L.W.O/am=CAM/d=0/rs=AN8SPfpIXxhebB2A47D9J-MACsXmFF6Vew/m=el_main_css"
-        />
+        <title>Healthcare Medical Safety</title>
       </Head>
 
       {/* Define the Google Translate callback function before the script loads */}
@@ -978,6 +1011,7 @@ export default function Home() {
             new google.translate.TranslateElement({
               pageLanguage: 'en',
               includedLanguages: 'en,es',
+              font-size: 12rem,
               layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
           }
@@ -997,16 +1031,48 @@ export default function Home() {
             {/* Header Image */}
             <img src="/Picture1.jpg" alt="Medical Assessment" className="header-image" />
 
+             {/* Conditionally render safety text only if the assessment form is shown */}
+          {showSafetyStatement && (
+            <p className="safety-text">
+              Avoidable medical error is a leading cause of death in the USA. Something as simple as
+              using safety language has been proven to decrease harm to patients. The scenarios generated
+              below are from real case studies that have been published in the literature and are customized
+              just for you in order to make the safety language more relevant. Thank you for doing your part to put more care into healthcare.
+            </p>
+          )}
+
             {/* Assessment Completion Form */}
-            {assessmentComplete && (
-              <div className="assessment-complete">
-                {/* Result Container with Score and Message */}
-                <div className="result-container">
-                  {/* Score Circle */}
-                  <div className="score-circle">
-                    <span>{totalScore}%</span>
-                  </div>
-                </div>
+{assessmentComplete && (
+  <div className="assessment-complete">
+    {/* Result Container with Score and Message */}
+    <div className="result-container">
+      <div className="score-info">
+        {/* Score Header */}
+        <div className="score-header">
+          <strong>Score:</strong>
+        </div>
+
+        {/* Number of Correct Answers */}
+        <div className="correct-answers">
+          {correctCount} out of 12
+        </div>
+
+        {/* Score Circle */}
+        <div className="score-circle">
+          <span>{totalScore}%</span>
+        </div>
+
+        {/* Result Header */}
+        <div className="result-header">
+          <strong>Result:</strong>
+        </div>
+
+        {/* Pass or Fail */}
+        <div className={`pass-fail ${totalScore >= 70 ? 'pass' : 'fail'}`}>
+          {totalScore >= 70 ? 'Pass' : 'Fail'}
+        </div>
+      </div>
+    </div>
 
                 {/* Case Study Results */}
                 {resultDetails.map((caseDetail) => (
@@ -1022,9 +1088,7 @@ export default function Home() {
                         {/* Header with Question Number and Status Icon */}
                         <div className="question-header-summary">
                           <h4>{`Question ${q.questionNumber}`}</h4>
-                          <span>
-                            {q.isCorrect ? '✅' : '❌'}
-                          </span>
+                          <span>{q.isCorrect ? '✅' : '❌'}</span>
                         </div>
 
                         {/* Question Text */}
@@ -1079,34 +1143,12 @@ export default function Home() {
 
           {/* Conditionally Render Google Translate Element above the "Take Assessment" button */}
           {showTranslate && (
-            <div
-              id="google_translate_element"
-              className="google-translate-element"
-              style={{ marginBottom: '20px' }}
-            ></div>
+            <div id="google_translate_element" className="google-translate-element"></div>
           )}
 
           {/* Enhanced Form Container */}
           {showSafetyStatement && (
             <div className="form-container">
-              {/* User ID Display */}
-              <div className="form-field user-id">
-                <label>User ID:</label>
-                <span>{userID}</span>
-              </div>
-
-              {/* Full Name Input */}
-              <div className="form-field">
-                <label htmlFor="fullName">Full Name:</label>
-                <input
-                  type="text"
-                  id="fullName"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  placeholder="Enter your full name"
-                />
-              </div>
-
               {/* Professional Information */}
               <div className="professional-info">
                 <h2>Professional Information</h2>
@@ -1206,7 +1248,7 @@ export default function Home() {
               >
                 {isLoading
                   ? 'Starting your assessment, please wait...'
-                  : 'Take Assessment'}
+                  : 'Generate My Personalized Training Scenarios'}
               </button>
             )}
           </div>
@@ -1220,10 +1262,10 @@ export default function Home() {
               {/* Current Case Study */}
               <div className="case-study" key={currentCaseStudyIndex}>
                 {/* Case Study Image */}
-                {caseStudies[currentCaseStudyIndex].imageUrl && (
+                {aiResponse[currentCaseStudyIndex].imageUrl && (
                   <div className="case-study-image">
                     <img
-                      src={caseStudies[currentCaseStudyIndex].imageUrl}
+                      src={aiResponse[currentCaseStudyIndex].imageUrl}
                       alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
                       className="header-image"
                     />
@@ -1375,8 +1417,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="footer">
           <p>
-            © CoachCare.ai | Email: rizwanshaikh2200@gmail.com | Phone:{' '}
-            (404) 980-4465
+            © CoachCare.ai 
           </p>
         </footer>
       </div>
