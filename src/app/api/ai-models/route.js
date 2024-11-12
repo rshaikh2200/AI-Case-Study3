@@ -822,7 +822,7 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
 
 async function fetchImagesForCaseStudies(
   caseStudies,
-  model = 'sd3-large-turbo',
+  model = 'sd3-large',
   aspect_ratio = '1:1'
 ) {
   try {
