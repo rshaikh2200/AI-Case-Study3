@@ -254,6 +254,7 @@ export default function Home() {
         const allCaseStudiesDocRef = doc(allCaseStudiesCollection);
         allCaseStudiesBatch.set(allCaseStudiesDocRef, {
           ...caseStudy,
+          audioURL,
           sessionID,
     
         });
@@ -637,6 +638,7 @@ export default function Home() {
     setError(null);
     try {
       await deleteAllDocumentsInCollection('user_profile');
+      await deleteAllDocumentsInCollection('session_case_studies');
       await deleteAllDocumentsInCollection('ai_responses');
 
       setUserType('');
