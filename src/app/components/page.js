@@ -15,6 +15,8 @@ import {
   deleteDoc,
   doc,
   setDoc,
+  updateDoc,  // Added updateDoc
+  where,       // Added where
 } from 'firebase/firestore';
 import { firestore } from '../firebase';
 
@@ -115,8 +117,31 @@ export default function Home() {
     } else {
       // Generate new speech URL for the current case study
       const url = await generateSpeech();
-      if (url && audioRef.current) {
-        playAudio(url);
+      if (url) {
+        // Save the url to Firestore
+        try {
+          const q = query(
+            collection(firestore, 'all_case_studies'),
+            where('sessionID', '==', sessionID),
+            where('scenario', '==', currentCaseStudy.scenario)
+          );
+          const querySnapshot = await getDocs(q);
+          if (!querySnapshot.empty) {
+            const docRef = querySnapshot.docs[0].ref; // assuming only one matching document
+            await updateDoc(docRef, {
+              audioUrl: url,
+            });
+            console.log('Audio URL saved successfully.');
+          } else {
+            console.error('No matching case study document found to update audio URL.');
+          }
+        } catch (error) {
+          console.error('Error updating audio URL in Firestore:', error);
+        }
+
+        if (audioRef.current) {
+          playAudio(url);
+        }
       }
     }
   };
@@ -814,6 +839,7 @@ export default function Home() {
   const handlePageRefresh = async () => {
     try {
       await deleteAllDocumentsInCollection('session table');
+      await deleteAllDocumentsInCollection('all_case_studies');
       await deleteAllDocumentsInCollection('user_profile');
       await deleteAllDocumentsInCollection('workflowData');
 
@@ -1074,355 +1100,355 @@ export default function Home() {
       </div>
     </div>
 
-                {/* Case Study Results */}
-                {resultDetails.map((caseDetail) => (
-                  <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail">
-                    {/* Header for Each Case Study */}
-                    <h3>{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
+              {/* Case Study Results */}
+              {resultDetails.map((caseDetail) => (
+                <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail">
+                  {/* Header for Each Case Study */}
+                  <h3>{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
 
-                    {/* Display Case Study Content */}
-                    <p className="case-study-text">{caseDetail.caseStudyText}</p>
+                  {/* Display Case Study Content */}
+                  <p className="case-study-text">{caseDetail.caseStudyText}</p>
 
-                    {caseDetail.questions.map((q) => (
-                      <div key={`question-${q.questionNumber}`} className="question-summary">
-                        {/* Header with Question Number and Status Icon */}
-                        <div className="question-header-summary">
-                          <h4>{`Question ${q.questionNumber}`}</h4>
-                          <span>{q.isCorrect ? '✅' : '❌'}</span>
-                        </div>
-
-                        {/* Question Text */}
-                        <p className="question-text">{q.questionText}</p>
-
-                        {/* Your Answer */}
-                        <h5>Your Answer:</h5>
-                        <p className="user-answer">
-                          {q.selectedAnswer !== 'No Answer'
-                            ? getOptionLabel(
-                                caseDetail.caseStudyNumber - 1,
-                                q.questionNumber - 1,
-                                q.selectedAnswer
-                              )
-                            : 'No Answer'}
-                        </p>
-
-                        {/* Correct Answer */}
-                        <h5>Correct Answer:</h5>
-                        <p className="correct-answer">
-                          {getOptionLabel(
-                            caseDetail.caseStudyNumber - 1,
-                            q.questionNumber - 1,
-                            aiResponse[caseDetail.caseStudyNumber - 1].questions[q.questionNumber - 1].correctAnswer.split(')')[0].trim()
-                          )}
-                        </p>
+                  {caseDetail.questions.map((q) => (
+                    <div key={`question-${q.questionNumber}`} className="question-summary">
+                      {/* Header with Question Number and Status Icon */}
+                      <div className="question-header-summary">
+                        <h4>{`Question ${q.questionNumber}`}</h4>
+                        <span>{q.isCorrect ? '✅' : '❌'}</span>
                       </div>
-                    ))}
-                  </div>
-                ))}
 
-                {/* Result Buttons */}
-                <div className="result-buttons">
-                  <button
-                    className="main-button"
-                    onClick={handleBackToMainPage}
-                    disabled={isLoading}
-                  >
-                    Return to Main
-                  </button>
-                  <button
-                    className="print-button"
-                    onClick={handlePrint}
-                    disabled={isLoading}
-                  >
-                    🖨️ Print Assessment Report
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
+                      {/* Question Text */}
+                      <p className="question-text">{q.questionText}</p>
 
-          {/* Conditionally Render Google Translate Element above the "Take Assessment" button */}
-          {showTranslate && (
-            <div id="google_translate_element" className="google-translate-element"></div>
-          )}
+                      {/* Your Answer */}
+                      <h5>Your Answer:</h5>
+                      <p className="user-answer">
+                        {q.selectedAnswer !== 'No Answer'
+                          ? getOptionLabel(
+                              caseDetail.caseStudyNumber - 1,
+                              q.questionNumber - 1,
+                              q.selectedAnswer
+                            )
+                          : 'No Answer'}
+                      </p>
 
-          {/* Enhanced Form Container */}
-          {showSafetyStatement && (
-            <div className="form-container">
-              {/* Professional Information */}
-              <div className="professional-info">
-                <h2>Professional Information</h2>
-
-                <div className="form-item">
-                  <label htmlFor="user-type-select">User Type</label>
-                  <select
-                    id="user-type-select"
-                    value={userType}
-                    onChange={(e) => {
-                      setUserType(e.target.value);
-                      setDepartment(''); // Reset department
-                      setRole(''); // Reset role
-                      setSpecialization(''); // Reset specialization
-                      if (error) setError(''); // Clear error if any
-                    }}
-                  >
-                    <option value="">Select</option>
-                    <option value="clinical">Clinical</option>
-                    <option value="non-clinical">Non-Clinical</option>
-                  </select>
-                </div>
-
-                <div className="form-item">
-                  <label htmlFor="department-select">Department</label>
-                  <select
-                    id="department-select"
-                    value={department}
-                    onChange={(e) => {
-                      setDepartment(e.target.value);
-                      if (error) setError(''); // Clear error if any
-                    }}
-                    disabled={!userType}
-                  >
-                    <option value="">Select Department</option>
-                    {departmentsToUse.map((dept) => (
-                      <option key={dept} value={dept}>
-                        {dept}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="form-item">
-                  <label htmlFor="role-select">Role</label>
-                  <select
-                    id="role-select"
-                    value={role}
-                    onChange={(e) => {
-                      setRole(e.target.value);
-                      if (error) setError(''); // Clear error if any
-                    }}
-                    disabled={!userType}
-                  >
-                    <option value="">Select Role</option>
-                    {rolesToUse.map((r) => (
-                      <option key={r} value={r}>
-                        {r}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Specialization Select - only show if userType is 'clinical' */}
-                {userType === 'clinical' && (
-                  <div className="form-item">
-                    <label htmlFor="specialization-select">Specialization</label>
-                    <select
-                      id="specialization-select"
-                      value={specialization}
-                      onChange={(e) => {
-                        setSpecialization(e.target.value);
-                        if (error) setError(''); // Clear error if any
-                      }}
-                    >
-                      <option value="">Select Specialization</option>
-                      {specializations.map((spec) => (
-                        <option key={spec} value={spec}>
-                          {spec}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Take Assessment Button */}
-          <div className="button-container">
-            {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
-              <button
-                type="button"
-                className="assessment-button"
-                onClick={handleTakeAssessment}
-                disabled={isLoading}
-              >
-                {isLoading
-                  ? 'Starting your assessment, please wait...'
-                  : 'Generate My Personalized Training Scenarios'}
-              </button>
-            )}
-          </div>
-
-          {/* Error Alert */}
-          {error && <div className="error-alert">{error}</div>}
-
-          {/* Case Studies Page */}
-          {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
-            <div className="case-studies">
-              {/* Current Case Study */}
-              <div className="case-study" key={currentCaseStudyIndex}>
-                {/* Case Study Image */}
-                {aiResponse[currentCaseStudyIndex].imageUrl && (
-                  <div className="case-study-image">
-                    <img
-                      src={aiResponse[currentCaseStudyIndex].imageUrl}
-                      alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
-                      className="header-image"
-                    />
-                  </div>
-                )}
-
-                {/* Case Study Title and Audio Button */}
-                <div className="case-study-header">
-                  <h3>{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
-                  <button
-                    type="button"
-                    className="audio-button"
-                    onClick={fetchAudio}
-                    disabled={isAudioLoading}
-                  >
-                    {isAudioLoading ? (
-                      <span>Loading...</span>
-                    ) : isAudioPlaying ? (
-                      <>
-                        <span className="icon-volume-up"></span>
-                        Pause
-                      </>
-                    ) : (
-                      <>
-                        <span className="icon-volume-off"></span>
-                        Listen
-                      </>
-                    )}
-                  </button>
-                </div>
-
-                {/* Audio Element */}
-                <audio ref={audioRef} />
-
-                {/* Audio Error Alert */}
-                {audioError && <div className="audio-error">{audioError}</div>}
-
-                {/* Case Study Scenario */}
-                <p className="case-study-scenario">
-                  {caseStudies[currentCaseStudyIndex].scenario}
-                </p>
-
-                {/* Case Study Questions */}
-                {caseStudies[currentCaseStudyIndex].questions &&
-                caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
-                  <div className="question-section">
-                    {/* Header for the Question */}
-                    <h4 className="question-header">
-                      {`Question ${currentQuestionIndex + 1}: ${
-                        caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
-                      }`}
-                    </h4>
-
-                    <div className="options-group">
-                      {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
-                        (option) => {
-                          const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
-                          const currentAttempts = attempts[key] || 0;
-                          const feedbackMessage =
-                            feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
-                              ?.message || '';
-                          const isCorrect = feedbackMessage === 'Correct Answer';
-                          const maxAttemptsReached = currentAttempts >= 3 || isCorrect;
-
-                          return (
-                            <div className="option-item" key={option.key}>
-                              <label>
-                                <input
-                                  type="radio"
-                                  name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
-                                  value={option.key}
-                                  onChange={(e) =>
-                                    handleAnswerChange(
-                                      currentCaseStudyIndex,
-                                      currentQuestionIndex,
-                                      e.target.value
-                                    )
-                                  }
-                                  disabled={maxAttemptsReached}
-                                  checked={
-                                    selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
-                                    option.key
-                                  }
-                                />
-                                <span>
-                                  <strong>{`${option.key}.`}</strong> {option.label}
-                                </span>
-                              </label>
-                            </div>
-                          );
-                        }
-                      )}
-                    </div>
-
-                    {/* Display feedback message */}
-                    {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
-                      <div className="feedback-section">
-                        <div
-                          className={`feedback-message ${
-                            feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
-                              .message === 'Correct Answer'
-                              ? 'success'
-                              : 'info'
-                          }`}
-                        >
-                          {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message}
-                        </div>
-                        {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
-                          <div className="hint">
-                            <span className="icon-hint"></span>
-                            <span>
-                              <strong>Hint:</strong>{' '}
-                              {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint}
-                            </span>
-                          </div>
+                      {/* Correct Answer */}
+                      <h5>Correct Answer:</h5>
+                      <p className="correct-answer">
+                        {getOptionLabel(
+                          caseDetail.caseStudyNumber - 1,
+                          q.questionNumber - 1,
+                          aiResponse[caseDetail.caseStudyNumber - 1].questions[q.questionNumber - 1].correctAnswer.split(')')[0].trim()
                         )}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <p className="no-questions">No questions available for this case study.</p>
-                )}
-
-                {/* Navigation Button */}
-                {caseStudies[currentCaseStudyIndex].questions &&
-                  caseStudies[currentCaseStudyIndex].questions.length > 0 && (
-                    <div className="navigation-buttons">
-                      <button
-                        type="button"
-                        className="next-button"
-                        onClick={handleNext}
-                      >
-                        {isLastQuestion && isLastCaseStudy ? 'Submit' : 'Next'}
-                      </button>
+                      </p>
                     </div>
-                  )}
-              </div>
-            </div>
-          )}
+                  ))}
+                </div>
+              ))}
 
-          {/* Handle Empty Case Studies */}
-          {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
-            <div className="no-case-studies">
-              No case studies available at the moment. Please try again later.
+              {/* Result Buttons */}
+              <div className="result-buttons">
+                <button
+                  className="main-button"
+                  onClick={handleBackToMainPage}
+                  disabled={isLoading}
+                >
+                  Return to Main
+                </button>
+                <button
+                  className="print-button"
+                  onClick={handlePrint}
+                  disabled={isLoading}
+                >
+                  🖨️ Print Assessment Report
+                </button>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Footer */}
-        <footer className="footer">
-          <p>
-            © CoachCare.ai 
-          </p>
-        </footer>
+        {/* Conditionally Render Google Translate Element above the "Take Assessment" button */}
+        {showTranslate && (
+          <div id="google_translate_element" className="google-translate-element"></div>
+        )}
+
+        {/* Enhanced Form Container */}
+        {showSafetyStatement && (
+          <div className="form-container">
+            {/* Professional Information */}
+            <div className="professional-info">
+              <h2>Professional Information</h2>
+
+              <div className="form-item">
+                <label htmlFor="user-type-select">User Type</label>
+                <select
+                  id="user-type-select"
+                  value={userType}
+                  onChange={(e) => {
+                    setUserType(e.target.value);
+                    setDepartment(''); // Reset department
+                    setRole(''); // Reset role
+                    setSpecialization(''); // Reset specialization
+                    if (error) setError(''); // Clear error if any
+                  }}
+                >
+                  <option value="">Select</option>
+                  <option value="clinical">Clinical</option>
+                  <option value="non-clinical">Non-Clinical</option>
+                </select>
+              </div>
+
+              <div className="form-item">
+                <label htmlFor="department-select">Department</label>
+                <select
+                  id="department-select"
+                  value={department}
+                  onChange={(e) => {
+                    setDepartment(e.target.value);
+                    if (error) setError(''); // Clear error if any
+                  }}
+                  disabled={!userType}
+                >
+                  <option value="">Select Department</option>
+                  {departmentsToUse.map((dept) => (
+                    <option key={dept} value={dept}>
+                      {dept}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-item">
+                <label htmlFor="role-select">Role</label>
+                <select
+                  id="role-select"
+                  value={role}
+                  onChange={(e) => {
+                    setRole(e.target.value);
+                    if (error) setError(''); // Clear error if any
+                  }}
+                  disabled={!userType}
+                >
+                  <option value="">Select Role</option>
+                  {rolesToUse.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Specialization Select - only show if userType is 'clinical' */}
+              {userType === 'clinical' && (
+                <div className="form-item">
+                  <label htmlFor="specialization-select">Specialization</label>
+                  <select
+                    id="specialization-select"
+                    value={specialization}
+                    onChange={(e) => {
+                      setSpecialization(e.target.value);
+                      if (error) setError(''); // Clear error if any
+                    }}
+                  >
+                    <option value="">Select Specialization</option>
+                    {specializations.map((spec) => (
+                      <option key={spec} value={spec}>
+                        {spec}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Take Assessment Button */}
+        <div className="button-container">
+          {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
+            <button
+              type="button"
+              className="assessment-button"
+              onClick={handleTakeAssessment}
+              disabled={isLoading}
+            >
+              {isLoading
+                ? 'Starting your assessment, please wait...'
+                : 'Generate My Personalized Training Scenarios'}
+            </button>
+          )}
+        </div>
+
+        {/* Error Alert */}
+        {error && <div className="error-alert">{error}</div>}
+
+        {/* Case Studies Page */}
+        {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
+          <div className="case-studies">
+            {/* Current Case Study */}
+            <div className="case-study" key={currentCaseStudyIndex}>
+              {/* Case Study Image */}
+              {aiResponse[currentCaseStudyIndex].imageUrl && (
+                <div className="case-study-image">
+                  <img
+                    src={aiResponse[currentCaseStudyIndex].imageUrl}
+                    alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
+                    className="header-image"
+                  />
+                </div>
+              )}
+
+              {/* Case Study Title and Audio Button */}
+              <div className="case-study-header">
+                <h3>{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
+                <button
+                  type="button"
+                  className="audio-button"
+                  onClick={fetchAudio}
+                  disabled={isAudioLoading}
+                >
+                  {isAudioLoading ? (
+                    <span>Loading...</span>
+                  ) : isAudioPlaying ? (
+                    <>
+                      <span className="icon-volume-up"></span>
+                      Pause
+                    </>
+                  ) : (
+                    <>
+                      <span className="icon-volume-off"></span>
+                      Listen
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Audio Element */}
+              <audio ref={audioRef} />
+
+              {/* Audio Error Alert */}
+              {audioError && <div className="audio-error">{audioError}</div>}
+
+              {/* Case Study Scenario */}
+              <p className="case-study-scenario">
+                {caseStudies[currentCaseStudyIndex].scenario}
+              </p>
+
+              {/* Case Study Questions */}
+              {caseStudies[currentCaseStudyIndex].questions &&
+              caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
+                <div className="question-section">
+                  {/* Header for the Question */}
+                  <h4 className="question-header">
+                    {`Question ${currentQuestionIndex + 1}: ${
+                      caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
+                    }`}
+                  </h4>
+
+                  <div className="options-group">
+                    {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
+                      (option) => {
+                        const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
+                        const currentAttempts = attempts[key] || 0;
+                        const feedbackMessage =
+                          feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
+                            ?.message || '';
+                        const isCorrect = feedbackMessage === 'Correct Answer';
+                        const maxAttemptsReached = currentAttempts >= 3 || isCorrect;
+
+                        return (
+                          <div className="option-item" key={option.key}>
+                            <label>
+                              <input
+                                type="radio"
+                                name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
+                                value={option.key}
+                                onChange={(e) =>
+                                  handleAnswerChange(
+                                    currentCaseStudyIndex,
+                                    currentQuestionIndex,
+                                    e.target.value
+                                  )
+                                }
+                                disabled={maxAttemptsReached}
+                                checked={
+                                  selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
+                                  option.key
+                                }
+                              />
+                              <span>
+                                <strong>{`${option.key}.`}</strong> {option.label}
+                              </span>
+                            </label>
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+
+                  {/* Display feedback message */}
+                  {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
+                    <div className="feedback-section">
+                      <div
+                        className={`feedback-message ${
+                          feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
+                            .message === 'Correct Answer'
+                            ? 'success'
+                            : 'info'
+                        }`}
+                      >
+                        {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message}
+                      </div>
+                      {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
+                        <div className="hint">
+                          <span className="icon-hint"></span>
+                          <span>
+                            <strong>Hint:</strong>{' '}
+                            {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="no-questions">No questions available for this case study.</p>
+              )}
+
+              {/* Navigation Button */}
+              {caseStudies[currentCaseStudyIndex].questions &&
+                caseStudies[currentCaseStudyIndex].questions.length > 0 && (
+                  <div className="navigation-buttons">
+                    <button
+                      type="button"
+                      className="next-button"
+                      onClick={handleNext}
+                    >
+                      {isLastQuestion && isLastCaseStudy ? 'Submit' : 'Next'}
+                    </button>
+                  </div>
+                )}
+            </div>
+          </div>
+        )}
+
+        {/* Handle Empty Case Studies */}
+        {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
+          <div className="no-case-studies">
+            No case studies available at the moment. Please try again later.
+          </div>
+        )}
       </div>
-    </>
-  );
+
+      {/* Footer */}
+      <footer className="footer">
+        <p>
+          © CoachCare.ai 
+        </p>
+      </footer>
+    </div>
+  </>
+);
 }
 
 
