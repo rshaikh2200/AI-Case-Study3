@@ -46,7 +46,7 @@ export default function Home() {
   
 
   // Audio-related states
-  const [url, setAudioUrl] = useState(null);
+  const [audioUrl, setAudioUrl] = useState(null);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioError, setAudioError] = useState('');
