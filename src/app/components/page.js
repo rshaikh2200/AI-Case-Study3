@@ -254,12 +254,12 @@ export default function Home() {
       const allCaseStudiesCollection = collection(firestore, 'all_case_studies');
 
       caseStudies.forEach((caseStudy) => {
-        audioUrl = url
+        audio = audioUrl
         // Create a new document reference with auto-generated ID for all_case_studies
         const allCaseStudiesDocRef = doc(allCaseStudiesCollection);
         allCaseStudiesBatch.set(allCaseStudiesDocRef, {
           ...caseStudy,
-          audioUrl,
+          audio,
           sessionID,
     
         });
