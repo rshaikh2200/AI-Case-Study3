@@ -148,6 +148,7 @@ export default function Home() {
   };
 
   console.log(audioUrl);
+  console.log(url);
   console.log(audioRef);
 
   // Play or Pause Audio Function
@@ -254,7 +255,7 @@ export default function Home() {
       const allCaseStudiesCollection = collection(firestore, 'all_case_studies');
 
       caseStudies.forEach((caseStudy) => {
-        audio = audioUrl
+        audio = setAudioUrl
         // Create a new document reference with auto-generated ID for all_case_studies
         const allCaseStudiesDocRef = doc(allCaseStudiesCollection);
         allCaseStudiesBatch.set(allCaseStudiesDocRef, {
