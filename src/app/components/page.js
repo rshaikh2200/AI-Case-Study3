@@ -846,7 +846,6 @@ export default function Home() {
   const handlePageRefresh = async () => {
     try {
       await deleteAllDocumentsInCollection('session table');
-      await deleteAllDocumentsInCollection('all_case_studies');
       await deleteAllDocumentsInCollection('user_profile');
       await deleteAllDocumentsInCollection('workflowData');
 
