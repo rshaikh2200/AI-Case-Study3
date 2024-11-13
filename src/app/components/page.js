@@ -43,9 +43,10 @@ export default function Home() {
   const [fullName, setFullName] = useState('');
   const [language, setLanguage] = useState('english');
   const [showTranslate, setShowTranslate] = useState(true);
+  
 
   // Audio-related states
-  const [audioUrl, setAudioUrl] = useState(null);
+  const [url, setAudioUrl] = useState(null);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioError, setAudioError] = useState('');
@@ -254,7 +255,7 @@ export default function Home() {
         const allCaseStudiesDocRef = doc(allCaseStudiesCollection);
         allCaseStudiesBatch.set(allCaseStudiesDocRef, {
           ...caseStudy,
-          audioURL,
+          url,
           sessionID,
     
         });
