@@ -255,7 +255,6 @@ export default function Home() {
         const allCaseStudiesDocRef = doc(allCaseStudiesCollection);
         allCaseStudiesBatch.set(allCaseStudiesDocRef, {
           ...caseStudy,
-          url,
           sessionID,
     
         });
