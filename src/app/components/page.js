@@ -148,7 +148,6 @@ export default function Home() {
   };
 
   console.log(audioUrl);
-  console.log(url);
   console.log(audioRef);
 
   // Play or Pause Audio Function
