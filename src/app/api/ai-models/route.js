@@ -640,7 +640,7 @@ export async function POST(request) {
           content: META_PROMPT,
         },
       ],
-      temperature: 1.0,
+      temperature: 0.7,
       max_tokens: 6000,
       stream: false,
     });
