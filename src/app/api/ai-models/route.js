@@ -198,7 +198,7 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each approximately 150 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each approximately 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
@@ -823,7 +823,7 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
 
 async function fetchImagesForCaseStudies(
   caseStudies,
-  model = 'sd3-large-turbo',
+  model = 'sd3-large',
   aspect_ratio = '1:1'
 ) {
   try {
@@ -896,3 +896,4 @@ async function fetchImagesForCaseStudies(
     throw error;
   }
 }
+
