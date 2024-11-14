@@ -29,14 +29,14 @@ export async function POST(req) {
       throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
-    const arrayBuffer = await response.arrayBuffer();
+    // Stream the response directly to the client
+    const headers = new Headers();
+    headers.set('Content-Type', 'audio/mpeg');
+    headers.set('Transfer-Encoding', 'chunked');
 
-    // Return the audio directly
-    return new NextResponse(arrayBuffer, {
+    return new NextResponse(response.body, {
       status: 200,
-      headers: {
-        'Content-Type': 'audio/mpeg',
-      },
+      headers,
     });
   } catch (error) {
     console.error('Error generating audio:', error);
