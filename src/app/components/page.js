@@ -286,7 +286,6 @@ const playAudio = (url) => {
         const allCaseStudiesDocRef = doc(allCaseStudiesCollection);
         allCaseStudiesBatch.set(allCaseStudiesDocRef, {
           ...caseStudy,
-          audio,
           sessionID,
     
         });
