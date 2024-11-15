@@ -208,6 +208,37 @@ export async function POST(request) {
       - Include a different medical error that occurred by the ${role} or by the team.
       - Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
       - The medical studies should be detailed and focus on the situation, medical error, and consequences.
+      Here are some examples of medical errors that be focused on  in the case studies however it should not be limited to only these medical errors:
+      a) Retained sponge
+      b) Missing items on tray (equipment missing, broken, or not available)
+      c) Bioburden on instrument (still sterile but some visible stuff still stuck on)
+      d) Bovey (burn events)
+      e) Fires where the patient was burned (oxygen being introduced and then a spark
+        from instrument sets it off)
+        a. Didn’t have right oxygen mask which caused oxygen leak
+      f) Patient falls (table malfunctioned)
+      g) Specimen errors
+        a. Not labeled correctly
+        b. Discarded by accident
+        c. Lost specimen
+        d. Specimen handoff
+      h) Shift change
+      a. Sometimes shift change is happening at the worst time
+        i. When the count process is happening
+        ii. When the procedure is almost done
+        iii. Many times the surgeon doesn’t even know the staff have changed because they are so focued on procedure
+        iv. Need to have propper handoff
+
+i) Site markings
+a. Wrong side procedure
+b. Limbs are ok but moreso on inside the body organs
+i. Sistoscopy (go through bladder but then is it left or right organ, how
+do you mark that?)
+
+j) Consent
+a. Surgeon must get consent from patient prior to surgery
+b. Sometimes this form is missing or incomplete
+
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
     
