@@ -288,36 +288,37 @@ export default function Home() {
     }
   };
 
-  // Function to save case studies to both collections
+  // Function to save case studies to a collection based on user selection
   const saveCaseStudies = async () => {
     if (!caseStudies || caseStudies.length === 0) return;
 
     try {
-      // Initialize batch for all_case_studies
-      const allCaseStudiesBatch = writeBatch(firestore);
-      const allCaseStudiesCollection = collection(firestore, 'all_case_studies');
+        // Construct the collection name based on user selection
+        const collectionName = `${department || 'unknownDepartment'}_${role || 'unknownRole'}_${specialization || 'unknownSpecialization'}`;
+        const sanitizedCollectionName = collectionName.replace(/[^a-zA-Z0-9_]/g, '_');
 
-      caseStudies.forEach((caseStudy) => {
-        const audio = audioUrl
-        // Create a new document reference with auto-generated ID for all_case_studies
-        const allCaseStudiesDocRef = doc(allCaseStudiesCollection);
-        allCaseStudiesBatch.set(allCaseStudiesDocRef, {
-          ...caseStudy,
-          sessionID,
-    
+        // Initialize batch for the new collection
+        const batch = writeBatch(firestore);
+        const userCaseStudiesCollection = collection(firestore, sanitizedCollectionName);
+
+        caseStudies.forEach((caseStudy) => {
+            const docRef = doc(userCaseStudiesCollection);
+            batch.set(docRef, {
+                ...caseStudy,
+                sessionID,
+            });
         });
-      });
 
-      // Commit the batch
-      await allCaseStudiesBatch.commit();
+        // Commit the batch
+        await batch.commit();
 
-      console.log('Case studies saved to all_case_studies collection successfully.');
+        console.log(`Case studies saved to ${sanitizedCollectionName} collection successfully.`);
     } catch (error) {
-      console.error('Error saving case studies:', error.message);
-      setError('Failed to save case studies. Please try again.');
-      throw error; // Propagate error to handleSubmitFinalAssessment
+        console.error('Error saving case studies:', error.message);
+        setError('Failed to save case studies. Please try again.');
+        throw error; // Propagate error to handleSubmitFinalAssessment
     }
-  };
+};
 
   // Function to save session data to Firestore
   const saveSessionData = async (sessionID) => {
@@ -610,7 +611,7 @@ export default function Home() {
     setIsLoading(true);
     setError(null);
     try {
-      await saveCaseStudies(); // Save case studies to both collections
+      await saveCaseStudies(); // Save case studies to collection based on user selection
       await saveAiResponse(); // Save AI response
 
       // Save Submit Button Timestamp
@@ -889,6 +890,7 @@ export default function Home() {
   const handlePageRefresh = async () => {
     try {
       await deleteAllDocumentsInCollection('session table');
+      await deleteAllDocumentsInCollection('all_case_studies');
       await deleteAllDocumentsInCollection('user_profile');
       await deleteAllDocumentsInCollection('workflowData');
 
