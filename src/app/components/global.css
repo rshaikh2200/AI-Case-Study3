@@ -38,9 +38,11 @@
   border-radius: 8px;
 }
 
+
 /* Assessment Complete Container */
 .assessment-complete {
-  max-width: 800px;
+  max-width: 90%;
+  width: 800px;
   margin: 2rem auto;
   padding: 1.5rem;
   background: #ffffff;
@@ -63,6 +65,7 @@
   align-items: center;
   justify-content: center;
   gap: 1.5rem; /* Space between items */
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
 }
 
 /* Correct Answers */
@@ -96,7 +99,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
+  margin: 1rem auto;
   background-color: white; /* Changed to white background */
 }
 
@@ -106,6 +109,81 @@
   color: #333;
 }
 
+/* Responsive Styles */
+
+/* Tablets and larger devices */
+@media (min-width: 600px) {
+  .assessment-complete {
+    max-width: 80%;
+    padding: 2rem;
+  }
+
+  .score-circle {
+    width: 140px;
+    height: 140px;
+  }
+
+  .score-circle span {
+    font-size: 1.8rem;
+  }
+
+  .correct-answers,
+  .pass-fail {
+    font-size: 1.4rem;
+  }
+}
+
+/* Desktops and larger devices */
+@media (min-width: 992px) {
+  .assessment-complete {
+    max-width: 800px;
+    padding: 2.5rem;
+  }
+
+  .score-info {
+    gap: 2rem;
+  }
+
+  .score-circle {
+    width: 160px;
+    height: 160px;
+  }
+
+  .score-circle span {
+    font-size: 2rem;
+  }
+
+  .correct-answers,
+  .pass-fail {
+    font-size: 1.6rem;
+  }
+}
+
+/* Mobile Devices */
+@media (max-width: 599px) {
+  .assessment-complete {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .score-info {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .score-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .score-circle span {
+    font-size: 1.2rem;
+  }
+
+  .correct-answers,
+  .pass-fail {
+    font-size: 1rem;
+  }
 /* Case Detail */
 .case-detail {
   border: 1px solid #e0e0e0;
