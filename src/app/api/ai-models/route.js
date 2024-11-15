@@ -1,4 +1,3 @@
-// route.js
 import { NextResponse } from 'next/server';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -198,7 +197,7 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each approximately 150 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each approximately 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
@@ -413,7 +412,7 @@ export async function POST(request) {
     Do not include any additional text outside of the JSON structure.`;
 
   } else if (userType === 'non-clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each approximately 150 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each approximately 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
@@ -819,4 +818,80 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
     ...caseStudy,
     prompt: generatedPrompt 
   };
+}
+
+async function fetchImagesForCaseStudies(
+  caseStudies,
+  model = 'sd3-large-turbo',
+  aspect_ratio = '1:1'
+) {
+  try {
+    const responses = await Promise.all(
+      caseStudies.map(async (caseStudy) => {
+        try {
+          if (!caseStudy.imagePrompt) {
+            console.warn(`No image prompt for ${caseStudy.caseStudy}. Skipping image generation.`);
+            return { ...caseStudy, imageUrl: null };
+          }
+
+          const generatedPrompt = caseStudy.imagePrompt;
+
+          const payload = {
+            prompt: generatedPrompt,
+            output_format: 'jpeg',
+            model,
+            aspect_ratio,
+            width: 356,
+            height: 356,
+          };
+
+          const formData = new FormData();
+          Object.keys(payload).forEach((key) =>
+            formData.append(key, payload[key])
+          );
+
+          const response = await axios.post(
+            `https://api.stability.ai/v2beta/stable-image/generate/sd3`,
+            formData,
+            {
+              validateStatus: undefined,
+              responseType: 'arraybuffer',
+              headers: {
+                Authorization: `Bearer ${process.env.STABILITY_API_KEY}`, // Secure your API key in environment variables
+                Accept: 'image/*',
+              },
+            }
+          );
+
+          if (response.status === 200) {
+            const base64Image = Buffer.from(response.data).toString('base64');
+            return {
+              ...caseStudy,
+              imageUrl: `data:image/jpeg;base64,${base64Image}`,
+            };
+          } else {
+            console.warn(
+              `Failed to generate image for ${caseStudy.caseStudy}. Status: ${response.status}`,
+              response.data
+            );
+            return { ...caseStudy, imageUrl: null };
+          }
+        } catch (error) {
+          if (error.response) {
+            console.error('Stability API Error:', error.response.status, error.response.data);
+          } else if (error.request) {
+            console.error('No response received from Stability API:', error.request);
+          } else {
+            console.error('Error generating image:', error.message);
+          }
+          return { ...caseStudy, imageUrl: null };
+        }
+      })
+    );
+
+    return responses;
+  } catch (error) {
+    console.error('Error in fetchImagesForCaseStudies:', error.message);
+    throw error;
+  }
 }
