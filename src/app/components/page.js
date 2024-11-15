@@ -1150,17 +1150,17 @@ export default function Home() {
 
       {/* Define the Google Translate callback function before the script loads */}
       <Script id="google-translate-init" strategy="beforeInteractive">
-        {`
-          function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-              pageLanguage: 'en',
-              includedLanguages: 'en,es',
-              font-size: 12rem,
-              layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-          }
-        `}
-      </Script>
+{`
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'en',
+      includedLanguages: 'en,es',
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+`}
+</Script>
+
 
       {/* Load the Google Translate script after the callback is defined */}
       <Script
