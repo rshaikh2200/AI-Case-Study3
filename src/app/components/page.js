@@ -72,131 +72,147 @@ export default function Home() {
   const [sessionID, setSessionID] = useState('');
   const [workflowData, setWorkflowData] = useState([]);
 
- // Generate Speech Function
- const generateSpeech = async () => {
-  if (!currentCaseStudy) return;
-  setIsAudioLoading(true);
-  setAudioError('');
-  try {
-    const response = await fetch('/api/audio-models', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        input: currentCaseStudy.scenario,
-      }),
-    });
-
-    if (response.ok && response.body) {
-      const mediaSource = new MediaSource();
-      const url = URL.createObjectURL(mediaSource);
-      setAudioUrl(url);
-
-      mediaSource.addEventListener('sourceopen', () => {
-        const mimeCodec = 'audio/mpeg'; // Adjust if necessary
-        const sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
-
-        let queue = [];
-        let isUpdating = false;
-
-        const reader = response.body.getReader();
-
-        const readChunk = ({ done, value }) => {
-          if (done) {
-            if (!sourceBuffer.updating) {
-              mediaSource.endOfStream();
-            } else {
-              sourceBuffer.addEventListener(
-                'updateend',
-                () => {
-                  mediaSource.endOfStream();
-                },
-                { once: true }
-              );
-            }
-            return;
-          }
-
-          queue.push(value);
-          processQueue();
-          reader.read().then(readChunk);
-        };
-
-        const processQueue = () => {
-          if (isUpdating || queue.length === 0) {
-            return;
-          }
-          isUpdating = true;
-          sourceBuffer.appendBuffer(queue.shift());
-        };
-
-        sourceBuffer.addEventListener('updateend', () => {
-          isUpdating = false;
-          processQueue();
-        });
-
-        reader.read().then(readChunk);
+ 
+  const generateSpeech = async () => {
+    if (!currentCaseStudy) return;
+    setIsAudioLoading(true);
+    setAudioError('');
+    try {
+      const response = await fetch('/api/audio-models', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          input: currentCaseStudy.scenario,
+        }),
       });
 
-      return url;
-    } else {
-      const data = await response.json();
-      console.error('Error from server:', data.error);
-      setAudioError(data.error || 'Failed to generate audio.');
-      return null;
-    }
-  } catch (error) {
-    console.error('Error calling API:', error);
-    setAudioError('An unexpected error occurred.');
-    return null;
-  } finally {
-    setIsAudioLoading(false);
-  }
-};
+      if (response.ok) {
+        // Check if MediaSource is supported
+        if ('MediaSource' in window && response.body) {
+          // Existing streaming implementation
+          const mediaSource = new MediaSource();
+          const url = URL.createObjectURL(mediaSource);
+          setAudioUrl(url);
 
-// Fetch Audio and Toggle Play/Pause
-const fetchAudio = async () => {
-  if (isAudioPlaying) {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-    setIsAudioPlaying(false);
-  } else {
-    // Generate new speech URL for the current case study
-    const url = await generateSpeech();
-    if (url) {
-      // Save the url to Firestore (if necessary)
-      // ...
+          mediaSource.addEventListener('sourceopen', () => {
+            const mimeCodec = 'audio/mpeg'; // Adjust if necessary
+            if (MediaSource.isTypeSupported(mimeCodec)) {
+              const sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
 
-      if (audioRef.current) {
-        playAudio(url);
+              let queue = [];
+              let isUpdating = false;
+
+              const reader = response.body.getReader();
+
+              const readChunk = ({ done, value }) => {
+                if (done) {
+                  if (!sourceBuffer.updating) {
+                    mediaSource.endOfStream();
+                  } else {
+                    sourceBuffer.addEventListener(
+                      'updateend',
+                      () => {
+                        mediaSource.endOfStream();
+                      },
+                      { once: true }
+                    );
+                  }
+                  return;
+                }
+
+                queue.push(value);
+                processQueue();
+                reader.read().then(readChunk);
+              };
+
+              const processQueue = () => {
+                if (isUpdating || queue.length === 0) {
+                  return;
+                }
+                isUpdating = true;
+                sourceBuffer.appendBuffer(queue.shift());
+              };
+
+              sourceBuffer.addEventListener('updateend', () => {
+                isUpdating = false;
+                processQueue();
+              });
+
+              reader.read().then(readChunk);
+            } else {
+              console.error('MIME type not supported:', mimeCodec);
+              setAudioError('Audio format not supported on this device.');
+              mediaSource.endOfStream('network');
+            }
+          });
+
+          return url;
+        } else {
+          // Fallback for mobile browsers: Fetch as Blob
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          setAudioUrl(url);
+          return url;
+        }
+      } else {
+        const data = await response.json();
+        console.error('Error from server:', data.error);
+        setAudioError(data.error || 'Failed to generate audio.');
+        return null;
       }
+    } catch (error) {
+      console.error('Error calling API:', error);
+      setAudioError('An unexpected error occurred.');
+      return null;
+    } finally {
+      setIsAudioLoading(false);
     }
-  }
-};
+  };
 
-// Play or Pause Audio Function
-const playAudio = (url) => {
-  if (audioRef.current) {
-    if (audioRef.current.src === url && !audioRef.current.paused) {
-      audioRef.current.pause();
+  // Fetch Audio and Toggle Play/Pause
+  const fetchAudio = async () => {
+    if (isAudioPlaying) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
       setIsAudioPlaying(false);
     } else {
-      audioRef.current.src = url;
-      audioRef.current.load();
-      audioRef.current
-        .play()
-        .then(() => {
-          setIsAudioPlaying(true);
-        })
-        .catch((error) => {
-          console.error('Error playing audio:', error);
-          setAudioError('Failed to play audio.');
-        });
+      // Generate new speech URL for the current case study
+      const url = await generateSpeech();
+      if (url) {
+        // Save the url to Firestore (if necessary)
+        // ...
+
+        if (audioRef.current) {
+          playAudio(url);
+        }
+      }
     }
-  }
-};
+  };
+
+  // Play or Pause Audio Function
+  const playAudio = (url) => {
+    if (audioRef.current) {
+      if (audioRef.current.src === url && !audioRef.current.paused) {
+        audioRef.current.pause();
+        setIsAudioPlaying(false);
+      } else {
+        audioRef.current.src = url;
+        audioRef.current.load();
+        audioRef.current
+          .play()
+          .then(() => {
+            setIsAudioPlaying(true);
+          })
+          .catch((error) => {
+            console.error('Error playing audio:', error);
+            setAudioError('Failed to play audio.');
+          });
+      }
+    }
+  };
 
   // Stop audio when switching case studies
   useEffect(() => {
@@ -233,6 +249,7 @@ const playAudio = (url) => {
       }
     };
   }, []);
+
 
   // Function to save user inputs to Firestore
   const saveUserInputs = async () => {
