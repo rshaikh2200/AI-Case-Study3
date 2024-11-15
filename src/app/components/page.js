@@ -12,11 +12,11 @@ import {
   writeBatch,
   getDocs,
   query,
+  where,
+  limit, // Added 'limit' here
   deleteDoc,
   doc,
   setDoc,
-  updateDoc,  // Added updateDoc
-  where,       // Added where
 } from 'firebase/firestore';
 import { firestore } from '../firebase';
 
@@ -43,7 +43,6 @@ export default function Home() {
   const [fullName, setFullName] = useState('');
   const [language, setLanguage] = useState('english');
   const [showTranslate, setShowTranslate] = useState(true);
-  
 
   // Audio-related states
   const [audioUrl, setAudioUrl] = useState(null);
@@ -72,131 +71,131 @@ export default function Home() {
   const [sessionID, setSessionID] = useState('');
   const [workflowData, setWorkflowData] = useState([]);
 
- // Generate Speech Function
- const generateSpeech = async () => {
-  if (!currentCaseStudy) return;
-  setIsAudioLoading(true);
-  setAudioError('');
-  try {
-    const response = await fetch('/api/audio-models', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        input: currentCaseStudy.scenario,
-      }),
-    });
-
-    if (response.ok && response.body) {
-      const mediaSource = new MediaSource();
-      const url = URL.createObjectURL(mediaSource);
-      setAudioUrl(url);
-
-      mediaSource.addEventListener('sourceopen', () => {
-        const mimeCodec = 'audio/mpeg'; // Adjust if necessary
-        const sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
-
-        let queue = [];
-        let isUpdating = false;
-
-        const reader = response.body.getReader();
-
-        const readChunk = ({ done, value }) => {
-          if (done) {
-            if (!sourceBuffer.updating) {
-              mediaSource.endOfStream();
-            } else {
-              sourceBuffer.addEventListener(
-                'updateend',
-                () => {
-                  mediaSource.endOfStream();
-                },
-                { once: true }
-              );
-            }
-            return;
-          }
-
-          queue.push(value);
-          processQueue();
-          reader.read().then(readChunk);
-        };
-
-        const processQueue = () => {
-          if (isUpdating || queue.length === 0) {
-            return;
-          }
-          isUpdating = true;
-          sourceBuffer.appendBuffer(queue.shift());
-        };
-
-        sourceBuffer.addEventListener('updateend', () => {
-          isUpdating = false;
-          processQueue();
-        });
-
-        reader.read().then(readChunk);
+  // Generate Speech Function
+  const generateSpeech = async () => {
+    if (!currentCaseStudy) return;
+    setIsAudioLoading(true);
+    setAudioError('');
+    try {
+      const response = await fetch('/api/audio-models', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          input: currentCaseStudy.scenario,
+        }),
       });
-
-      return url;
-    } else {
-      const data = await response.json();
-      console.error('Error from server:', data.error);
-      setAudioError(data.error || 'Failed to generate audio.');
-      return null;
-    }
-  } catch (error) {
-    console.error('Error calling API:', error);
-    setAudioError('An unexpected error occurred.');
-    return null;
-  } finally {
-    setIsAudioLoading(false);
-  }
-};
-
-// Fetch Audio and Toggle Play/Pause
-const fetchAudio = async () => {
-  if (isAudioPlaying) {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-    setIsAudioPlaying(false);
-  } else {
-    // Generate new speech URL for the current case study
-    const url = await generateSpeech();
-    if (url) {
-      // Save the url to Firestore (if necessary)
-      // ...
-
-      if (audioRef.current) {
-        playAudio(url);
+  
+      if (response.ok && response.body) {
+        const mediaSource = new MediaSource();
+        const url = URL.createObjectURL(mediaSource);
+        setAudioUrl(url);
+  
+        mediaSource.addEventListener('sourceopen', () => {
+          const mimeCodec = 'audio/mpeg'; // Adjust if necessary
+          const sourceBuffer = mediaSource.addSourceBuffer(mimeCodec);
+  
+          let queue = [];
+          let isUpdating = false;
+  
+          const reader = response.body.getReader();
+  
+          const readChunk = ({ done, value }) => {
+            if (done) {
+              if (!sourceBuffer.updating) {
+                mediaSource.endOfStream();
+              } else {
+                sourceBuffer.addEventListener(
+                  'updateend',
+                  () => {
+                    mediaSource.endOfStream();
+                  },
+                  { once: true }
+                );
+              }
+              return;
+            }
+  
+            queue.push(value);
+            processQueue();
+            reader.read().then(readChunk);
+          };
+  
+          const processQueue = () => {
+            if (isUpdating || queue.length === 0) {
+              return;
+            }
+            isUpdating = true;
+            sourceBuffer.appendBuffer(queue.shift());
+          };
+  
+          sourceBuffer.addEventListener('updateend', () => {
+            isUpdating = false;
+            processQueue();
+          });
+  
+          reader.read().then(readChunk);
+        });
+  
+        return url;
+      } else {
+        const data = await response.json();
+        console.error('Error from server:', data.error);
+        setAudioError(data.error || 'Failed to generate audio.');
+        return null;
       }
+    } catch (error) {
+      console.error('Error calling API:', error);
+      setAudioError('An unexpected error occurred.');
+      return null;
+    } finally {
+      setIsAudioLoading(false);
     }
-  }
-};
-
-// Play or Pause Audio Function
-const playAudio = (url) => {
-  if (audioRef.current) {
-    if (audioRef.current.src === url && !audioRef.current.paused) {
-      audioRef.current.pause();
+  };
+  
+  // Fetch Audio and Toggle Play/Pause
+  const fetchAudio = async () => {
+    if (isAudioPlaying) {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
       setIsAudioPlaying(false);
     } else {
-      audioRef.current.src = url;
-      audioRef.current.load();
-      audioRef.current
-        .play()
-        .then(() => {
-          setIsAudioPlaying(true);
-        })
-        .catch((error) => {
-          console.error('Error playing audio:', error);
-          setAudioError('Failed to play audio.');
-        });
+      // Generate new speech URL for the current case study
+      const url = await generateSpeech();
+      if (url) {
+        // Save the url to Firestore (if necessary)
+        // ...
+  
+        if (audioRef.current) {
+          playAudio(url);
+        }
+      }
     }
-  }
-};
+  };
+  
+  // Play or Pause Audio Function
+  const playAudio = (url) => {
+    if (audioRef.current) {
+      if (audioRef.current.src === url && !audioRef.current.paused) {
+        audioRef.current.pause();
+        setIsAudioPlaying(false);
+      } else {
+        audioRef.current.src = url;
+        audioRef.current.load();
+        audioRef.current
+          .play()
+          .then(() => {
+            setIsAudioPlaying(true);
+          })
+          .catch((error) => {
+            console.error('Error playing audio:', error);
+            setAudioError('Failed to play audio.');
+          });
+      }
+    }
+  };  
 
   // Stop audio when switching case studies
   useEffect(() => {
@@ -263,42 +262,10 @@ const playAudio = (url) => {
       await addDoc(collection(firestore, 'ai_responses'), { 
         aiResponse,
         sessionID,
-        
       });
       console.log('AI response saved successfully.');
     } catch (error) {
       console.error('Error saving AI response:', error.message);
-    }
-  };
-
-  // Function to save case studies to both collections
-  const saveCaseStudies = async () => {
-    if (!caseStudies || caseStudies.length === 0) return;
-
-    try {
-      // Initialize batch for all_case_studies
-      const allCaseStudiesBatch = writeBatch(firestore);
-      const allCaseStudiesCollection = collection(firestore, 'all_case_studies');
-
-      caseStudies.forEach((caseStudy) => {
-        const audio = audioUrl
-        // Create a new document reference with auto-generated ID for all_case_studies
-        const allCaseStudiesDocRef = doc(allCaseStudiesCollection);
-        allCaseStudiesBatch.set(allCaseStudiesDocRef, {
-          ...caseStudy,
-          sessionID,
-    
-        });
-      });
-
-      // Commit the batch
-      await allCaseStudiesBatch.commit();
-
-      console.log('Case studies saved to all_case_studies collection successfully.');
-    } catch (error) {
-      console.error('Error saving case studies:', error.message);
-      setError('Failed to save case studies. Please try again.');
-      throw error; // Propagate error to handleSubmitFinalAssessment
     }
   };
 
@@ -351,45 +318,135 @@ const playAudio = (url) => {
     setSessionID(randomSessionID);
     saveSessionData(randomSessionID);
 
-    handleSubmitAssessment();
+    handleSubmitAssessment(randomSessionID); // Pass sessionID here
     // Hide the Google Translate menu after clicking the button
     setShowTranslate(false);
   };
 
-  // Handle submitting the assessment
-  const handleSubmitAssessment = async () => {
+  // Modified handleSubmitAssessment function
+  const handleSubmitAssessment = async (sessionIDParam) => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/ai-models', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userType, department, role, specialization }),
-      });
+      // Reference to the 'all_case_studies' collection
+      const caseStudiesCollection = collection(firestore, 'all_case_studies');
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          `Failed to fetch case studies: ${errorData.error || 'Unknown error'}`
+      let initialQuery;
+
+      // Build the initial query to fetch potential case studies
+      if (userType === 'clinical' && specialization) {
+        initialQuery = query(
+          caseStudiesCollection,
+          where('department', '==', department),
+          where('role', '==', role),
+          where('specialization', '==', specialization),
+          limit(50) // Increase limit to gather more case studies
+        );
+      } else {
+        initialQuery = query(
+          caseStudiesCollection,
+          where('department', '==', department),
+          where('role', '==', role),
+          limit(50) // Increase limit
         );
       }
 
-      const data = await response.json();
+      // Execute the initial query
+      const initialSnapshot = await getDocs(initialQuery);
 
-      if (!data.caseStudies || !Array.isArray(data.caseStudies)) {
-        throw new Error('Invalid data format received from server.');
+      // Collect all session IDs and case studies
+      const sessionIDSet = new Set();
+      const caseStudiesData = [];
+      initialSnapshot.forEach((doc) => {
+        const data = doc.data();
+        const sessionID = data.sessionID;
+        if (sessionID) {
+          sessionIDSet.add(sessionID);
+        }
+        caseStudiesData.push(data);
+      });
+
+      if (sessionIDSet.size === 0) {
+        throw new Error('No session IDs found.');
       }
 
-      const { caseStudies, aiResponse } = data;
+      // Convert the set to an array (no duplicate session IDs)
+      const sessionIDArray = Array.from(sessionIDSet);
 
-      // Set both caseStudies and aiResponse without merging imageUrl
-      setCaseStudies(caseStudies);
-      setAiResponse(aiResponse);
+      // Randomly select a sessionID
+      const randomIndex = Math.floor(Math.random() * sessionIDArray.length);
+      const selectedSessionID = sessionIDArray[randomIndex];
+
+      // Get case studies for the selected sessionID
+      const selectedCaseStudiesData = caseStudiesData.filter(
+        (caseStudy) => caseStudy.sessionID === selectedSessionID
+      );
+
+      if (selectedCaseStudiesData.length < 4) {
+        throw new Error('Selected session ID does not have enough case studies.');
+      }
+
+      // Shuffle and select 4 case studies
+      selectedCaseStudiesData.sort(() => Math.random() - 0.5);
+      const selectedCaseStudies = selectedCaseStudiesData.slice(0, 4).map((caseStudy) => ({
+        ...caseStudy,
+        sessionID: sessionIDParam, // Assign the provided sessionID
+      }));
+
+      // Save the selected case studies to 'session_case_studies'
+      const sessionCaseStudiesBatch = writeBatch(firestore);
+      const sessionCaseStudiesCollection = collection(firestore, 'session_case_studies');
+
+      selectedCaseStudies.forEach((caseStudy) => {
+        const sessionCaseStudyDocRef = doc(sessionCaseStudiesCollection);
+        sessionCaseStudiesBatch.set(sessionCaseStudyDocRef, caseStudy);
+      });
+
+      // Commit the batch write
+      await sessionCaseStudiesBatch.commit();
+
+      console.log('Session case studies saved successfully.');
+
+      // Prepare data for state updates
+      const caseStudiesState = [];
+      const aiResponsesState = [];
+
+      selectedCaseStudies.forEach((docData) => {
+        const { scenario, patientName, questions, imageUrl } = docData;
+
+        // Prepare case studies for the user (without 'correctAnswer' and 'hint')
+        const caseStudyQuestions = questions.map((q) => ({
+          question: q.question,
+          options: q.options,
+        }));
+
+        caseStudiesState.push({
+          scenario,
+          patientName,
+          questions: caseStudyQuestions,
+        });
+
+        // Prepare AI responses (with 'correctAnswer' and 'hint')
+        const aiQuestions = questions.map((q) => ({
+          correctAnswer: q.correctAnswer,
+          hint: q.hint,
+        }));
+
+        aiResponsesState.push({
+          imageUrl,
+          questions: aiQuestions,
+        });
+      });
+
+      // Set state variables
+      setCaseStudies(caseStudiesState);
+      setAiResponse(aiResponsesState);
+      setIsLoading(false);
 
       // Generate workflow data
       const workflowNames = ['Take Assessment'];
 
-      data.caseStudies.forEach((caseStudy, caseIndex) => {
+      caseStudiesState.forEach((caseStudy, caseIndex) => {
         caseStudy.questions.forEach((question, questionIndex) => {
           const workflowName = `Case${caseIndex + 1}-Question${questionIndex + 1}`;
           workflowNames.push(workflowName);
@@ -402,8 +459,6 @@ const playAudio = (url) => {
       }));
 
       setWorkflowData(workflows);
-
-      await saveAiResponse(); // Save AI response
 
       setShowSafetyStatement(false);
       setShowCaseStudies(true);
@@ -593,7 +648,6 @@ const playAudio = (url) => {
     setIsLoading(true);
     setError(null);
     try {
-      await saveCaseStudies(); // Save case studies to both collections
       await saveAiResponse(); // Save AI response
 
       // Save Submit Button Timestamp
@@ -669,8 +723,8 @@ const playAudio = (url) => {
     setError(null);
     try {
       await deleteAllDocumentsInCollection('user_profile');
-      await deleteAllDocumentsInCollection('session_case_studies');
       await deleteAllDocumentsInCollection('ai_responses');
+      await deleteAllDocumentsInCollection('session_case_studies'); // Delete session case studies
 
       setUserType('');
       setDepartment('');
@@ -874,6 +928,7 @@ const playAudio = (url) => {
       await deleteAllDocumentsInCollection('session table');
       await deleteAllDocumentsInCollection('user_profile');
       await deleteAllDocumentsInCollection('workflowData');
+      await deleteAllDocumentsInCollection('session_case_studies'); // Delete session case studies
 
       setUserType('');
       setDepartment('');
@@ -977,8 +1032,6 @@ const playAudio = (url) => {
     departmentsToUse = nonClinicalDepartments;
     rolesToUse = nonClinicalRoles;
   }
-
-  
 
   useEffect(() => {
     // Initialize Google Translate
@@ -1386,7 +1439,7 @@ const playAudio = (url) => {
                           feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
                             ?.message || '';
                         const isCorrect = feedbackMessage === 'Correct Answer';
-                        const maxAttemptsReached = currentAttempts >= 3 || isCorrect;
+                        const maxAttemptsReached = currentAttempts >= 2 || isCorrect; // Changed attempts to 2
 
                         return (
                           <div className="option-item" key={option.key}>
@@ -1480,5 +1533,5 @@ const playAudio = (url) => {
       </footer>
     </div>
   </>
-);
+  );
 }
