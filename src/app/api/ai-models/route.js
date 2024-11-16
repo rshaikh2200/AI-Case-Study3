@@ -197,7 +197,7 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each approximately 150 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each approximately 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
@@ -208,37 +208,7 @@ export async function POST(request) {
       - Include a different medical error that occurred by the ${role} or by the team.
       - Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
       - The medical studies should be detailed and focus on the situation, medical error, and consequences.
-      Here are some examples of medical errors that be focused on  in the case studies however it should not be limited to only these medical errors:
-      a) Retained sponge
-      b) Missing items on tray (equipment missing, broken, or not available)
-      c) Bioburden on instrument (still sterile but some visible stuff still stuck on)
-      d) Bovey (burn events)
-      e) Fires where the patient was burned (oxygen being introduced and then a spark
-        from instrument sets it off)
-        a. Didn’t have right oxygen mask which caused oxygen leak
-      f) Patient falls (table malfunctioned)
-      g) Specimen errors
-        a. Not labeled correctly
-        b. Discarded by accident
-        c. Lost specimen
-        d. Specimen handoff
-      h) Shift change
-      a. Sometimes shift change is happening at the worst time
-        i. When the count process is happening
-        ii. When the procedure is almost done
-        iii. Many times the surgeon doesn’t even know the staff have changed because they are so focued on procedure
-        iv. Need to have propper handoff
-
-i) Site markings
-a. Wrong side procedure
-b. Limbs are ok but moreso on inside the body organs
-i. Sistoscopy (go through bladder but then is it left or right organ, how
-do you mark that?)
-
-j) Consent
-a. Surgeon must get consent from patient prior to surgery
-b. Sometimes this form is missing or incomplete
-
+      - Each medical case study should include a different medical error that occured in the scenario. Some examples are (retained medical equipment, missing items on tray, )
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
     
@@ -392,7 +362,7 @@ b. Sometimes this form is missing or incomplete
       "caseStudies": [
         {
           "caseStudy": "Case Study 1",
-          "scenario": "Dr. Patel (he/him), an orthopedic surgeon, was finishing up a knee replacement surgery when the patient’s implant arrived. In the rush to keep things on schedule, he quickly began installing it without double-checking the lot number. Minutes later, the scrub nurse noticed the implant package didn't match the patient’s chart. Dr. Patel’s colleague, Dr. Lin (she/her), was nearby and always emphasized the importance of a final check before any major step.",
+          "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
           "questions": [
             {
               "question": "Dr. Patel could have avoided this mix-up by practicing which Error Prevention Tool, which focuses on verifying actions with a internal verification and checking with qualified source?",
@@ -443,7 +413,7 @@ b. Sometimes this form is missing or incomplete
     Do not include any additional text outside of the JSON structure.`;
 
   } else if (userType === 'non-clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each approximately 150 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each approximately 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
