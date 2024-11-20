@@ -1,3 +1,9 @@
+ // Copyright 2024 Propertiy of Rizwan Shaikh 
+ // Atlanta, Georgia 30344
+ // All Rights Reserved
+ 
+// -----do not edit anything above this line---
+
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
@@ -5,7 +11,7 @@ import Script from 'next/script';
 import Head from 'next/head';
 import Link from 'next/link';
 
-// Import Firestore functions
+
 import {
   collection,
   addDoc,
@@ -15,12 +21,12 @@ import {
   deleteDoc,
   doc,
   setDoc,
-  updateDoc,  // Added updateDoc
-  where,       // Added where
+  updateDoc,  
+  where,       
 } from 'firebase/firestore';
 import { firestore } from '../firebase';
 
-// Import jsPDF for PDF generation
+
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -262,6 +268,7 @@ export default function Home() {
         department,
         role,
         specialization,
+        sessionID
       });
       console.log('User inputs saved successfully.');
     } catch (error) {
@@ -686,10 +693,7 @@ export default function Home() {
     setIsLoading(true);
     setError(null);
     try {
-      await deleteAllDocumentsInCollection('user_profile');
-      await deleteAllDocumentsInCollection('session_case_studies');
-      await deleteAllDocumentsInCollection('ai_responses');
-
+      
       setUserType('');
       setDepartment('');
       setRole('');
@@ -889,10 +893,7 @@ export default function Home() {
   // Function to handle page refresh
   const handlePageRefresh = async () => {
     try {
-      await deleteAllDocumentsInCollection('session table');
-      await deleteAllDocumentsInCollection('all_case_studies');
-      await deleteAllDocumentsInCollection('user_profile');
-      await deleteAllDocumentsInCollection('workflowData');
+      
 
       setUserType('');
       setDepartment('');
@@ -1494,7 +1495,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="footer">
         <p>
-          © CoachCare.ai 
+          © 2024 CoachCare.ai 
         </p>
       </footer>
     </div>
