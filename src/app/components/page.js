@@ -1323,7 +1323,7 @@ export default function Home() {
               disabled={isLoading}
             >
               {isLoading
-                ? 'Starting your assessment, please wait...'
+                ? 'Generating Personalized Training Scenarios, please wait...'
                 : 'Generate My Personalized Training Scenarios'}
             </button>
           )}
