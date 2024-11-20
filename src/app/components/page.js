@@ -268,7 +268,6 @@ export default function Home() {
         department,
         role,
         specialization,
-        sessionID
       });
       console.log('User inputs saved successfully.');
     } catch (error) {
@@ -694,6 +693,7 @@ export default function Home() {
     setError(null);
     try {
       
+
       setUserType('');
       setDepartment('');
       setRole('');
@@ -893,8 +893,6 @@ export default function Home() {
   // Function to handle page refresh
   const handlePageRefresh = async () => {
     try {
-      
-
       setUserType('');
       setDepartment('');
       setRole('');
@@ -1502,3 +1500,4 @@ export default function Home() {
   </>
 );
 }
+
