@@ -211,7 +211,7 @@ export async function POST(request) {
       - Each medical case study should include a different medical error that occured in the scenario. 
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
-      - Do not explicitly mention any error prevention tool by name in the scenario itself, or its definition. 
+      - Do not explicitly mention any of the 11 error prevention tools  in the scenario itself, or its definition. 
     
     - **For each case study, create 3 unique multiple-choice questions that:**
       - Have 4 option choices each.
@@ -221,7 +221,7 @@ export async function POST(request) {
       - The question should be strictly from the perspective of the ${role}.
       - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
       - Include clues by using buzzwords or synonyms from the correct answer's definition.
-      - Do not explicitly mention the prevention tools by name in the question header.
+      - Do not explicitly mention the error prevention tools by name in the question header.
     
     - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
       - **Question Structure**
