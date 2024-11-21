@@ -636,7 +636,7 @@ export async function POST(request) {
       model: 'o1-mini',
       messages: [
         {
-          role: 'system',
+          role: 'user',
           content: META_PROMPT,
         },
       ],
