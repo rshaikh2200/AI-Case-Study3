@@ -633,15 +633,14 @@ export async function POST(request) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'o1-mini',
+      model: "o1-mini",
       messages: [
         {
-          role: 'user',
+          role: "user",
           content: META_PROMPT,
         },
       ],
-      temperature: 0.7,
-      max_completion_tokens: 6000,
+      temperature: 1.0,
       stream: false,
     });
     
