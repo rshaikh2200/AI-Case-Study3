@@ -633,7 +633,7 @@ export async function POST(request) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'o1-mini',
       messages: [
         {
           role: 'system',
