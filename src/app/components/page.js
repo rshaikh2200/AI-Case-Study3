@@ -970,7 +970,6 @@ export default function Home() {
     'ENT Surgery',
     'Scrub Nurse',
     'Circulating Nurse',
-    'RN First Assistant',
     'Preoperative Nurse',
     'Post-Anesthesia Care Unit Nurse',
     'Perioperative Nurse Educator',
