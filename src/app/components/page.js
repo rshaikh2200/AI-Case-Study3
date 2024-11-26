@@ -998,11 +998,10 @@ export default function Home() {
   );
 
   // Example options for dropdowns based on userType
-  const clinicalDepartments = ['Operating Room'];
+  const clinicalDepartments = ['Operating Room', 'Transplant'];
 
   const nonClinicalDepartments = [
     'Communication',
-    // Add other non-clinical departments if needed
   ];
 
   const clinicalRoles = [
@@ -1010,7 +1009,7 @@ export default function Home() {
     'Nurse',
     'Circulator Nurse',
     'Surgical Technologist',
-    // Add other clinical roles if needed
+   
   ];
 
   const nonClinicalRoles = [
@@ -1038,7 +1037,7 @@ export default function Home() {
     'Post-Anesthesia Care Unit Nurse',
     'Perioperative Nurse Educator',
     'Urology Surgery',
-    // Add other specializations if needed
+    d
   ];
 
   // Generate random 6-digit user ID on component mount
