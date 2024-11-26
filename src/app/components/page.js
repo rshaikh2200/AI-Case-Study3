@@ -998,7 +998,11 @@ export default function Home() {
   );
 
   // Example options for dropdowns based on userType
-  const clinicalDepartments = ['Operating Room', 'Transplant'];
+  const clinicalDepartments = [
+    'Operating Room', 
+    'Transplant'
+    
+    ,];
 
   const nonClinicalDepartments = [
     'Communication',
