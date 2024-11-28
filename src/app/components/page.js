@@ -1250,9 +1250,22 @@ export default function Home() {
         'Pediatric Transplant',
         'Abdominal Transplant'
       ],
+      
     },
     
-    // Add other departments and their roles/specializations as needed
+    'Communication': {
+      'IT': [
+        
+      ],
+      'Patient Experince Coordinator': [
+        
+      ],
+      'Program Manager': [
+        
+      ],
+      
+    },
+    
   };
 
   // State variables for roles and specializations to use
@@ -1388,75 +1401,85 @@ export default function Home() {
     </Head>
 
     <div className="container mx-auto px-4">
-      {/* Responsive App Bar */}
-      <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-between items-center h-16">
-            {/* Logo/Brand - Always visible */}
-            <div className="flex-shrink-0 text-white font-bold text-sm sm:text-base">
-              AI Personalized Healthcare Safety Module
-            </div>
-
-            {/* Desktop Navigation - Hidden on mobile */}
-            <div className="hidden md:flex md:items-center md:space-x-4">
-              <Link
-                href="/"
-                className="text-white px-2 py-1 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
-              >
-                Home
-              </Link>
-              <Link
-                href="/dashboard"
-                className="text-white px-2 py-1 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
-              >
-                Dashboard
-              </Link>
-              <Link
-                href="/feedback"
-                className="text-white px-2 py-1 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
-              >
-                Feedback
-              </Link>
-            </div>
-
-            {/* Mobile Menu Button - Only visible on mobile */}
-            <div className="md:hidden">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-white/10 focus:outline-none"
-              >
-                <Menu className="h-6 w-6" />
-              </button>
-            </div>
-          </div>
-
-          {/* Mobile Menu - Only visible when open on mobile */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1">
-                <Link
-                  href="/"
-                  className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/dashboard"
-                  className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/feedback"
-                  className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
-                >
-                  Feedback
-                </Link>
-              </div>
-            </div>
-          )}
+  {/* Responsive App Bar */}
+  <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex items-center justify-between h-16">
+        {/* Logo */}
+        <div className="flex-shrink-0 text-white font-bold">
+          <span className="hidden sm:block">
+            AI Personalized Healthcare Safety Module
+          </span>
+          <span className="block sm:hidden">AI Healthcare</span>
         </div>
-      </nav>
+
+        {/* Desktop Navigation */}
+        <div className="hidden sm:flex sm:items-center sm:space-x-4">
+          <Link
+            href="/"
+            className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+          >
+            Home
+          </Link>
+          <Link
+            href="/dashboard"
+            className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href="/feedback"
+            className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+          >
+            Feedback
+          </Link>
+        </div>
+
+        {/* Mobile menu button */}
+        <div className="sm:hidden">
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="text-white hover:text-gray-200 focus:outline-none"
+          >
+            {isMobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Navigation */}
+      {isMobileMenuOpen && (
+        <div className="sm:hidden pb-4">
+          <div className="flex flex-col space-y-2">
+            <Link
+              href="/"
+              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              href="/dashboard"
+              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/feedback"
+              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Feedback
+            </Link>
+          </div>
+        </div>
+      )}
+    </div>
+  </nav>
 
       <div className="content-wrapper">
         {/* Image and Assessment Complete Form Container */}
