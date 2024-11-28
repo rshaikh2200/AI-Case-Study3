@@ -1,4 +1,4 @@
- // Copyright 2024 Propertiy of Rizwan Shaikh 
+  // Copyright 2024 Propertiy of Rizwan Shaikh 
  // Atlanta, Georgia 30344
  // All Rights Reserved
  
@@ -10,7 +10,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import Script from 'next/script';
 import Head from 'next/head';
 import Link from 'next/link';
-
 
 import {
   collection,
@@ -26,9 +25,136 @@ import {
 } from 'firebase/firestore';
 import { firestore } from '../firebase';
 
-
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+
+import Dialog from '@mui/material/Dialog';
+import { Trophy } from 'lucide-react';
+
+
+const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
+  return (
+    <Dialog
+      open={isOpen}
+      onClose={onClose}
+      PaperProps={{
+        className:
+          "certificate-container border-4 border-gray-300 rounded-2xl shadow-lg p-8 bg-gradient-to-br from-white to-blue-50 max-w-3xl w-full",
+        sx: {
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          margin: 0,
+        },
+      }}
+      BackdropProps={{
+        className: "bg-black/60",
+        sx: { backdropFilter: "blur(4px)" },
+      }}
+    >
+      <div className="certificate-popup">
+        {/* Popup Header */}
+        <div className="text-center py-10 bg-gradient-to-b from-blue-50 via-white to-transparent rounded-t-2xl border-b border-gray-100">
+          <div className="relative">
+            <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-32 h-32 bg-yellow-100 rounded-full opacity-50 blur-xl" />
+            <Trophy className="relative w-24 h-24 text-yellow-500 mx-auto mb-6 animate-bounce" />
+          </div>
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2">
+            Congratulations!
+          </h2>
+        </div>
+
+        {/* Certificate Content */}
+        <div
+          id="certificate"
+          className="certificate-content mx-4 my-8 border-4 border-double border-gray-300 p-8 rounded-lg shadow-lg relative"
+        >
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0 bg-[linear-gradient(45deg,#000_25%,transparent_25%,transparent_75%,#000_75%,#000),linear-gradient(45deg,#000_25%,transparent_25%,transparent_75%,#000_75%,#000)] bg-[length:60px_60px] bg-[position:0_0,30px_30px]" />
+          </div>
+          <div className="text-center mb-8 relative">
+            <img
+              src="/Picture1.jpg"
+              alt="CoachCare.ai Logo"
+              className="mx-auto h-24 mb-4 drop-shadow-md"
+            />
+          </div>
+          <div className="text-center space-y-6 relative">
+            <h2 className="text-4xl font-semibold text-gray-800 font-serif tracking-wide">
+              Certificate of Completion
+            </h2>
+            <p className="text-2xl text-gray-600">
+              This certificate is proudly presented to you
+            </p>
+            <p className="text-5xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent my-4 font-serif tracking-wide">
+              {fullName}
+            </p>
+            <p className="text-2xl leading-relaxed text-gray-700">
+              For successfully completing the{" "}
+              <span className="font-semibold">
+                Patient Safety Language Basics
+              </span>{" "}
+              module.
+            </p>
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <p className="text-xl text-gray-600">
+                Issued on: <span className="font-semibold">{date}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Enhanced Action Buttons */}
+        <div className="flex justify-center gap-6 pt-6">
+          <button
+            onClick={onPrint}
+            className="group relative px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              <svg
+                className="w-5 h-5 transition-transform group-hover:rotate-12"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2-2H9a2 2-0-2 2v4a2 2 0 002 2zm8-12V5a2 2-2H9a2 2-2H2v4a2 2-2H9a2 2v2v0H8m4 0z"
+                />
+              </svg>
+              Print Certificate
+            </span>
+          </button>
+          <button
+            onClick={onClose}
+            className="group px-8 py-3 bg-white text-gray-700 rounded-xl font-semibold shadow-md border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:-translate-y-0.5 transition-all duration-200 hover:shadow-lg"
+          >
+            <span className="flex items-center gap-2">
+              <svg
+                className="w-5 h-5 transition-transform group-hover:-translate-x-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              Close
+            </span>
+          </button>
+        </div>
+      </div>
+    </Dialog>
+  );
+};
+
 
 export default function Home() {
   // State Variables
@@ -50,6 +176,8 @@ export default function Home() {
   const [language, setLanguage] = useState('english');
   const [showTranslate, setShowTranslate] = useState(true);
   
+  // Added state variable for certificate popup
+  const [isCertificateOpen, setIsCertificateOpen] = useState(false);
 
   // Audio-related states
   const [audioUrl, setAudioUrl] = useState(null);
@@ -78,6 +206,11 @@ export default function Home() {
   const [sessionID, setSessionID] = useState('');
   const [workflowData, setWorkflowData] = useState([]);
 
+  useEffect(() => {
+    if (assessmentComplete && totalScore >= 70) {
+      setIsCertificateOpen(true);
+    }
+  }, [assessmentComplete, totalScore]);
  
   const generateSpeech = async () => {
     if (!currentCaseStudy) return;
@@ -324,7 +457,7 @@ export default function Home() {
         setError('Failed to save case studies. Please try again.');
         throw error; // Propagate error to handleSubmitFinalAssessment
     }
-};
+  };
 
   // Function to save session data to Firestore
   const saveSessionData = async (sessionID) => {
@@ -378,6 +511,21 @@ export default function Home() {
     handleSubmitAssessment();
     // Hide the Google Translate menu after clicking the button
     setShowTranslate(false);
+  };
+
+  // Function to get Workflow ID
+  const getWorkflowID = (caseIndex, questionIndex) => {
+    let count = 1; // Start from 1 because 'Take Assessment' is at index 0
+    for (let i = 0; i < caseIndex; i++) {
+      count += caseStudies[i].questions.length;
+    }
+    count += questionIndex;
+    return workflowData[count]?.workflowID || '';
+  };
+
+  // Function to get Workflow Name
+  const getWorkflowName = (caseIndex, questionIndex) => {
+    return `Case${caseIndex + 1}-Question${questionIndex + 1}`;
   };
 
   // Handle submitting the assessment
@@ -441,21 +589,6 @@ export default function Home() {
     }
   };
 
-  // Function to get Workflow ID
-  const getWorkflowID = (caseIndex, questionIndex) => {
-    let count = 1; // Start from 1 because 'Take Assessment' is at index 0
-    for (let i = 0; i < caseIndex; i++) {
-      count += caseStudies[i].questions.length;
-    }
-    count += questionIndex;
-    return workflowData[count]?.workflowID || '';
-  };
-
-  // Function to get Workflow Name
-  const getWorkflowName = (caseIndex, questionIndex) => {
-    return `Case${caseIndex + 1}-Question${questionIndex + 1}`;
-  };
-
   // Modified handleAnswerChange function
   const handleAnswerChange = (caseIndex, questionIndex, selectedOption) => {
     const key = `${caseIndex}-${questionIndex}`;
@@ -490,7 +623,7 @@ export default function Home() {
       feedbackMessageNew = 'Correct Answer';
       hintToShow = ''; // No hint needed when correct
     } else {
-      const attemptsLeft = 1 - currentAttempts;
+      const attemptsLeft = 2 - currentAttempts - 1; // Updated to reflect total of 2 attempts
       hintToShow = hint; // Show hint on every incorrect attempt
       if (attemptsLeft > 0) {
         feedbackMessageNew = `Incorrect Answer. ${attemptsLeft} tries left.`;
@@ -553,6 +686,29 @@ export default function Home() {
     }
 
     saveWorkflowData(dataToSave);
+
+    // Move to next question or case study after feedback with 1-second delay
+    if (isCorrect || currentAttempts + 1 >= 2) {
+      setTimeout(() => { // Added 1-second delay
+        const isLastQuestionInCaseStudy =
+          questionIndex === caseStudies[caseIndex].questions.length - 1;
+
+        const isLastCaseStudy = caseIndex === caseStudies.length - 1;
+
+        if (isLastQuestionInCaseStudy && isLastCaseStudy) {
+          // This is the last question of the last case study
+          // Proceed to assessment complete form
+          handleSubmitFinalAssessment();
+        } else if (isLastQuestionInCaseStudy) {
+          // Move to first question of next case study
+          setCurrentCaseStudyIndex((prevIndex) => prevIndex + 1);
+          setCurrentQuestionIndex(0);
+        } else {
+          // Move to next question in the current case study
+          setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+        }
+      }, 1000); // 1-second delay
+    }
   };
 
   // Function to calculate the score
@@ -609,7 +765,10 @@ export default function Home() {
 
   // Handle submitting the final assessment
   const handleSubmitFinalAssessment = () => {
-    proceedWithSubmission();
+    // Added 1-second delay before proceeding with submission
+    setTimeout(() => {
+      proceedWithSubmission();
+    }, 1000); // 1-second delay
   };
 
   // Function to proceed with submission
@@ -645,45 +804,6 @@ export default function Home() {
       console.error('Error during submission:', err);
     } finally {
       setIsLoading(false);
-    }
-  };
-
-  // Handle Next Button Click
-  const handleNext = () => {
-    setError(null); // Clear error if any
-    // Check if user has selected an answer
-    if (
-      !selectedAnswers[currentCaseStudyIndex] ||
-      !selectedAnswers[currentCaseStudyIndex][currentQuestionIndex]
-    ) {
-      setError('Please select an answer');
-      return;
-    }
-
-    // Get Workflow ID and Name
-    const workflowID = getWorkflowID(currentCaseStudyIndex, currentQuestionIndex);
-    const workflowName = getWorkflowName(currentCaseStudyIndex, currentQuestionIndex);
-    const timestamp = new Date();
-
-    const dataToSave = {
-      workflowID: workflowID,
-      sessionID: sessionID,
-      workflowName: workflowName,
-      nextButtonTimestamp: timestamp,
-    };
-
-    saveWorkflowData(dataToSave);
-
-    if (!isLastQuestion) {
-      // Move to next question in the current case study
-      setCurrentQuestionIndex(currentQuestionIndex + 1);
-    } else if (!isLastCaseStudy) {
-      // Move to first question of next case study
-      setCurrentCaseStudyIndex(currentCaseStudyIndex + 1);
-      setCurrentQuestionIndex(0);
-    } else {
-      // Last question of last case study, proceed to submit
-      handleSubmitFinalAssessment();
     }
   };
 
@@ -890,6 +1010,161 @@ export default function Home() {
     }
   };
 
+  const handlePrintCertificate = () => {
+    const certificateElement = document.getElementById("certificate");
+
+    if (certificateElement) {
+      // Clone the certificate element for printing
+      const printWindow = window.open("", "PRINT", "width=800,height=600");
+      printWindow.document.write(`
+        <html>
+        <head>
+          <title>Coachcare.ai</title>
+          <style>
+            body {
+              margin: 0;
+              padding: 0;
+              font-family: 'Helvetica', 'Arial', sans-serif;
+            }
+            .certificate-container {
+              border: 4px solid #d1d5db;
+              border-radius: 1rem;
+              box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+              padding: 2rem;
+              background: linear-gradient(to bottom right, white, #bfdbfe);
+              max-width: 768px;
+              width: 100%;
+              margin: 2rem auto;
+            }
+            .certificate-popup {
+              position: relative;
+            }
+            .certificate-content {
+              position: relative;
+              z-index: 10;
+            }
+            .absolute-inset {
+              position: absolute;
+              top: 0;
+              left: 0;
+              right: 0;
+              bottom: 0;
+              opacity: 0.05;
+              background: repeating-linear-gradient(
+                45deg,
+                #000,
+                #000 25%,
+                transparent 25%,
+                transparent 50%
+              );
+              background-size: 60px 60px;
+            }
+            .text-center {
+              text-align: center;
+            }
+            .py-10 {
+              padding-top: 2.5rem;
+              padding-bottom: 2.5rem;
+            }
+            .bg-gradient-to-b {
+              background: linear-gradient(to bottom, #dbeafe, white, transparent);
+            }
+            .rounded-t-2xl {
+              border-top-left-radius: 1rem;
+              border-top-right-radius: 1rem;
+            }
+            .border-b {
+              border-bottom: 1px solid #d1d5db;
+            }
+            .text-4xl {
+              font-size: 2.25rem;
+            }
+            .font-bold {
+              font-weight: 700;
+            }
+            .bg-gradient-to-r {
+              background: linear-gradient(to right, #059669, #2563eb);
+            }
+            .bg-clip-text {
+              -webkit-background-clip: text;
+              background-clip: text;
+            }
+            .text-transparent {
+              color: transparent;
+            }
+            .font-semibold {
+              font-weight: 600;
+            }
+            .font-serif {
+              font-family: 'Times New Roman', Times, serif;
+            }
+            .tracking-wide {
+              letter-spacing: 0.05em;
+            }
+            .p-8 {
+              padding: 2rem;
+            }
+            .border-double {
+              border-style: double;
+            }
+            .border-gray-300 {
+              border-color: #d1d5db;
+            }
+            .rounded-lg {
+              border-radius: 0.5rem;
+            }
+            .shadow-lg {
+              box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            }
+            .bg-yellow-100 {
+              background-color: #fef3c7;
+            }
+            .rounded-full {
+              border-radius: 9999px;
+            }
+            .opacity-50 {
+              opacity: 0.5;
+            }
+            .blur-xl {
+              filter: blur(20px);
+            }
+            .text-yellow-500 {
+              color: #f59e0b;
+            }
+            .mx-auto {
+              margin-left: auto;
+              margin-right: auto;
+            }
+            .mb-6 {
+              margin-bottom: 1.5rem;
+            }
+            .animate-bounce {
+              animation: bounce 2s infinite;
+            }
+            @keyframes bounce {
+              0%, 100% { transform: translateY(0); }
+              50% { transform: translateY(-10px); }
+            }
+            .certificate-content {
+              position: relative;
+            }
+            /* Additional styles can be added here if needed */
+          </style>
+        </head>
+        <body>
+          <div class="certificate-container">
+            ${certificateElement.outerHTML}
+          </div>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      printWindow.close();
+    }
+  };
+
   // Function to handle page refresh
   const handlePageRefresh = async () => {
     try {
@@ -934,48 +1209,91 @@ export default function Home() {
     currentQuestionIndex === currentCaseStudy?.questions.length - 1;
   const isLastCaseStudy = currentCaseStudyIndex === caseStudies.length - 1;
 
-  // Example options for dropdowns based on userType
-  const clinicalDepartments = ['Operating Room'];
+  const departmentRoleSpecializationMap = {
+    'Operating Room': {
+      'Surgeon': [
+        'General Surgery',
+        'Orthopedic Surgery',
+        'Neurosurgery',
+        'Cardiothoracic Surgery'
+      ],
+      'Nurse': [
+        'Scrub Nurse',
+        'Circulating Nurse',
+        'Preoperative Nurse',
+        'Post-Anesthesia Care Unit Nurse'
+      ],
+      'Circulator Nurse': [
+        'General Surgery',
+        'Orthopedic Surgery',
+        'Neurosurgery',
+        'Vascular Surgery'
+      ],
+      'Surgical Technologist': [
+        'General Surgery',
+        'Orthopedic Surgery',
+        'Neurosurgery',
+        'Cardiothoracic Surgery'
+      ],
+    },
+    'Transplant': {
+      'Surgeon': [
+        'Kidney Transplant',
+        'Heart Transplant',
+        'Liver Transplant',
+        'Pediatric Transplant'
+      ],
+      'Nurse': [
+        'Critical Care Transplant',
+        'Organ Procurement',
+        'Dialysis',
+        'Oncology Transplant'
+      ],
+      'Surgical Technologist': [
+        'Cardiothoracic Transplant',
+        'Living Donor Transplant',
+        'Pediatric Transplant',
+        'Abdominal Transplant'
+      ],
+    },
+    
+    // Add other departments and their roles/specializations as needed
+  };
 
-  const nonClinicalDepartments = [
-    'Communication',
-    // Add other non-clinical departments if needed
-  ];
+  // State variables for roles and specializations to use
+  const [rolesToUse, setRolesToUse] = useState([]);
+  const [specializationsToUse, setSpecializationsToUse] = useState([]);
 
-  const clinicalRoles = [
-    'Surgeon',
-    'Nurse',
-    'Circulator Nurse',
-    'Surgical Technologist',
-    // Add other clinical roles if needed
-  ];
+   // Update rolesToUse when department changes
+   useEffect(() => {
+    if (department) {
+      const roles = Object.keys(departmentRoleSpecializationMap[department] || {});
+      setRolesToUse(roles);
+    } else {
+      setRolesToUse([]);
+    }
+    // Reset role and specialization when department changes
+    setRole('');
+    setSpecialization('');
+    setSpecializationsToUse([]);
+  }, [department]);
 
-  const nonClinicalRoles = [
-    'Administrator',
-    'Accountant',
-    'HR Manager',
-    'Maintenance Staff',
-    'IT Support',
-    // Add other non-clinical roles if needed
-  ];
+  // Update specializationsToUse when role changes
+  useEffect(() => {
+    if (department && role) {
+      const specializations =
+        departmentRoleSpecializationMap[department][role] || [];
+      setSpecializationsToUse(specializations);
+    } else {
+      setSpecializationsToUse([]);
+    }
+    // Reset specialization when role changes
+    setSpecialization('');
+  }, [department, role]);
 
-  const specializations = [
-    'General Surgery',
-    'Orthopedic',
-    'Neurosurgery',
-    'Vascular Surgery',
-    'Transplant Surgery',
-    'Oncological Surgery',
-    'Gynecological Surgery',
-    'ENT Surgery',
-    'Scrub Nurse',
-    'Circulating Nurse',
-    'Preoperative Nurse',
-    'Post-Anesthesia Care Unit Nurse',
-    'Perioperative Nurse Educator',
-    'Urology Surgery',
-    // Add other specializations if needed
-  ];
+  // Example departments based on userType
+  const clinicalDepartments = ['Operating Room', 'Transplant', ];
+  const nonClinicalDepartments = ['Communication',];
 
   // Generate random 6-digit user ID on component mount
   useEffect(() => {
@@ -983,19 +1301,14 @@ export default function Home() {
     setUserID(randomID);
   }, []);
 
-  // Determine which departments and roles to use based on userType
+  // Determine which departments to use based on userType
   let departmentsToUse = [];
-  let rolesToUse = [];
 
   if (userType === 'clinical') {
     departmentsToUse = clinicalDepartments;
-    rolesToUse = clinicalRoles;
   } else if (userType === 'non-clinical') {
     departmentsToUse = nonClinicalDepartments;
-    rolesToUse = nonClinicalRoles;
   }
-
-  
 
   useEffect(() => {
     // Initialize Google Translate
@@ -1081,7 +1394,8 @@ export default function Home() {
 
       {/* Define the Google Translate callback function before the script loads */}
       <Script id="google-translate-init" strategy="beforeInteractive">
-        {`
+        {
+          `
           function googleTranslateElementInit() {
             new google.translate.TranslateElement({
               pageLanguage: 'en',
@@ -1090,7 +1404,8 @@ export default function Home() {
               layout: google.translate.TranslateElement.InlineLayout.SIMPLE
             }, 'google_translate_element');
           }
-        `}
+          `
+        }
       </Script>
 
       {/* Load the Google Translate script after the callback is defined */}
@@ -1211,6 +1526,16 @@ export default function Home() {
                 >
                   🖨️ Print Assessment Report
                 </button>
+                {/* Added "View Certificate" Button */}
+                {totalScore >= 70 && (
+                  <button
+                    className="certificate-button"
+                    onClick={() => setIsCertificateOpen(true)}
+                    disabled={isLoading}
+                  >
+                    🎓 View Certificate
+                  </button>
+                )}
               </div>
             </div>
           )}
@@ -1276,7 +1601,7 @@ export default function Home() {
                     setRole(e.target.value);
                     if (error) setError(''); // Clear error if any
                   }}
-                  disabled={!userType}
+                  disabled={!department}
                 >
                   <option value="">Select Role</option>
                   {rolesToUse.map((r) => (
@@ -1298,9 +1623,10 @@ export default function Home() {
                       setSpecialization(e.target.value);
                       if (error) setError(''); // Clear error if any
                     }}
+                    disabled={!role}
                   >
                     <option value="">Select Specialization</option>
-                    {specializations.map((spec) => (
+                    {specializationsToUse.map((spec) => (
                       <option key={spec} value={spec}>
                         {spec}
                       </option>
@@ -1322,7 +1648,7 @@ export default function Home() {
               disabled={isLoading}
             >
               {isLoading
-                ? 'Generating Personalized Training Scenarios, please wait...'
+                ? 'Starting your assessment, please wait...'
                 : 'Generate My Personalized Training Scenarios'}
             </button>
           )}
@@ -1403,7 +1729,7 @@ export default function Home() {
                           feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
                             ?.message || '';
                         const isCorrect = feedbackMessage === 'Correct Answer';
-                        const maxAttemptsReached = currentAttempts >= 3 || isCorrect;
+                        const maxAttemptsReached = currentAttempts >= 2 || isCorrect; // Updated to 2 attempts
 
                         return (
                           <div className="option-item" key={option.key}>
@@ -1465,18 +1791,7 @@ export default function Home() {
               )}
 
               {/* Navigation Button */}
-              {caseStudies[currentCaseStudyIndex].questions &&
-                caseStudies[currentCaseStudyIndex].questions.length > 0 && (
-                  <div className="navigation-buttons">
-                    <button
-                      type="button"
-                      className="next-button"
-                      onClick={handleNext}
-                    >
-                      {isLastQuestion && isLastCaseStudy ? 'Submit' : 'Next'}
-                    </button>
-                  </div>
-                )}
+              {/* Next button removed as per requirements */}
             </div>
           </div>
         )}
@@ -1492,11 +1807,23 @@ export default function Home() {
       {/* Footer */}
       <footer className="footer">
         <p>
-          © 2024 CoachCare.ai 
+          © 2024 CoachCare.ai | Contact: operations@coachcare.ai 
         </p>
       </footer>
+
+      {/* Certificate Popup */}
+      {isCertificateOpen && (
+        <CertificatePopup
+          isOpen={isCertificateOpen}
+          onClose={() => setIsCertificateOpen(false)}
+          fullName={fullName}
+          date={new Date().toLocaleDateString()}
+          onPrint={handlePrintCertificate}
+        />
+      )}
     </div>
   </>
-);
+  );
 }
+
 
