@@ -1,3 +1,40 @@
+/* Reset some basic styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Global CSS (styles.css) */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Root Variables */
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --success-color: #22c55e;
+  --error-color: #ef4444;
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f4f6;
+  --border-color: #e5e7eb;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --transition-base: all 0.3s ease;
+}
+
+/* Body Styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: #f0f2f5;
+  color: #333333;
+  line-height: 1.6;
+}
+
 /* Container */
 .container {
   max-width: 1200px;
@@ -308,6 +345,12 @@
     justify-content: center;
     padding: 1rem;
   }
+
+  .safety-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    max-width: 100%;
+  }
 }
 
 /* Print Styles */
@@ -396,6 +439,7 @@
   }
 }
 
+/* Safety Text */
 .safety-text {
   font-size: 1rem;
   color: #333;
@@ -404,14 +448,6 @@
   margin: 0 auto;
   text-align: justify;
   padding: 0 10px;
-}
-
-@media (max-width: 768px) {
-  .safety-text {
-    font-size: 0.9rem;
-    line-height: 1.4;
-    max-width: 100%;
-  }
 }
 
 /* Google Translate Element */
@@ -962,63 +998,159 @@
   background-color: #2980b9;
 }
 
-/* Global CSS (styles.css) */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Custom styles for the navigation */
-.nav-container {
-  @apply w-full fixed top-0 z-50 shadow-md;
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.app-bar {
-  @apply bg-slate-800 p-4 flex justify-between items-center;
+@keyframes scaleIn {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
 
-.nav-button {
-  @apply text-white font-medium bg-indigo-600 px-4 py-2 rounded-md 
-         transition-all duration-300 ease-in-out
-         hover:bg-indigo-700 hover:shadow-lg
-         active:transform active:scale-95;
+/* Loading State */
+.feedback-button.loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.8;
 }
 
-.nav-button + .nav-button {
-  @apply ml-4; /* Reduced margin-left for closer buttons */
+.feedback-button.loading::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  margin: -10px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-/* Reset some basic styles */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-  background-color: #f0f2f5;
-  color: #333333;
-  line-height: 1.6;
+/* Font Styles */
+.font-serif {
+  font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+  letter-spacing: 0.05em;
 }
+
+/* Close Button */
+.close-button {
+  background: white;
+  color: #4b5563;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.close-button:hover {
+  background: #f3f4f6;
+  transform: translateY(-2px) translateZ(0);
+}
+
+/* ----------------------- */
+/* Additional Styles Added */
+/* ----------------------- */
+
+/* Navigation Bar Enhancements for Responsiveness */
+
+/* Brand Name in Navigation */
+.brand-name {
+  font-weight: bold;
+  color: white;
+}
+
+/* Menu Button */
+.menu-button {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Media Queries for Responsive Navigation */
+@media (max-width: 768px) {
+  /* Hide navigation links by default */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px; /* Adjust based on nav-bar height */
+    right: 0;
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    width: 100%;
+    text-align: right;
+    padding: 1rem;
+    z-index: 49; /* Ensure it appears below the nav-container */
+  }
+
+  /* Show navigation links when open */
+  .nav-links.open {
+    display: flex;
+  }
+
+  /* Show menu button */
+  .menu-button {
+    display: block;
+  }
+
+  /* Adjust nav-container to position relative for absolute nav-links */
+  .nav-container {
+    position: relative;
+  }
+
+  /* Adjust app-bar height if necessary */
+  .app-bar {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* ----------------------- */
+/* End of Additional Styles */
+/* ----------------------- */
 
 /* Enhanced Feedback Form Styles */
-:root {
-  --primary-color: #2563eb;
-  --primary-hover: #1d4ed8;
-  --success-color: #22c55e;
-  --error-color: #ef4444;
-  --text-primary: #1f2937;
-  --text-secondary: #4b5563;
-  --bg-primary: #ffffff;
-  --bg-secondary: #f3f4f6;
-  --border-color: #e5e7eb;
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --transition-base: all 0.3s ease;
-}
-
-/* Container Styles */
 .feedback-container {
   max-width: 600px;
   margin: 50px auto;
@@ -1373,6 +1505,7 @@ body {
     width: 100%;
     text-align: right;
     padding: 1rem;
+    z-index: 49; /* Ensure it appears below the nav-container */
   }
 
   /* Show navigation links when open */
@@ -1389,11 +1522,56 @@ body {
   .nav-container {
     position: relative;
   }
+
+  /* Adjust app-bar height if necessary */
+  .app-bar {
+    padding: 0.75rem 1rem;
+  }
 }
 
 /* ----------------------- */
 /* End of Additional Styles */
 /* ----------------------- */
 
-/* Include all the styles from your original `global.css`, ensuring that the modifications are included */
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
 
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ----------------------- */
+/* End of Modified CSS */
+/* ----------------------- */
