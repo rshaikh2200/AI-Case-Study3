@@ -23,7 +23,8 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 import Dialog from '@mui/material/Dialog';
-import { Trophy, Menu } from 'lucide-react';
+import { Trophy, Menu, X } from 'lucide-react';
+import Image from 'next/image';
 
 const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
   return (
@@ -1868,4 +1869,5 @@ export default function Home() {
     </div>
   </>
 );
+}
 }
