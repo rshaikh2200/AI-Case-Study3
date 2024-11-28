@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { Menu, X } from 'lucide-react';
 
 const Feedback = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const Feedback = () => {
 
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
@@ -27,11 +29,9 @@ const Feedback = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // For testing, we'll just log the data
     console.log(formData);
     setSubmitted(true);
     setFormData({
-
       rating: '5',
       difficulty: '3',
       informational: '',
@@ -40,141 +40,108 @@ const Feedback = () => {
     });
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
     <>
-      {/* App Bar with Navigation Buttons */}
-      <nav
-        style={{
-          background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
-          padding: '0.75rem 1.5rem',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-          position: 'sticky',
-          top: 0,
-          zIndex: 10,
-        }}
-      >
-        <div
-          style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}
-        >
-          {/* Logo or Brand Name could go here */}
-          <div style={{ fontWeight: 'bold', color: 'white' }}>
-            AI Personalized Healthcare Safety Module
+      {/* Responsive App Bar */}
+      <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex-shrink-0 text-white font-bold">
+              <span className="hidden sm:block">AI Personalized Healthcare Safety Module</span>
+              <span className="block sm:hidden">AI Healthcare</span>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden sm:flex sm:items-center sm:space-x-4">
+              <Link
+                href="/"
+                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              >
+                Home
+              </Link>
+              <Link
+                href="/dashboard"
+                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/feedback"
+                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              >
+                Feedback
+              </Link>
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="sm:hidden">
+              <button
+                onClick={toggleMenu}
+                className="text-white hover:text-gray-200 focus:outline-none"
+              >
+                {isMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
           </div>
 
-          {/* Navigation Links */}
-          <div
-            style={{
-              display: 'flex',
-              gap: '1rem',
-              alignItems: 'center',
-            }}
-          >
-            <Link
-              href="/"
-              style={{
-                color: 'white',
-                padding: '0.5rem 1rem',
-                borderRadius: '0.375rem',
-                transition: 'background-color 0.2s ease',
-                textDecoration: 'none',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                backgroundColor: 'rgba(255,255,255,0.1)',
-              }}
-            >
-              Home
-            </Link>
-            <Link
-              href="/dashboard"
-              style={{
-                color: 'white',
-                padding: '0.5rem 1rem',
-                borderRadius: '0.375rem',
-                transition: 'background-color 0.2s ease',
-                textDecoration: 'none',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                backgroundColor: 'rgba(255,255,255,0.1)',
-              }}
-            >
-              Dashboard
-            </Link>
-            <Link
-              href="/feedback"
-              style={{
-                color: 'white',
-                padding: '0.5rem 1rem',
-                borderRadius: '0.375rem',
-                transition: 'background-color 0.2s ease',
-                textDecoration: 'none',
-                fontSize: '0.875rem',
-                fontWeight: '600',
-                backgroundColor: 'rgba(255,255,255,0.1)',
-              }}
-            >
-              Feedback
-            </Link>
-          </div>
+          {/* Mobile Navigation */}
+          {isMenuOpen && (
+            <div className="sm:hidden pb-4">
+              <div className="flex flex-col space-y-2">
+                <Link
+                  href="/"
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/feedback"
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Feedback
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
-      <div
-        className="feedback-container"
-        style={{
-          maxWidth: '600px',
-          margin: '2rem auto',
-          padding: '1rem',
-        }}
-      >
-        <h1 className="feedback-title">Service Feedback</h1>
+      <div className="max-w-[600px] mx-auto px-4 sm:px-6 py-8">
+        <h1 className="text-2xl font-bold mb-6">Service Feedback</h1>
         {submitted && (
-          <p
-            className="feedback-success"
-            style={{ color: 'green', marginBottom: '1rem' }}
-          >
+          <p className="text-green-600 mb-4">
             Thank you for your feedback!
           </p>
         )}
         {error && (
-          <p
-            className="feedback-error"
-            style={{ color: 'red', marginBottom: '1rem' }}
-          >
+          <p className="text-red-600 mb-4">
             {error}
           </p>
         )}
-        <form onSubmit={handleSubmit} className="feedback-form">
-          {/* Name Field */}
-          <div
-            className="feedback-field"
-            style={{ marginBottom: '1rem' }}
-          >
-          
-         
-          </div>
-
-          {/* Email Field */}
-          <div
-            className="feedback-field"
-            style={{ marginBottom: '1rem' }}
-          >
-            
-          </div>
-
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Overall Rating Field */}
-          <div
-            className="feedback-field"
-            style={{ marginBottom: '1rem' }}
-          >
+          <div>
             <label
               htmlFor="rating"
-              style={{ display: 'block', marginBottom: '0.5rem' }}
+              className="block mb-2 font-medium"
             >
               Overall Rating
             </label>
@@ -184,12 +151,7 @@ const Feedback = () => {
               value={formData.rating}
               onChange={handleChange}
               required
-              style={{
-                width: '100%',
-                padding: '0.5rem',
-                borderRadius: '0.375rem',
-                border: '1px solid #ccc',
-              }}
+              className="w-full p-2 border border-gray-300 rounded-md"
             >
               <option value="5">★★★★★ - Excellent</option>
               <option value="4">★★★★☆ - Very Good</option>
@@ -200,13 +162,10 @@ const Feedback = () => {
           </div>
 
           {/* Difficulty of Questions Field */}
-          <div
-            className="feedback-field"
-            style={{ marginBottom: '1rem' }}
-          >
+          <div>
             <label
               htmlFor="difficulty"
-              style={{ display: 'block', marginBottom: '0.5rem' }}
+              className="block mb-2 font-medium"
             >
               Difficulty of Questions
             </label>
@@ -216,12 +175,7 @@ const Feedback = () => {
               value={formData.difficulty}
               onChange={handleChange}
               required
-              style={{
-                width: '100%',
-                padding: '0.5rem',
-                borderRadius: '0.375rem',
-                border: '1px solid #ccc',
-              }}
+              className="w-full p-2 border border-gray-300 rounded-md"
             >
               <option value="1">1 - Very Easy</option>
               <option value="2">2 - Easy</option>
@@ -232,20 +186,12 @@ const Feedback = () => {
           </div>
 
           {/* Informational Case Study Field */}
-          <div
-            className="feedback-field"
-            style={{ marginBottom: '1rem' }}
-          >
-            <label
-              style={{ display: 'block', marginBottom: '0.5rem' }}
-            >
+          <div>
+            <label className="block mb-2 font-medium">
               Was the case study informational?
             </label>
-            <div
-              className="radio-group"
-              style={{ display: 'flex', gap: '1rem' }}
-            >
-              <label>
+            <div className="flex space-x-4">
+              <label className="flex items-center">
                 <input
                   type="radio"
                   name="informational"
@@ -253,16 +199,18 @@ const Feedback = () => {
                   checked={formData.informational === 'Yes'}
                   onChange={handleChange}
                   required
+                  className="mr-2"
                 />
                 Yes
               </label>
-              <label>
+              <label className="flex items-center">
                 <input
                   type="radio"
                   name="informational"
                   value="No"
                   checked={formData.informational === 'No'}
                   onChange={handleChange}
+                  className="mr-2"
                 />
                 No
               </label>
@@ -270,20 +218,12 @@ const Feedback = () => {
           </div>
 
           {/* Interesting Case Study Field */}
-          <div
-            className="feedback-field"
-            style={{ marginBottom: '1rem' }}
-          >
-            <label
-              style={{ display: 'block', marginBottom: '0.5rem' }}
-            >
+          <div>
+            <label className="block mb-2 font-medium">
               Was the case study interesting?
             </label>
-            <div
-              className="radio-group"
-              style={{ display: 'flex', gap: '1rem' }}
-            >
-              <label>
+            <div className="flex space-x-4">
+              <label className="flex items-center">
                 <input
                   type="radio"
                   name="interesting"
@@ -291,16 +231,18 @@ const Feedback = () => {
                   checked={formData.interesting === 'Yes'}
                   onChange={handleChange}
                   required
+                  className="mr-2"
                 />
                 Yes
               </label>
-              <label>
+              <label className="flex items-center">
                 <input
                   type="radio"
                   name="interesting"
                   value="No"
                   checked={formData.interesting === 'No'}
                   onChange={handleChange}
+                  className="mr-2"
                 />
                 No
               </label>
@@ -308,13 +250,10 @@ const Feedback = () => {
           </div>
 
           {/* Comments Field */}
-          <div
-            className="feedback-field"
-            style={{ marginBottom: '1rem' }}
-          >
+          <div>
             <label
               htmlFor="comments"
-              style={{ display: 'block', marginBottom: '0.5rem' }}
+              className="block mb-2 font-medium"
             >
               Additional Comments
             </label>
@@ -326,29 +265,14 @@ const Feedback = () => {
               required
               placeholder="Your feedback..."
               rows="5"
-              style={{
-                width: '100%',
-                padding: '0.5rem',
-                borderRadius: '0.375rem',
-                border: '1px solid #ccc',
-              }}
+              className="w-full p-2 border border-gray-300 rounded-md"
             ></textarea>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            className="feedback-button"
-            style={{
-              padding: '0.75rem 1.5rem',
-              backgroundColor: '#1d4ed8',
-              color: 'white',
-              border: 'none',
-              borderRadius: '0.375rem',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              fontWeight: '600',
-            }}
+            className="w-full sm:w-auto px-6 py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-600 transition-colors"
           >
             Submit Feedback
           </button>
@@ -359,4 +283,3 @@ const Feedback = () => {
 };
 
 export default Feedback;
-
