@@ -52,7 +52,9 @@ const Feedback = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex-shrink-0 text-white font-bold">
-              <span className="hidden sm:block">AI Personalized Healthcare Safety Module</span>
+              <span className="hidden sm:block">
+                AI Personalized Healthcare Safety Module
+              </span>
               <span className="block sm:hidden">AI Healthcare</span>
             </div>
 
@@ -124,159 +126,138 @@ const Feedback = () => {
         </div>
       </nav>
 
+      {/* Feedback Form Container */}
       <div className="max-w-[600px] mx-auto px-4 sm:px-6 py-8">
-        <h1 className="text-2xl font-bold mb-6">Service Feedback</h1>
-        {submitted && (
-          <p className="text-green-600 mb-4">
-            Thank you for your feedback!
-          </p>
-        )}
-        {error && (
-          <p className="text-red-600 mb-4">
-            {error}
-          </p>
-        )}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Overall Rating Field */}
-          <div>
-            <label
-              htmlFor="rating"
-              className="block mb-2 font-medium"
-            >
-              Overall Rating
-            </label>
-            <select
-              id="rating"
-              name="rating"
-              value={formData.rating}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border border-gray-300 rounded-md"
-            >
-              <option value="5">★★★★★ - Excellent</option>
-              <option value="4">★★★★☆ - Very Good</option>
-              <option value="3">★★★☆☆ - Good</option>
-              <option value="2">★★☆☆☆ - Fair</option>
-              <option value="1">★☆☆☆☆ - Poor</option>
-            </select>
-          </div>
-
-          {/* Difficulty of Questions Field */}
-          <div>
-            <label
-              htmlFor="difficulty"
-              className="block mb-2 font-medium"
-            >
-              Difficulty of Questions
-            </label>
-            <select
-              id="difficulty"
-              name="difficulty"
-              value={formData.difficulty}
-              onChange={handleChange}
-              required
-              className="w-full p-2 border border-gray-300 rounded-md"
-            >
-              <option value="1">1 - Very Easy</option>
-              <option value="2">2 - Easy</option>
-              <option value="3">3 - Moderate</option>
-              <option value="4">4 - Difficult</option>
-              <option value="5">5 - Very Difficult</option>
-            </select>
-          </div>
-
-          {/* Informational Case Study Field */}
-          <div>
-            <label className="block mb-2 font-medium">
-              Was the case study informational?
-            </label>
-            <div className="flex space-x-4">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="informational"
-                  value="Yes"
-                  checked={formData.informational === 'Yes'}
-                  onChange={handleChange}
-                  required
-                  className="mr-2"
-                />
-                Yes
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="informational"
-                  value="No"
-                  checked={formData.informational === 'No'}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                No
-              </label>
+        <div className="feedback-form-container">
+          <h1>Service Feedback</h1>
+          {submitted && (
+            <p className="success-message">
+              Thank you for your feedback!
+            </p>
+          )}
+          {error && (
+            <p className="error-message">
+              {error}
+            </p>
+          )}
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Overall Rating Field */}
+            <div>
+              <label htmlFor="rating">Overall Rating</label>
+              <select
+                id="rating"
+                name="rating"
+                value={formData.rating}
+                onChange={handleChange}
+                required
+                className="w-full"
+              >
+                <option value="">Select Rating</option>
+                <option value="5">★★★★★ - Excellent</option>
+                <option value="4">★★★★☆ - Very Good</option>
+                <option value="3">★★★☆☆ - Good</option>
+                <option value="2">★★☆☆☆ - Fair</option>
+                <option value="1">★☆☆☆☆ - Poor</option>
+              </select>
             </div>
-          </div>
 
-          {/* Interesting Case Study Field */}
-          <div>
-            <label className="block mb-2 font-medium">
-              Was the case study interesting?
-            </label>
-            <div className="flex space-x-4">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="interesting"
-                  value="Yes"
-                  checked={formData.interesting === 'Yes'}
-                  onChange={handleChange}
-                  required
-                  className="mr-2"
-                />
-                Yes
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="interesting"
-                  value="No"
-                  checked={formData.interesting === 'No'}
-                  onChange={handleChange}
-                  className="mr-2"
-                />
-                No
-              </label>
+            {/* Difficulty of Questions Field */}
+            <div>
+              <label htmlFor="difficulty">Difficulty of Questions</label>
+              <select
+                id="difficulty"
+                name="difficulty"
+                value={formData.difficulty}
+                onChange={handleChange}
+                required
+                className="w-full"
+              >
+                <option value="">Select Difficulty</option>
+                <option value="1">1 - Very Easy</option>
+                <option value="2">2 - Easy</option>
+                <option value="3">3 - Moderate</option>
+                <option value="4">4 - Difficult</option>
+                <option value="5">5 - Very Difficult</option>
+              </select>
             </div>
-          </div>
 
-          {/* Comments Field */}
-          <div>
-            <label
-              htmlFor="comments"
-              className="block mb-2 font-medium"
-            >
-              Additional Comments
-            </label>
-            <textarea
-              id="comments"
-              name="comments"
-              value={formData.comments}
-              onChange={handleChange}
-              required
-              placeholder="Your feedback..."
-              rows="5"
-              className="w-full p-2 border border-gray-300 rounded-md"
-            ></textarea>
-          </div>
+            {/* Informational Case Study Field */}
+            <div>
+              <label>Was the case study informational?</label>
+              <div className="radio-group">
+                <label>
+                  <input
+                    type="radio"
+                    name="informational"
+                    value="Yes"
+                    checked={formData.informational === 'Yes'}
+                    onChange={handleChange}
+                    required
+                  />
+                  Yes
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="informational"
+                    value="No"
+                    checked={formData.informational === 'No'}
+                    onChange={handleChange}
+                  />
+                  No
+                </label>
+              </div>
+            </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full sm:w-auto px-6 py-3 bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-600 transition-colors"
-          >
-            Submit Feedback
-          </button>
-        </form>
+            {/* Interesting Case Study Field */}
+            <div>
+              <label>Was the case study interesting?</label>
+              <div className="radio-group">
+                <label>
+                  <input
+                    type="radio"
+                    name="interesting"
+                    value="Yes"
+                    checked={formData.interesting === 'Yes'}
+                    onChange={handleChange}
+                    required
+                  />
+                  Yes
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="interesting"
+                    value="No"
+                    checked={formData.interesting === 'No'}
+                    onChange={handleChange}
+                  />
+                  No
+                </label>
+              </div>
+            </div>
+
+            {/* Comments Field */}
+            <div>
+              <label htmlFor="comments">Additional Comments</label>
+              <textarea
+                id="comments"
+                name="comments"
+                value={formData.comments}
+                onChange={handleChange}
+                required
+                placeholder="Your feedback..."
+                rows="5"
+                className="w-full"
+              ></textarea>
+            </div>
+
+            {/* Submit Button */}
+            <button type="submit">
+              Submit Feedback
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );
