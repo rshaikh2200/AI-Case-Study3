@@ -356,119 +356,128 @@ export default function DashboardPage() {
   const COLORS = ['#F86CCF', '#9333EA', '#45B7D1', '#96CEB4'];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header with responsive images */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4 md:space-x-8">
-              <img 
-                src="/piedmont-logo.png" 
-                alt="Piedmont" 
-                className="h-8 md:h-12 object-contain" 
-              />
-              <div className="hidden md:block w-px h-8 bg-gray-300"></div>
-              <img 
-                src="/coachcare-logo.png" 
-                alt="CoachCare" 
-                className="h-8 md:h-12 object-contain" 
-              />
-            </div>
-            <h1 className="text-lg md:text-xl font-semibold text-gray-900">Training & Certification Dashboard</h1>
+  <div className="min-h-screen bg-gray-50">
+    {/* Header with responsive images */}
+    <header className="bg-white shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 py-4">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex items-center space-x-4 md:space-x-8 mb-4 md:mb-0">
+            <img
+              src="/piedmont-logo.png"
+              alt="Piedmont"
+              className="h-8 md:h-12 object-contain"
+            />
+            <div className="hidden md:block w-px h-8 bg-gray-300"></div>
+            <img
+              src="/coachcare-logo.png"
+              alt="CoachCare"
+              className="h-8 md:h-12 object-contain"
+            />
           </div>
+          <h1 className="text-lg md:text-xl font-semibold text-gray-900 text-center md:text-left">
+            Training & Certification Dashboard
+          </h1>
         </div>
-      </header>
-      
-       {/* Responsive Navigation */}
-       <nav className="bg-blue-600 p-4">
-        {/* Mobile Menu Button */}
-        <div className="md:hidden flex justify-end">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-white focus:outline-none"
+      </div>
+    </header>
+
+    {/* Responsive Navigation */}
+    <nav className="bg-blue-600 p-4 relative">
+      {/* Mobile Menu Button */}
+      <div className="md:hidden flex justify-end">
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="text-white focus:outline-none"
+        >
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden absolute right-0 mt-2 w-48 bg-blue-600 shadow-lg py-2 z-50">
+          <Link
+            href="/"
+            className="block px-4 py-2 text-white hover:bg-blue-700"
+            onClick={() => setIsMenuOpen(false)}
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-
-        {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div className="md:hidden absolute right-0 mt-2 w-48 bg-blue-600 shadow-lg py-2 z-50">
-            <Link 
-              href="/" 
-              className="block px-4 py-2 text-white hover:bg-blue-700"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link 
-              href="/dashboard" 
-              className="block px-4 py-2 text-white hover:bg-blue-700"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Dashboard
-            </Link>
-          </div>
-        )}
-
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex justify-end space-x-4">
-          <Link href="/" className="text-white font-semibold hover:bg-blue-700 px-3 py-2 rounded">
             Home
           </Link>
-          <Link href="/dashboard" className="text-white font-semibold hover:bg-blue-700 px-3 py-2 rounded">
+          <Link
+            href="/dashboard"
+            className="block px-4 py-2 text-white hover:bg-blue-700"
+            onClick={() => setIsMenuOpen(false)}
+          >
             Dashboard
           </Link>
         </div>
-      </nav>
-      <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total Users</p>
-                <p className="text-3xl font-bold text-gray-900">{totalUsers}</p>
-              </div>
-              <Users className="h-10 w-10 text-[#F86CCF]" />
+      )}
+
+      {/* Desktop Navigation */}
+      <div className="hidden md:flex justify-end space-x-4">
+        <Link
+          href="/"
+          className="text-white font-semibold hover:bg-blue-700 px-3 py-2 rounded"
+        >
+          Home
+        </Link>
+        <Link
+          href="/dashboard"
+          className="text-white font-semibold hover:bg-blue-700 px-3 py-2 rounded"
+        >
+          Dashboard
+        </Link>
+      </div>
+    </nav>
+    <main className="max-w-7xl mx-auto px-4 py-8">
+      {/* Key Metrics */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Total Users</p>
+              <p className="text-3xl font-bold text-gray-900">{totalUsers}</p>
             </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total Sessions</p>
-                <p className="text-3xl font-bold text-gray-900">{totalSessions}</p>
-              </div>
-              <BookOpen className="h-10 w-10 text-[#9333EA]" />
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Avg. Completion Time</p>
-                <p className="text-3xl font-bold text-gray-900">{calculateAvgTime()}m</p>
-              </div>
-              <Clock className="h-10 w-10 text-[#45B7D1]" />
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Success Rate</p>
-                <p className="text-3xl font-bold text-gray-900">{calculateSuccessRate()}%</p>
-              </div>
-              <CheckCircle className="h-10 w-10 text-[#96CEB4]" />
-            </div>
+            <Users className="h-10 w-10 text-[#F86CCF]" />
           </div>
         </div>
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Total Sessions</p>
+              <p className="text-3xl font-bold text-gray-900">{totalSessions}</p>
+            </div>
+            <BookOpen className="h-10 w-10 text-[#9333EA]" />
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Avg. Completion Time</p>
+              <p className="text-3xl font-bold text-gray-900">{calculateAvgTime()}m</p>
+            </div>
+            <Clock className="h-10 w-10 text-[#45B7D1]" />
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Success Rate</p>
+              <p className="text-3xl font-bold text-gray-900">{calculateSuccessRate()}%</p>
+            </div>
+            <CheckCircle className="h-10 w-10 text-[#96CEB4]" />
+          </div>
+        </div>
+      </div>
 
-        {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Department Distribution</h3>
-            <ResponsiveContainer height={300}>
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Department Distribution</h3>
+          <div className="w-full h-64">
+            <ResponsiveContainer>
               <PieChart>
-                <Pie data={calculateDepartmentDistribution()} dataKey="value" nameKey="name" outerRadius={100}>
+                <Pie data={calculateDepartmentDistribution()} dataKey="value" nameKey="name" outerRadius="80%">
                   {calculateDepartmentDistribution().map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -478,11 +487,13 @@ export default function DashboardPage() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">User Type Distribution</h3>
-            <ResponsiveContainer height={300}>
+        </div>
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">User Type Distribution</h3>
+          <div className="w-full h-64">
+            <ResponsiveContainer>
               <PieChart>
-                <Pie data={calculateUserTypeDistribution()} dataKey="value" nameKey="name" outerRadius={100}>
+                <Pie data={calculateUserTypeDistribution()} dataKey="value" nameKey="name" outerRadius="80%">
                   {calculateUserTypeDistribution().map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -493,12 +504,14 @@ export default function DashboardPage() {
             </ResponsiveContainer>
           </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Case Study Performance */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Case Study Performance</h3>
-            <ResponsiveContainer height={300}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        {/* Case Study Performance */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Case Study Performance</h3>
+          <div className="w-full h-64">
+            <ResponsiveContainer>
               <BarChart data={calculateCaseStudyPerformance()} barCategoryGap="20%">
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="case" />
@@ -512,11 +525,13 @@ export default function DashboardPage() {
               </BarChart>
             </ResponsiveContainer>
           </div>
+        </div>
 
-          {/* Department Performance */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Department Performance</h3>
-            <ResponsiveContainer height={300}>
+        {/* Department Performance */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Department Performance</h3>
+          <div className="w-full h-64">
+            <ResponsiveContainer>
               <BarChart data={calculateDepartmentPerformance()} barCategoryGap="20%">
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="department" />
@@ -531,74 +546,74 @@ export default function DashboardPage() {
             </ResponsiveContainer>
           </div>
         </div>
+      </div>
 
-        {/* Training Engagement Metrics */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Training Engagement</h3>
-          <div className="space-y-4">
-            {/* Existing Metrics */}
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">First Attempt Success Rate</span>
-              <span className="text-2xl font-bold text-[#45B7D1]">
-                {calculateFirstAttemptSuccessRate()}%
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Second Attempt Success Rate</span>
-              <span className="text-2xl font-bold text-[#45B7D1]">
-                {calculateSecondAttemptSuccessRate()}%
-              </span>
-            </div>
+      {/* Training Engagement Metrics */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h3 className="text-lg font-medium text-gray-900 mb-4">Training Engagement</h3>
+        <div className="space-y-4">
+          {/* Existing Metrics */}
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">First Attempt Success Rate</span>
+            <span className="text-2xl font-bold text-[#45B7D1]">
+              {calculateFirstAttemptSuccessRate()}%
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Second Attempt Success Rate</span>
+            <span className="text-2xl font-bold text-[#45B7D1]">
+              {calculateSecondAttemptSuccessRate()}%
+            </span>
+          </div>
 
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Failed After Second Attempt</span>
-              <span className="text-2xl font-bold text-[#96CEB4]">
-                {calculateFailedAfterSecondAttempt()}%
-              </span>
-            </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Failed After Second Attempt</span>
+            <span className="text-2xl font-bold text-[#96CEB4]">
+              {calculateFailedAfterSecondAttempt()}%
+            </span>
+          </div>
 
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Average Questions per Session</span>
-              <span className="text-2xl font-bold text-[#9333EA]">
-                {Math.round(workflowData.length / totalSessions)}
-              </span>
-            </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Average Questions per Session</span>
+            <span className="text-2xl font-bold text-[#9333EA]">
+              {Math.round(workflowData.length / totalSessions)}
+            </span>
+          </div>
 
-            {/* New Metrics */}
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Average Time per Question</span>
-              <span className="text-2xl font-bold text-[#45B7D1]">
-                {calculateAvgTimePerQuestion()} sec
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Completion Rate</span>
-              <span className="text-2xl font-bold text-[#96CEB4]">
-                {calculateCompletionRate()}%
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">High Performers</span>
-              <span className="text-2xl font-bold text-[#F86CCF]">
-                {calculateHighPerformers()}%
-              </span>
-            </div>
+          {/* New Metrics */}
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Average Time per Question</span>
+            <span className="text-2xl font-bold text-[#45B7D1]">
+              {calculateAvgTimePerQuestion()} sec
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Completion Rate</span>
+            <span className="text-2xl font-bold text-[#96CEB4]">
+              {calculateCompletionRate()}%
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">High Performers</span>
+            <span className="text-2xl font-bold text-[#F86CCF]">
+              {calculateHighPerformers()}%
+            </span>
+          </div>
 
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Fastest Completion Time</span>
-              <span className="text-2xl font-bold text-[#F86CCF]">
-                {calculateFastestCompletionTime()}m
-              </span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-600">Median Time to Complete Training</span>
-              <span className="text-2xl font-bold text-[#9333EA]">
-                {calculateMedianCompletionTime()}m
-              </span>
-            </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Fastest Completion Time</span>
+            <span className="text-2xl font-bold text-[#F86CCF]">
+              {calculateFastestCompletionTime()}m
+            </span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Median Time to Complete Training</span>
+            <span className="text-2xl font-bold text-[#9333EA]">
+              {calculateMedianCompletionTime()}m
+            </span>
           </div>
         </div>
-      </main>
-    </div>
-  );
-}
+      </div>
+    </main>
+  </div>
+);
