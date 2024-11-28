@@ -355,13 +355,14 @@ export default function DashboardPage() {
 
   const COLORS = ['#F86CCF', '#9333EA', '#45B7D1', '#96CEB4'];
 
+
   return (
-  <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
     {/* Header with responsive images */}
     <header className="bg-white shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-4">
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="flex items-center space-x-4 md:space-x-8 mb-4 md:mb-0">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-4 md:space-x-8">
             <img
               src="/piedmont-logo.png"
               alt="Piedmont"
@@ -374,110 +375,124 @@ export default function DashboardPage() {
               className="h-8 md:h-12 object-contain"
             />
           </div>
-          <h1 className="text-lg md:text-xl font-semibold text-gray-900 text-center md:text-left">
+          <h1 className="text-lg md:text-xl font-semibold text-gray-900">
             Training & Certification Dashboard
           </h1>
         </div>
       </div>
     </header>
-
+  
     {/* Responsive Navigation */}
-    <nav className="bg-blue-600 p-4 relative">
+    <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
       {/* Mobile Menu Button */}
-      <div className="md:hidden flex justify-end">
+      <div className="md:hidden flex justify-end p-4">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="text-white focus:outline-none"
+          className="text-white hover:text-gray-200 focus:outline-none"
         >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
-
+  
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden absolute right-0 mt-2 w-48 bg-blue-600 shadow-lg py-2 z-50">
-          <Link
-            href="/"
-            className="block px-4 py-2 text-white hover:bg-blue-700"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Home
-          </Link>
-          <Link
-            href="/dashboard"
-            className="block px-4 py-2 text-white hover:bg-blue-700"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Dashboard
-          </Link>
+        <div className="md:hidden pb-4">
+          <div className="flex flex-col space-y-2 px-4">
+            <Link
+              href="/"
+              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              href="/dashboard"
+              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Dashboard
+            </Link>
+            <Link
+              href="/feedback"
+              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Feedback
+            </Link>
+          </div>
         </div>
       )}
-
+  
       {/* Desktop Navigation */}
-      <div className="hidden md:flex justify-end space-x-4">
+      <div className="hidden md:flex justify-end space-x-4 p-4">
         <Link
           href="/"
-          className="text-white font-semibold hover:bg-blue-700 px-3 py-2 rounded"
+          className="text-white font-semibold px-3 py-2 rounded-md text-sm hover:bg-blue-500 transition-colors"
         >
           Home
         </Link>
         <Link
           href="/dashboard"
-          className="text-white font-semibold hover:bg-blue-700 px-3 py-2 rounded"
+          className="text-white font-semibold px-3 py-2 rounded-md text-sm hover:bg-blue-500 transition-colors"
         >
           Dashboard
         </Link>
+        <Link
+          href="/feedback"
+          className="text-white font-semibold px-3 py-2 rounded-md text-sm hover:bg-blue-500 transition-colors"
+        >
+          Feedback
+        </Link>
       </div>
     </nav>
-    <main className="max-w-7xl mx-auto px-4 py-8">
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Users</p>
-              <p className="text-3xl font-bold text-gray-900">{totalUsers}</p>
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        {/* Key Metrics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Users</p>
+                <p className="text-3xl font-bold text-gray-900">{totalUsers}</p>
+              </div>
+              <Users className="h-10 w-10 text-[#F86CCF]" />
             </div>
-            <Users className="h-10 w-10 text-[#F86CCF]" />
+          </div>
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Total Sessions</p>
+                <p className="text-3xl font-bold text-gray-900">{totalSessions}</p>
+              </div>
+              <BookOpen className="h-10 w-10 text-[#9333EA]" />
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Avg. Completion Time</p>
+                <p className="text-3xl font-bold text-gray-900">{calculateAvgTime()}m</p>
+              </div>
+              <Clock className="h-10 w-10 text-[#45B7D1]" />
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">Success Rate</p>
+                <p className="text-3xl font-bold text-gray-900">{calculateSuccessRate()}%</p>
+              </div>
+              <CheckCircle className="h-10 w-10 text-[#96CEB4]" />
+            </div>
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Sessions</p>
-              <p className="text-3xl font-bold text-gray-900">{totalSessions}</p>
-            </div>
-            <BookOpen className="h-10 w-10 text-[#9333EA]" />
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Avg. Completion Time</p>
-              <p className="text-3xl font-bold text-gray-900">{calculateAvgTime()}m</p>
-            </div>
-            <Clock className="h-10 w-10 text-[#45B7D1]" />
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Success Rate</p>
-              <p className="text-3xl font-bold text-gray-900">{calculateSuccessRate()}%</p>
-            </div>
-            <CheckCircle className="h-10 w-10 text-[#96CEB4]" />
-          </div>
-        </div>
-      </div>
 
-      {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Department Distribution</h3>
-          <div className="w-full h-64">
-            <ResponsiveContainer>
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Department Distribution</h3>
+            <ResponsiveContainer height={300}>
               <PieChart>
-                <Pie data={calculateDepartmentDistribution()} dataKey="value" nameKey="name" outerRadius="80%">
+                <Pie data={calculateDepartmentDistribution()} dataKey="value" nameKey="name" outerRadius={100}>
                   {calculateDepartmentDistribution().map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -487,13 +502,11 @@ export default function DashboardPage() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">User Type Distribution</h3>
-          <div className="w-full h-64">
-            <ResponsiveContainer>
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">User Type Distribution</h3>
+            <ResponsiveContainer height={300}>
               <PieChart>
-                <Pie data={calculateUserTypeDistribution()} dataKey="value" nameKey="name" outerRadius="80%">
+                <Pie data={calculateUserTypeDistribution()} dataKey="value" nameKey="name" outerRadius={100}>
                   {calculateUserTypeDistribution().map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
@@ -504,14 +517,12 @@ export default function DashboardPage() {
             </ResponsiveContainer>
           </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Case Study Performance */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Case Study Performance</h3>
-          <div className="w-full h-64">
-            <ResponsiveContainer>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Case Study Performance */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Case Study Performance</h3>
+            <ResponsiveContainer height={300}>
               <BarChart data={calculateCaseStudyPerformance()} barCategoryGap="20%">
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="case" />
@@ -525,13 +536,11 @@ export default function DashboardPage() {
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </div>
 
-        {/* Department Performance */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Department Performance</h3>
-          <div className="w-full h-64">
-            <ResponsiveContainer>
+          {/* Department Performance */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">Department Performance</h3>
+            <ResponsiveContainer height={300}>
               <BarChart data={calculateDepartmentPerformance()} barCategoryGap="20%">
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="department" />
@@ -546,75 +555,74 @@ export default function DashboardPage() {
             </ResponsiveContainer>
           </div>
         </div>
-      </div>
 
-      {/* Training Engagement Metrics */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Training Engagement</h3>
-        <div className="space-y-4">
-          {/* Existing Metrics */}
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">First Attempt Success Rate</span>
-            <span className="text-2xl font-bold text-[#45B7D1]">
-              {calculateFirstAttemptSuccessRate()}%
-            </span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">Second Attempt Success Rate</span>
-            <span className="text-2xl font-bold text-[#45B7D1]">
-              {calculateSecondAttemptSuccessRate()}%
-            </span>
-          </div>
+        {/* Training Engagement Metrics */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Training Engagement</h3>
+          <div className="space-y-4">
+            {/* Existing Metrics */}
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">First Attempt Success Rate</span>
+              <span className="text-2xl font-bold text-[#45B7D1]">
+                {calculateFirstAttemptSuccessRate()}%
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Second Attempt Success Rate</span>
+              <span className="text-2xl font-bold text-[#45B7D1]">
+                {calculateSecondAttemptSuccessRate()}%
+              </span>
+            </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">Failed After Second Attempt</span>
-            <span className="text-2xl font-bold text-[#96CEB4]">
-              {calculateFailedAfterSecondAttempt()}%
-            </span>
-          </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Failed After Second Attempt</span>
+              <span className="text-2xl font-bold text-[#96CEB4]">
+                {calculateFailedAfterSecondAttempt()}%
+              </span>
+            </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">Average Questions per Session</span>
-            <span className="text-2xl font-bold text-[#9333EA]">
-              {Math.round(workflowData.length / totalSessions)}
-            </span>
-          </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Average Questions per Session</span>
+              <span className="text-2xl font-bold text-[#9333EA]">
+                {Math.round(workflowData.length / totalSessions)}
+              </span>
+            </div>
 
-          {/* New Metrics */}
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">Average Time per Question</span>
-            <span className="text-2xl font-bold text-[#45B7D1]">
-              {calculateAvgTimePerQuestion()} sec
-            </span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">Completion Rate</span>
-            <span className="text-2xl font-bold text-[#96CEB4]">
-              {calculateCompletionRate()}%
-            </span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">High Performers</span>
-            <span className="text-2xl font-bold text-[#F86CCF]">
-              {calculateHighPerformers()}%
-            </span>
-          </div>
+            {/* New Metrics */}
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Average Time per Question</span>
+              <span className="text-2xl font-bold text-[#45B7D1]">
+                {calculateAvgTimePerQuestion()} sec
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Completion Rate</span>
+              <span className="text-2xl font-bold text-[#96CEB4]">
+                {calculateCompletionRate()}%
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">High Performers</span>
+              <span className="text-2xl font-bold text-[#F86CCF]">
+                {calculateHighPerformers()}%
+              </span>
+            </div>
 
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">Fastest Completion Time</span>
-            <span className="text-2xl font-bold text-[#F86CCF]">
-              {calculateFastestCompletionTime()}m
-            </span>
-          </div>
-          <div className="flex justify-between items-center">
-            <span className="text-gray-600">Median Time to Complete Training</span>
-            <span className="text-2xl font-bold text-[#9333EA]">
-              {calculateMedianCompletionTime()}m
-            </span>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Fastest Completion Time</span>
+              <span className="text-2xl font-bold text-[#F86CCF]">
+                {calculateFastestCompletionTime()}m
+              </span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Median Time to Complete Training</span>
+              <span className="text-2xl font-bold text-[#9333EA]">
+                {calculateMedianCompletionTime()}m
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
-  </div>
-);
+      </main>
+    </div>
+  );
 }
