@@ -23,7 +23,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 import Dialog from '@mui/material/Dialog';
-import { Trophy } from 'lucide-react';
+import { Trophy, Menu } from 'lucide-react';
 
 const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
   return (
@@ -153,6 +153,7 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
 export default function Home() {
   // State Variables
   const [caseStudies, setCaseStudies] = useState([]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentCaseStudyIndex, setCurrentCaseStudyIndex] = useState(0);
@@ -1379,100 +1380,84 @@ export default function Home() {
     // Clear interval on component unmount
     return () => clearInterval(styleInterval);
   }, [showTranslate]);
+  
   return (
     <>
       <Head>
         <title>Health Care Safety</title>
       </Head>
   
-      <div className="container">
-  {/* Top Section with Image */}
-  
-  {/* App Bar with Navigation Buttons */}
-  <nav style={{
-    background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
-    padding: '0.75rem 1.5rem',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    position: 'sticky',
-    top: 0,
-    zIndex: 10
-  }}>
-    <div style={{
-      maxWidth: '1200px',
-      margin: '0 auto',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    }}>
-      {/* Logo or Brand Name could go here */}
-      <div style={{ fontWeight: 'bold', color: 'white' }}>
-        AI Personalized Healthcare Safety Module
-      </div>
+  <div className="container">
+      {/* Responsive App Bar */}
+      <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo/Brand - Always visible */}
+            <div className="flex-shrink-0 text-white font-bold">
+              AI Personalized Healthcare Safety Module
+            </div>
 
-      {/* Navigation Links */}
-      <div style={{
-        display: 'flex',
-        gap: '1rem',
-        alignItems: 'center'
-      }}>
-        <Link 
-          href="/" 
-          style={{
-            color: 'white',
-            padding: '0.5rem 1rem',
-            borderRadius: '0.375rem',
-            transition: 'all 0.2s ease',
-            textDecoration: 'none',
-            fontSize: '0.875rem',
-            fontWeight: '600',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            ':hover': {
-              backgroundColor: 'rgba(255,255,255,0.2)'
-            }
-          }}
-        >
-          Home
-        </Link>
-        <Link 
-          href="/dashboard"
-          style={{
-            color: 'white',
-            padding: '0.5rem 1rem',
-            borderRadius: '0.375rem',
-            transition: 'all 0.2s ease',
-            textDecoration: 'none',
-            fontSize: '0.875rem',
-            fontWeight: '600',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            ':hover': {
-              backgroundColor: 'rgba(255,255,255,0.2)'
-            }
-          }}
-        >
-          Dashboard
-        </Link>
-        <Link 
-          href="/feedback" 
-          style={{
-            color: 'white',
-            padding: '0.5rem 1rem',
-            borderRadius: '0.375rem',
-            transition: 'all 0.2s ease',
-            textDecoration: 'none',
-            fontSize: '0.875rem',
-            fontWeight: '600',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            ':hover': {
-              backgroundColor: 'rgba(255,255,255,0.2)'
-            }
-          }}
-          >
-          Feedback
-        </Link>
-      </div>
-    </div>
-  </nav>
-  
+            {/* Desktop Navigation - Hidden on mobile */}
+            <div className="hidden md:flex md:items-center md:space-x-4">
+              <Link 
+                href="/"
+                className="text-white px-4 py-2 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
+              >
+                Home
+              </Link>
+              <Link 
+                href="/dashboard"
+                className="text-white px-4 py-2 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
+              >
+                Dashboard
+              </Link>
+              <Link 
+                href="/feedback"
+                className="text-white px-4 py-2 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
+              >
+                Feedback
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button - Only visible on mobile */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="inline-flex items-center justify-center p-2 rounded-md text-white hover:bg-white/10 focus:outline-none"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Menu - Only visible when open on mobile */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden">
+              <div className="px-2 pt-2 pb-3 space-y-1">
+                <Link
+                  href="/"
+                  className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/feedback"
+                  className="block text-white px-3 py-2 rounded-md text-base font-medium hover:bg-white/10"
+                >
+                  Feedback
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
+      </nav>
+
         <div className="content-wrapper">
           {/* Image and Assessment Complete Form Container */}
           <div className="image-container">
@@ -1849,4 +1834,3 @@ export default function Home() {
   </>
   );
 }
-
