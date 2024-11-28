@@ -1,4 +1,3 @@
-// route.js
 import { NextResponse } from 'next/server';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -198,7 +197,7 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each approximately 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
@@ -209,6 +208,7 @@ export async function POST(request) {
       - Include a different medical error that occurred by the ${role} or by the team.
       - Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
       - The medical studies should be detailed and focus on the situation, medical error, and consequences.
+      - Each medical case study should include a different medical error that occured in the scenario. Some examples are (retained medical equipment, missing items on tray, )
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
     
@@ -362,7 +362,7 @@ export async function POST(request) {
       "caseStudies": [
         {
           "caseStudy": "Case Study 1",
-          "scenario": "Dr. Patel (he/him), an orthopedic surgeon, was finishing up a knee replacement surgery when the patient’s implant arrived. In the rush to keep things on schedule, he quickly began installing it without double-checking the lot number. Minutes later, the scrub nurse noticed the implant package didn't match the patient’s chart. Dr. Patel’s colleague, Dr. Lin (she/her), was nearby and always emphasized the importance of a final check before any major step.",
+          "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
           "questions": [
             {
               "question": "Dr. Patel could have avoided this mix-up by practicing which Error Prevention Tool, which focuses on verifying actions with a internal verification and checking with qualified source?",
@@ -413,7 +413,7 @@ export async function POST(request) {
     Do not include any additional text outside of the JSON structure.`;
 
   } else if (userType === 'non-clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each approximately 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
@@ -633,15 +633,14 @@ export async function POST(request) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: "gpt-4o-mini",
       messages: [
         {
-          role: 'system',
+          role: "user",
           content: META_PROMPT,
         },
       ],
       temperature: 0.0,
-      max_tokens: 6000,
       stream: false,
     });
     
@@ -786,7 +785,7 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
       Authorization: `Bearer ${OPENAI_API_KEY}`,
     },
     body: JSON.stringify({
-      model: 'gpt-4',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
@@ -823,7 +822,7 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
 
 async function fetchImagesForCaseStudies(
   caseStudies,
-  model = 'sd3-large',
+  model = 'sd3-large-turbo',
   aspect_ratio = '1:1'
 ) {
   try {
