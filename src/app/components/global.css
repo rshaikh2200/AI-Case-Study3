@@ -3,7 +3,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Content Wrapper */
@@ -728,6 +728,125 @@
   position: relative;
 }
 
+/* Certificate Popup Styles */
+.certificate-popup {
+  animation: fadeIn 0.3s ease-out;
+  backdrop-filter: blur(8px);
+}
+
+.certificate-content {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
+  position: relative;
+  isolation: isolate;
+}
+
+.certificate-content::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(59, 130, 246, 0.1),
+    rgba(29, 78, 216, 0.1)
+  );
+  z-index: -1;
+}
+
+/* Font Styles */
+.font-serif {
+  font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+  letter-spacing: 0.05em;
+}
+
+/* Button Styles */
+.certificate-button {
+  position: relative;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.certificate-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.5rem;
+  padding: 2px;
+  background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.print-button {
+  background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+  color: white;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.print-button:hover {
+  transform: translateY(-2px) translateZ(0);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.close-button {
+  background: white;
+  color: #4b5563;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.close-button:hover {
+  background: #f3f4f6;
+  transform: translateY(-2px) translateZ(0);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Certificate Background Pattern */
+.bg-pattern {
+  background-image: 
+    linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.1)),
+    linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.1));
+  background-size: 60px 60px;
+  background-position: 0 0, 30px 30px;
+}
+
+/* Print Styles */
+@media print {
+  .certificate-popup {
+    background: none !important;
+    padding: 0 !important;
+  }
+
+  .certificate-content {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  button {
+    display: none !important;
+  }
+}
+
 .modal-content h3 {
   margin-top: 0;
   color: #2c3e50;
@@ -893,4 +1012,60 @@
   gap: 1rem;
 }
 
+/* Enhanced Certificate Styles */
+.certificate-popup {
+  padding: 20px; /* Added padding */
+  border-radius: 15px; /* Increased border radius for a smoother look */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* Enhanced shadow for depth */
+}
 
+.certificate-content {
+  padding: 30px; /* Increased padding for content */
+  border: 2px solid #1d4ed8; /* Added a solid border for emphasis */
+  background-color: #ffffff; /* Ensured a clean white background */
+}
+
+.certificate-content h2 {
+  font-family: 'Cormorant Garamond', serif; /* Added a serif font for elegance */
+}
+
+.certificate-content p {
+  font-family: 'Georgia', serif; /* Consistent serif font for all paragraphs */
+}
+
+.certificate-popup .action-buttons {
+  margin-top: 20px;
+}
+
+.certificate-popup .action-buttons button {
+  min-width: 150px;
+}
+
+@media (min-width: 768px) {
+  .certificate-content {
+    padding: 50px; /* More padding on larger screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .certificate-popup {
+    padding: 10px; /* Reduced padding on small screens */
+  }
+
+  .certificate-content {
+    padding: 20px; /* Reduced padding for mobile */
+  }
+
+  .certificate-content p {
+    font-size: 1rem; /* Adjust font size for readability */
+  }
+
+  .score-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .score-circle span {
+    font-size: 1.5rem;
+  }
+}
