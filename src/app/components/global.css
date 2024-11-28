@@ -913,25 +913,7 @@
   background-position: 0 0, 30px 30px;
 }
 
-/* Print Styles */
-@media print {
-  .certificate-popup {
-    background: none !important;
-    padding: 0 !important;
-  }
-
-  .certificate-content {
-    border: none !important;
-    box-shadow: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  button {
-    display: none !important;
-  }
-}
-
+/* Modal Content Styles */
 .modal-content h3 {
   margin-top: 0;
   color: #2c3e50;
@@ -1004,7 +986,6 @@
 .nav-button + .nav-button {
   @apply ml-4; /* Reduced margin-left for closer buttons */
 }
-
 
 /* Reset some basic styles */
 * {
@@ -1308,31 +1289,6 @@ body {
   }
 }
 
-/* Responsive Design */
-@media (max-width: 640px) {
-  .feedback-container {
-    margin: 1rem;
-    padding: 1.5rem;
-  }
-
-  .feedback-title {
-    font-size: 1.5em;
-  }
-
-  .home-container h1 {
-    font-size: 2em;
-  }
-
-  .radio-group {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .feedback-button {
-    width: 100%;
-  }
-}
-
 /* Loading State */
 .feedback-button.loading {
   position: relative;
@@ -1359,3 +1315,85 @@ body {
     transform: rotate(360deg);
   }
 }
+
+/* ----------------------- */
+/* Additional Styles Added */
+/* ----------------------- */
+
+/* Navigation Bar Enhancements for Responsiveness */
+
+/* Brand Name in Navigation */
+.brand-name {
+  font-weight: bold;
+  color: white;
+}
+
+/* Menu Button */
+.menu-button {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* Navigation Links */
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Media Queries for Responsive Navigation */
+@media (max-width: 768px) {
+  /* Hide navigation links by default */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px; /* Adjust based on nav-bar height */
+    right: 0;
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    width: 100%;
+    text-align: right;
+    padding: 1rem;
+  }
+
+  /* Show navigation links when open */
+  .nav-links.open {
+    display: flex;
+  }
+
+  /* Show menu button */
+  .menu-button {
+    display: block;
+  }
+
+  /* Adjust nav-container to position relative for absolute nav-links */
+  .nav-container {
+    position: relative;
+  }
+}
+
+/* ----------------------- */
+/* End of Additional Styles */
+/* ----------------------- */
+
+/* Include all the styles from your original `global.css`, ensuring that the modifications are included */
+
