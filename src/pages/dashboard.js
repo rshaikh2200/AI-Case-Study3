@@ -17,7 +17,7 @@ import {
   CartesianGrid,
   LabelList,
 } from 'recharts';
-import { Users, Clock, CheckCircle, BookOpen } from 'lucide-react';
+import { Users, Clock, CheckCircle, BookOpen, Menu, X } from 'lucide-react';
 import Link from 'next/link'; // Imported Link from next/link
 
 export default function DashboardPage() {
@@ -26,6 +26,7 @@ export default function DashboardPage() {
   const [userProfileData, setUserProfileData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -356,30 +357,70 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* Header with responsive images */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-8">
-              <img src="/piedmont-logo.png" alt="Piedmont" className="h-12 object-contain" />
-              <div className="w-px h-8 bg-gray-300"></div>
-              <img src="/coachcare-logo.png" alt="CoachCare" className="h-12 object-contain" />
+            <div className="flex items-center space-x-4 md:space-x-8">
+              <img 
+                src="/piedmont-logo.png" 
+                alt="Piedmont" 
+                className="h-8 md:h-12 object-contain" 
+              />
+              <div className="hidden md:block w-px h-8 bg-gray-300"></div>
+              <img 
+                src="/coachcare-logo.png" 
+                alt="CoachCare" 
+                className="h-8 md:h-12 object-contain" 
+              />
             </div>
-            <h1 className="text-xl font-semibold text-gray-900">Training & Certification Dashboard</h1>
+            <h1 className="text-lg md:text-xl font-semibold text-gray-900">Training & Certification Dashboard</h1>
           </div>
         </div>
       </header>
       
-      {/* App Bar with Navigation Buttons */}
-      <nav className="bg-blue-600 p-4 flex justify-end space-x-4">
-        <Link href="/" className="text-white font-semibold hover:bg-blue-700 px-3 py-2 rounded">
-          Home
-        </Link>
-        <Link href="/dashboard" className="text-white font-semibold hover:bg-blue-700 px-3 py-2 rounded">
-          Dashboard
-        </Link>
-      </nav>
+       {/* Responsive Navigation */}
+       <nav className="bg-blue-600 p-4">
+        {/* Mobile Menu Button */}
+        <div className="md:hidden flex justify-end">
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="text-white focus:outline-none"
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
 
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden absolute right-0 mt-2 w-48 bg-blue-600 shadow-lg py-2 z-50">
+            <Link 
+              href="/" 
+              className="block px-4 py-2 text-white hover:bg-blue-700"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link 
+              href="/dashboard" 
+              className="block px-4 py-2 text-white hover:bg-blue-700"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Dashboard
+            </Link>
+          </div>
+        )}
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex justify-end space-x-4">
+          <Link href="/" className="text-white font-semibold hover:bg-blue-700 px-3 py-2 rounded">
+            Home
+          </Link>
+          <Link href="/dashboard" className="text-white font-semibold hover:bg-blue-700 px-3 py-2 rounded">
+            Dashboard
+          </Link>
+        </div>
+      </nav>
       <main className="max-w-7xl mx-auto px-4 py-8">
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
