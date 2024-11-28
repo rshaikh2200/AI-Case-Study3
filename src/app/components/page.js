@@ -1382,38 +1382,38 @@ export default function Home() {
   }, [showTranslate]);
   
   return (
-    <>
-      <Head>
-        <title>Health Care Safety</title>
-      </Head>
-  
-  <div className="container">
+  <>
+    <Head>
+      <title>Health Care Safety</title>
+    </Head>
+
+    <div className="container mx-auto px-4">
       {/* Responsive App Bar */}
       <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex flex-wrap justify-between items-center h-16">
             {/* Logo/Brand - Always visible */}
-            <div className="flex-shrink-0 text-white font-bold">
+            <div className="flex-shrink-0 text-white font-bold text-sm sm:text-base">
               AI Personalized Healthcare Safety Module
             </div>
 
             {/* Desktop Navigation - Hidden on mobile */}
             <div className="hidden md:flex md:items-center md:space-x-4">
-              <Link 
+              <Link
                 href="/"
-                className="text-white px-4 py-2 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
+                className="text-white px-2 py-1 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
               >
                 Home
               </Link>
-              <Link 
+              <Link
                 href="/dashboard"
-                className="text-white px-4 py-2 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
+                className="text-white px-2 py-1 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
               >
                 Dashboard
               </Link>
-              <Link 
+              <Link
                 href="/feedback"
-                className="text-white px-4 py-2 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
+                className="text-white px-2 py-1 rounded-md text-sm font-semibold bg-white/10 hover:bg-white/20 transition-colors"
               >
                 Feedback
               </Link>
@@ -1458,365 +1458,377 @@ export default function Home() {
         </div>
       </nav>
 
-        <div className="content-wrapper">
-          {/* Image and Assessment Complete Form Container */}
-          <div className="image-container">
-            {/* Conditionally render safety text only if the assessment form is shown */}
-            {showSafetyStatement && (
-              <p className="safety-text">
-                Avoidable medical error is a leading cause of death in the USA. Something as simple as
-                using safety language has been proven to decrease harm to patients. The scenarios generated
-                below are from real case studies that have been published in the literature and are customized
-                just for you in order to make the safety language more relevant. Thank you for doing your part to put more care into healthcare.
-              </p>
-            )}
-  
-            {/* Assessment Completion Form */}
-            {assessmentComplete && (
-              <div className="assessment-complete">
-                {/* Result Container with Score and Message */}
-                <div className="result-container">
-                  <div className="score-info">
-                    {/* Score Header */}
-                    <div className="score-header">
-                      <strong>Score:</strong>
-                    </div>
-  
-                    {/* Number of Correct Answers */}
-                    <div className="correct-answers">
-                      {correctCount} out of 12
-                    </div>
-  
-                    {/* Score Circle */}
-                    <div className="score-circle">
-                      <span>{totalScore}%</span>
-                    </div>
-  
-                    {/* Result Header */}
-                    <div className="result-header">
-                      <strong>Result:</strong>
-                    </div>
-  
-                    {/* Pass or Fail */}
-                    <div className={`pass-fail ${totalScore >= 70 ? 'pass' : 'fail'}`}>
-                      {totalScore >= 70 ? 'Pass' : 'Fail'}
-                    </div>
+      <div className="content-wrapper">
+        {/* Image and Assessment Complete Form Container */}
+        <div className="image-container px-4 py-6">
+          {/* Conditionally render safety text only if the assessment form is shown */}
+          {showSafetyStatement && (
+            <p className="safety-text text-sm sm:text-base text-gray-700 leading-relaxed">
+              Avoidable medical error is a leading cause of death in the USA. Something as simple as
+              using safety language has been proven to decrease harm to patients. The scenarios generated
+              below are from real case studies that have been published in the literature and are customized
+              just for you in order to make the safety language more relevant. Thank you for doing your part to put more care into healthcare.
+            </p>
+          )}
+
+          {/* Assessment Completion Form */}
+          {assessmentComplete && (
+            <div className="assessment-complete mt-6">
+              {/* Result Container with Score and Message */}
+              <div className="result-container bg-white rounded-lg shadow p-6">
+                <div className="score-info text-center">
+                  {/* Score Header */}
+                  <div className="score-header text-xl font-semibold">
+                    <strong>Score:</strong>
+                  </div>
+
+                  {/* Number of Correct Answers */}
+                  <div className="correct-answers text-2xl font-bold my-2">
+                    {correctCount} out of 12
+                  </div>
+
+                  {/* Score Circle */}
+                  <div className="score-circle mx-auto my-4 w-24 h-24 flex items-center justify-center rounded-full bg-blue-100">
+                    <span className="text-3xl font-bold text-blue-600">{totalScore}%</span>
+                  </div>
+
+                  {/* Result Header */}
+                  <div className="result-header text-xl font-semibold">
+                    <strong>Result:</strong>
+                  </div>
+
+                  {/* Pass or Fail */}
+                  <div className={`pass-fail text-2xl font-bold mt-2 ${totalScore >= 70 ? 'text-green-600' : 'text-red-600'}`}>
+                    {totalScore >= 70 ? 'Pass' : 'Fail'}
                   </div>
                 </div>
-  
-                {/* Case Study Results */}
-                {resultDetails.map((caseDetail) => (
-                  <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail">
-                    <h3>{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
-                    <p className="case-study-text">{caseDetail.caseStudyText}</p>
-  
-                    {caseDetail.questions.map((q) => (
-                      <div key={`question-${q.questionNumber}`} className="question-summary">
-                        <div className="question-header-summary">
-                          <h4>{`Question ${q.questionNumber}`}</h4>
-                          <span>{q.isCorrect ? '✅' : '❌'}</span>
-                        </div>
-  
-                        <p className="question-text">{q.questionText}</p>
-  
-                        <h5>Your Answer:</h5>
-                        <p className="user-answer">
-                          {q.selectedAnswer !== 'No Answer'
-                            ? getOptionLabel(
-                                caseDetail.caseStudyNumber - 1,
-                                q.questionNumber - 1,
-                                q.selectedAnswer
-                              )
-                            : 'No Answer'}
-                        </p>
-  
-                        <h5>Correct Answer:</h5>
-                        <p className="correct-answer">
-                          {getOptionLabel(
-                            caseDetail.caseStudyNumber - 1,
-                            q.questionNumber - 1,
-                            aiResponse[caseDetail.caseStudyNumber - 1].questions[q.questionNumber - 1].correctAnswer.split(')')[0].trim()
-                          )}
-                        </p>
+              </div>
+
+              {/* Case Study Results */}
+              {resultDetails.map((caseDetail) => (
+                <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail mt-6">
+                  <h3 className="text-lg font-semibold">{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
+                  <p className="case-study-text text-gray-700 mt-2">{caseDetail.caseStudyText}</p>
+
+                  {caseDetail.questions.map((q) => (
+                    <div key={`question-${q.questionNumber}`} className="question-summary mt-4">
+                      <div className="question-header-summary flex justify-between items-center">
+                        <h4 className="text-md font-semibold">{`Question ${q.questionNumber}`}</h4>
+                        <span className="text-xl">{q.isCorrect ? '✅' : '❌'}</span>
                       </div>
-                    ))}
-                  </div>
-                ))}
-  
-                {/* Result Buttons */}
-                <div className="result-buttons">
-                  
+
+                      <p className="question-text text-gray-700 mt-1">{q.questionText}</p>
+
+                      <h5 className="mt-2 font-semibold">Your Answer:</h5>
+                      <p className="user-answer text-gray-700">
+                        {q.selectedAnswer !== 'No Answer'
+                          ? getOptionLabel(
+                              caseDetail.caseStudyNumber - 1,
+                              q.questionNumber - 1,
+                              q.selectedAnswer
+                            )
+                          : 'No Answer'}
+                      </p>
+
+                      <h5 className="mt-2 font-semibold">Correct Answer:</h5>
+                      <p className="correct-answer text-gray-700">
+                        {getOptionLabel(
+                          caseDetail.caseStudyNumber - 1,
+                          q.questionNumber - 1,
+                          aiResponse[caseDetail.caseStudyNumber - 1].questions[q.questionNumber - 1].correctAnswer.split(')')[0].trim()
+                        )}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ))}
+
+              {/* Result Buttons */}
+              <div className="result-buttons flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
+                <button
+                  className="print-button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                  onClick={handlePrint}
+                  disabled={isLoading}
+                >
+                  🖨️ Print Assessment Report
+                </button>
+                {totalScore >= 70 && (
                   <button
-                    className="print-button"
-                    onClick={handlePrint}
+                    className="certificate-button bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+                    onClick={() => setIsCertificateOpen(true)}
                     disabled={isLoading}
                   >
-                    🖨️ Print Assessment Report
+                    🎓 View Certificate
                   </button>
-                  {totalScore >= 70 && (
-                    <button
-                      className="certificate-button"
-                      onClick={() => setIsCertificateOpen(true)}
-                      disabled={isLoading}
-                    >
-                      🎓 View Certificate
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-  
-         
-  
-          {/* Enhanced Form Container */}
-          {showSafetyStatement && (
-            <div className="form-container">
-              {/* Professional Information */}
-              <div className="professional-info">
-                <h2>Professional Information</h2>
-  
-                <div className="form-item">
-                  <label htmlFor="user-type-select">User Type</label>
-                  <select
-                    id="user-type-select"
-                    value={userType}
-                    onChange={(e) => {
-                      setUserType(e.target.value);
-                      setDepartment('');
-                      setRole('');
-                      setSpecialization('');
-                      if (error) setError('');
-                    }}
-                  >
-                    <option value="">Select</option>
-                    <option value="clinical">Clinical</option>
-                    <option value="non-clinical">Non-Clinical</option>
-                  </select>
-                </div>
-  
-                <div className="form-item">
-                  <label htmlFor="department-select">Department</label>
-                  <select
-                    id="department-select"
-                    value={department}
-                    onChange={(e) => {
-                      setDepartment(e.target.value);
-                      if (error) setError('');
-                    }}
-                    disabled={!userType}
-                  >
-                    <option value="">Select Department</option>
-                    {departmentsToUse.map((dept) => (
-                      <option key={dept} value={dept}>
-                        {dept}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-  
-                <div className="form-item">
-                  <label htmlFor="role-select">Role</label>
-                  <select
-                    id="role-select"
-                    value={role}
-                    onChange={(e) => {
-                      setRole(e.target.value);
-                      if (error) setError('');
-                    }}
-                    disabled={!department}
-                  >
-                    <option value="">Select Role</option>
-                    {rolesToUse.map((r) => (
-                      <option key={r} value={r}>
-                        {r}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-  
-                {userType === 'clinical' && (
-                  <div className="form-item">
-                    <label htmlFor="specialization-select">Specialization</label>
-                    <select
-                      id="specialization-select"
-                      value={specialization}
-                      onChange={(e) => {
-                        setSpecialization(e.target.value);
-                        if (error) setError('');
-                      }}
-                      disabled={!role}
-                    >
-                      <option value="">Select Specialization</option>
-                      {specializationsToUse.map((spec) => (
-                        <option key={spec} value={spec}>
-                          {spec}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
                 )}
               </div>
-            </div>
-          )}
-  
-          {/* Take Assessment Button */}
-          <div className="button-container">
-            {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
-              <button
-                type="button"
-                className="assessment-button"
-                onClick={handleTakeAssessment}
-                disabled={isLoading}
-              >
-                {isLoading
-                  ? 'Starting your assessment, please wait...'
-                  : 'Generate My Personalized Training Scenarios'}
-              </button>
-            )}
-          </div>
-  
-          {/* Error Alert */}
-          {error && <div className="error-alert">{error}</div>}
-  
-          {/* Case Studies Page */}
-          {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
-            <div className="case-studies">
-              <div className="case-study" key={currentCaseStudyIndex}>
-                {aiResponse[currentCaseStudyIndex].imageUrl && (
-                  <div className="case-study-image">
-                    <img
-                      src={aiResponse[currentCaseStudyIndex].imageUrl}
-                      alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
-                      className="header-image"
-                    />
-                  </div>
-                )}
-  
-                <div className="case-study-header">
-                  <h3>{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
-                  <button
-                    type="button"
-                    className="audio-button"
-                    onClick={fetchAudio}
-                    disabled={isAudioLoading}
-                  >
-                    {isAudioLoading ? (
-                      <span>Loading...</span>
-                    ) : isAudioPlaying ? (
-                      <>
-                        <span className="icon-volume-up"></span>
-                        Pause
-                      </>
-                    ) : (
-                      <>
-                        <span className="icon-volume-off"></span>
-                        Listen
-                      </>
-                    )}
-                  </button>
-                </div>
-  
-                <audio ref={audioRef} />
-  
-                {audioError && <div className="audio-error">{audioError}</div>}
-  
-                <p className="case-study-scenario">
-                  {caseStudies[currentCaseStudyIndex].scenario}
-                </p>
-  
-                {caseStudies[currentCaseStudyIndex].questions &&
-                caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
-                  <div className="question-section">
-                    <h4 className="question-header">
-                      {`Question ${currentQuestionIndex + 1}: ${
-                        caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
-                      }`}
-                    </h4>
-  
-                    <div className="options-group">
-                      {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
-                        (option) => {
-                          const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
-                          const currentAttempts = attempts[key] || 0;
-                          const feedbackMessage =
-                            feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
-                              ?.message || '';
-                          const isCorrect = feedbackMessage === 'Correct Answer';
-                          const maxAttemptsReached = currentAttempts >= 2 || isCorrect;
-  
-                          return (
-                            <div className="option-item" key={option.key}>
-                              <label>
-                                <input
-                                  type="radio"
-                                  name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
-                                  value={option.key}
-                                  onChange={(e) =>
-                                    handleAnswerChange(
-                                      currentCaseStudyIndex,
-                                      currentQuestionIndex,
-                                      e.target.value
-                                    )
-                                  }
-                                  disabled={maxAttemptsReached}
-                                  checked={
-                                    selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
-                                    option.key
-                                  }
-                                />
-                                <span>
-                                  <strong>{`${option.key}.`}</strong> {option.label}
-                                </span>
-                              </label>
-                            </div>
-                          );
-                        }
-                      )}
-                    </div>
-  
-                    {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
-                      <div className="feedback-section">
-                        <div
-                          className={`feedback-message ${
-                            feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
-                              .message === 'Correct Answer'
-                              ? 'success'
-                              : 'info'
-                          }`}
-                        >
-                          {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message}
-                        </div>
-                        {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
-                          <div className="hint">
-                            <span className="icon-hint"></span>
-                            <span>
-                              <strong>Hint:</strong>{' '}
-                              {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <p className="no-questions">No questions available for this case study.</p>
-                )}
-              </div>
-            </div>
-          )}
-  
-          {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
-            <div className="no-case-studies">
-              No case studies available at the moment. Please try again later.
             </div>
           )}
         </div>
 
+        {/* Enhanced Form Container */}
+        {showSafetyStatement && (
+          <div className="form-container px-4 py-6">
+            {/* Professional Information */}
+            <div className="professional-info bg-white rounded-lg shadow p-6">
+              <h2 className="text-lg font-semibold mb-4">Professional Information</h2>
+
+              <div className="form-item mb-4">
+                <label htmlFor="user-type-select" className="block text-sm font-medium text-gray-700">
+                  User Type
+                </label>
+                <select
+                  id="user-type-select"
+                  value={userType}
+                  onChange={(e) => {
+                    setUserType(e.target.value);
+                    setDepartment('');
+                    setRole('');
+                    setSpecialization('');
+                    if (error) setError('');
+                  }}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                >
+                  <option value="">Select</option>
+                  <option value="clinical">Clinical</option>
+                  <option value="non-clinical">Non-Clinical</option>
+                </select>
+              </div>
+
+              <div className="form-item mb-4">
+                <label htmlFor="department-select" className="block text-sm font-medium text-gray-700">
+                  Department
+                </label>
+                <select
+                  id="department-select"
+                  value={department}
+                  onChange={(e) => {
+                    setDepartment(e.target.value);
+                    if (error) setError('');
+                  }}
+                  disabled={!userType}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                >
+                  <option value="">Select Department</option>
+                  {departmentsToUse.map((dept) => (
+                    <option key={dept} value={dept}>
+                      {dept}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-item mb-4">
+                <label htmlFor="role-select" className="block text-sm font-medium text-gray-700">
+                  Role
+                </label>
+                <select
+                  id="role-select"
+                  value={role}
+                  onChange={(e) => {
+                    setRole(e.target.value);
+                    if (error) setError('');
+                  }}
+                  disabled={!department}
+                  className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                >
+                  <option value="">Select Role</option>
+                  {rolesToUse.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {userType === 'clinical' && (
+                <div className="form-item mb-4">
+                  <label htmlFor="specialization-select" className="block text-sm font-medium text-gray-700">
+                    Specialization
+                  </label>
+                  <select
+                    id="specialization-select"
+                    value={specialization}
+                    onChange={(e) => {
+                      setSpecialization(e.target.value);
+                      if (error) setError('');
+                    }}
+                    disabled={!role}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                  >
+                    <option value="">Select Specialization</option>
+                    {specializationsToUse.map((spec) => (
+                      <option key={spec} value={spec}>
+                        {spec}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Take Assessment Button */}
+        <div className="button-container text-center my-6">
+          {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
+            <button
+              type="button"
+              className="assessment-button bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
+              onClick={handleTakeAssessment}
+              disabled={isLoading}
+            >
+              {isLoading
+                ? 'Starting your assessment, please wait...'
+                : 'Generate My Personalized Training Scenarios'}
+            </button>
+          )}
+        </div>
+
+        {/* Error Alert */}
+        {error && <div className="error-alert text-red-600 text-center">{error}</div>}
+
+        {/* Case Studies Page */}
+        {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
+          <div className="case-studies px-4 py-6">
+            <div className="case-study" key={currentCaseStudyIndex}>
+              {aiResponse[currentCaseStudyIndex].imageUrl && (
+                <div className="case-study-image mb-4">
+                  <img
+                    src={aiResponse[currentCaseStudyIndex].imageUrl}
+                    alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
+                    className="header-image w-full h-auto rounded-lg"
+                  />
+                </div>
+              )}
+
+              <div className="case-study-header flex flex-col sm:flex-row justify-between items-center">
+                <h3 className="text-xl font-semibold">{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
+                <button
+                  type="button"
+                  className="audio-button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 mt-4 sm:mt-0"
+                  onClick={fetchAudio}
+                  disabled={isAudioLoading}
+                >
+                  {isAudioLoading ? (
+                    <span>Loading...</span>
+                  ) : isAudioPlaying ? (
+                    <>
+                      <span className="icon-volume-up"></span>
+                      Pause
+                    </>
+                  ) : (
+                    <>
+                      <span className="icon-volume-off"></span>
+                      Listen
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <audio ref={audioRef} />
+
+              {audioError && <div className="audio-error text-red-600">{audioError}</div>}
+
+              <p className="case-study-scenario text-gray-700 mt-4">
+                {caseStudies[currentCaseStudyIndex].scenario}
+              </p>
+
+              {caseStudies[currentCaseStudyIndex].questions &&
+              caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
+                <div className="question-section mt-6">
+                  <h4 className="question-header text-lg font-semibold">
+                    {`Question ${currentQuestionIndex + 1}: ${
+                      caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
+                    }`}
+                  </h4>
+
+                  <div className="options-group mt-4 space-y-2">
+                    {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
+                      (option) => {
+                        const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
+                        const currentAttempts = attempts[key] || 0;
+                        const feedbackMessage =
+                          feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
+                            ?.message || '';
+                        const isCorrect = feedbackMessage === 'Correct Answer';
+                        const maxAttemptsReached = currentAttempts >= 2 || isCorrect;
+
+                        return (
+                          <div className="option-item" key={option.key}>
+                            <label className="flex items-center space-x-2">
+                              <input
+                                type="radio"
+                                name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
+                                value={option.key}
+                                onChange={(e) =>
+                                  handleAnswerChange(
+                                    currentCaseStudyIndex,
+                                    currentQuestionIndex,
+                                    e.target.value
+                                  )
+                                }
+                                disabled={maxAttemptsReached}
+                                checked={
+                                  selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
+                                  option.key
+                                }
+                                className="form-radio h-4 w-4 text-blue-600"
+                              />
+                              <span className="text-gray-700">
+                                <strong>{`${option.key}.`}</strong> {option.label}
+                              </span>
+                            </label>
+                          </div>
+                        );
+                      }
+                    )}
+                  </div>
+
+                  {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
+                    <div className="feedback-section mt-4">
+                      <div
+                        className={`feedback-message p-3 rounded-md ${
+                          feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
+                            .message === 'Correct Answer'
+                            ? 'bg-green-100 text-green-700'
+                            : 'bg-blue-100 text-blue-700'
+                        }`}
+                      >
+                        {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message}
+                      </div>
+                      {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
+                        <div className="hint mt-2 flex items-start space-x-2">
+                          <span className="icon-hint mt-1 text-blue-600"></span>
+                          <span className="text-gray-700">
+                            <strong>Hint:</strong>{' '}
+                            {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="no-questions text-gray-700 mt-4">
+                  No questions available for this case study.
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
+          <div className="no-case-studies text-center text-gray-700 py-6">
+            No case studies available at the moment. Please try again later.
+          </div>
+        )}
+      </div>
+
       {/* Footer */}
-      <footer className="footer">
+      <footer className="footer bg-gray-800 text-white text-center py-4">
         <p>
-          © 2024 CoachCare.ai | Contact: operations@coachcare.ai 
+          © 2024 CoachCare.ai | Contact: operations@coachcare.ai
         </p>
       </footer>
 
@@ -1832,5 +1844,4 @@ export default function Home() {
       )}
     </div>
   </>
-  );
-}
+);
