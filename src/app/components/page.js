@@ -1385,100 +1385,83 @@ export default function Home() {
     // Clear interval on component unmount
     return () => clearInterval(styleInterval);
   }, [showTranslate]);
+  
   return (
     <>
       <Head>
         <title>Health Care Safety</title>
       </Head>
-  
-      <div className="container">
-  {/* Top Section with Image */}
-  
-  {/* App Bar with Navigation Buttons */}
-  <nav style={{
-    background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
-    padding: '0.75rem 1.5rem',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    position: 'sticky',
-    top: 0,
-    zIndex: 10
-  }}>
-    <div style={{
-      maxWidth: '1200px',
-      margin: '0 auto',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    }}>
-      {/* Logo or Brand Name could go here */}
-      <div style={{ fontWeight: 'bold', color: 'white' }}>
-        AI Personalized Healthcare Safety Module
-      </div>
 
-      {/* Navigation Links */}
-      <div style={{
-        display: 'flex',
-        gap: '1rem',
-        alignItems: 'center'
-      }}>
-        <Link 
-          href="/" 
-          style={{
-            color: 'white',
-            padding: '0.5rem 1rem',
-            borderRadius: '0.375rem',
-            transition: 'all 0.2s ease',
-            textDecoration: 'none',
-            fontSize: '0.875rem',
-            fontWeight: '600',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            ':hover': {
-              backgroundColor: 'rgba(255,255,255,0.2)'
-            }
-          }}
-        >
-          Home
-        </Link>
-        <Link 
-          href="/dashboard"
-          style={{
-            color: 'white',
-            padding: '0.5rem 1rem',
-            borderRadius: '0.375rem',
-            transition: 'all 0.2s ease',
-            textDecoration: 'none',
-            fontSize: '0.875rem',
-            fontWeight: '600',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            ':hover': {
-              backgroundColor: 'rgba(255,255,255,0.2)'
-            }
-          }}
-        >
-          Dashboard
-        </Link>
-        <Link 
-          href="/feedback" 
-          style={{
-            color: 'white',
-            padding: '0.5rem 1rem',
-            borderRadius: '0.375rem',
-            transition: 'all 0.2s ease',
-            textDecoration: 'none',
-            fontSize: '0.875rem',
-            fontWeight: '600',
-            backgroundColor: 'rgba(255,255,255,0.1)',
-            ':hover': {
-              backgroundColor: 'rgba(255,255,255,0.2)'
-            }
-          }}
-          >
-          Feedback
-        </Link>
-      </div>
-    </div>
-  </nav>
-  
+      <div className="container">
+        {/* App Bar with Navigation Buttons */}
+        <nav className="navbar" style={{
+          background: 'linear-gradient(to right, #2563eb, #1d4ed8)',
+          padding: '0.75rem 1.5rem',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+          position: 'sticky',
+          top: 0,
+          zIndex: 10
+        }}>
+          <div className="navbar-content">
+            {/* Logo or Brand Name */}
+            <div className="navbar-logo" style={{ fontWeight: 'bold', color: 'white' }}>
+              AI Personalized Healthcare Safety Module
+            </div>
+
+            {/* Navigation Links */}
+            <div className="navbar-links">
+              <Link 
+                href="/" 
+                style={{
+                  color: 'white',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.375rem',
+                  transition: 'all 0.2s ease',
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                }}
+                className="nav-link"
+              >
+                Home
+              </Link>
+              <Link 
+                href="/dashboard"
+                style={{
+                  color: 'white',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.375rem',
+                  transition: 'all 0.2s ease',
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                }}
+                className="nav-link"
+              >
+                Dashboard
+              </Link>
+              <Link 
+                href="/feedback" 
+                style={{
+                  color: 'white',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '0.375rem',
+                  transition: 'all 0.2s ease',
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                }}
+                className="nav-link"
+              >
+                Feedback
+              </Link>
+            </div>
+          </div>
+        </nav>
+
         <div className="content-wrapper">
           {/* Image and Assessment Complete Form Container */}
           <div className="image-container">
@@ -1491,7 +1474,7 @@ export default function Home() {
                 just for you in order to make the safety language more relevant. Thank you for doing your part to put more care into healthcare.
               </p>
             )}
-  
+
             {/* Assessment Completion Form */}
             {assessmentComplete && (
               <div className="assessment-complete">
@@ -1502,44 +1485,44 @@ export default function Home() {
                     <div className="score-header">
                       <strong>Score:</strong>
                     </div>
-  
+
                     {/* Number of Correct Answers */}
                     <div className="correct-answers">
                       {correctCount} out of 12
                     </div>
-  
+
                     {/* Score Circle */}
                     <div className="score-circle">
                       <span>{totalScore}%</span>
                     </div>
-  
+
                     {/* Result Header */}
                     <div className="result-header">
                       <strong>Result:</strong>
                     </div>
-  
+
                     {/* Pass or Fail */}
                     <div className={`pass-fail ${totalScore >= 70 ? 'pass' : 'fail'}`}>
                       {totalScore >= 70 ? 'Pass' : 'Fail'}
                     </div>
                   </div>
                 </div>
-  
+
                 {/* Case Study Results */}
                 {resultDetails.map((caseDetail) => (
                   <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail">
                     <h3>{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
                     <p className="case-study-text">{caseDetail.caseStudyText}</p>
-  
+
                     {caseDetail.questions.map((q) => (
                       <div key={`question-${q.questionNumber}`} className="question-summary">
                         <div className="question-header-summary">
                           <h4>{`Question ${q.questionNumber}`}</h4>
                           <span>{q.isCorrect ? '✅' : '❌'}</span>
                         </div>
-  
+
                         <p className="question-text">{q.questionText}</p>
-  
+
                         <h5>Your Answer:</h5>
                         <p className="user-answer">
                           {q.selectedAnswer !== 'No Answer'
@@ -1550,7 +1533,7 @@ export default function Home() {
                               )
                             : 'No Answer'}
                         </p>
-  
+
                         <h5>Correct Answer:</h5>
                         <p className="correct-answer">
                           {getOptionLabel(
@@ -1563,14 +1546,23 @@ export default function Home() {
                     ))}
                   </div>
                 ))}
-  
+
                 {/* Result Buttons */}
                 <div className="result-buttons">
-                  
                   <button
                     className="print-button"
                     onClick={handlePrint}
                     disabled={isLoading}
+                    style={{
+                      padding: '0.75rem 1.5rem',
+                      fontSize: '1rem',
+                      border: 'none',
+                      borderRadius: '0.375rem',
+                      cursor: 'pointer',
+                      transition: 'background-color 0.2s ease',
+                      backgroundColor: '#2563eb',
+                      color: 'white',
+                    }}
                   >
                     🖨️ Print Assessment Report
                   </button>
@@ -1579,6 +1571,16 @@ export default function Home() {
                       className="certificate-button"
                       onClick={() => setIsCertificateOpen(true)}
                       disabled={isLoading}
+                      style={{
+                        padding: '0.75rem 1.5rem',
+                        fontSize: '1rem',
+                        border: 'none',
+                        borderRadius: '0.375rem',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.2s ease',
+                        backgroundColor: '#22c55e',
+                        color: 'white',
+                      }}
                     >
                       🎓 View Certificate
                     </button>
@@ -1587,16 +1589,14 @@ export default function Home() {
               </div>
             )}
           </div>
-  
-         
-  
+
           {/* Enhanced Form Container */}
           {showSafetyStatement && (
             <div className="form-container">
               {/* Professional Information */}
               <div className="professional-info">
                 <h2>Professional Information</h2>
-  
+
                 <div className="form-item">
                   <label htmlFor="user-type-select">User Type</label>
                   <select
@@ -1615,7 +1615,7 @@ export default function Home() {
                     <option value="non-clinical">Non-Clinical</option>
                   </select>
                 </div>
-  
+
                 <div className="form-item">
                   <label htmlFor="department-select">Department</label>
                   <select
@@ -1635,7 +1635,7 @@ export default function Home() {
                     ))}
                   </select>
                 </div>
-  
+
                 <div className="form-item">
                   <label htmlFor="role-select">Role</label>
                   <select
@@ -1655,7 +1655,7 @@ export default function Home() {
                     ))}
                   </select>
                 </div>
-  
+
                 {userType === 'clinical' && (
                   <div className="form-item">
                     <label htmlFor="specialization-select">Specialization</label>
@@ -1680,7 +1680,7 @@ export default function Home() {
               </div>
             </div>
           )}
-  
+
           {/* Take Assessment Button */}
           <div className="button-container">
             {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
@@ -1689,6 +1689,16 @@ export default function Home() {
                 className="assessment-button"
                 onClick={handleTakeAssessment}
                 disabled={isLoading}
+                style={{
+                  padding: '0.75rem 1.5rem',
+                  fontSize: '1rem',
+                  backgroundColor: '#2563eb',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '0.375rem',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s ease',
+                }}
               >
                 {isLoading
                   ? 'Starting your assessment, please wait...'
@@ -1696,10 +1706,10 @@ export default function Home() {
               </button>
             )}
           </div>
-  
+
           {/* Error Alert */}
           {error && <div className="error-alert">{error}</div>}
-  
+
           {/* Case Studies Page */}
           {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
             <div className="case-studies">
@@ -1713,7 +1723,7 @@ export default function Home() {
                     />
                   </div>
                 )}
-  
+
                 <div className="case-study-header">
                   <h3>{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
                   <button
@@ -1737,15 +1747,15 @@ export default function Home() {
                     )}
                   </button>
                 </div>
-  
+
                 <audio ref={audioRef} />
-  
+
                 {audioError && <div className="audio-error">{audioError}</div>}
-  
+
                 <p className="case-study-scenario">
                   {caseStudies[currentCaseStudyIndex].scenario}
                 </p>
-  
+
                 {caseStudies[currentCaseStudyIndex].questions &&
                 caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
                   <div className="question-section">
@@ -1754,7 +1764,7 @@ export default function Home() {
                         caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
                       }`}
                     </h4>
-  
+
                     <div className="options-group">
                       {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
                         (option) => {
@@ -1765,7 +1775,7 @@ export default function Home() {
                               ?.message || '';
                           const isCorrect = feedbackMessage === 'Correct Answer';
                           const maxAttemptsReached = currentAttempts >= 2 || isCorrect;
-  
+
                           return (
                             <div className="option-item" key={option.key}>
                               <label>
@@ -1795,7 +1805,7 @@ export default function Home() {
                         }
                       )}
                     </div>
-  
+
                     {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
                       <div className="feedback-section">
                         <div
@@ -1826,7 +1836,7 @@ export default function Home() {
               </div>
             </div>
           )}
-  
+
           {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
             <div className="no-case-studies">
               No case studies available at the moment. Please try again later.
@@ -1834,24 +1844,489 @@ export default function Home() {
           )}
         </div>
 
-      {/* Footer */}
-      <footer className="footer">
-        <p>
-          © 2024 CoachCare.ai | Contact: operations@coachcare.ai 
-        </p>
-      </footer>
+        {/* Footer */}
+        <footer className="footer">
+          <p>
+            © 2024 CoachCare.ai | Contact: operations@coachcare.ai 
+          </p>
+        </footer>
 
-      {/* Certificate Popup */}
-      {isCertificateOpen && (
-        <CertificatePopup
-          isOpen={isCertificateOpen}
-          onClose={() => setIsCertificateOpen(false)}
-          fullName={fullName}
-          date={new Date().toLocaleDateString()}
-          onPrint={handlePrintCertificate}
-        />
-      )}
-    </div>
-  </>
+        {/* Certificate Popup */}
+        {isCertificateOpen && (
+          <CertificatePopup
+            isOpen={isCertificateOpen}
+            onClose={() => setIsCertificateOpen(false)}
+            fullName={fullName}
+            date={new Date().toLocaleDateString()}
+            onPrint={handlePrintCertificate}
+          />
+        )}
+      </div>
+
+      {/* Responsive Styles */}
+      <style jsx>{`
+        /* Container */
+        .container {
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+
+        /* Navbar Content */
+        .navbar-content {
+          max-width: 1200px;
+          margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+        }
+
+        .navbar-logo {
+          font-weight: bold;
+          color: white;
+          font-size: 1.25rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .navbar-links {
+          display: flex;
+          gap: 1rem;
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+          flex: 1;
+          padding: 1.5rem;
+          max-width: 1200px;
+          margin: 0 auto;
+          width: 100%;
+        }
+
+        /* Safety Text */
+        .safety-text {
+          font-size: 1rem;
+          line-height: 1.6;
+          margin-bottom: 1.5rem;
+        }
+
+        /* Assessment Complete */
+        .assessment-complete {
+          background-color: #f9fafb;
+          padding: 1.5rem;
+          border-radius: 0.5rem;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          margin-bottom: 1.5rem;
+        }
+
+        .result-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+
+        .score-info {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .score-header,
+        .result-header {
+          font-size: 1.25rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .correct-answers {
+          font-size: 1rem;
+        }
+
+        .score-circle {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          background-color: #2563eb;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 1.5rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .pass-fail {
+          font-size: 1.25rem;
+          font-weight: bold;
+        }
+
+        .pass-fail.pass {
+          color: green;
+        }
+
+        .pass-fail.fail {
+          color: red;
+        }
+
+        /* Case Detail */
+        .case-detail {
+          margin-top: 2rem;
+        }
+
+        .case-study-text {
+          font-size: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .question-summary {
+          background-color: #ffffff;
+          padding: 1rem;
+          border-radius: 0.5rem;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          margin-bottom: 1rem;
+        }
+
+        .question-header-summary {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+          font-size: 1rem;
+          margin-bottom: 0.5rem;
+        }
+
+        .user-answer,
+        .correct-answer {
+          margin-bottom: 0.5rem;
+        }
+
+        /* Result Buttons */
+        .result-buttons {
+          display: flex;
+          gap: 1rem;
+          margin-top: 1rem;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        /* Form Container */
+        .form-container {
+          background-color: #f9fafb;
+          padding: 1.5rem;
+          border-radius: 0.5rem;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          margin-bottom: 1.5rem;
+        }
+
+        .professional-info h2 {
+          margin-bottom: 1rem;
+        }
+
+        .form-item {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 1rem;
+        }
+
+        .form-item label {
+          margin-bottom: 0.5rem;
+          font-weight: 600;
+        }
+
+        .form-item select {
+          padding: 0.5rem;
+          border: 1px solid #d1d5db;
+          border-radius: 0.375rem;
+          font-size: 1rem;
+        }
+
+        /* Button Container */
+        .button-container {
+          display: flex;
+          justify-content: center;
+          margin-top: 1.5rem;
+        }
+
+        /* Error Alert */
+        .error-alert {
+          background-color: #fef2f2;
+          color: #b91c1c;
+          padding: 1rem;
+          border-radius: 0.375rem;
+          margin-top: 1rem;
+          text-align: center;
+        }
+
+        /* Case Studies */
+        .case-studies {
+          margin-top: 2rem;
+        }
+
+        .case-study {
+          background-color: #ffffff;
+          padding: 1.5rem;
+          border-radius: 0.5rem;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          margin-bottom: 1.5rem;
+        }
+
+        .case-study-image img {
+          width: 100%;
+          height: auto;
+          border-radius: 0.375rem;
+          margin-bottom: 1rem;
+        }
+
+        .case-study-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1rem;
+          flex-wrap: wrap;
+        }
+
+        .audio-button {
+          padding: 0.5rem 1rem;
+          font-size: 0.875rem;
+          background-color: #6b7280;
+          color: white;
+          border: none;
+          border-radius: 0.375rem;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .audio-button:hover {
+          background-color: #4b5563;
+        }
+
+        .audio-error {
+          color: red;
+          margin-top: 0.5rem;
+        }
+
+        .case-study-scenario {
+          font-size: 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .question-section {
+          margin-top: 1rem;
+        }
+
+        .question-header {
+          font-size: 1.125rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .options-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-bottom: 0.75rem;
+        }
+
+        .option-item label {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          cursor: pointer;
+        }
+
+        .option-item input[type='radio'] {
+          cursor: pointer;
+        }
+
+        .feedback-section {
+          margin-top: 0.5rem;
+        }
+
+        .feedback-message {
+          padding: 0.5rem;
+          border-radius: 0.375rem;
+          font-weight: 600;
+        }
+
+        .feedback-message.success {
+          background-color: #d1fae5;
+          color: #065f46;
+        }
+
+        .feedback-message.info {
+          background-color: #bfdbfe;
+          color: #1e3a8a;
+        }
+
+        .hint {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-top: 0.5rem;
+          font-size: 0.875rem;
+          color: #4b5563;
+        }
+
+        .icon-hint {
+          /* Add your hint icon styles or use an icon library */
+        }
+
+        .no-questions {
+          font-size: 1rem;
+          color: #6b7280;
+        }
+
+        .no-case-studies {
+          text-align: center;
+          font-size: 1rem;
+          color: #6b7280;
+          margin-top: 2rem;
+        }
+
+        /* Footer */
+        .footer {
+          background-color: #f3f4f6;
+          padding: 1rem;
+          text-align: center;
+          font-size: 0.875rem;
+          color: #6b7280;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 640px) {
+          /* Mobile Styles */
+
+          .navbar-content {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          .navbar-logo {
+            margin-bottom: 0.5rem;
+          }
+
+          .navbar-links {
+            flex-direction: column;
+            width: 100%;
+          }
+
+          .nav-link {
+            width: 100%;
+            text-align: left;
+            padding: 0.5rem 0;
+          }
+
+          .content-wrapper {
+            padding: 1rem;
+          }
+
+          .assessment-complete {
+            padding: 1rem;
+          }
+
+          .form-container {
+            padding: 1rem;
+          }
+
+          .case-study-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+          }
+
+          .audio-button {
+            width: 100%;
+            justify-content: center;
+          }
+
+          .result-buttons {
+            flex-direction: column;
+            gap: 0.5rem;
+          }
+        }
+
+        @media (min-width: 641px) and (max-width: 1024px) {
+          /* Tablet Styles */
+
+          .navbar-content {
+            flex-wrap: nowrap;
+          }
+
+          .navbar-links {
+            gap: 0.75rem;
+          }
+
+          .content-wrapper {
+            padding: 1.5rem;
+          }
+
+          .assessment-complete {
+            padding: 1.25rem;
+          }
+
+          .form-container {
+            padding: 1.25rem;
+          }
+
+          .case-study-header {
+            flex-direction: row;
+            align-items: center;
+          }
+
+          .audio-button {
+            width: auto;
+          }
+
+          .result-buttons {
+            flex-direction: row;
+            gap: 1rem;
+          }
+        }
+
+        @media (min-width: 1025px) {
+          /* Desktop Styles */
+
+          .navbar-content {
+            flex-wrap: nowrap;
+          }
+
+          .navbar-links {
+            gap: 1rem;
+          }
+
+          .content-wrapper {
+            padding: 2rem;
+          }
+
+          .assessment-complete {
+            padding: 1.5rem;
+          }
+
+          .form-container {
+            padding: 1.5rem;
+          }
+
+          .case-study-header {
+            flex-direction: row;
+            align-items: center;
+          }
+
+          .audio-button {
+            width: auto;
+          }
+
+          .result-buttons {
+            flex-direction: row;
+            gap: 1rem;
+          }
+        }
+      `}</style>
+    </>
   );
-}
+};
