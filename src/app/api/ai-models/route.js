@@ -197,7 +197,7 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each  250 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
@@ -208,10 +208,9 @@ export async function POST(request) {
       - Include a different medical error that occurred by the ${role} or by the team.
       - Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
       - The medical studies should be detailed and focus on the situation, medical error, and consequences.
-      - Each medical case study should include a different medical error that occured in the scenario. 
+      - Each medical case study should include a different medical error that occured in the scenario. Some examples are (retained medical equipment, missing items on tray, )
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
-      - Do not explicitly mention any of the 11 error prevention tools  in the scenario itself, or its definition. 
     
     - **For each case study, create 3 unique multiple-choice questions that:**
       - Have 4 option choices each.
@@ -221,7 +220,7 @@ export async function POST(request) {
       - The question should be strictly from the perspective of the ${role}.
       - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
       - Include clues by using buzzwords or synonyms from the correct answer's definition.
-      - Do not explicitly mention the error prevention tools by name in the question header.
+      - Do not explicitly mention the prevention tools by name in the question header.
     
     - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
       - **Question Structure**
@@ -414,7 +413,7 @@ export async function POST(request) {
     Do not include any additional text outside of the JSON structure.`;
 
   } else if (userType === 'non-clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each 250 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
@@ -634,14 +633,14 @@ export async function POST(request) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "o1-mini",
       messages: [
         {
           role: "user",
           content: META_PROMPT,
         },
       ],
-      temperature: 0.7,
+      temperature: 1.0,
       stream: false,
     });
     
@@ -797,7 +796,7 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
           content: 'Scenario:\n' + caseStudy.scenario,
         },
       ],
-      temperature: 1.0,
+      temperature: 0.7,
       max_tokens: 500,
     }),
   });
@@ -823,7 +822,7 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
 
 async function fetchImagesForCaseStudies(
   caseStudies,
-  model = 'sd3-large',
+  model = 'sd3-large-turbo',
   aspect_ratio = '1:1'
 ) {
   try {
