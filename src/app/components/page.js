@@ -23,8 +23,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 import Dialog from '@mui/material/Dialog';
-import { Trophy, Menu, X } from 'lucide-react';
-import Image from 'next/image';
+import { Trophy, Menu } from 'lucide-react';
 
 const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
   return (
@@ -1400,18 +1399,33 @@ export default function Home() {
     <Head>
       <title>Health Care Safety</title>
     </Head>
-
     <div className="container mx-auto px-4">
   {/* Responsive App Bar */}
   <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between h-16">
         {/* Logo */}
-        <div className="flex-shrink-0 text-white font-bold">
-          <span className="hidden sm:block">
-            AI Personalized Healthcare Safety Module
-          </span>
-          <span className="block sm:hidden">AI Healthcare</span>
+        <div className="flex items-center">
+          <div className="flex-shrink-0 text-white font-bold">
+            <span className="hidden sm:block">
+              AI Personalized Healthcare Safety Module
+            </span>
+            <span className="block sm:hidden">AI Safety Module</span>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="sm:hidden ml-4">
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-white hover:text-gray-200 focus:outline-none"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Desktop Navigation */}
@@ -1434,20 +1448,6 @@ export default function Home() {
           >
             Feedback
           </Link>
-        </div>
-
-        {/* Mobile menu button */}
-        <div className="sm:hidden">
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="text-white hover:text-gray-200 focus:outline-none"
-          >
-            {isMobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
         </div>
       </div>
 
@@ -1869,5 +1869,7 @@ export default function Home() {
     </div>
   </>
 );
+}
+
 }
 
