@@ -80,10 +80,10 @@ const errorPreventionTools = [
   
 
 const stats = [
-  { icon: Skull, label: "Leading Cause Of Death", value: "3rd" },
+  { label: "Leading Cause Of Death", value: "3rd" },
   { label: "Hospitals At Risk", value: "6K+", subtext: "In The U.S" },
-  { label: "Patient Safety Score", value: "4.9/5", subtext: "Average rating" },
-  { label: "Implementation Success", value: "95%", subtext: "Across facilities" }
+  { label: "Patient experience some form of preventable harm ", value: "400k+" },
+  { label: "Anual Hospital Cost To Cover Patient Harm", value: "20bn - 45bn" }
 ];
 
 export default function Home() {
