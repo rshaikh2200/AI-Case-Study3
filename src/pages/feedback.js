@@ -67,7 +67,7 @@ const Feedback = () => {
               </span>
               <span className="block sm:hidden">AI Healthcare</span>
             </div>
-
+  
             {/* Desktop Navigation */}
             <div className="hidden sm:flex sm:items-center sm:space-x-4">
               <Link
@@ -89,9 +89,9 @@ const Feedback = () => {
                 Feedback
               </Link>
             </div>
-
+  
             {/* Mobile menu button */}
-            <div className="sm:hidden">
+            <div className="sm:hidden mr-8">
               <button
                 onClick={toggleMenu}
                 className="text-white hover:text-gray-200 focus:outline-none"
@@ -104,7 +104,7 @@ const Feedback = () => {
               </button>
             </div>
           </div>
-
+  
           {/* Mobile Navigation */}
           {isMenuOpen && (
             <div className="sm:hidden pb-4">
@@ -135,7 +135,7 @@ const Feedback = () => {
           )}
         </div>
       </nav>
-
+  
       {/* Feedback Form Container */}
       <div className="max-w-[600px] mx-auto px-4 sm:px-6 py-8">
         <div className="feedback-form-container">
@@ -170,7 +170,7 @@ const Feedback = () => {
                 <option value="1">★☆☆☆☆ - Poor</option>
               </select>
             </div>
-
+  
             {/* Difficulty of Questions Field */}
             <div>
               <label htmlFor="difficulty">Difficulty of Questions</label>
@@ -190,7 +190,7 @@ const Feedback = () => {
                 <option value="5">5 - Very Difficult</option>
               </select>
             </div>
-
+  
             {/* Informational Case Study Field */}
             <div>
               <label>Was the case study informational?</label>
@@ -218,7 +218,7 @@ const Feedback = () => {
                 </label>
               </div>
             </div>
-
+  
             {/* Interesting Case Study Field */}
             <div>
               <label>Was the case study interesting?</label>
@@ -246,7 +246,7 @@ const Feedback = () => {
                 </label>
               </div>
             </div>
-
+  
             {/* Comments Field */}
             <div>
               <label htmlFor="comments">Additional Comments</label>
@@ -261,7 +261,7 @@ const Feedback = () => {
                 className="w-full"
               ></textarea>
             </div>
-
+  
             {/* Submit Button */}
             <button type="submit">
               Submit Feedback
@@ -271,6 +271,6 @@ const Feedback = () => {
       </div>
     </>
   );
-};
+}
+  export default Feedback;
 
-export default Feedback;
