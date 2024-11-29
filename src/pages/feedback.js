@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
+import { collection, addDoc } from 'firebase/firestore';
+import { firestore } from '../../src/app/firebase';
 
 const Feedback = () => {
   const [formData, setFormData] = useState({
@@ -29,15 +31,23 @@ const Feedback = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    setSubmitted(true);
-    setFormData({
-      rating: '5',
-      difficulty: '3',
-      informational: '',
-      interesting: '',
-      comments: '',
-    });
+    try {
+      // Save formData to Firestore
+      await addDoc(collection(firestore, 'feedback'), formData);
+      console.log('Feedback submitted successfully:', formData);
+
+      setSubmitted(true);
+      setFormData({
+        rating: '5',
+        difficulty: '3',
+        informational: '',
+        interesting: '',
+        comments: '',
+      });
+    } catch (error) {
+      console.error('Error submitting feedback:', error.message);
+      setError('Failed to submit feedback. Please try again.');
+    }
   };
 
   const toggleMenu = () => {
