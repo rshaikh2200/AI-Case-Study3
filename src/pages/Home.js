@@ -83,7 +83,7 @@ const stats = [
   { label: "Leading Cause Of Death", value: "3rd" },
   { label: "Hospitals At Risk", value: "6K+", subtext: "In The U.S" },
   { label: "Patient experience some form of preventable harm ", value: "400k+" },
-  { label: "Anual Hospital Cost To Cover Patient Harm", value: "20 Billion - 45 Billion" }
+  { label: "Anual Hospital Cost To Cover Patient Harm", value: "$20bn - $45bn" }
 ];
 
 export default function Home() {
