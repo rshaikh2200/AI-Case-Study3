@@ -77,6 +77,13 @@ const Feedback = () => {
                 Home
               </Link>
               <Link
+                    href="/components"
+                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Case Studies
+                  </Link>
+              <Link
                 href="/dashboard"
                 className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
               >
@@ -91,7 +98,7 @@ const Feedback = () => {
             </div>
   
             {/* Mobile menu button */}
-            <div className="sm:hidden mr-8">
+            <div className="sm:hidden mr-6">
               <button
                 onClick={toggleMenu}
                 className="text-white hover:text-gray-200 focus:outline-none"
@@ -116,6 +123,13 @@ const Feedback = () => {
                 >
                   Home
                 </Link>
+                <Link
+                    href="/components"
+                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Case Studies
+                  </Link>
                 <Link
                   href="/dashboard"
                   className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
@@ -272,5 +286,6 @@ const Feedback = () => {
     </>
   );
 }
+  
   export default Feedback;
-
+  

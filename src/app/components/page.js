@@ -1445,11 +1445,19 @@ export default function Home() {
   
               {/* Desktop Navigation */}
               <div className="hidden sm:flex sm:items-center sm:space-x-4">
+                
+              <Link
+                    href="/Home"
+                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Home
+                </Link>
                 <Link
-                  href="/"
+                  href="/components"
                   className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
                 >
-                  Home
+                  Case Studies
                 </Link>
                 <Link
                   href="/dashboard"
@@ -1470,12 +1478,19 @@ export default function Home() {
             {isMobileMenuOpen && (
               <div className="sm:hidden pb-4">
                 <div className="flex flex-col space-y-2">
+                <Link
+              href="/"
+              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
                   <Link
-                    href="/"
+                    href="/components"
                     className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    Home
+                    Case Studies
                   </Link>
                   <Link
                     href="/dashboard"
@@ -1491,6 +1506,7 @@ export default function Home() {
                   >
                     Feedback
                   </Link>
+                  
                 </div>
               </div>
             )}
@@ -1885,4 +1901,3 @@ export default function Home() {
     </>
   );
 }  
-

@@ -406,6 +406,14 @@ export default function DashboardPage() {
               Home
             </Link>
             <Link
+                    href="/components"
+                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Case Studies
+                  </Link>
+            
+            <Link
               href="/dashboard"
               className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
               onClick={() => setIsMenuOpen(false)}
@@ -431,6 +439,14 @@ export default function DashboardPage() {
         >
           Home
         </Link>
+        <Link
+                    href="/components"
+                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Case Studies
+                  </Link>
+        
         <Link
           href="/dashboard"
           className="text-white font-semibold px-3 py-2 rounded-md text-sm hover:bg-blue-500 transition-colors"
