@@ -122,7 +122,7 @@ export default function Home() {
               <span className="hidden sm:block">
                 AI Personalized Healthcare Safety Module
               </span>
-              <span className="block sm:hidden">AI Safety Module</span>
+              <span className="block sm:hidden">Coachcare.ai</span>
             </div>
           </div>
 
