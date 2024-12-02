@@ -127,7 +127,7 @@ const Feedback = () => {
                 className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Case Studies
+                Safety Module
               </Link>
               <Link
                 href="/dashboard"
