@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import React, { useState, useEffect, useRef } from 'react';
 import Script from 'next/script';
@@ -32,7 +32,7 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
       onClose={onClose}
       PaperProps={{
         className:
-          "certificate-container border-4 border-gray-300 rounded-2xl shadow-lg p-6 bg-gradient-to-br from-white to-blue-50 max-w-md w-full", // Changed max-w-3xl to max-w-md and p-8 to p-6
+          "certificate-container border-4 border-gray-300 rounded-2xl shadow-lg p-6 bg-gradient-to-br from-white to-blue-50 max-w-md w-full",
         sx: {
           position: "absolute",
           top: "50%",
@@ -48,12 +48,12 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
     >
       <div className="certificate-popup">
         {/* Popup Header */}
-        <div className="text-center py-6 bg-gradient-to-b from-blue-50 via-white to-transparent rounded-t-2xl border-b border-gray-100"> {/* Reduced py-10 to py-6 */}
+        <div className="text-center py-6 bg-gradient-to-b from-blue-50 via-white to-transparent rounded-t-2xl border-b border-gray-100">
           <div className="relative">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-24 bg-yellow-100 rounded-full opacity-50 blur-xl" /> {/* Adjusted size from w-32 h-32 to w-24 h-24 */}
-            <Trophy className="relative w-16 h-16 text-yellow-500 mx-auto mb-4 animate-bounce" /> {/* Adjusted size from w-24 h-24 to w-16 h-16 */}
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-24 bg-yellow-100 rounded-full opacity-50 blur-xl" />
+            <Trophy className="relative w-16 h-16 text-yellow-500 mx-auto mb-4 animate-bounce" />
           </div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2"> {/* Changed text-4xl to text-3xl */}
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2">
             Congratulations!
           </h2>
         </div>
@@ -61,37 +61,37 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
         {/* Certificate Content */}
         <div
           id="certificate"
-          className="certificate-content mx-2 my-4 border-4 border-double border-gray-300 p-6 rounded-lg shadow-lg relative" // Changed mx-4 to mx-2, my-8 to my-4, p-8 to p-6
+          className="certificate-content mx-2 my-4 border-4 border-double border-gray-300 p-6 rounded-lg shadow-lg relative"
         >
           <div className="absolute inset-0 opacity-5">
             <div className="absolute inset-0 bg-[linear-gradient(45deg,#000_25%,transparent_25%,transparent_75%,#000_75%,#000),linear-gradient(45deg,#000_25%,transparent_25%,transparent_75%,#000_75%,#000)] bg-[length:60px_60px] bg-[position:0_0,30px_30px]" />
           </div>
-          <div className="text-center mb-4 relative"> {/* Changed mb-8 to mb-4 */}
+          <div className="text-center mb-4 relative">
             <img
               src="/Picture1.jpg"
               alt="CoachCare.ai Logo"
-              className="mx-auto h-20 mb-2 drop-shadow-md" // Changed h-24 to h-20 and mb-4 to mb-2
+              className="mx-auto h-20 mb-2 drop-shadow-md"
             />
           </div>
-          <div className="text-center space-y-4 relative"> {/* Changed space-y-6 to space-y-4 */}
-            <h2 className="text-3xl font-semibold text-gray-800 font-serif tracking-wide"> {/* Changed text-4xl to text-3xl */}
+          <div className="text-center space-y-4 relative">
+            <h2 className="text-3xl font-semibold text-gray-800 font-serif tracking-wide">
               Certificate of Completion
             </h2>
-            <p className="text-xl text-gray-600"> {/* Changed text-2xl to text-xl */}
+            <p className="text-xl text-gray-600">
               This certificate is proudly presented to you
             </p>
-            <p className="text-4xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent my-2 font-serif tracking-wide"> {/* Changed text-5xl to text-4xl, my-4 to my-2 */}
+            <p className="text-4xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent my-2 font-serif tracking-wide">
               {fullName}
             </p>
-            <p className="text-xl leading-relaxed text-gray-700"> {/* Changed text-2xl to text-xl */}
+            <p className="text-xl leading-relaxed text-gray-700">
               For successfully completing the{" "}
               <span className="font-semibold">
                 Patient Safety Language Basics
               </span>{" "}
               module.
             </p>
-            <div className="mt-4 pt-4 border-t border-gray-200"> {/* Changed mt-6 pt-6 to mt-4 pt-4 */}
-              <p className="text-lg text-gray-600"> {/* Changed text-xl to text-lg */}
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <p className="text-lg text-gray-600">
                 Issued on: <span className="font-semibold">{date}</span>
               </p>
             </div>
@@ -99,14 +99,14 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
         </div>
 
         {/* Enhanced Action Buttons */}
-        <div className="flex justify-center gap-4 pt-4"> {/* Changed gap-6 to gap-4 and pt-6 to pt-4 */}
+        <div className="flex justify-center gap-4 pt-4">
           <button
             onClick={onPrint}
-            className="group relative px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden" // Changed px-8 py-3 to px-6 py-2
+            className="group relative px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
           >
             <span className="relative z-10 flex items-center gap-2">
               <svg
-                className="w-4 h-4 transition-transform group-hover:rotate-12" // Changed w-5 h-5 to w-4 h-4
+                className="w-4 h-4 transition-transform group-hover:rotate-12"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -123,11 +123,11 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
           </button>
           <button
             onClick={onClose}
-            className="group px-6 py-2 bg-white text-gray-700 rounded-xl font-semibold shadow-md border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:-translate-y-0.5 transition-all duration-200 hover:shadow-lg" // Changed px-8 py-3 to px-6 py-2
+            className="group px-6 py-2 bg-white text-gray-700 rounded-xl font-semibold shadow-md border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:-translate-y-0.5 transition-all duration-200 hover:shadow-lg"
           >
             <span className="flex items-center gap-2">
               <svg
-                className="w-4 h-4 transition-transform group-hover:-translate-x-1" // Changed w-5 h-5 to w-4 h-4
+                className="w-4 h-4 transition-transform group-hover:-translate-x-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -171,6 +171,9 @@ export default function Home() {
   const [language, setLanguage] = useState('english');
   const [showTranslate, setShowTranslate] = useState(true);
   
+  // NEW State variable for Care
+  const [care, setCare] = useState('');
+
   // Added state variable for certificate popup
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
 
@@ -479,6 +482,21 @@ export default function Home() {
     }
   };
 
+  // Function to get Workflow ID
+  const getWorkflowID = (caseIndex, questionIndex) => {
+    let count = 1; // Start from 1 because 'Take Assessment' is at index 0
+    for (let i = 0; i < caseIndex; i++) {
+      count += caseStudies[i].questions.length;
+    }
+    count += questionIndex;
+    return workflowData[count]?.workflowID || '';
+  };
+
+  // Function to get Workflow Name
+  const getWorkflowName = (caseIndex, questionIndex) => {
+    return `Case${caseIndex + 1}-Question${questionIndex + 1}`;
+  };
+
   // Handle taking the assessment
   const handleTakeAssessment = () => {
     if (!userType) {
@@ -508,22 +526,7 @@ export default function Home() {
     setShowTranslate(false);
   };
 
-  // Function to get Workflow ID
-  const getWorkflowID = (caseIndex, questionIndex) => {
-    let count = 1; // Start from 1 because 'Take Assessment' is at index 0
-    for (let i = 0; i < caseIndex; i++) {
-      count += caseStudies[i].questions.length;
-    }
-    count += questionIndex;
-    return workflowData[count]?.workflowID || '';
-  };
-
-  // Function to get Workflow Name
-  const getWorkflowName = (caseIndex, questionIndex) => {
-    return `Case${caseIndex + 1}-Question${questionIndex + 1}`;
-  };
-
-  // Handle submitting the assessment
+  // Function to get case studies from the server
   const handleSubmitAssessment = async () => {
     setIsLoading(true);
     setError(null);
@@ -671,22 +674,20 @@ export default function Home() {
       dataToSave.attempt1Timestamp = timestamp;
       dataToSave.attempt1Answer = selectedOption;
       dataToSave.attempt1Result = isCorrect ? 'Correct' : 'Incorrect';
-      dataToSave.secondAttemptMade = 'no'; // Record that second attempt was not made yet
+      dataToSave.secondAttemptMade = 'no';
     } else {
       dataToSave.attempt2Selection = 'yes';
       dataToSave.attempt2Timestamp = timestamp;
       dataToSave.attempt2Answer = selectedOption;
       dataToSave.attempt2Result = isCorrect ? 'Correct' : 'Incorrect';
-      dataToSave.secondAttemptMade = 'yes'; // Record that second attempt was made
+      dataToSave.secondAttemptMade = 'yes';
     }
 
     saveWorkflowData(dataToSave);
 
     // Move to next question or case study after feedback with 1-second delay
     if (isCorrect || currentAttempts + 1 >= 2) {
-      setTimeout(() => { // Added 1-second delay
-
-        // Save nextButtonTimestamp to workflowData
+      setTimeout(() => {
         const workflowID = getWorkflowID(caseIndex, questionIndex);
         const workflowName = getWorkflowName(caseIndex, questionIndex);
         const timestamp = new Date();
@@ -706,18 +707,14 @@ export default function Home() {
         const isLastCaseStudy = caseIndex === caseStudies.length - 1;
 
         if (isLastQuestionInCaseStudy && isLastCaseStudy) {
-          // This is the last question of the last case study
-          // Proceed to assessment complete form
           handleSubmitFinalAssessment();
         } else if (isLastQuestionInCaseStudy) {
-          // Move to first question of next case study
           setCurrentCaseStudyIndex((prevIndex) => prevIndex + 1);
           setCurrentQuestionIndex(0);
         } else {
-          // Move to next question in the current case study
           setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
         }
-      }, 1000); // 1-second delay
+      }, 1000);
     }
   };
 
@@ -742,10 +739,9 @@ export default function Home() {
       questions.forEach((question, questionIndex) => {
         const userAnswer = selectedAnswers[caseIndex]?.[questionIndex];
         const correctAnswer = aiResponse[caseIndex].questions[questionIndex].correctAnswer;
-        const correctKey = correctAnswer.split(')')[0].trim(); // e.g., 'C'
+        const correctKey = correctAnswer.split(')')[0].trim();
 
         const key = `${caseIndex}-${questionIndex}`;
-        const currentAttempts = attempts[key] || 0;
         const feedbackMessage = feedbackMessages[caseIndex]?.[questionIndex];
 
         let isCorrect = false;
@@ -769,16 +765,15 @@ export default function Home() {
 
     const percentageScore = Math.round((score / totalQuestions) * 100);
     setTotalScore(percentageScore);
-    setCorrectCount(score); // Set the correct answers count
+    setCorrectCount(score);
     setResultDetails(details);
   };
 
   // Handle submitting the final assessment
   const handleSubmitFinalAssessment = () => {
-    // Added 1-second delay before proceeding with submission
     setTimeout(() => {
       proceedWithSubmission();
-    }, 1000); // 1-second delay
+    }, 1000);
   };
 
   // Function to proceed with submission
@@ -786,8 +781,8 @@ export default function Home() {
     setIsLoading(true);
     setError(null);
     try {
-      await saveCaseStudies(); // Save case studies to collection based on user selection
-      await saveAiResponse(); // Save AI response
+      await saveCaseStudies();
+      await saveAiResponse();
 
       // Save Submit Button Timestamp
       const lastCaseIndex = caseStudies.length - 1;
@@ -808,7 +803,7 @@ export default function Home() {
       setAssessmentComplete(true);
       setShowCaseStudies(false);
       setShowSafetyStatement(false);
-      calculateScore(); // Calculate the score after assessment completion
+      calculateScore();
     } catch (err) {
       setError(err.message || 'An error occurred during submission.');
       console.error('Error during submission:', err);
@@ -822,8 +817,6 @@ export default function Home() {
     setIsLoading(true);
     setError(null);
     try {
-      
-
       setUserType('');
       setDepartment('');
       setRole('');
@@ -837,7 +830,7 @@ export default function Home() {
       setShowCaseStudies(false);
       setResultDetails([]);
       setTotalScore(0);
-      setCorrectCount(0); // Reset correct answers count
+      setCorrectCount(0);
       setCurrentResultCaseStudyIndex(0);
       setFullName('');
     } catch (err) {
@@ -872,7 +865,7 @@ export default function Home() {
         unit: 'mm',
         format: 'a4',
         putOnlyUsedFonts: true,
-        floatPrecision: 16, // or "smart", default is 16
+        floatPrecision: 16,
       });
 
       const pageWidth = docPDF.internal.pageSize.getWidth();
@@ -888,7 +881,7 @@ export default function Home() {
       docPDF.text(`User ID: ${userID}`, margin, yPosition);
       yPosition += 6;
       docPDF.text(`Assessment Date: ${new Date().toLocaleDateString()}`, margin, yPosition);
-      yPosition += 8; // Added margin space here
+      yPosition += 8;
 
       // Add Title
       docPDF.setFontSize(14);
@@ -913,7 +906,6 @@ export default function Home() {
 
       // Iterate through each case study to add details
       resultDetails.forEach((caseDetail, index) => {
-        // Add a new page for each case study except the first one
         if (index !== 0) {
           docPDF.addPage();
           yPosition = margin;
@@ -935,26 +927,32 @@ export default function Home() {
           pageWidth - 2 * margin
         );
         docPDF.text(splitScenarioText, margin, yPosition);
-        yPosition += splitScenarioText.length * 5 + 2; // Adjust spacing based on number of lines
+        yPosition += splitScenarioText.length * 5 + 2;
 
-        // Iterate through each question to add question text, user answer, and correct answer
+        // Iterate through each question
         caseDetail.questions.forEach((question) => {
           const questionNumber = question.questionNumber;
           const questionText = question.questionText;
           const userAnswerKey = question.selectedAnswer;
-          const correctAnswerKey = aiResponse[caseDetail.caseStudyNumber - 1].questions[questionNumber - 1].correctAnswer.split(')')[0].trim();
+          const correctAnswerKey = aiResponse[caseDetail.caseStudyNumber - 1].questions[
+            questionNumber - 1
+          ].correctAnswer.split(')')[0].trim();
 
           // Retrieve full text for user answer
           const userOption = caseStudies[index].questions[questionNumber - 1].options.find(
             (opt) => opt.key === userAnswerKey
           );
-          const userAnswerText = userOption ? `${userOption.key}. ${userOption.label}` : 'No Answer';
+          const userAnswerText = userOption
+            ? `${userOption.key}. ${userOption.label}`
+            : 'No Answer';
 
           // Retrieve full text for correct answer
           const correctOption = caseStudies[index].questions[questionNumber - 1].options.find(
             (opt) => opt.key === correctAnswerKey
           );
-          const correctAnswerText = correctOption ? `${correctOption.key}. ${correctOption.label}` : 'No Answer';
+          const correctAnswerText = correctOption
+            ? `${correctOption.key}. ${correctOption.label}`
+            : 'No Answer';
 
           // Add Question Number and Text
           docPDF.setFontSize(10);
@@ -997,20 +995,17 @@ export default function Home() {
           docPDF.text(splitCorrectAnswer, margin + 4, yPosition);
           yPosition += splitCorrectAnswer.length * 4 + 6;
 
-          // Check if yPosition exceeds page height, adjust if necessary
+          // Check if yPosition exceeds page height
           if (yPosition > pageHeight - margin - 20) {
-            // Avoid adding extra blank pages
-            // If content exceeds, reduce font size or truncate (optional)
-            // For simplicity, we'll assume content fits due to smaller font size
+            // For simplicity, assume content fits or handle pagination logic here
             yPosition = pageHeight - margin - 20;
           }
         });
-
-        // No spacing between case studies since each is on a new page
       });
 
-      // Save the PDF with a dynamic filename
-      const fileName = `Safety_Assessment_Report_${fullName.replace(/\s+/g, '_')}_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`;
+      const fileName = `Safety_Assessment_Report_${fullName.replace(/\s+/g, '_')}_${new Date()
+        .toLocaleDateString()
+        .replace(/\//g, '-')}.pdf`;
       docPDF.save(fileName);
     } catch (err) {
       setError(err.message || 'Failed to generate PDF.');
@@ -1024,7 +1019,6 @@ export default function Home() {
     const certificateElement = document.getElementById("certificate");
 
     if (certificateElement) {
-      // Clone the certificate element for printing
       const printWindow = window.open("", "PRINT", "width=800,height=600");
       printWindow.document.write(`
         <html>
@@ -1158,7 +1152,6 @@ export default function Home() {
             .certificate-content {
               position: relative;
             }
-            /* Additional styles can be added here if needed */
           </style>
         </head>
         <body>
@@ -1191,7 +1184,7 @@ export default function Home() {
       setShowCaseStudies(false);
       setResultDetails([]);
       setTotalScore(0);
-      setCorrectCount(0); // Reset correct answers count
+      setCorrectCount(0);
       setCurrentResultCaseStudyIndex(0);
       setFullName('');
     } catch (err) {
@@ -1205,7 +1198,6 @@ export default function Home() {
     if (typeof window !== 'undefined') {
       const navigationEntries = window.performance.getEntriesByType('navigation');
       if (navigationEntries.length > 0 && navigationEntries[0].type === 'reload') {
-        // The page was reloaded
         handlePageRefresh();
       }
     }
@@ -1214,7 +1206,6 @@ export default function Home() {
   // Current Case Study
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
 
-  // Determine if current question is the last question
   const isLastQuestion =
     currentQuestionIndex === currentCaseStudy?.questions.length - 1;
   const isLastCaseStudy = currentCaseStudyIndex === caseStudies.length - 1;
@@ -1265,43 +1256,31 @@ export default function Home() {
         'Pediatric Transplant',
         'Abdominal Transplant'
       ],
-      
     },
     
     'Communication': {
-      'IT': [
-        
-      ],
-      'Patient Experince Coordinator': [
-        
-      ],
-      'Program Manager': [
-        
-      ],
-      
+      'IT': [],
+      'Patient Experince Coordinator': [],
+      'Program Manager': [],
     },
     
   };
 
-  // State variables for roles and specializations to use
   const [rolesToUse, setRolesToUse] = useState([]);
   const [specializationsToUse, setSpecializationsToUse] = useState([]);
 
-   // Update rolesToUse when department changes
-   useEffect(() => {
+  useEffect(() => {
     if (department) {
       const roles = Object.keys(departmentRoleSpecializationMap[department] || {});
       setRolesToUse(roles);
     } else {
       setRolesToUse([]);
     }
-    // Reset role and specialization when department changes
     setRole('');
     setSpecialization('');
     setSpecializationsToUse([]);
   }, [department]);
 
-  // Update specializationsToUse when role changes
   useEffect(() => {
     if (department && role) {
       const specializations =
@@ -1310,23 +1289,18 @@ export default function Home() {
     } else {
       setSpecializationsToUse([]);
     }
-    // Reset specialization when role changes
     setSpecialization('');
   }, [department, role]);
 
-  // Example departments based on userType
-  const clinicalDepartments = ['Operating Room', 'Transplant', ];
-  const nonClinicalDepartments = ['Communication',];
+  const clinicalDepartments = ['Operating Room', 'Transplant'];
+  const nonClinicalDepartments = ['Communication'];
 
-  // Generate random 6-digit user ID on component mount
   useEffect(() => {
     const randomID = Math.floor(100000 + Math.random() * 900000).toString();
     setUserID(randomID);
   }, []);
 
-  // Determine which departments to use based on userType
   let departmentsToUse = [];
-
   if (userType === 'clinical') {
     departmentsToUse = clinicalDepartments;
   } else if (userType === 'non-clinical') {
@@ -1334,50 +1308,37 @@ export default function Home() {
   }
 
   useEffect(() => {
-    // Initialize Google Translate
     window.googleTranslateElementInit = () => {
       new window.google.translate.TranslateElement(
         {
           pageLanguage: 'en',
-          includedLanguages: 'en,es', // Customize as needed
+          includedLanguages: 'en,es',
           layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
         },
         'google_translate_element'
       );
     };
-  
-    // Listen for language changes
+
     const handleLanguageChange = () => {
       const languageDropdown = document.querySelector('.goog-te-combo');
       if (languageDropdown) {
         setLanguage(languageDropdown.value);
       }
     };
-  
-    // Add event listener to capture language changes
+
     const languageDropdown = document.querySelector('.goog-te-combo');
     if (languageDropdown) {
       languageDropdown.addEventListener('change', handleLanguageChange);
-      // Increase font size of the dropdown options
-      languageDropdown.style.fontSize = '20px'; // Adjust size as needed
+      languageDropdown.style.fontSize = '20px';
     }
-  
+
     return () => {
-      // Cleanup event listener on component unmount
       if (languageDropdown) {
         languageDropdown.removeEventListener('change', handleLanguageChange);
       }
     };
   }, []);
 
-  // Helper function to get the full label of an option
-  const getOptionLabel = (caseIndex, questionIndex, optionKey) => {
-    const option = caseStudies[caseIndex]?.questions[questionIndex]?.options.find(
-      (opt) => opt.key === optionKey
-    );
-    return option ? `${option.key}. ${option.label}` : 'No Answer';
-  };
-  // Apply custom styles to Google Translate dropdown after it loads
   useEffect(() => {
     const applyCustomStyles = () => {
       const translateSelect = document.querySelector('.goog-te-combo');
@@ -1385,30 +1346,32 @@ export default function Home() {
         translateSelect.style.fontSize = '64px';
         translateSelect.style.padding = '10px';
         translateSelect.style.height = '45px';
-        translateSelect.style.width = '220px'; // Adjust width as needed
-        translateSelect.style.backgroundColor = '#f0f0f0'; // Optional: Change background color
-        translateSelect.style.borderRadius = '5px'; // Optional: Add border radius
-        translateSelect.style.border = '1px solid #ccc'; // Optional: Add border
+        translateSelect.style.width = '220px';
+        translateSelect.style.backgroundColor = '#f0f0f0';
+        translateSelect.style.borderRadius = '5px';
+        translateSelect.style.border = '1px solid #ccc';
 
-        // Optionally, style the container to better fit the enlarged dropdown
         const container = document.querySelector('.google-translate-element');
         if (container) {
           container.style.display = 'inline-block';
           container.style.marginBottom = '20px';
         }
 
-        // Clear the interval once styles are applied
         clearInterval(styleInterval);
       }
     };
 
-    // Check every 500ms if the dropdown has been rendered
     const styleInterval = setInterval(applyCustomStyles, 500);
-
-    // Clear interval on component unmount
     return () => clearInterval(styleInterval);
   }, [showTranslate]);
-  
+
+  const getOptionLabel = (caseIndex, questionIndex, optionKey) => {
+    const option = caseStudies[caseIndex]?.questions[questionIndex]?.options.find(
+      (opt) => opt.key === optionKey
+    );
+    return option ? `${option.key}. ${option.label}` : 'No Answer';
+  };
+
   return (
     <>
       <Head>
@@ -1445,13 +1408,12 @@ export default function Home() {
   
               {/* Desktop Navigation */}
               <div className="hidden sm:flex sm:items-center sm:space-x-4">
-                
-              <Link
-                    href="/Home"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Home
+                <Link
+                  href="/Home"
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Home
                 </Link>
                 <Link
                   href="/components"
@@ -1478,13 +1440,13 @@ export default function Home() {
             {isMobileMenuOpen && (
               <div className="sm:hidden pb-4">
                 <div className="flex flex-col space-y-2">
-                <Link
-              href="/"
-              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
+                  <Link
+                    href="/"
+                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Home
+                  </Link>
                   <Link
                     href="/components"
                     className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
@@ -1506,7 +1468,6 @@ export default function Home() {
                   >
                     Feedback
                   </Link>
-                  
                 </div>
               </div>
             )}
@@ -1516,7 +1477,6 @@ export default function Home() {
         <div className="content-wrapper">
           {/* Image and Assessment Complete Form Container */}
           <div className="image-container px-4 py-6">
-            {/* Conditionally render safety text only if the assessment form is shown */}
             {showSafetyStatement && (
               <p className="safety-text text-sm sm:text-base text-gray-700 leading-relaxed">
                 Avoidable medical error is a leading cause of death in the USA. Something as simple as
@@ -1526,40 +1486,36 @@ export default function Home() {
               </p>
             )}
   
-            {/* Assessment Completion Form */}
             {assessmentComplete && (
               <div className="assessment-complete mt-6">
-                {/* Result Container with Score and Message */}
                 <div className="result-container bg-white rounded-lg shadow p-6">
                   <div className="score-info text-center">
-                    {/* Score Header */}
                     <div className="score-header text-xl font-semibold">
                       <strong>Score:</strong>
                     </div>
   
-                    {/* Number of Correct Answers */}
                     <div className="correct-answers text-2xl font-bold my-2">
                       {correctCount} out of 12
                     </div>
   
-                    {/* Score Circle */}
                     <div className="score-circle mx-auto my-4 w-24 h-24 flex items-center justify-center rounded-full bg-blue-100">
                       <span className="text-3xl font-bold text-blue-600">{totalScore}%</span>
                     </div>
   
-                    {/* Result Header */}
                     <div className="result-header text-xl font-semibold">
                       <strong>Result:</strong>
                     </div>
   
-                    {/* Pass or Fail */}
-                    <div className={`pass-fail text-2xl font-bold mt-2 ${totalScore >= 70 ? 'text-green-600' : 'text-red-600'}`}>
+                    <div
+                      className={`pass-fail text-2xl font-bold mt-2 ${
+                        totalScore >= 70 ? 'text-green-600' : 'text-red-600'
+                      }`}
+                    >
                       {totalScore >= 70 ? 'Pass' : 'Fail'}
                     </div>
                   </div>
                 </div>
   
-                {/* Case Study Results */}
                 {resultDetails.map((caseDetail) => (
                   <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail mt-6">
                     <h3 className="text-lg font-semibold">{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
@@ -1590,7 +1546,9 @@ export default function Home() {
                           {getOptionLabel(
                             caseDetail.caseStudyNumber - 1,
                             q.questionNumber - 1,
-                            aiResponse[caseDetail.caseStudyNumber - 1].questions[q.questionNumber - 1].correctAnswer.split(')')[0].trim()
+                            aiResponse[caseDetail.caseStudyNumber - 1].questions[
+                              q.questionNumber - 1
+                            ].correctAnswer.split(')')[0].trim()
                           )}
                         </p>
                       </div>
@@ -1598,7 +1556,6 @@ export default function Home() {
                   </div>
                 ))}
   
-                {/* Result Buttons */}
                 <div className="result-buttons flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
                   <button
                     className="print-button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
@@ -1621,10 +1578,8 @@ export default function Home() {
             )}
           </div>
   
-          {/* Enhanced Form Container */}
           {showSafetyStatement && (
             <div className="form-container px-4 py-6">
-              {/* Professional Information */}
               <div className="professional-info bg-white rounded-lg shadow p-6">
                 <h2 className="text-lg font-semibold mb-4">Professional Information</h2>
   
@@ -1696,35 +1651,58 @@ export default function Home() {
                   </select>
                 </div>
   
+                {/* Only show if user is clinical */}
                 {userType === 'clinical' && (
-                  <div className="form-item mb-4">
-                    <label htmlFor="specialization-select" className="block text-sm font-medium text-gray-700">
-                      Specialization
-                    </label>
-                    <select
-                      id="specialization-select"
-                      value={specialization}
-                      onChange={(e) => {
-                        setSpecialization(e.target.value);
-                        if (error) setError('');
-                      }}
-                      disabled={!role}
-                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
-                    >
-                      <option value="">Select Specialization</option>
-                      {specializationsToUse.map((spec) => (
-                        <option key={spec} value={spec}>
-                          {spec}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <>
+                    <div className="form-item mb-4">
+                      <label htmlFor="specialization-select" className="block text-sm font-medium text-gray-700">
+                        Specialization
+                      </label>
+                      <select
+                        id="specialization-select"
+                        value={specialization}
+                        onChange={(e) => {
+                          setSpecialization(e.target.value);
+                          if (error) setError('');
+                        }}
+                        disabled={!role}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                      >
+                        <option value="">Select Specialization</option>
+                        {specializationsToUse.map((spec) => (
+                          <option key={spec} value={spec}>
+                            {spec}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* NEW Care dropdown - only visible if userType is clinical */}
+                    <div className="form-item mb-4">
+                      <label htmlFor="care-select" className="block text-sm font-medium text-gray-700">
+                        Care
+                      </label>
+                      <select
+                        id="care-select"
+                        value={care}
+                        onChange={(e) => {
+                          setCare(e.target.value);
+                          if (error) setError('');
+                        }}
+                        disabled={userType !== 'clinical'}
+                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                      >
+                        <option value="">Select Care</option>
+                        <option value="Inpatient">Inpatient</option>
+                        <option value="Outpatient">Outpatient</option>
+                      </select>
+                    </div>
+                  </>
                 )}
               </div>
             </div>
           )}
   
-          {/* Take Assessment Button */}
           <div className="button-container text-center my-6">
             {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
               <button
@@ -1740,10 +1718,8 @@ export default function Home() {
             )}
           </div>
   
-          {/* Error Alert */}
           {error && <div className="error-alert text-red-600 text-center">{error}</div>}
   
-          {/* Case Studies Page */}
           {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
             <div className="case-studies px-4 py-6">
               <div className="case-study" key={currentCaseStudyIndex}>
@@ -1880,14 +1856,10 @@ export default function Home() {
           )}
         </div>
   
-        {/* Footer */}
         <footer className="footer bg-gray-800 text-white text-center py-4">
-          <p>
-            © 2024 CoachCare.ai | Contact: operations@coachcare.ai
-          </p>
+          <p>© 2024 CoachCare.ai | Contact: operations@coachcare.ai</p>
         </footer>
   
-        {/* Certificate Popup */}
         {isCertificateOpen && (
           <CertificatePopup
             isOpen={isCertificateOpen}
@@ -1900,4 +1872,4 @@ export default function Home() {
       </div>
     </>
   );
-}  
+}
