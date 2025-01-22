@@ -208,7 +208,7 @@ export async function POST(request) {
       - Include a different medical error that occurred by the ${role} or by the team.
       - Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
       - The medical studies should be detailed and focus on the situation, medical error, and consequences.
-      - Each medical case study should include a different medical error that occured in the scenario. Some examples are (retained medical equipment, missing items on tray, )
+      - Each medical case study should include a different medical error that occured in the scenario. Use the following ${retrievedCasesText} for information about meddical errors that occur in Hopsitals.
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
     
@@ -633,14 +633,14 @@ export async function POST(request) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: "o1-mini",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "user",
           content: META_PROMPT,
         },
       ],
-      temperature: 1.0,
+      temperature: 0.0,
       stream: false,
     });
     
@@ -796,7 +796,7 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
           content: 'Scenario:\n' + caseStudy.scenario,
         },
       ],
-      temperature: 0.7,
+      temperature: 0.0,
       max_tokens: 500,
     }),
   });

@@ -1,10 +1,4 @@
- // Copyright 2024 Propertiy of Rizwan Shaikh 
- // Atlanta, Georgia 30344
- // All Rights Reserved
- 
-// -----do not edit anything above this line---
-
-"use client";
+ "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
 import Script from 'next/script';
@@ -29,8 +23,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 import Dialog from '@mui/material/Dialog';
-import { Trophy } from 'lucide-react';
-
+import { Trophy, Menu, X } from 'lucide-react';
 
 const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
   return (
@@ -39,7 +32,7 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
       onClose={onClose}
       PaperProps={{
         className:
-          "certificate-container border-4 border-gray-300 rounded-2xl shadow-lg p-8 bg-gradient-to-br from-white to-blue-50 max-w-3xl w-full",
+          "certificate-container border-4 border-gray-300 rounded-2xl shadow-lg p-6 bg-gradient-to-br from-white to-blue-50 max-w-md w-full", // Changed max-w-3xl to max-w-md and p-8 to p-6
         sx: {
           position: "absolute",
           top: "50%",
@@ -55,12 +48,12 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
     >
       <div className="certificate-popup">
         {/* Popup Header */}
-        <div className="text-center py-10 bg-gradient-to-b from-blue-50 via-white to-transparent rounded-t-2xl border-b border-gray-100">
+        <div className="text-center py-6 bg-gradient-to-b from-blue-50 via-white to-transparent rounded-t-2xl border-b border-gray-100"> {/* Reduced py-10 to py-6 */}
           <div className="relative">
-            <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-32 h-32 bg-yellow-100 rounded-full opacity-50 blur-xl" />
-            <Trophy className="relative w-24 h-24 text-yellow-500 mx-auto mb-6 animate-bounce" />
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-24 bg-yellow-100 rounded-full opacity-50 blur-xl" /> {/* Adjusted size from w-32 h-32 to w-24 h-24 */}
+            <Trophy className="relative w-16 h-16 text-yellow-500 mx-auto mb-4 animate-bounce" /> {/* Adjusted size from w-24 h-24 to w-16 h-16 */}
           </div>
-          <h2 className="text-4xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2">
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2"> {/* Changed text-4xl to text-3xl */}
             Congratulations!
           </h2>
         </div>
@@ -68,37 +61,37 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
         {/* Certificate Content */}
         <div
           id="certificate"
-          className="certificate-content mx-4 my-8 border-4 border-double border-gray-300 p-8 rounded-lg shadow-lg relative"
+          className="certificate-content mx-2 my-4 border-4 border-double border-gray-300 p-6 rounded-lg shadow-lg relative" // Changed mx-4 to mx-2, my-8 to my-4, p-8 to p-6
         >
           <div className="absolute inset-0 opacity-5">
             <div className="absolute inset-0 bg-[linear-gradient(45deg,#000_25%,transparent_25%,transparent_75%,#000_75%,#000),linear-gradient(45deg,#000_25%,transparent_25%,transparent_75%,#000_75%,#000)] bg-[length:60px_60px] bg-[position:0_0,30px_30px]" />
           </div>
-          <div className="text-center mb-8 relative">
+          <div className="text-center mb-4 relative"> {/* Changed mb-8 to mb-4 */}
             <img
               src="/Picture1.jpg"
               alt="CoachCare.ai Logo"
-              className="mx-auto h-24 mb-4 drop-shadow-md"
+              className="mx-auto h-20 mb-2 drop-shadow-md" // Changed h-24 to h-20 and mb-4 to mb-2
             />
           </div>
-          <div className="text-center space-y-6 relative">
-            <h2 className="text-4xl font-semibold text-gray-800 font-serif tracking-wide">
+          <div className="text-center space-y-4 relative"> {/* Changed space-y-6 to space-y-4 */}
+            <h2 className="text-3xl font-semibold text-gray-800 font-serif tracking-wide"> {/* Changed text-4xl to text-3xl */}
               Certificate of Completion
             </h2>
-            <p className="text-2xl text-gray-600">
+            <p className="text-xl text-gray-600"> {/* Changed text-2xl to text-xl */}
               This certificate is proudly presented to you
             </p>
-            <p className="text-5xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent my-4 font-serif tracking-wide">
+            <p className="text-4xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent my-2 font-serif tracking-wide"> {/* Changed text-5xl to text-4xl, my-4 to my-2 */}
               {fullName}
             </p>
-            <p className="text-2xl leading-relaxed text-gray-700">
+            <p className="text-xl leading-relaxed text-gray-700"> {/* Changed text-2xl to text-xl */}
               For successfully completing the{" "}
               <span className="font-semibold">
                 Patient Safety Language Basics
               </span>{" "}
               module.
             </p>
-            <div className="mt-6 pt-6 border-t border-gray-200">
-              <p className="text-xl text-gray-600">
+            <div className="mt-4 pt-4 border-t border-gray-200"> {/* Changed mt-6 pt-6 to mt-4 pt-4 */}
+              <p className="text-lg text-gray-600"> {/* Changed text-xl to text-lg */}
                 Issued on: <span className="font-semibold">{date}</span>
               </p>
             </div>
@@ -106,14 +99,14 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
         </div>
 
         {/* Enhanced Action Buttons */}
-        <div className="flex justify-center gap-6 pt-6">
+        <div className="flex justify-center gap-4 pt-4"> {/* Changed gap-6 to gap-4 and pt-6 to pt-4 */}
           <button
             onClick={onPrint}
-            className="group relative px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
+            className="group relative px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden" // Changed px-8 py-3 to px-6 py-2
           >
             <span className="relative z-10 flex items-center gap-2">
               <svg
-                className="w-5 h-5 transition-transform group-hover:rotate-12"
+                className="w-4 h-4 transition-transform group-hover:rotate-12" // Changed w-5 h-5 to w-4 h-4
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -130,11 +123,11 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
           </button>
           <button
             onClick={onClose}
-            className="group px-8 py-3 bg-white text-gray-700 rounded-xl font-semibold shadow-md border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:-translate-y-0.5 transition-all duration-200 hover:shadow-lg"
+            className="group px-6 py-2 bg-white text-gray-700 rounded-xl font-semibold shadow-md border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:-translate-y-0.5 transition-all duration-200 hover:shadow-lg" // Changed px-8 py-3 to px-6 py-2
           >
             <span className="flex items-center gap-2">
               <svg
-                className="w-5 h-5 transition-transform group-hover:-translate-x-1"
+                className="w-4 h-4 transition-transform group-hover:-translate-x-1" // Changed w-5 h-5 to w-4 h-4
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -156,9 +149,11 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
 };
 
 
+
 export default function Home() {
   // State Variables
   const [caseStudies, setCaseStudies] = useState([]);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentCaseStudyIndex, setCurrentCaseStudyIndex] = useState(0);
@@ -690,6 +685,21 @@ export default function Home() {
     // Move to next question or case study after feedback with 1-second delay
     if (isCorrect || currentAttempts + 1 >= 2) {
       setTimeout(() => { // Added 1-second delay
+
+        // Save nextButtonTimestamp to workflowData
+        const workflowID = getWorkflowID(caseIndex, questionIndex);
+        const workflowName = getWorkflowName(caseIndex, questionIndex);
+        const timestamp = new Date();
+
+        const dataToSave = {
+          workflowID: workflowID,
+          sessionID: sessionID,
+          workflowName: workflowName,
+          nextButtonTimestamp: timestamp,
+        };
+
+        saveWorkflowData(dataToSave);
+
         const isLastQuestionInCaseStudy =
           questionIndex === caseStudies[caseIndex].questions.length - 1;
 
@@ -1255,9 +1265,22 @@ export default function Home() {
         'Pediatric Transplant',
         'Abdominal Transplant'
       ],
+      
     },
     
-    // Add other departments and their roles/specializations as needed
+    'Communication': {
+      'IT': [
+        
+      ],
+      'Patient Experince Coordinator': [
+        
+      ],
+      'Program Manager': [
+        
+      ],
+      
+    },
+    
   };
 
   // State variables for roles and specializations to use
@@ -1385,443 +1408,496 @@ export default function Home() {
     // Clear interval on component unmount
     return () => clearInterval(styleInterval);
   }, [showTranslate]);
-
+  
   return (
     <>
       <Head>
-        <title>Healthcare Medical Safety</title>
+        <title>Health Care Safety</title>
       </Head>
-
-      {/* Define the Google Translate callback function before the script loads */}
-      <Script id="google-translate-init" strategy="beforeInteractive">
-        {
-          `
-          function googleTranslateElementInit() {
-            new google.translate.TranslateElement({
-              pageLanguage: 'en',
-              includedLanguages: 'en,es',
-              font-size: 12rem,
-              layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-            }, 'google_translate_element');
-          }
-          `
-        }
-      </Script>
-
-      {/* Load the Google Translate script after the callback is defined */}
-      <Script
-        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-        strategy="afterInteractive"
-      />
-
-      <div className="container">
-        <div className="content-wrapper">
-          {/* Image and Assessment Complete Form Container */}
-          <div className="image-container">
-            {/* Header Image */}
-            <img src="/Picture1.jpg" alt="Medical Assessment" className="header-image" />
-
-             {/* Conditionally render safety text only if the assessment form is shown */}
-          {showSafetyStatement && (
-            <p className="safety-text">
-              Avoidable medical error is a leading cause of death in the USA. Something as simple as
-              using safety language has been proven to decrease harm to patients. The scenarios generated
-              below are from real case studies that have been published in the literature and are customized
-              just for you in order to make the safety language more relevant. Thank you for doing your part to put more care into healthcare.
-            </p>
-          )}
-
-            {/* Assessment Completion Form */}
-{assessmentComplete && (
-  <div className="assessment-complete">
-    {/* Result Container with Score and Message */}
-    <div className="result-container">
-      <div className="score-info">
-        {/* Score Header */}
-        <div className="score-header">
-          <strong>Score:</strong>
-        </div>
-
-        {/* Number of Correct Answers */}
-        <div className="correct-answers">
-          {correctCount} out of 12
-        </div>
-
-        {/* Score Circle */}
-        <div className="score-circle">
-          <span>{totalScore}%</span>
-        </div>
-
-        {/* Result Header */}
-        <div className="result-header">
-          <strong>Result:</strong>
-        </div>
-
-        {/* Pass or Fail */}
-        <div className={`pass-fail ${totalScore >= 70 ? 'pass' : 'fail'}`}>
-          {totalScore >= 70 ? 'Pass' : 'Fail'}
-        </div>
-      </div>
-    </div>
-
-              {/* Case Study Results */}
-              {resultDetails.map((caseDetail) => (
-                <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail">
-                  {/* Header for Each Case Study */}
-                  <h3>{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
-
-                  {/* Display Case Study Content */}
-                  <p className="case-study-text">{caseDetail.caseStudyText}</p>
-
-                  {caseDetail.questions.map((q) => (
-                    <div key={`question-${q.questionNumber}`} className="question-summary">
-                      {/* Header with Question Number and Status Icon */}
-                      <div className="question-header-summary">
-                        <h4>{`Question ${q.questionNumber}`}</h4>
-                        <span>{q.isCorrect ? '✅' : '❌'}</span>
-                      </div>
-
-                      {/* Question Text */}
-                      <p className="question-text">{q.questionText}</p>
-
-                      {/* Your Answer */}
-                      <h5>Your Answer:</h5>
-                      <p className="user-answer">
-                        {q.selectedAnswer !== 'No Answer'
-                          ? getOptionLabel(
-                              caseDetail.caseStudyNumber - 1,
-                              q.questionNumber - 1,
-                              q.selectedAnswer
-                            )
-                          : 'No Answer'}
-                      </p>
-
-                      {/* Correct Answer */}
-                      <h5>Correct Answer:</h5>
-                      <p className="correct-answer">
-                        {getOptionLabel(
-                          caseDetail.caseStudyNumber - 1,
-                          q.questionNumber - 1,
-                          aiResponse[caseDetail.caseStudyNumber - 1].questions[q.questionNumber - 1].correctAnswer.split(')')[0].trim()
-                        )}
-                      </p>
-                    </div>
-                  ))}
+      <div className="container mx-auto px-4">
+        {/* Responsive App Bar */}
+        <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              {/* Logo */}
+              <div className="flex items-center">
+                <div className="flex-shrink-0 text-white font-bold">
+                  <span className="hidden sm:block">
+                    AI Personalized Healthcare Safety Module
+                  </span>
+                  <span className="block sm:hidden">Coachcare.ai</span>
                 </div>
-              ))}
-
-              {/* Result Buttons */}
-              <div className="result-buttons">
+              </div>
+  
+              {/* Mobile menu button */}
+              <div className="sm:hidden ml-4 mr-4">
                 <button
-                  className="main-button"
-                  onClick={handleBackToMainPage}
-                  disabled={isLoading}
+                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                  className="text-white hover:text-gray-200 focus:outline-none"
                 >
-                  Return to Main
+                  {isMobileMenuOpen ? (
+                    <X className="h-6 w-6" />
+                  ) : (
+                    <Menu className="h-6 w-6" />
+                  )}
                 </button>
-                <button
-                  className="print-button"
-                  onClick={handlePrint}
-                  disabled={isLoading}
-                >
-                  🖨️ Print Assessment Report
-                </button>
-                {/* Added "View Certificate" Button */}
-                {totalScore >= 70 && (
-                  <button
-                    className="certificate-button"
-                    onClick={() => setIsCertificateOpen(true)}
-                    disabled={isLoading}
+              </div>
+  
+              {/* Desktop Navigation */}
+              <div className="hidden sm:flex sm:items-center sm:space-x-4">
+                
+              <Link
+                    href="/Home"
+                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    🎓 View Certificate
-                  </button>
-                )}
+                    Home
+                </Link>
+                <Link
+                  href="/components"
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                >
+                  Safety Module
+                </Link>
+                <Link
+                  href="/dashboard"
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/feedback"
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                >
+                  Feedback
+                </Link>
               </div>
             </div>
-          )}
-        </div>
-
-        {/* Conditionally Render Google Translate Element above the "Take Assessment" button */}
-        {showTranslate && (
-          <div id="google_translate_element" className="google-translate-element"></div>
-        )}
-
-        {/* Enhanced Form Container */}
-        {showSafetyStatement && (
-          <div className="form-container">
-            {/* Professional Information */}
-            <div className="professional-info">
-              <h2>Professional Information</h2>
-
-              <div className="form-item">
-                <label htmlFor="user-type-select">User Type</label>
-                <select
-                  id="user-type-select"
-                  value={userType}
-                  onChange={(e) => {
-                    setUserType(e.target.value);
-                    setDepartment(''); // Reset department
-                    setRole(''); // Reset role
-                    setSpecialization(''); // Reset specialization
-                    if (error) setError(''); // Clear error if any
-                  }}
-                >
-                  <option value="">Select</option>
-                  <option value="clinical">Clinical</option>
-                  <option value="non-clinical">Non-Clinical</option>
-                </select>
-              </div>
-
-              <div className="form-item">
-                <label htmlFor="department-select">Department</label>
-                <select
-                  id="department-select"
-                  value={department}
-                  onChange={(e) => {
-                    setDepartment(e.target.value);
-                    if (error) setError(''); // Clear error if any
-                  }}
-                  disabled={!userType}
-                >
-                  <option value="">Select Department</option>
-                  {departmentsToUse.map((dept) => (
-                    <option key={dept} value={dept}>
-                      {dept}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-item">
-                <label htmlFor="role-select">Role</label>
-                <select
-                  id="role-select"
-                  value={role}
-                  onChange={(e) => {
-                    setRole(e.target.value);
-                    if (error) setError(''); // Clear error if any
-                  }}
-                  disabled={!department}
-                >
-                  <option value="">Select Role</option>
-                  {rolesToUse.map((r) => (
-                    <option key={r} value={r}>
-                      {r}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Specialization Select - only show if userType is 'clinical' */}
-              {userType === 'clinical' && (
-                <div className="form-item">
-                  <label htmlFor="specialization-select">Specialization</label>
-                  <select
-                    id="specialization-select"
-                    value={specialization}
-                    onChange={(e) => {
-                      setSpecialization(e.target.value);
-                      if (error) setError(''); // Clear error if any
-                    }}
-                    disabled={!role}
+  
+            {/* Mobile Navigation */}
+            {isMobileMenuOpen && (
+              <div className="sm:hidden pb-4">
+                <div className="flex flex-col space-y-2">
+                <Link
+              href="/"
+              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Home
+            </Link>
+                  <Link
+                    href="/components"
+                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <option value="">Select Specialization</option>
-                    {specializationsToUse.map((spec) => (
-                      <option key={spec} value={spec}>
-                        {spec}
+                    Case Studies
+                  </Link>
+                  <Link
+                    href="/dashboard"
+                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                  <Link
+                    href="/feedback"
+                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Feedback
+                  </Link>
+                  
+                </div>
+              </div>
+            )}
+          </div>
+        </nav>
+  
+        <div className="content-wrapper">
+          {/* Image and Assessment Complete Form Container */}
+          <div className="image-container px-4 py-6">
+            {/* Conditionally render safety text only if the assessment form is shown */}
+            {showSafetyStatement && (
+              <p className="safety-text text-sm sm:text-base text-gray-700 leading-relaxed">
+                Avoidable medical error is a leading cause of death in the USA. Something as simple as
+                using safety language has been proven to decrease harm to patients. The scenarios generated
+                below are from real case studies that have been published in the literature and are customized
+                just for you in order to make the safety language more relevant. Thank you for doing your part to put more care into healthcare.
+              </p>
+            )}
+  
+            {/* Assessment Completion Form */}
+            {assessmentComplete && (
+              <div className="assessment-complete mt-6">
+                {/* Result Container with Score and Message */}
+                <div className="result-container bg-white rounded-lg shadow p-6">
+                  <div className="score-info text-center">
+                    {/* Score Header */}
+                    <div className="score-header text-xl font-semibold">
+                      <strong>Score:</strong>
+                    </div>
+  
+                    {/* Number of Correct Answers */}
+                    <div className="correct-answers text-2xl font-bold my-2">
+                      {correctCount} out of 12
+                    </div>
+  
+                    {/* Score Circle */}
+                    <div className="score-circle mx-auto my-4 w-24 h-24 flex items-center justify-center rounded-full bg-blue-100">
+                      <span className="text-3xl font-bold text-blue-600">{totalScore}%</span>
+                    </div>
+  
+                    {/* Result Header */}
+                    <div className="result-header text-xl font-semibold">
+                      <strong>Result:</strong>
+                    </div>
+  
+                    {/* Pass or Fail */}
+                    <div className={`pass-fail text-2xl font-bold mt-2 ${totalScore >= 70 ? 'text-green-600' : 'text-red-600'}`}>
+                      {totalScore >= 70 ? 'Pass' : 'Fail'}
+                    </div>
+                  </div>
+                </div>
+  
+                {/* Case Study Results */}
+                {resultDetails.map((caseDetail) => (
+                  <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail mt-6">
+                    <h3 className="text-lg font-semibold">{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
+                    <p className="case-study-text text-gray-700 mt-2">{caseDetail.caseStudyText}</p>
+  
+                    {caseDetail.questions.map((q) => (
+                      <div key={`question-${q.questionNumber}`} className="question-summary mt-4">
+                        <div className="question-header-summary flex justify-between items-center">
+                          <h4 className="text-md font-semibold">{`Question ${q.questionNumber}`}</h4>
+                          <span className="text-xl">{q.isCorrect ? '✅' : '❌'}</span>
+                        </div>
+  
+                        <p className="question-text text-gray-700 mt-1">{q.questionText}</p>
+  
+                        <h5 className="mt-2 font-semibold">Your Answer:</h5>
+                        <p className="user-answer text-gray-700">
+                          {q.selectedAnswer !== 'No Answer'
+                            ? getOptionLabel(
+                                caseDetail.caseStudyNumber - 1,
+                                q.questionNumber - 1,
+                                q.selectedAnswer
+                              )
+                            : 'No Answer'}
+                        </p>
+  
+                        <h5 className="mt-2 font-semibold">Correct Answer:</h5>
+                        <p className="correct-answer text-gray-700">
+                          {getOptionLabel(
+                            caseDetail.caseStudyNumber - 1,
+                            q.questionNumber - 1,
+                            aiResponse[caseDetail.caseStudyNumber - 1].questions[q.questionNumber - 1].correctAnswer.split(')')[0].trim()
+                          )}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+  
+                {/* Result Buttons */}
+                <div className="result-buttons flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
+                  <button
+                    className="print-button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                    onClick={handlePrint}
+                    disabled={isLoading}
+                  >
+                    🖨️ Print Assessment Report
+                  </button>
+                  {totalScore >= 70 && (
+                    <button
+                      className="certificate-button bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+                      onClick={() => setIsCertificateOpen(true)}
+                      disabled={isLoading}
+                    >
+                      🎓 View Certificate
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+  
+          {/* Enhanced Form Container */}
+          {showSafetyStatement && (
+            <div className="form-container px-4 py-6">
+              {/* Professional Information */}
+              <div className="professional-info bg-white rounded-lg shadow p-6">
+                <h2 className="text-lg font-semibold mb-4">Professional Information</h2>
+  
+                <div className="form-item mb-4">
+                  <label htmlFor="user-type-select" className="block text-sm font-medium text-gray-700">
+                    User Type
+                  </label>
+                  <select
+                    id="user-type-select"
+                    value={userType}
+                    onChange={(e) => {
+                      setUserType(e.target.value);
+                      setDepartment('');
+                      setRole('');
+                      setSpecialization('');
+                      if (error) setError('');
+                    }}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                  >
+                    <option value="">Select</option>
+                    <option value="clinical">Clinical</option>
+                    <option value="non-clinical">Non-Clinical</option>
+                  </select>
+                </div>
+  
+                <div className="form-item mb-4">
+                  <label htmlFor="department-select" className="block text-sm font-medium text-gray-700">
+                    Department
+                  </label>
+                  <select
+                    id="department-select"
+                    value={department}
+                    onChange={(e) => {
+                      setDepartment(e.target.value);
+                      if (error) setError('');
+                    }}
+                    disabled={!userType}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                  >
+                    <option value="">Select Department</option>
+                    {departmentsToUse.map((dept) => (
+                      <option key={dept} value={dept}>
+                        {dept}
                       </option>
                     ))}
                   </select>
                 </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Take Assessment Button */}
-        <div className="button-container">
-          {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
-            <button
-              type="button"
-              className="assessment-button"
-              onClick={handleTakeAssessment}
-              disabled={isLoading}
-            >
-              {isLoading
-                ? 'Starting your assessment, please wait...'
-                : 'Generate My Personalized Training Scenarios'}
-            </button>
-          )}
-        </div>
-
-        {/* Error Alert */}
-        {error && <div className="error-alert">{error}</div>}
-
-        {/* Case Studies Page */}
-        {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
-          <div className="case-studies">
-            {/* Current Case Study */}
-            <div className="case-study" key={currentCaseStudyIndex}>
-              {/* Case Study Image */}
-              {aiResponse[currentCaseStudyIndex].imageUrl && (
-                <div className="case-study-image">
-                  <img
-                    src={aiResponse[currentCaseStudyIndex].imageUrl}
-                    alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
-                    className="header-image"
-                  />
+  
+                <div className="form-item mb-4">
+                  <label htmlFor="role-select" className="block text-sm font-medium text-gray-700">
+                    Role
+                  </label>
+                  <select
+                    id="role-select"
+                    value={role}
+                    onChange={(e) => {
+                      setRole(e.target.value);
+                      if (error) setError('');
+                    }}
+                    disabled={!department}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                  >
+                    <option value="">Select Role</option>
+                    {rolesToUse.map((r) => (
+                      <option key={r} value={r}>
+                        {r}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-              )}
-
-              {/* Case Study Title and Audio Button */}
-              <div className="case-study-header">
-                <h3>{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
-                <button
-                  type="button"
-                  className="audio-button"
-                  onClick={fetchAudio}
-                  disabled={isAudioLoading}
-                >
-                  {isAudioLoading ? (
-                    <span>Loading...</span>
-                  ) : isAudioPlaying ? (
-                    <>
-                      <span className="icon-volume-up"></span>
-                      Pause
-                    </>
-                  ) : (
-                    <>
-                      <span className="icon-volume-off"></span>
-                      Listen
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Audio Element */}
-              <audio ref={audioRef} />
-
-              {/* Audio Error Alert */}
-              {audioError && <div className="audio-error">{audioError}</div>}
-
-              {/* Case Study Scenario */}
-              <p className="case-study-scenario">
-                {caseStudies[currentCaseStudyIndex].scenario}
-              </p>
-
-              {/* Case Study Questions */}
-              {caseStudies[currentCaseStudyIndex].questions &&
-              caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
-                <div className="question-section">
-                  {/* Header for the Question */}
-                  <h4 className="question-header">
-                    {`Question ${currentQuestionIndex + 1}: ${
-                      caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
-                    }`}
-                  </h4>
-
-                  <div className="options-group">
-                    {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
-                      (option) => {
-                        const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
-                        const currentAttempts = attempts[key] || 0;
-                        const feedbackMessage =
-                          feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
-                            ?.message || '';
-                        const isCorrect = feedbackMessage === 'Correct Answer';
-                        const maxAttemptsReached = currentAttempts >= 2 || isCorrect; // Updated to 2 attempts
-
-                        return (
-                          <div className="option-item" key={option.key}>
-                            <label>
-                              <input
-                                type="radio"
-                                name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
-                                value={option.key}
-                                onChange={(e) =>
-                                  handleAnswerChange(
-                                    currentCaseStudyIndex,
-                                    currentQuestionIndex,
-                                    e.target.value
-                                  )
-                                }
-                                disabled={maxAttemptsReached}
-                                checked={
-                                  selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
-                                  option.key
-                                }
-                              />
-                              <span>
-                                <strong>{`${option.key}.`}</strong> {option.label}
-                              </span>
-                            </label>
-                          </div>
-                        );
-                      }
-                    )}
+  
+                {userType === 'clinical' && (
+                  <div className="form-item mb-4">
+                    <label htmlFor="specialization-select" className="block text-sm font-medium text-gray-700">
+                      Specialization
+                    </label>
+                    <select
+                      id="specialization-select"
+                      value={specialization}
+                      onChange={(e) => {
+                        setSpecialization(e.target.value);
+                        if (error) setError('');
+                      }}
+                      disabled={!role}
+                      className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                    >
+                      <option value="">Select Specialization</option>
+                      {specializationsToUse.map((spec) => (
+                        <option key={spec} value={spec}>
+                          {spec}
+                        </option>
+                      ))}
+                    </select>
                   </div>
-
-                  {/* Display feedback message */}
-                  {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
-                    <div className="feedback-section">
-                      <div
-                        className={`feedback-message ${
-                          feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
-                            .message === 'Correct Answer'
-                            ? 'success'
-                            : 'info'
-                        }`}
-                      >
-                        {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message}
-                      </div>
-                      {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
-                        <div className="hint">
-                          <span className="icon-hint"></span>
-                          <span>
-                            <strong>Hint:</strong>{' '}
-                            {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint}
-                          </span>
-                        </div>
+                )}
+              </div>
+            </div>
+          )}
+  
+          {/* Take Assessment Button */}
+          <div className="button-container text-center my-6">
+            {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
+              <button
+                type="button"
+                className="assessment-button bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
+                onClick={handleTakeAssessment}
+                disabled={isLoading}
+              >
+                {isLoading
+                  ? 'Starting your assessment, please wait...'
+                  : 'Generate My Personalized Training Scenarios'}
+              </button>
+            )}
+          </div>
+  
+          {/* Error Alert */}
+          {error && <div className="error-alert text-red-600 text-center">{error}</div>}
+  
+          {/* Case Studies Page */}
+          {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
+            <div className="case-studies px-4 py-6">
+              <div className="case-study" key={currentCaseStudyIndex}>
+                {aiResponse[currentCaseStudyIndex].imageUrl && (
+                  <div className="case-study-image mb-4">
+                    <img
+                      src={aiResponse[currentCaseStudyIndex].imageUrl}
+                      alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
+                      className="header-image w-full h-auto rounded-lg"
+                    />
+                  </div>
+                )}
+  
+                <div className="case-study-header flex flex-col sm:flex-row justify-between items-center">
+                  <h3 className="text-xl font-semibold">{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
+                  <button
+                    type="button"
+                    className="audio-button bg-blue-600 text-black px-4 py-2 rounded-md hover:bg-blue-700 mt-4 sm:mt-0"
+                    onClick={fetchAudio}
+                    disabled={isAudioLoading}
+                  >
+                    {isAudioLoading ? (
+                      <span>Loading...</span>
+                    ) : isAudioPlaying ? (
+                      <>
+                        <span className="icon-volume-up"></span>
+                        Pause
+                      </>
+                    ) : (
+                      <>
+                        <span className="icon-volume-off"></span>
+                        Listen
+                      </>
+                    )}
+                  </button>
+                </div>
+  
+                <audio ref={audioRef} />
+  
+                {audioError && <div className="audio-error text-red-600">{audioError}</div>}
+  
+                <p className="case-study-scenario text-gray-700 mt-4">
+                  {caseStudies[currentCaseStudyIndex].scenario}
+                </p>
+  
+                {caseStudies[currentCaseStudyIndex].questions &&
+                caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
+                  <div className="question-section mt-6">
+                    <h4 className="question-header text-lg font-semibold">
+                      {`Question ${currentQuestionIndex + 1}: ${
+                        caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
+                      }`}
+                    </h4>
+  
+                    <div className="options-group mt-4 space-y-2">
+                      {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
+                        (option) => {
+                          const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
+                          const currentAttempts = attempts[key] || 0;
+                          const feedbackMessage =
+                            feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
+                              ?.message || '';
+                          const isCorrect = feedbackMessage === 'Correct Answer';
+                          const maxAttemptsReached = currentAttempts >= 2 || isCorrect;
+  
+                          return (
+                            <div className="option-item" key={option.key}>
+                              <label className="flex items-center space-x-2">
+                                <input
+                                  type="radio"
+                                  name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
+                                  value={option.key}
+                                  onChange={(e) =>
+                                    handleAnswerChange(
+                                      currentCaseStudyIndex,
+                                      currentQuestionIndex,
+                                      e.target.value
+                                    )
+                                  }
+                                  disabled={maxAttemptsReached}
+                                  checked={
+                                    selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
+                                    option.key
+                                  }
+                                  className="form-radio h-4 w-4 text-blue-600"
+                                />
+                                <span className="text-gray-700">
+                                  <strong>{`${option.key}.`}</strong> {option.label}
+                                </span>
+                              </label>
+                            </div>
+                          );
+                        }
                       )}
                     </div>
-                  )}
-                </div>
-              ) : (
-                <p className="no-questions">No questions available for this case study.</p>
-              )}
-
-              {/* Navigation Button */}
-              {/* Next button removed as per requirements */}
+  
+                    {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
+                      <div className="feedback-section mt-4">
+                        <div
+                          className={`feedback-message p-3 rounded-md ${
+                            feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
+                              .message === 'Correct Answer'
+                              ? 'bg-green-100 text-green-700'
+                              : 'bg-blue-100 text-blue-700'
+                          }`}
+                        >
+                          {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message}
+                        </div>
+                        {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
+                          <div className="hint mt-2 flex items-start space-x-2">
+                            <span className="icon-hint mt-1 text-blue-600"></span>
+                            <span className="text-gray-700">
+                              <strong>Hint:</strong>{' '}
+                              {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <p className="no-questions text-gray-700 mt-4">
+                    No questions available for this case study.
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
-        )}
-
-        {/* Handle Empty Case Studies */}
-        {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
-          <div className="no-case-studies">
-            No case studies available at the moment. Please try again later.
-          </div>
+          )}
+  
+          {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
+            <div className="no-case-studies text-center text-gray-700 py-6">
+              No case studies available at the moment. Please try again later.
+            </div>
+          )}
+        </div>
+  
+        {/* Footer */}
+        <footer className="footer bg-gray-800 text-white text-center py-4">
+          <p>
+            © 2024 CoachCare.ai | Contact: operations@coachcare.ai
+          </p>
+        </footer>
+  
+        {/* Certificate Popup */}
+        {isCertificateOpen && (
+          <CertificatePopup
+            isOpen={isCertificateOpen}
+            onClose={() => setIsCertificateOpen(false)}
+            fullName={fullName}
+            date={new Date().toLocaleDateString()}
+            onPrint={handlePrintCertificate}
+          />
         )}
       </div>
-
-      {/* Footer */}
-      <footer className="footer">
-        <p>
-          © 2024 CoachCare.ai | Contact: operations@coachcare.ai 
-        </p>
-      </footer>
-
-      {/* Certificate Popup */}
-      {isCertificateOpen && (
-        <CertificatePopup
-          isOpen={isCertificateOpen}
-          onClose={() => setIsCertificateOpen(false)}
-          fullName={fullName}
-          date={new Date().toLocaleDateString()}
-          onPrint={handlePrintCertificate}
-        />
-      )}
-    </div>
-  </>
+    </>
   );
-}
+}  
