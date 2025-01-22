@@ -624,7 +624,7 @@ export default function Home() {
       const attemptsLeft = 2 - currentAttempts - 1; // Updated to reflect total of 2 attempts
       hintToShow = hint; // Show hint on every incorrect attempt
       if (attemptsLeft > 0) {
-        feedbackMessageNew = `Incorrect Answer. ${attemptsLeft} tries left.`;
+        feedbackMessageNew = `Incorrect Answer. ${attemptsLeft} try left.`;
       } else {
         feedbackMessageNew = 'Incorrect Answer. No more tries left!';
       }
