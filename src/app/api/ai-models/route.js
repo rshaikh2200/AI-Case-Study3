@@ -143,8 +143,8 @@ export async function POST(request) {
   });
 
   // Extract request body
-  const { department, role, specialization, userType } = await request.json();
-  const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization};`;
+  const { department, role, specialization, userType, care } = await request.json();
+  const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization}, Care: ${care};`;
 
   // Create an embedding for the input query
   let queryEmbedding;
@@ -197,7 +197,7 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${care} care ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
