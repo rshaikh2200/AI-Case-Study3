@@ -148,6 +148,8 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
   );
 };
 
+
+
 export default function Home() {
   // State Variables
   const [caseStudies, setCaseStudies] = useState([]);
@@ -415,6 +417,7 @@ export default function Home() {
       await addDoc(collection(firestore, 'ai_responses'), { 
         aiResponse,
         sessionID,
+        
       });
       console.log('AI response saved successfully.');
     } catch (error) {
@@ -1211,17 +1214,20 @@ export default function Home() {
     'Neurology': {
       'Physician': [
         'Neurology'
+        
       ],
       'Nurse Practitioner': [
         'Neurology'
       ],
       'Physician Assistant': [
         'Neurology'
+        
       ],
       'Medical Assistant': [
         'Neurology'
       ],
     },
+    
     'Operating Room': {
       'Surgeon': [
         'General Surgery',
@@ -1268,16 +1274,44 @@ export default function Home() {
         'Abdominal Transplant'
       ],
     },
+
+    
     'Communication': {
       'IT': [],
       'Patient Experince Coordinator': [],
       'Program Manager': [],
     },
+    
   };
 
-  // *** Modified line below to include "Neurology" ***
-  const clinicalDepartments = ['Neurology', 'Operating Room', 'Transplant'];
-  const nonClinicalDepartments = ['Communication'];
+  const [rolesToUse, setRolesToUse] = useState([]);
+  const [specializationsToUse, setSpecializationsToUse] = useState([]);
+
+  useEffect(() => {
+    if (department) {
+      const roles = Object.keys(departmentRoleSpecializationMap[department] || {});
+      setRolesToUse(roles);
+    } else {
+      setRolesToUse([]);
+    }
+    setRole('');
+    setSpecialization('');
+    setSpecializationsToUse([]);
+  }, [department]);
+
+  useEffect(() => {
+    if (department && role) {
+      const specializations =
+        departmentRoleSpecializationMap[department][role] || [];
+      setSpecializationsToUse(specializations);
+    } else {
+      setSpecializationsToUse([]);
+    }
+    setSpecialization('');
+  }, [department, role]);
+
+  const clinicalDepartments = ['Operating Room', 'Transplant', 'Neurology'];
+  
 
   useEffect(() => {
     const randomID = Math.floor(100000 + Math.random() * 900000).toString();
