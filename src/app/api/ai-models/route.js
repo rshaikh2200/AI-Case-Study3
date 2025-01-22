@@ -211,6 +211,7 @@ export async function POST(request) {
       - Each medical case study should include a different medical error that occured in the scenario. Use the following ${retrievedCasesText} for information about meddical errors that occur in Hopsitals.
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
+      - The scenario should be from viewpoint of the ${care} care ${role} working in the ${department} specializing in ${specialization}.
     
     - **For each case study, create 3 unique multiple-choice questions that:**
       - Have 4 option choices each.
@@ -426,6 +427,7 @@ export async function POST(request) {
       - The medical studies should be detailed and focus on the situation, medical error, and consequences.
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
+    
     
     - **For each case study, create 3 unique multiple-choice questions that:**
       - Have 4 option choices each.

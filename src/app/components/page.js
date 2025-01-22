@@ -1260,28 +1260,18 @@ export default function Home() {
 
     'Neurology': {
       'Physician': [
-        'Kidney Transplant',
-        'Heart Transplant',
-        'Liver Transplant',
-        'Pediatric Transplant'
+        'Neurology'
+        
       ],
       'Nurse Practitioner': [
-        'Critical Care Transplant',
-        'Organ Procurement',
-        'Dialysis',
-        'Oncology Transplant'
+        'Neurology'
       ],
       'Physician Assistant': [
-        'Cardiothoracic Transplant',
-        'Living Donor Transplant',
-        'Pediatric Transplant',
-        'Abdominal Transplant'
+        'Neurology'
+        
       ],
       'Medical Assistant': [
-        'Cardiothoracic Transplant',
-        'Living Donor Transplant',
-        'Pediatric Transplant',
-        'Abdominal Transplant'
+        'Neurology'
       ],
     },
     
