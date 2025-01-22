@@ -1257,6 +1257,34 @@ export default function Home() {
         'Abdominal Transplant'
       ],
     },
+
+    'Neurology': {
+      'Physician': [
+        'Kidney Transplant',
+        'Heart Transplant',
+        'Liver Transplant',
+        'Pediatric Transplant'
+      ],
+      'Nurse Practitioner': [
+        'Critical Care Transplant',
+        'Organ Procurement',
+        'Dialysis',
+        'Oncology Transplant'
+      ],
+      'Physician Assistant': [
+        'Cardiothoracic Transplant',
+        'Living Donor Transplant',
+        'Pediatric Transplant',
+        'Abdominal Transplant'
+      ],
+      'Medical Assistant': [
+        'Cardiothoracic Transplant',
+        'Living Donor Transplant',
+        'Pediatric Transplant',
+        'Abdominal Transplant'
+      ],
+    },
+    
     
     'Communication': {
       'IT': [],
