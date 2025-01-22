@@ -1211,6 +1211,23 @@ export default function Home() {
   const isLastCaseStudy = currentCaseStudyIndex === caseStudies.length - 1;
 
   const departmentRoleSpecializationMap = {
+    'Neurology': {
+      'Physician': [
+        'Neurology'
+        
+      ],
+      'Nurse Practitioner': [
+        'Neurology'
+      ],
+      'Physician Assistant': [
+        'Neurology'
+        
+      ],
+      'Medical Assistant': [
+        'Neurology'
+      ],
+    },
+    
     'Operating Room': {
       'Surgeon': [
         'General Surgery',
@@ -1258,23 +1275,6 @@ export default function Home() {
       ],
     },
 
-    'Neurology': {
-      'Physician': [
-        'Neurology'
-        
-      ],
-      'Nurse Practitioner': [
-        'Neurology'
-      ],
-      'Physician Assistant': [
-        'Neurology'
-        
-      ],
-      'Medical Assistant': [
-        'Neurology'
-      ],
-    },
-    
     
     'Communication': {
       'IT': [],
