@@ -212,7 +212,7 @@ export async function POST(request) {
       - Each medical case study should include a different medical error that occured in the scenario. Use the following ${retrievedCasesText} for information about meddical errors that occur in Hopsitals.
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
-      - The scenario should be from viewpoint of the ${care} care ${role} working in the ${department} specializing in ${specialization}. However the scenario use first person point of view words such as I, Me and etc. 
+      - The scenario should be written in third person point of view but should be told viewpoint of the ${role}.
     
     - **For each case study, create 3 unique multiple-choice questions that:**
       - Have 4 option choices each.
