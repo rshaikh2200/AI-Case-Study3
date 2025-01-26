@@ -203,6 +203,7 @@ export async function POST(request) {
       - **Role:** Specify the role of the individual involved.
       - **Department:** Indicate the department where the scenario takes place.
       - **Specialization:** Mention the specialization of the role.
+      - **Care:** Mention the care of role.
     
     - **Case Study Content:**
       - Include a different medical error that occurred by the ${role} or by the team.
@@ -291,6 +292,7 @@ export async function POST(request) {
             "department" : "${department}",
             "role" : "${role}",
             "specialization": "${specialization}",
+            "care": "${care}",
         },
     
           "caseStudy": "Case Study 1",
@@ -359,6 +361,7 @@ export async function POST(request) {
         "department" : "Operating Room",
         "role" : "Surgeon",
         "specialization": "General Surgery"
+        "care": "inpatient"
     },
       "caseStudies": [
         {
@@ -737,32 +740,38 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
 
 - **Understand the Scenario**: Carefully read the provided scenario to grasp the context, key elements, and desired visual aspects.
 - **Detail and Clarity**: Include specific details such as settings, characters, objects, actions, and emotions to create a vivid image in the mind of the image generation model.
-- ** Realistic **: Make sure each character and object visible in the image do not overlap, and each character should have a full and realistic body. Make sure all body parts, veins, and etc are correct associated with correct object and character. Make sure everything look as realistic as possible.
+- **Realistic Proportions and Placement**:
+  - **Proportions**: Ensure that all characters and objects are proportionally accurate. Specify the size relationships between characters and objects (e.g., "a tall character standing next to a small table").
+  - **Placement**: Clearly define the spatial arrangement of elements within the scene (e.g., "the character is seated on the left side of the table, while the lamp is positioned on the right").
+  - **Orientation and Scale**: Mention the orientation and scale to maintain consistency (e.g., "the character is facing forward with arms at their sides").
+  - **Avoid Overlapping**: Ensure that characters and objects do not overlap unnaturally unless intended for the scenario.
+  - **Anatomical Accuracy**: Describe body parts accurately to maintain realistic anatomy (e.g., "the character has a proportionate head, torso, arms, and legs").
 - **Avoid NSFW Content**: Ensure that the prompt does not contain or imply any inappropriate, offensive, or unsafe content.
-- ** Diverse Characters**: Ensure diverse characters with diverse race, and genders. 
+- **Diverse Characters**: Ensure diverse characters with diverse races, genders, and backgrounds.
 - **Language and Tone**: Use clear and concise language. Maintain a neutral and professional tone.
 - **Formatting**: Present the prompt as a single, well-structured paragraph without any markdown or code blocks.
 - **Consistency**: Maintain consistency in descriptions, avoiding contradictions or vague terms.
 - **Descriptive Adjectives**: Utilize descriptive adjectives to enhance the visual richness of the prompt.
-- **Characters**: Characters should consist of different race, gender, and relegions.
+- **Characters**: Characters should consist of different races, genders, and religions.
 
 # Steps
 
 1. **Analyze the Scenario**: Identify the main elements such as location, characters, objects, and actions.
 2. **Expand on Details**: Add descriptive elements to each identified component to enrich the prompt.
-3. **Ensure Appropriateness**: Review the prompt to eliminate any NSFW content or implications.
-4. **Finalize the Prompt**: Ensure the prompt is cohesive, vivid, and suitable for image generation.
+3. **Ensure Realistic Proportions and Placement**: Define the size relationships, spatial arrangements, and anatomical accuracy of all elements.
+4. **Ensure Appropriateness**: Review the prompt to eliminate any NSFW content or implications.
+5. **Finalize the Prompt**: Ensure the prompt is cohesive, vivid, and suitable for image generation.
 
 # Output Format
 
 - **Format**: Plain text paragraph.
-- **Length**: Approximately 20 - 30 words, providing sufficient detail without being overly verbose.
+- **Length**: Approximately 40 - 60 words, providing sufficient detail without being overly verbose.
 - **Style**: Descriptive and clear, suitable for feeding directly into an image generation model.
 
 # Example
 
 **Image Prompt**:
-"A bustling hospital emergency room at night, illuminated by bright overhead lights. Doctors and nurses in white coats move swiftly between beds, attending to patients with focused expressions. Medical equipment and monitors line the walls, while the atmosphere is tense yet organized, reflecting the urgency of a busy night shift."
+"A bustling hospital emergency room at night, illuminated by bright overhead lights. Doctors and nurses in white coats move swiftly between beds, attending to patients with focused expressions. A tall doctor stands next to a small examination table, while a nurse adjusts a monitor on the adjacent wall. Medical equipment and monitors line the walls, and the atmosphere is tense yet organized, reflecting the urgency of a busy night shift."
 
 # Notes
 
