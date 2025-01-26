@@ -221,7 +221,7 @@ export default function Home() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          input: currentCaseStudy.scenrio,
+          input: currentCaseStudy.scenario,
         }),
       });
 
