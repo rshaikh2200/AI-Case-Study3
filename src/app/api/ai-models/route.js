@@ -393,7 +393,7 @@ export async function POST(request) {
               "Hint": "Ask a question to gently prompt the other person of potential safety issue"
             },
             {
-              "question": "After the surgery, Dr. Patel and his team discussed ways to prevent future errors. This reflection represents which Error Prevention Tool?",
+              "question": "If Dr.Patel, along with the team, had taken a moment after surgery to reflext on the day's task, and discuss what went well or what didn't, whihc EPT practice would they applied?",
               "options": {
                 "A": "ARCC",
                 "B": "Debrief",
