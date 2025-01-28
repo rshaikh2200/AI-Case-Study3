@@ -207,7 +207,7 @@ export async function POST(request) {
     
     - **Case Study Content:**
       - Include a different medical error that occurred by the ${role} or by the team.
-      - Incorporate characters with diverse ethnicity names from different countries such as American, Asian, European, Middle East, African, African American, Austrialian, and different genders and trans gender.. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
+      - Incorporate characters with diverse ethnicity names from different countries such as American, Asian, European, Middle East, African, African American, Austrialian, South American and different genders and transgender. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
       - The medical studies should be detailed and focus on the situation, medical error, and consequences.
       - Each medical case study should include a different medical error that occured in the scenario. Use the following ${retrievedCasesText} for information about meddical errors that occur in Hopsitals.
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different  medical employees, and be more descriptive. Make sure the interaction between the different medical employee is realistic based on real life hospital interaction environment
