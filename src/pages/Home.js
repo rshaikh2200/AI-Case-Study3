@@ -215,7 +215,7 @@ export default function Home() {
             Elevate Patient Safety Through Prevention
           </h1>
           <p className="text-xl mb-8">
-          Medical errors are the 3rd leading cause of death in US. 99% Of
+          Medical errors are the 3rd leading cause of death in the US. 99% Of
 avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety
 principles and corresponding 11 error prevention tools (EPTs). By understanding and using this
 safety language, harm to patients can be drastically reduced.
