@@ -207,10 +207,12 @@ export async function POST(request) {
     
     - **Case Study Content:**
       - Include a different medical error that occurred by the ${role} or by the team.
-      - Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
+      - Incorporate characters with diverse ethnicity names from different countries such as American, Asian, European, Middle East, African, African American, Austrialian, and different genders and trans gender.. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
       - The medical studies should be detailed and focus on the situation, medical error, and consequences.
       - Each medical case study should include a different medical error that occured in the scenario. Use the following ${retrievedCasesText} for information about meddical errors that occur in Hopsitals.
-      - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
+      - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive.
+      - The scenario should be written with college level professional english, with proper grammarm, setence structure and etc. Do not use harsh tone use a normal speaking tone for the scenarios. Make sure the sentence structure used short words and conicse structure. 
+      - The characters in the scenario should properly utilized in the scenario with realistic hospitals role. For example a nurse practitioner will not administrate medication, they will only order the medication similar to a physician.  It will only be the RN or medical assistance who will administrate medication. Make each role and the hospital situation as realistic as possible. 
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
      
     
@@ -253,7 +255,7 @@ export async function POST(request) {
         Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
     
     b. Debrief
-        Definition: Reflect on what went well, what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
+        Definition: Reflect on what went well with team , what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
     
     c. ARCC
         Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
@@ -369,7 +371,7 @@ export async function POST(request) {
           "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
           "questions": [
             {
-              "question": "Dr. Patel could have avoided this mix-up by practicing which Error Prevention Tool, which focuses on verifying actions with a internal verification and checking with qualified source?",
+              "question": "Whcich EPT practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
               "options": {
                 "A": "Peer Checking and Coaching",
                 "B": "Debrief",
@@ -391,7 +393,7 @@ export async function POST(request) {
               "Hint": "Ask a question to gently prompt the other person of potential safety issue"
             },
             {
-              "question": "After the surgery, Dr. Patel and his team discussed ways to prevent future errors. This reflection represents which Error Prevention Tool, designed to identify improvements and assign follow-up actions?",
+              "question": "After the surgery, Dr. Patel and his team discussed ways to prevent future errors. This reflection represents which Error Prevention Tool?",
               "options": {
                 "A": "ARCC",
                 "B": "Debrief",
