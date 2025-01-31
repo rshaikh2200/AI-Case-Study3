@@ -207,8 +207,7 @@ export async function POST(request) {
       - **Specialization:** Mention the specialization of the role.
       - **Care:** Mention the care of role.
 
-    - **Strictly follow the Case Study structure as below:**
-    
+        
     - **Case Study Content:**
       - Feature one distinct  medical error that occurred by the ${role} or by the team that aligns with common medical errors found ${retrievedCaseText} or published medical case studies.
       - Incorporate characters with diverse ethnicity names from different countries such as American, Asian, European, Middle East, African, African American, Austrialian, South American and different genders and transgender. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
