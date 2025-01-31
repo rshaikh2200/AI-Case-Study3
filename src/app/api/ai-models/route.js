@@ -199,7 +199,7 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${care} ${role} specializing in ${specialization}, and working in the ${department} department. Use the following ${retrievedCasesText} as a reference for real-world medical error scenarios. Additionally, search current open source medical literature—including medical forms, news articles, hospital incident reports, WHO publications, and medical journals—to incorporate diverse, realistic, and up-to-date hospital error examples. **Ensure that each case study is uniquely tailored to the specified role, department, care level, and specialization, and that no two case studies repeat the same scenario.**
+    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${care} ${role} specializing in ${specialization}, and working in the ${department} department. Use the following ${retrievedCasesText} as a reference for real-world medical error scenarios. Additionally, search current open source medical literature—including medical forms, news articles, hospital incident reports, WHO publications, and medical journals—to incorporate diverse, realistic, and up-to-date hospital error examples. **Ensure that each case study is uniquely tailored to the specified role, department, care level, and specialization, and that no two case studies repeat the same scenario. Each case study should: 
 
 - **Include the following details before the case study:**
   - **Role:** Specify the role of the individual involved.
@@ -220,7 +220,7 @@ export async function POST(request) {
   - Each medical case study should focus on a different type of medical error. Utilize ${retrievedCasesText} and other reputable sources to incorporate real-world hospital errors.
   - Employ natural, formal dialogue appropriate to a hospital setting.
   - Illustrate hierarchical deference (e.g., a resident deferring to an attending, a nurse following physician orders).
-  - Include emotions (e.g., concern, stress, hesitation) to reflect high-stakes hospital decision-making.`
+  - Include emotions (e.g., concern, stress, hesitation) to reflect high-stakes hospital decision-making.
 
     
     
