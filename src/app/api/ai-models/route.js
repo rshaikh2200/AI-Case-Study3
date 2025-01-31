@@ -199,7 +199,7 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${care} care ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${care} ${role}  specializing in ${specialization}, and working in the ${department} department. Use the following ${retrievedCasesText} and published real world medical case studies from news article, medical journals, hospital incident reports, WHO, and other open sources to help generate detailed and descriptive medical case studies. Each case study should:
 
     - **Include the following details before the case study:**
       - **Role:** Specify the role of the individual involved.
@@ -213,7 +213,7 @@ export async function POST(request) {
       - The medical studies should be detailed and focus on the situation, medical error, and consequences.
       - The character interactions should mirror real hospital heirarchies (e.g., a resident deffering to a attending physician .
       - The case scenario should ensure role accuracy (e.g., only RNs administer medications; NPs order them).
-      - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different  medical employees, and be more descriptive. Make sure the interaction between the different medical employee is realistic based on real life hospital interaction environment
+      - The case study should vary storetelling with eviromental details (e.g., "The ICU’s monitors beeped incessantly as night-shift nurses hurried between bays"), emotional tension (e.g., Dr. Nguyen hesitated, aware the attending would disapprove), and authentic dialogue (e.g., "Contact, Dr. Almeida STAT—we need a second opinion!").
       - The scenario should be written with college level professional english, with proper grammarm, setence structure and etc. Do not use harsh tone use a normal speaking tone for the scenarios. Make sure the sentence structure used short words and conicse structure. 
       - The characters in the scenario should properly utilized in the scenario with realistic hospitals role. For example a nurse practitioner will not administrate medication, they will only order the medication similar to a physician.  It will only be the RN or medical assistance who will administrate medication. Make each role and the hospital situation as realistic as possible. 
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
