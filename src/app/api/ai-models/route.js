@@ -199,29 +199,29 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${care} ${role}  specializing in ${specialization}, and working in the ${department} department. Use the following ${retrievedCasesText} for medical errrors scenario in hospital examples and in combination with published real world medical case studies from news article, medical journals, hospital incident reports, WHO articles, and other open sources to help generate detailed, descriptive and distinct medical case studies. Each case study should:
+    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${care} ${role} specializing in ${specialization}, and working in the ${department} department. Use the following ${retrievedCasesText} as a reference for real-world medical error scenarios. Additionally, search current open source medical literature—including medical forms, news articles, hospital incident reports, WHO publications, and medical journals—to incorporate diverse, realistic, and up-to-date hospital error examples. **Ensure that each case study is uniquely tailored to the specified role, department, care level, and specialization, and that no two case studies repeat the same scenario.**
 
-    - **Include the following details before the case study:**
-      - **Role:** Specify the role of the individual involved.
-      - **Department:** Indicate the department where the scenario takes place.
-      - **Specialization:** Mention the specialization of the role.
-      - **Care:** Mention the care of role.
+- **Include the following details before the case study:**
+  - **Role:** Specify the role of the individual involved.
+  - **Department:** Indicate the department where the scenario takes place.
+  - **Specialization:** Mention the specialization of the role.
+  - **Care:** Mention the care level of the role.
 
-    - **Case Study Content:**
-      - Each case study should include a different edical error that occurred by the ${role}. Information regarding medical error errors can found here: ${retrievedCasesText} or search real world medical case studies from news article, medical journals, hospital incident reports, other open source.
-      - The medical case study scenario should follow this narrative structure:
-        1) It should start by describing the hospital environmnent ((e.g., bustling ER, quiet night shift, ICU setting).
-        2) Introduce the main character(s) involved in the error with their roles and pronouns in paranthese  beside the name (e.g, Tim (He/Him).
-        3) Provide the patient condition, age, and immediate symptoms. 
-        4) Describe the medical decision-making process leading to the error. 
-        5) Show the medical decision-making process leading to the medical errror. 
-        6) Show the error occuring trough realistic hospital interactions.
-        7) End with the consequences of the error but do not include the resolution step. 
-      - The medical case study should use names from different continent (America, Canada, South America, Europe, Asia, Austrialia) and ethnicity but without stating the ethnicity. Include a mix of genders and pronouns in each scenario. Each character should have a defined hospital role.
-      - Each medical case study should focus on a different type of mmedical error. Use Use ${retrievedCasesText} and medical sources (news article, medical journals, hospital incident report, and etc) to incorporate real-world hospital errors.     
-      - Use natural and formal dialogue appropriate to a hospital setting.
-      - Show hierarchical deference (e.g., a resident deferring to an attending, a nurse following physician orders).
-      - Include emotions (e.g., concern, stress, hesitation) to reflect high-stakes hospital decision-making.
+- **Case Study Content:**
+  - Each case study should include a different medical error that occurred involving the ${role}. Information regarding medical errors can be found here: ${retrievedCasesText} or through current searches of real-world medical case studies from news articles, medical journals, hospital incident reports, and other open sources.
+  - The medical case study scenario should follow this narrative structure:
+    1) Start by describing the hospital environment (e.g., bustling ER, quiet night shift, ICU setting).
+    2) Introduce the main character(s) involved in the error, including their roles and pronouns in parentheses beside their name (e.g., Tim (He/Him)).
+    3) Provide details on the patient’s condition, age, and immediate symptoms.
+    4) Describe the medical decision-making process leading to the error.
+    5) Depict the error occurring through realistic hospital interactions.
+    6) End with the consequences of the error without including a resolution step.
+  - Use names from various continents (America, Canada, South America, Europe, Asia, Australia) to reflect global diversity. Include a mix of genders and pronouns without explicitly stating ethnicity, and ensure each character has a defined hospital role.
+  - Each medical case study should focus on a different type of medical error. Utilize ${retrievedCasesText} and other reputable sources to incorporate real-world hospital errors.
+  - Employ natural, formal dialogue appropriate to a hospital setting.
+  - Illustrate hierarchical deference (e.g., a resident deferring to an attending, a nurse following physician orders).
+  - Include emotions (e.g., concern, stress, hesitation) to reflect high-stakes hospital decision-making.`
+
     
     
     
