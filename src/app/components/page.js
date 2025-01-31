@@ -224,6 +224,8 @@ try {
         });
     });
 
+  console.log('Speech Generation Payload:', payload);
+
     const payload = {
         input: inputText,
     };
