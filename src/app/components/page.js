@@ -217,17 +217,12 @@ const generateSpeech = async () => {
   
   try {
     const payload = {
-      input: `
-        Scenario: ${currentCaseStudy.scenario}
-        Questions:
-        ${currentCaseStudy.questions.map((q, idx) => `
-          ${idx + 1}. ${q.question}
-          A) ${q.options.A}
-          B) ${q.options.B}
-          C) ${q.options.C}
-          D) ${q.options.D}
-        `).join('\n')}
-      `,
+      scenario: currentCaseStudy.scenario,
+        questions: currentCaseStudy.questions.map(q => ({
+          question: q.question,
+          options: q.options,
+          
+        })),
     };
 
     const response = await fetch('/api/audio-models', {
