@@ -215,18 +215,18 @@ const generateSpeech = async () => {
   setIsAudioLoading(true);
   setAudioError('');
   
-  try {
+try {
     let inputText = `Scenario: ${currentCaseStudy.scenario}\n\nQuestions:\n`;
-      currentCaseStudy.questions.forEach((q, index) => {
+    currentCaseStudy.questions.forEach((q, index) => {
         inputText += `${index + 1}. ${q.question}\n`;
         Object.entries(q.options).forEach(([key, value]) => {
-          inputText += `${key}) ${value}\n`;
+            inputText += `${key}) ${value}\n`;
         });
-      });
+    });
 
     const payload = {
         input: inputText,
-      };
+    };
     
     };
 
