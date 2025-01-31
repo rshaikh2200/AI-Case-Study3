@@ -215,13 +215,25 @@ export default function Home() {
     setIsAudioLoading(true);
     setAudioError('');
     try {
+      const payload = {
+        input: `
+          Scenario: ${currentCaseStudy.scenario}
+          Questions:
+          ${currentCaseStudy.questions.map((q, idx) => `
+            ${idx + 1}. ${q.question}
+            A) ${q.options.A}
+            B) ${q.options.B}
+            C) ${q.options.C}
+            D) ${q.options.D}
+          `).join('\n')}
+        `,
+      };
       const response = await fetch('/api/audio-models', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          input: currentCaseStudy.scenario,
+        body: JSON.stringify(payload),
         }),
       });
 
