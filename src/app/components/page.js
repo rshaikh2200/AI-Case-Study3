@@ -224,11 +224,13 @@ try {
         });
     });
 
-  console.log('Speech Generation Payload:', payload);
+  
 
     const payload = {
         input: inputText,
     };
+
+    console.log('Speech Generation Payload:', payload);
     
     const response = await fetch('/api/audio-models', {
         method: 'POST',
