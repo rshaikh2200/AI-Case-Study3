@@ -222,8 +222,6 @@ const generateSpeech = async () => {
         Object.entries(q.options).forEach(([key, value]) => {
           inputText += `${key}) ${value}\n`;
         });
-        inputText += `Correct Answer: ${q.correctAnswer}\n`;
-        inputText += `Hint: ${q.hint}\n\n`;
       });
 
     const payload = {
