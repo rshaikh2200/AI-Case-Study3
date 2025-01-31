@@ -216,13 +216,20 @@ const generateSpeech = async () => {
   setAudioError('');
   
   try {
+    let inputText = `Scenario: ${currentCaseStudy.scenario}\n\nQuestions:\n`;
+      currentCaseStudy.questions.forEach((q, index) => {
+        inputText += `${index + 1}. ${q.question}\n`;
+        Object.entries(q.options).forEach(([key, value]) => {
+          inputText += `${key}) ${value}\n`;
+        });
+        inputText += `Correct Answer: ${q.correctAnswer}\n`;
+        inputText += `Hint: ${q.hint}\n\n`;
+      });
+
     const payload = {
-      scenario: currentCaseStudy.scenario,
-        questions: currentCaseStudy.questions.map(q => ({
-          question: q.question,
-          options: q.options,
-          
-        })),
+        input: inputText,
+      };
+    
     };
 
     const response = await fetch('/api/audio-models', {
