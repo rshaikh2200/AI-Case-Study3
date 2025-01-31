@@ -228,15 +228,22 @@ try {
         input: inputText,
     };
     
-    };
-
     const response = await fetch('/api/audio-models', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
     });
+
+    // You can handle the response here
+    const data = await response.json();
+    console.log(data);
+
+} catch (error) {
+    console.error('An error occurred:', error);
+    // Handle the error appropriately
+}
 
 
       if (response.ok) {
