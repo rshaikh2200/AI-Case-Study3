@@ -208,14 +208,14 @@ export async function POST(request) {
       - **Care:** Mention the care of role.
     
     - **Case Study Content:**       
-    - Feature one distinct  medical error that occurred by the ${role} or by the team that aligns with common medical errors found ${retrievedCaseText} or published medical case studies.       
-    - Incorporate characters with diverse ethnicity names from different countries such as American, Asian, European, Middle East, African, African American, Austrialian, South American and different genders and transgender. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)      
-    - The medical studies should be detailed and focus on the situation, medical error, and consequences.       
-    - Each medical case study should include a distinct medical error. Use the following ${retrievedCasesText} and published medical case studies for information about meddical errors that occur in Hopsitals.       
-    - Vary storytelling with environmental details (e.g., "The ICU’s monitors beeped incessantly as night-shift nurses hurried between bays"), emotional tension (e.g., Dr. Nguyen hesitated, aware the attending would disapprove), and authentic dialogue (e.g., "Page Dr. Almeida STAT—we need a second opinion!").       
-    - The scenario should be written with proper english grammar, and setence structure. Do not use harsh tone use a normal and lighter tone for the scenarios.         
-    - Clinical Realism: Ensure role accuracy (e.g., only RNs administer medications; NPs order them).       
-    - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario. 
+      - Feature one distinct  medical error that occurred by the ${role} or by the team that aligns with common medical errors found ${retrievedCaseText} or published medical case studies.       
+      - Incorporate characters with diverse ethnicity names from different countries such as American, Asian, European, Middle East, African, African American, Austrialian, South American and different genders and transgender. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)      
+      - The medical studies should be detailed and focus on the situation, medical error, and consequences.       
+      - Each medical case study should include a distinct medical error. Use the following ${retrievedCasesText} and published medical case studies for information about meddical errors that occur in Hopsitals.       
+      - Vary storytelling with environmental details (e.g., "The ICU’s monitors beeped incessantly as night-shift nurses hurried between bays"), emotional tension (e.g., Dr. Nguyen hesitated, aware the attending would disapprove), and authentic dialogue (e.g., "Page Dr. Almeida STAT—we need a second opinion!").       
+      - The scenario should be written with proper english grammar, and setence structure. Do not use harsh tone use a normal and lighter tone for the scenarios.         
+      - Clinical Realism: Ensure role accuracy (e.g., only RNs administer medications; NPs order them).       
+      - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario. 
      
     
     - **For each case study, create 3 unique multiple-choice questions that:**
