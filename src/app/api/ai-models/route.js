@@ -208,7 +208,7 @@ export async function POST(request) {
   - **Care:** Mention the care level of the role.
 
 - **Case Study Content:**
-  - Each case study should include a different medical error that occurred involving the ${role}. Information regarding medical errors can be found here: ${retrievedCasesText} or through searches of real-world medical error case studies from news articles, medical journals, hospital incident reports, and other open sources.
+  - Each case study should include a different and unique medical error that occurred involving the ${role}. Information regarding medical errors can be found here: ${retrievedCasesText} or through searches of real-world medical error case studies from news articles, medical journals, hospital incident reports, and other open sources.
   - The medical case study scenario should follow this narrative structure:
     1) Start by describing the hospital environment (e.g., bustling ER, quiet night shift, ICU setting).
     2) Introduce the main character(s) involved in the error, including their roles and pronouns in parentheses beside their name (e.g., Tim (He/Him)).
