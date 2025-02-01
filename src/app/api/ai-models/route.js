@@ -210,9 +210,9 @@ export async function POST(request) {
 - **Case Study Content:**
   - Each case study should include a different and unique medical error that occurred involving the ${role}. Information regarding medical errors can be found here: ${retrievedCasesText} or through searches of real-world medical error case studies from news articles, medical journals, hospital incident reports, and other open sources.
   - The medical case study scenario should follow this narrative structure:
-    1) Start by describing the hospital environment (e.g., bustling ER, quiet night shift, ICU setting).
+    1) Start by describing the hospital environment dont use simple words like bustling, more descriptive words, and formal words that are use in a professional enviroment.
     2) Introduce the main character(s) involved in the error, including their roles and pronouns in parentheses beside their name (e.g., Tim (He/Him)).
-    3) Provide details on the patient’s condition, age, and immediate symptoms. No  medical error case scenario generated should use the same patient condition and symptoms.
+    3) Provide details on the patient’s condition, age, and immediate symptoms. No  medical error case scenario generated should use the same patient condition,symptoms, ${role} diagnosis and response.
     4) Describe the medical decision-making process leading to the error.
     5) Depict the error occurring through realistic hospital interactions.
     6) End with the consequences of the error without including a resolution step.
@@ -221,7 +221,7 @@ export async function POST(request) {
   - Employ natural, formal dialogue appropriate to a hospital setting.
   - Illustrate hierarchical deference (e.g., a resident deferring to an attending, a nurse following physician orders).
   - Include emotions (e.g., concern, stress, hesitation) to reflect high-stakes hospital decision-making.
-
+  - Do not provide the hospital name, and location. Also just state the department, dont use descriptive words to describe it.
     
     
     
@@ -441,7 +441,7 @@ export async function POST(request) {
       - The medical studies should be detailed and focus on the situation, medical error, and consequences.
       - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
       - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
-    
+      - Do not include hospital names, location or use descriptive words for departmnets in the scenarios.
     
     - **For each case study, create 3 unique multiple-choice questions that:**
       - Have 4 option choices each.
@@ -649,14 +649,14 @@ export async function POST(request) {
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "ft:gpt-4o-mini-2024-07-18:personal::AwFckKFA",
       messages: [
         {
           role: "user",
           content: META_PROMPT,
         },
       ],
-      temperature: 0.5,
+      temperature: 0.7,
       stream: false,
     });
     
