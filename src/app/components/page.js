@@ -1240,7 +1240,7 @@ try {
         'Neurology'
         
       ],
-      'Medical Assistant': [
+      'Registered Nurse': [
         'Neurology'
       ],
     },
