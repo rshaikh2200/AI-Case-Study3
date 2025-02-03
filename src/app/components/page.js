@@ -1228,6 +1228,20 @@ try {
   const isLastCaseStudy = currentCaseStudyIndex === caseStudies.length - 1;
 
   const departmentRoleSpecializationMap = {
+    'Radiology': {
+      'Physician': [
+        'Radiology'
+        
+      ],
+      'Nurse Practitioner': [
+        'Radiology'
+      ],
+      'Radiology Technician': [
+        'Neurology'
+        
+      ],
+    },
+    
     'Neurology': {
       'Physician': [
         'Neurology'
@@ -1327,7 +1341,7 @@ try {
     setSpecialization('');
   }, [department, role]);
 
-  const clinicalDepartments = ['Operating Room', 'Transplant', 'Neurology'];
+  const clinicalDepartments = ['Operating Room', 'Transplant', 'Neurology', 'Radiology'];
   
 
   useEffect(() => {
