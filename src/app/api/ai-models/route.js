@@ -227,6 +227,8 @@ export async function POST(request) {
     
     - **For each case study, create 3 unique multiple-choice questions that:**
       - Have 4 option choices each.
+      - Each Question should correctly illustrate hierarchical deference (e.g.,Dr. Harper should be addressing Dr. Chen related to his concerns since Dr.Chen made the oversight, The night shift staft should be asking clarifying questions in this case and not Dr. O'Reilly since the handoff is directed at them, The reciever of the information should be reading and repeating back the information back the information.).
+      - Debrief is typically a group effort the question should no reflect debrief being done by a single individual.
       - Provide the correct answer choice and answer in the format: correct answer: C) Validate and Verify
       - Provide the hint in the format: Hint: Double-checking and confirming accuracy before proceeding.
       - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
