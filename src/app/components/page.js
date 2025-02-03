@@ -1240,6 +1240,9 @@ try {
         'Neurology'
         
       ],
+      'Physican Associate': [
+        'Neurology'
+      ],
     },
     
     'Neurology': {
