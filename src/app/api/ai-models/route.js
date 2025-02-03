@@ -6,7 +6,7 @@ import { OpenAI } from 'openai';
 import axios from 'axios';
 import FormData from 'form-data';
 
-//hello
+
 
 export const dynamic = 'force-dynamic';
 
