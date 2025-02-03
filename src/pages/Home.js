@@ -78,61 +78,36 @@ const errorPreventionTools = [
     }
   ];
   
+
 const stats = [
   { label: "Leading Cause Of Death", value: "3rd" },
   { label: "Hospitals At Risk", value: "6K+", subtext: "In The U.S" },
   { label: "Patient experience some form of preventable harm ", value: "400k+" },
   { label: "Anual Hospital Cost To Cover Patient Harm", value: "$20bn - $45bn" }
 ];
-  
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // Modified ErrorPreventionCard as a flashcard with flip animation
   const ErrorPreventionCard = ({ tool, isActive, onClick }) => {
     const IconComponent = tool.icon;
     return (
-      <div className="flip-card cursor-pointer" onClick={onClick}>
-        <div className={`flip-card-inner ${isActive ? 'flipped' : ''}`}>
-          <div className="flip-card-front p-6 rounded-lg bg-white text-gray-800 shadow-md hover:shadow-lg transition-all duration-300">
-            <div className="flex items-start mb-4">
-              <IconComponent size={24} className="text-blue-600" />
-              <h3 className="text-xl font-semibold ml-3">{tool.title}</h3>
-            </div>
-          </div>
-          <div className="flip-card-back p-6 rounded-lg bg-blue-600 text-white shadow-lg transition-all duration-300">
-            <p className="text-sm">
-              {tool.definition}
-            </p>
-          </div>
+      <div
+        className={`p-6 rounded-lg transition-all duration-300 cursor-pointer card-hover-effect ${
+          isActive
+            ? 'bg-blue-600 text-white shadow-lg scale-105'
+            : 'bg-white text-gray-800 shadow-md hover:shadow-lg'
+        }`}
+        onClick={onClick}
+      >
+        <div className="flex items-start mb-4">
+          <IconComponent size={24} className={isActive ? 'text-white' : 'text-blue-600'} />
+          <h3 className="text-xl font-semibold ml-3">{tool.title}</h3>
         </div>
-        <style jsx>{`
-          .flip-card {
-            perspective: 1000px;
-          }
-          .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-          }
-          .flip-card-inner.flipped {
-            transform: rotateY(180deg);
-          }
-          .flip-card-front,
-          .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 0.5rem;
-          }
-          .flip-card-back {
-            transform: rotateY(180deg);
-          }
-        `}</style>
+        <p className={`text-sm ${isActive ? 'text-blue-50' : 'text-gray-600'}`}>
+          {tool.definition}
+        </p>
       </div>
     );
   };
@@ -167,12 +142,12 @@ export default function Home() {
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-4">
-            <Link
-              href="/"
-              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-            >
-              Home
-            </Link>
+          <Link
+                href="/"
+                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+              >
+                Home
+              </Link>
             <Link
               href="/components"
               className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
@@ -198,7 +173,7 @@ export default function Home() {
         {isMobileMenuOpen && (
           <div className="sm:hidden pb-4">
             <div className="flex flex-col space-y-2">
-              <Link
+            <Link
                 href="/"
                 className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
               >
@@ -240,16 +215,16 @@ export default function Home() {
             Elevate Patient Safety Through Prevention
           </h1>
           <p className="text-xl mb-8">
-            Medical errors are the 3rd leading cause of death in the US. 99% Of
-            avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety
-            principles and corresponding 11 error prevention tools (EPTs). By understanding and using this
-            safety language, harm to patients can be drastically reduced.
+          Medical errors are the 3rd leading cause of death in the US. 99% Of
+avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety
+principles and corresponding 11 error prevention tools (EPTs). By understanding and using this
+safety language, harm to patients can be drastically reduced.
           </p>
           <Link href="/components">
-            <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold flex items-center hover:bg-blue-50 transition-colors">
-              Start Patient Safety Module
-              <ArrowRight className="ml-2" size={20} />
-            </button>
+          <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold flex items-center hover:bg-blue-50 transition-colors">
+            Start Patient Safety Module
+            <ArrowRight className="ml-2" size={20} />
+          </button>
           </Link>
         </div>
       </div>
@@ -289,7 +264,7 @@ export default function Home() {
       <main className="container mx-auto px-4 py-12">
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-            Medical Error Prevention Tools
+             Medical Error Prevention Tools
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {errorPreventionTools.map((tool, index) => (
@@ -308,4 +283,3 @@ export default function Home() {
     </div>
   );
 }
-
