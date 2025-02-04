@@ -1237,11 +1237,11 @@ try {
         'Radiology'
       ],
       'Radiology Technician': [
-        'Neurology'
+        'Radiology'
         
       ],
       'Physican Associate': [
-        'Neurology'
+        'Radiology'
       ],
     },
     
