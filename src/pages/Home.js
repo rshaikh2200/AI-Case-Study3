@@ -30,7 +30,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // (Optional) Example card component if you want to expand error prevention tools later.
+ 
   const ErrorPreventionCard = ({ tool, isActive, onClick }) => {
     const IconComponent = tool.icon;
     return (
@@ -61,7 +61,7 @@ export default function Home() {
           <div className="flex items-center">
             <div className="flex-shrink-0 text-white font-bold">
               <span className="hidden sm:block">
-                AI Personalized Healthcare Safety Module
+                CoachCare.ai
               </span>
               <span className="block sm:hidden">Coachcare.ai</span>
             </div>
@@ -155,11 +155,9 @@ export default function Home() {
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Elevate Patient Safety Through AI-Driven Training
           </h1>
-          <h2 className="text-2xl md:text-3xl font-semibold mb-6">
-            Welcome to Coachcare.ai
-          </h2>
+         
           <p className="text-xl mb-8">
-            Medical errors are the 3rd leading cause of death in the US. Our innovative platform leverages AI to generate personalized training scenarios and reinforces 11 key safety behaviors—drastically reducing preventable harm to patients.
+            Avoidable medical errors in hospitals are the third leading cause of death in the USA. 99% Of avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety principles and corresponding 11 error prevention tools (EPTs). By understanding and using this safety language, harm to patients can be drastically reduced.
           </p>
         </div>
       </div>
@@ -172,7 +170,7 @@ export default function Home() {
       {
         title: "AI-Driven Personalized Safety Scenarios",
         description:
-          "Our Coachcare.ai safety module utilizes a fine-tuned Large Language Model (LLM) trained on over 500+ hospital medical error scenarios to generate personalized case scenarios tailored for your hospital.",
+          "Coachcare.ai safety training module utilizes a  Large Language Model (LLM) trained on over 500+ hospital medical error case studies to generate personalized case scenarios and questions  tailored for your medical employees.",
         icon: Layers,
       },
       {
@@ -184,7 +182,7 @@ export default function Home() {
       {
         title: "Combatting the 3rd Leading Cause of Death",
         description:
-          "Coachcare.ai has created a training platform designed to tackle medical errors—the third leading cause of death in the U.S.—by equipping healthcare professionals with life-saving tools.",
+          "Coachcare.ai training platform is designed to tackle medical errors—the third leading cause of death in the U.S.—by by equiping healthcare professioanls with pesonalized AI driven training.",
         icon: Skull,
       },
     ];
