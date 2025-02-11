@@ -157,8 +157,7 @@ export default function Home() {
           </h1>
          
           <p className="text-xl mb-8">
-            Avoidable medical errors in hospitals are the third leading cause of death in the USA. 99% Of avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety principles and corresponding 11 error prevention tools (EPTs). By understanding and using this safety language, harm to patients can be drastically reduced.
-          </p>
+            Avoidable medical errors in hospitals are the third leading cause of death in the USA. 99% Of avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety principles and corresponding 11 safety behaviors. Our studies have shown that these 11 safety behavior could have prevented 80% of the hospital safety errors. 
         </div>
       </div>
       <div className="absolute bottom-0 right-0 w-1/3 h-full bg-blue-500 opacity-50 clip-path-diagonal hidden lg:block"></div>
