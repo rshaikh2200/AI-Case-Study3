@@ -2,7 +2,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 import { 
-  Icon, 
   ArrowRight, 
   Users, 
   ClipboardList, 
@@ -20,18 +19,18 @@ import {
   Skull
 } from 'lucide-react';
  
-
 const stats = [
   { label: "Leading Cause Of Death", value: "3rd" },
   { label: "Hospitals At Risk", value: "6K+", subtext: "In The U.S" },
-  { label: "Patient experience some form of preventable harm ", value: "400k+" },
-  { label: "Anual Hospital Cost To Cover Patient Harm", value: "$20bn - $45bn" }
+  { label: "Patients Experiencing Preventable Harm", value: "400k+" },
+  { label: "Annual Hospital Cost For Patient Harm", value: "$20bn - $45bn" }
 ];
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  // (Optional) Example card component if you want to expand error prevention tools later.
   const ErrorPreventionCard = ({ tool, isActive, onClick }) => {
     const IconComponent = tool.icon;
     return (
@@ -153,21 +152,68 @@ export default function Home() {
     <div className="relative bg-blue-600 text-white">
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Elevate Patient Safety Through Prevention
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            Elevate Patient Safety Through AI-Driven Training
           </h1>
+          <h2 className="text-2xl md:text-3xl font-semibold mb-6">
+            Welcome to Coachcare.ai
+          </h2>
           <p className="text-xl mb-8">
-            Medical errors are the 3rd leading cause of death in the US. 99% Of
-            avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety
-            principles and corresponding 11 error prevention tools (EPTs). By understanding and using this
-            safety language, harm to patients can be drastically reduced.
+            Medical errors are the 3rd leading cause of death in the US. Our innovative platform leverages AI to generate personalized training scenarios and reinforces 11 key safety behaviors—drastically reducing preventable harm to patients.
           </p>
-          {/* "Start Patient Safety Module" button removed */}
         </div>
       </div>
       <div className="absolute bottom-0 right-0 w-1/3 h-full bg-blue-500 opacity-50 clip-path-diagonal hidden lg:block"></div>
     </div>
   );
+
+  const MarketingSection = () => {
+    const marketingPoints = [
+      {
+        title: "AI-Driven Personalized Safety Scenarios",
+        description:
+          "Our Coachcare.ai safety module utilizes a fine-tuned Large Language Model (LLM) trained on over 500+ hospital medical error scenarios to generate personalized case scenarios tailored for your hospital.",
+        icon: Layers,
+      },
+      {
+        title: "Our Vision: Patient Safety First",
+        description:
+          "We are dedicated to raising awareness about medical errors and providing training that reinforces 11 critical safety behaviors to decrease preventable harm to patients.",
+        icon: Star,
+      },
+      {
+        title: "Combatting the 3rd Leading Cause of Death",
+        description:
+          "Coachcare.ai has created a training platform designed to tackle medical errors—the third leading cause of death in the U.S.—by equipping healthcare professionals with life-saving tools.",
+        icon: Skull,
+      },
+    ];
+
+    return (
+      <section className="py-12 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+            Why Choose Coachcare.ai?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {marketingPoints.map((point, index) => (
+              <div key={index} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all">
+                <div className="flex items-center justify-center mb-4">
+                  <point.icon size={48} className="text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">
+                  {point.title}
+                </h3>
+                <p className="text-gray-600 text-center">
+                  {point.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  };
 
   const StatsSection = () => (
     <section className="py-12 bg-gray-50 rounded-xl">
@@ -191,15 +237,15 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Head>
-        <title>Healthcare Safety Training Module</title>
-        <meta name="description" content="Healthcare Safety Training Module with Error Prevention Tools" />
+        <title>Coachcare.ai - Healthcare Safety Training</title>
+        <meta name="description" content="Coachcare.ai Healthcare Safety Training Module with AI-driven personalized case scenarios and error prevention tools." />
       </Head>
 
       <AppBar />
       <Hero />
+      <MarketingSection />
 
       <main className="container mx-auto px-4 py-12">
-        {/* Error prevention tools section removed */}
         <StatsSection />
       </main>
     </div>
