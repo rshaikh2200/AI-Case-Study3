@@ -63,7 +63,7 @@ const Feedback = () => {
           <div className="flex items-center">
             <div className="flex-shrink-0 text-white font-bold">
               <span className="hidden sm:block">
-                AI Personalized Healthcare Safety Module
+                CoachCare.ai
               </span>
               <span className="block sm:hidden">Coachcare.ai</span>
             </div>
