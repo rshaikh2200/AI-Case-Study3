@@ -1,4 +1,3 @@
-// pages/index.js
 import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -20,64 +19,7 @@ import {
   X, 
   Skull
 } from 'lucide-react';
-const errorPreventionTools = [
-    {
-      title: "Peer Checking and Coaching",
-      definition: "Peer Checking involves asking colleagues to review your work and assisting in reviewing theirs. Peer Coaching encourages publicly celebrating correct actions and privately correcting mistakes.",
-      icon: Users
-    },
-    {
-      title: "Debrief",
-      definition: "Reflect on successes, failures, improvements, and follow-through responsibilities. Debriefs are short discussions where everyone is encouraged to speak freely.",
-      icon: ClipboardList
-    },
-    {
-      title: "ARCC",
-      definition: "ARCC involves asking questions to highlight safety concerns, requesting changes, and voicing concerns if risks remain. If necessary, escalate through the chain of command to prevent harm.",
-      icon: GitMerge
-    },
-    {
-      title: "Validate and Verify",
-      definition: "Validate by internally checking if the information makes sense based on past experience or expectations. Verify by consulting an independent qualified source.",
-      icon: CheckCircle
-    },
-    {
-      title: "STAR",
-      definition: "STAR stands for Stop, Think, Act, and Review, focusing on thoughtful and error-free task completion. Each step ensures tasks are carried out with attention and reviewed for accuracy.",
-      icon: Star
-    },
-    {
-      title: "No Distraction Zone",
-      definition: "Avoid interruptions or distractions during critical tasks by setting clear boundaries. Use phrases like 'Stand by' or 'Hold on' to maintain focus.",
-      icon: BellOff
-    },
-    {
-      title: "Effective Handoffs",
-      definition: "Effective handoffs follow six principles: standardization, minimal distractions, interactivity, acknowledgments, combining verbal and written communication, and allowing clarifications. These principles ensure smooth and safe transitions.",
-      icon: RefreshCw
-    },
-    {
-      title: "Read and Repeat Back",
-      definition: "The sender communicates information, and the receiver repeats it back to confirm accuracy. This ensures clarity and prevents misunderstandings through a three-step process.",
-      icon: Repeat
-    },
-    {
-      title: "Ask Clarifying Questions",
-      definition: "Request additional details or express concerns to avoid misinterpretation. This helps ensure clear and effective communication.",
-      icon: HelpCircle
-    },
-    {
-      title: "Using Alphanumeric Language",
-      definition: "Alphanumeric language improves clarity by using phonetic alphabets and precise numerical terms. This avoids confusion in critical communication.",
-      icon: Type
-    },
-    {
-      title: "SBAR",
-      definition: "SBAR is a framework for structured communication, including Situation, Background, Assessment, and Recommendations. It ensures clear, concise, and effective information sharing.",
-      icon: Layers
-    }
-  ];
-  
+ 
 
 const stats = [
   { label: "Leading Cause Of Death", value: "3rd" },
@@ -142,12 +84,12 @@ export default function Home() {
 
           {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-4">
-          <Link
-                href="/"
-                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-              >
-                Home
-              </Link>
+            <Link
+              href="/"
+              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+            >
+              Home
+            </Link>
             <Link
               href="/components"
               className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
@@ -173,7 +115,7 @@ export default function Home() {
         {isMobileMenuOpen && (
           <div className="sm:hidden pb-4">
             <div className="flex flex-col space-y-2">
-            <Link
+              <Link
                 href="/"
                 className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
               >
@@ -215,17 +157,12 @@ export default function Home() {
             Elevate Patient Safety Through Prevention
           </h1>
           <p className="text-xl mb-8">
-          Medical errors are the 3rd leading cause of death in the US. 99% Of
-avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety
-principles and corresponding 11 error prevention tools (EPTs). By understanding and using this
-safety language, harm to patients can be drastically reduced.
+            Medical errors are the 3rd leading cause of death in the US. 99% Of
+            avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety
+            principles and corresponding 11 error prevention tools (EPTs). By understanding and using this
+            safety language, harm to patients can be drastically reduced.
           </p>
-          <Link href="/components">
-          <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold flex items-center hover:bg-blue-50 transition-colors">
-            Start Patient Safety Module
-            <ArrowRight className="ml-2" size={20} />
-          </button>
-          </Link>
+          {/* "Start Patient Safety Module" button removed */}
         </div>
       </div>
       <div className="absolute bottom-0 right-0 w-1/3 h-full bg-blue-500 opacity-50 clip-path-diagonal hidden lg:block"></div>
@@ -262,22 +199,7 @@ safety language, harm to patients can be drastically reduced.
       <Hero />
 
       <main className="container mx-auto px-4 py-12">
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-             Medical Error Prevention Tools
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {errorPreventionTools.map((tool, index) => (
-              <ErrorPreventionCard
-                key={index}
-                tool={tool}
-                isActive={activeTab === index}
-                onClick={() => setActiveTab(index)}
-              />
-            ))}
-          </div>
-        </section>
-
+        {/* Error prevention tools section removed */}
         <StatsSection />
       </main>
     </div>
