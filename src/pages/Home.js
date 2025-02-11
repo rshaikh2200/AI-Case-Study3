@@ -168,7 +168,7 @@ export default function Home() {
       {
         title: "AI-Driven Personalized Safety Scenarios",
         description:
-          "Coachcare.ai safety training module utilizes a  Large Language Model (LLM) trained on over 500+ hospital medical error case studies to generate personalized case scenarios and questions  tailored for your medical employees.",
+          "CoachCare.ai safety training module utilizes a  Large Language Model (LLM) trained on over 500+ hospital medical error case studies to generate personalized case scenarios and questions  tailored for your medical employees.",
         icon: Layers,
       },
       {
@@ -180,7 +180,7 @@ export default function Home() {
       {
         title: "Combatting the 3rd Leading Cause of Death",
         description:
-          "Coachcare.ai training platform is designed to tackle medical errors—the third leading cause of death in the U.S.—by by equiping healthcare professioanls with pesonalized AI driven training.",
+          "CoachCare.ai training platform is designed to tackle medical errors—the third leading cause of death in the U.S.—by by equiping healthcare professioanls with pesonalized AI driven training.",
         icon: Skull,
       },
     ];
@@ -189,7 +189,7 @@ export default function Home() {
       <section className="py-12 bg-gray-100">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-            Why Choose Coachcare.ai?
+            Why Choose CoachCare.ai?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {marketingPoints.map((point, index) => (
@@ -215,7 +215,7 @@ export default function Home() {
     <section className="py-12 bg-gray-50 rounded-xl">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-          Medical Errors Statistics
+          Hospitals Medical Errors Statistics
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
