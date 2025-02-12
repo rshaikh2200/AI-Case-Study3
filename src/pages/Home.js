@@ -230,6 +230,19 @@ export default function Home() {
     </section>
   );
 
+  // New PoweredBySection Component
+  const PoweredBySection = () => (
+    <section className="py-6 bg-gray-100">
+      <div className="container mx-auto px-4 text-center">
+        <h3 className="text-xl font-bold mb-4">Powered By:</h3>
+        <div className="flex justify-center items-center space-x-8">
+          <img src="/chatgpt-logo.png" alt="ChatGPT Logo" className="h-12" />
+          <img src="/luma-dream-machine-logo.png" alt="Luma Dream Machine Logo" className="h-12" />
+        </div>
+      </div>
+    </section>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Head>
@@ -243,7 +256,9 @@ export default function Home() {
 
       <main className="container mx-auto px-4 py-12">
         <StatsSection />
+        <PoweredBySection />
       </main>
     </div>
   );
 }
+
