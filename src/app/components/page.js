@@ -1,7 +1,5 @@
 "use client";
 
-//hi
-
 import React, { useState, useEffect, useRef } from 'react';
 import Script from 'next/script';
 import Head from 'next/head';
