@@ -236,8 +236,8 @@ export default function Home() {
       <div className="container mx-auto px-4 text-center">
         <h3 className="text-xl font-bold mb-4">Powered By:</h3>
         <div className="flex justify-center items-center space-x-8">
-          <img src="/chatgpt-logo.png" alt="ChatGPT Logo" className="h-12" />
-          <img src="/luma-dream-machine-logo.png" alt="Luma Dream Machine Logo" className="h-12" />
+          <img src="/OpenAI.png" alt="ChatGPT Logo" className="h-12" />
+          <img src="/LumaAI.jpeg" alt="Luma Dream Machine Logo" className="h-12" />
         </div>
       </div>
     </section>
