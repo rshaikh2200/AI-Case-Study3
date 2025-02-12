@@ -148,6 +148,8 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
   );
 };
 
+
+
 export default function Home() {
   // State Variables
   const [caseStudies, setCaseStudies] = useState([]);
@@ -215,25 +217,13 @@ export default function Home() {
     setIsAudioLoading(true);
     setAudioError('');
     try {
-      // Build the input text to include the scenario, questions, and option choices.
-      let inputText = currentCaseStudy.scenario || "";
-      if (currentCaseStudy.questions && currentCaseStudy.questions.length > 0) {
-        currentCaseStudy.questions.forEach((question, idx) => {
-          inputText += `\nQuestion ${idx + 1}: ${question.question}`;
-          if (question.options && question.options.length > 0) {
-            question.options.forEach((option) => {
-              inputText += `\n${option.key}. ${option.label}`;
-            });
-          }
-        });
-      }
       const response = await fetch('/api/audio-models', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          input: inputText,
+          input: currentCaseStudy.scenario,
         }),
       });
 
