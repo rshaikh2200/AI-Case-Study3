@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+iimport { NextResponse } from 'next/server';
 
 export async function POST(req) {
   try {
@@ -29,14 +29,14 @@ export async function POST(req) {
       throw new Error(`API Error: ${response.status} ${response.statusText} - ${errorText}`);
     }
 
-    // Stream the response directly to the client
-    const headers = new Headers();
-    headers.set('Content-Type', 'audio/mpeg');
-    headers.set('Transfer-Encoding', 'chunked');
+    const arrayBuffer = await response.arrayBuffer();
 
-    return new NextResponse(response.body, {
+    // Return the audio directly
+    return new NextResponse(arrayBuffer, {
       status: 200,
-      headers,
+      headers: {
+        'Content-Type': 'audio/mpeg',
+      },
     });
   } catch (error) {
     console.error('Error generating audio:', error);
