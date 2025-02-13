@@ -16,7 +16,9 @@ import {
   Layers,
   Menu,
   X, 
-  Skull
+  Skull,
+  HeartPulse,
+  BarChart2
 } from 'lucide-react';
 
 import {
@@ -63,7 +65,6 @@ export default function Home() {
     <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0 text-white font-bold">
               <span className="hidden sm:block">CoachCare.ai</span>
@@ -71,7 +72,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Mobile menu button */}
           <div className="sm:hidden ml-4 mr-4">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -85,7 +85,6 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Desktop Navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-4">
             <Link
               href="/"
@@ -114,7 +113,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="sm:hidden pb-4">
             <div className="flex flex-col space-y-2">
@@ -169,7 +167,7 @@ export default function Home() {
   );
 
   const MarketingSection = () => {
-   Copyconst marketingPoints = [
+    const marketingPoints = [
       {
         title: "Customized training content driven by AI",
         description:
@@ -180,7 +178,7 @@ export default function Home() {
         title: "Our Vision: Advancing Healthcare Safety",
         description:
           "We are on a mission to reduce avoidable harm to patients. Our technology solution has been proven to decrease the liability risk of healthcare providers, thus making health systems safer.",
-        icon: HeartPulse,  // Changed to HeartPulse to represent patient care and health monitoring
+        icon: HeartPulse,
       },
       {
         title: "Actionable insights at your fingertips",
@@ -215,7 +213,6 @@ export default function Home() {
     );
   };
 
-  // Updated DemoForm component that saves user inputs to Firestore
   const DemoForm = () => {
     const [name, setName] = useState('');
     const [role, setRole] = useState('');
@@ -228,7 +225,6 @@ export default function Home() {
     const handleSubmit = async (e) => {
       e.preventDefault();
 
-      // Clear any previous messages
       setError(null);
       setSuccess(null);
 
@@ -241,7 +237,6 @@ export default function Home() {
           phone,
         });
         setSuccess('Demo request submitted successfully.');
-        // Optionally clear the form
         setName('');
         setRole('');
         setOrganization('');
@@ -341,7 +336,6 @@ export default function Home() {
       <Head>
         <title>Coachcare.ai - Healthcare Safety Training</title>
         <meta name="description" content="Coachcare.ai Healthcare Safety Training Module with AI-driven personalized case scenarios and error prevention tools." />
-        {/* Import the external CSS for the demo form */}
         <link rel="stylesheet" href="/styles/demoForm.css" />
       </Head>
 
