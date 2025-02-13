@@ -202,105 +202,63 @@ export default function Home() {
     );
   };
 
-  // Example stats array for the StatsSection (update as needed)
-  const stats = [
-    { value: "80%", label: "Preventable Errors", subtext: "Reduction in errors" },
-    { value: "200K", label: "Patients Affected", subtext: "Annually" },
-    { value: "10", label: "Safety Behaviors", subtext: "Identified" },
-    { value: "5", label: "Years", subtext: "Experience" },
-  ];
-
-  const StatsSection = () => (
-    <section className="py-12 bg-gray-50 rounded-xl">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-          Hospitals Medical Errors Statistics
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">{stat.value}</div>
-              <div className="text-lg font-semibold text-gray-800 mb-1">{stat.label}</div>
-              <div className="text-sm text-gray-600">{stat.subtext}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-
-  // New component: Schedule a Demo form
+  // Improved Schedule a Demo form
   const DemoForm = () => (
-    <section className="py-12 bg-white">
+    <section className="demo-form-section">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-          Schedule a Demo
-        </h2>
-        <form className="max-w-lg mx-auto bg-gray-50 p-6 rounded-lg shadow-md">
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">
-              Name
-            </label>
+        <h2 className="demo-form-header">Schedule a Demo</h2>
+        <form className="demo-form">
+          <div className="form-group">
+            <label htmlFor="name" className="form-label">Name</label>
             <input
               type="text"
               id="name"
               name="name"
               placeholder="Your name"
-              className="w-full p-2 border border-gray-300 rounded"
+              className="form-input"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="role" className="block text-gray-700 font-semibold mb-2">
-              Role
-            </label>
+          <div className="form-group">
+            <label htmlFor="role" className="form-label">Role</label>
             <input
               type="text"
               id="role"
               name="role"
               placeholder="Your role"
-              className="w-full p-2 border border-gray-300 rounded"
+              className="form-input"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="organization" className="block text-gray-700 font-semibold mb-2">
-              Name of Health System or Organization
-            </label>
+          <div className="form-group">
+            <label htmlFor="organization" className="form-label">Name of Health System or Organization</label>
             <input
               type="text"
               id="organization"
               name="organization"
               placeholder="Organization name"
-              className="w-full p-2 border border-gray-300 rounded"
+              className="form-input"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">
-              Email
-            </label>
+          <div className="form-group">
+            <label htmlFor="email" className="form-label">Email</label>
             <input
               type="email"
               id="email"
               name="email"
               placeholder="you@example.com"
-              className="w-full p-2 border border-gray-300 rounded"
+              className="form-input"
             />
           </div>
-          <div className="mb-4">
-            <label htmlFor="phone" className="block text-gray-700 font-semibold mb-2">
-              Phone Number
-            </label>
+          <div className="form-group">
+            <label htmlFor="phone" className="form-label">Phone Number</label>
             <input
               type="tel"
               id="phone"
               name="phone"
               placeholder="(123) 456-7890"
-              className="w-full p-2 border border-gray-300 rounded"
+              className="form-input"
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
-          >
+          <button type="submit" className="demo-form-button">
             Submit
           </button>
         </form>
@@ -313,6 +271,8 @@ export default function Home() {
       <Head>
         <title>Coachcare.ai - Healthcare Safety Training</title>
         <meta name="description" content="Coachcare.ai Healthcare Safety Training Module with AI-driven personalized case scenarios and error prevention tools." />
+        {/* Import the external CSS for the demo form */}
+        <link rel="stylesheet" href="/styles/demoForm.css" />
       </Head>
 
       <AppBar />
@@ -320,9 +280,9 @@ export default function Home() {
       <MarketingSection />
 
       <main className="container mx-auto px-4 py-12">
-        <StatsSection />
         <DemoForm />
       </main>
     </div>
   );
 }
+
