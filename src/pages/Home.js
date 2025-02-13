@@ -257,9 +257,8 @@ export default function Home() {
     return (
       <section className="demo-form-section">
         <div className="container mx-auto px-4">
-          <h2 className="demo-form-header">Schedule a Demo</h2>
-          {error && <p className="text-red-600 mb-4">{error}</p>}
-          {success && <p className="text-green-600 mb-4">{success}</p>}
+          <h2 className="demo-form-header text-center">Schedule a Demo</h2>
+          {error && <p className="text-red-600 mb-4 text-center">{error}</p>}
           <form className="demo-form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="name" className="form-label">Name</label>
@@ -331,6 +330,7 @@ export default function Home() {
             <button type="submit" className="demo-form-button">
               Submit
             </button>
+            {success && <p className="text-green-600 text-center mt-4">{success}</p>}
           </form>
         </div>
       </section>
