@@ -169,16 +169,16 @@ export default function Home() {
   const MarketingSection = () => {
     const marketingPoints = [
       {
-        title: "Customized training content driven by AI",
-        description:
-          "Our LLM is able to produce life-like clinical scenarios customized to the user type to reinforce the 10 safety behaviors. This allows for a more dynamic, engaging and effective training mechanism above and beyond current state methods.",
-        icon: Layers,
-      },
-      {
         title: "Our Vision: Advancing Healthcare Safety",
         description:
           "We are on a mission to reduce avoidable harm to patients. Our technology solution has been proven to decrease the liability risk of healthcare providers, thus making health systems safer.",
         icon: HeartPulse,
+      },     
+      {
+        title: "Customized training content driven by AI",
+        description:
+          "Our LLM is able to produce life-like clinical scenarios customized to the user type to reinforce the 10 safety behaviors. This allows for a more dynamic, engaging and effective training mechanism above and beyond current state methods.",
+        icon: Layers,
       },
       {
         title: "Actionable insights at your fingertips",
