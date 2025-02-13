@@ -184,7 +184,7 @@ export default function Home() {
         title: "Actionable insights at your fingertips",
         description:
           "An easy-to-use dashboard provides insights into the hospital, role, department, specialty, or safety behaviors that have the biggest improvement opportunity, allowing quality leaders to cross-pollinate best practices and drill down into areas to uncover potential safety risks.",
-        icon: BarChart2,
+        icon:   LineChart,
       },
     ];
     return (
