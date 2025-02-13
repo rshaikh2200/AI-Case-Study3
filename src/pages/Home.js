@@ -169,7 +169,7 @@ export default function Home() {
   );
 
   const MarketingSection = () => {
-    const marketingPoints = [
+   Copyconst marketingPoints = [
       {
         title: "Customized training content driven by AI",
         description:
@@ -177,19 +177,18 @@ export default function Home() {
         icon: Layers,
       },
       {
-        title: "Our Vision: Centering Patient Safety",
+        title: "Our Vision: Advancing Healthcare Safety",
         description:
           "We are on a mission to reduce avoidable harm to patients. Our technology solution has been proven to decrease the liability risk of healthcare providers, thus making health systems safer.",
-        icon: Star,
+        icon: HeartPulse,  // Changed to HeartPulse to represent patient care and health monitoring
       },
       {
         title: "Actionable insights at your fingertips",
         description:
           "An easy-to-use dashboard provides insights into the hospital, role, department, specialty, or safety behaviors that have the biggest improvement opportunity, allowing quality leaders to cross-pollinate best practices and drill down into areas to uncover potential safety risks.",
-        icon: Skull,
+        icon: BarChart2,
       },
     ];
-
     return (
       <section className="py-12 bg-gray-100">
         <div className="container mx-auto px-4">
