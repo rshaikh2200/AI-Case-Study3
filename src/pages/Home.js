@@ -31,7 +31,7 @@ import {
   updateDoc,  
   where,       
 } from 'firebase/firestore';
-import { firestore } from '../firebase';
+import { firestore } from '../../src/app/firebase';
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
