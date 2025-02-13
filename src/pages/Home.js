@@ -18,13 +18,6 @@ import {
   X, 
   Skull
 } from 'lucide-react';
- 
-const stats = [
-  { label: "Leading Cause Of Death", value: "3rd" },
-  { label: "Hospitals At Risk", value: "6K+", subtext: "In The U.S" },
-  { label: "Patients Experiencing Preventable Harm", value: "400k+" },
-  { label: "Annual Hospital Cost For Patient Harm", value: "$20bn - $45bn" }
-];
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
@@ -59,9 +52,7 @@ export default function Home() {
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex-shrink-0 text-white font-bold">
-              <span className="hidden sm:block">
-                CoachCare.ai
-              </span>
+              <span className="hidden sm:block">CoachCare.ai</span>
               <span className="block sm:hidden">Coachcare.ai</span>
             </div>
           </div>
@@ -152,10 +143,10 @@ export default function Home() {
       <div className="container mx-auto px-4 py-16">
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Elevate Patient Safety Through AI-Driven Training
+            Eliminate Patient Harm And Avoid Medical Errors
           </h1>
           <p className="text-xl mb-8">
-            Mdical errors in hospitals are the third leading cause of death in the USA. 99% Of avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety principles and corresponding 11 safety behaviors. Our studies have shown that these 11 safety behavior could have prevented 80% of the hospital safety errors.
+            Over 200,000 patients die every year due to clinical mistakes that could be prevented by hardwiring safety behaviors into the hospital culture. We have developed a Large Language Model (LLM) that has been trained on hundreds of case studies where things have gone wrong in health delivery. 80% of the mistakes could have been prevented by practicing 10 safety behaviors that our LLM has identified.
           </p>
         </div>
       </div>
@@ -166,21 +157,21 @@ export default function Home() {
   const MarketingSection = () => {
     const marketingPoints = [
       {
-        title: "AI-Driven Personalized Safety Scenarios",
+        title: "Customized training content driven by AI",
         description:
-          "CoachCare.ai safety training module utilizes a  Large Language Model (LLM) trained on over 500+ hospital medical error case studies to generate personalized case scenarios and questions  tailored for your medical employees.",
+          "Our LLM is able to produce life-like clinical scenarios customized to the user type to reinforce the 10 safety behaviors. This allows for a more dynamic, engaging and effective training mechanism above and beyond current state methods.",
         icon: Layers,
       },
       {
-        title: "Our Vision: Patient Safety First",
+        title: "Our Vision: Centering Patient Safety",
         description:
-          "We are dedicated to raising awareness about medical errors and providing training that reinforces 11 critical safety behaviors to decrease preventable harm to patients.",
+          "We are on a mission to reduce avoidable harm to patients. Our technology solution has been proven to decrease the liability risk of healthcare providers, thus making health systems safer.",
         icon: Star,
       },
       {
-        title: "Combatting the 3rd Leading Cause of Death",
+        title: "Actionable insights at your fingertips",
         description:
-          "CoachCare.ai training platform is designed to tackle medical errors—the third leading cause of death in the U.S.—by by equiping healthcare professioanls with pesonalized AI driven training.",
+          "An easy-to-use dashboard provides insights into the hospital, role, department, specialty, or safety behaviors that have the biggest improvement opportunity, allowing quality leaders to cross-pollinate best practices and drill down into areas to uncover potential safety risks.",
         icon: Skull,
       },
     ];
@@ -211,6 +202,14 @@ export default function Home() {
     );
   };
 
+  // Example stats array for the StatsSection (update as needed)
+  const stats = [
+    { value: "80%", label: "Preventable Errors", subtext: "Reduction in errors" },
+    { value: "200K", label: "Patients Affected", subtext: "Annually" },
+    { value: "10", label: "Safety Behaviors", subtext: "Identified" },
+    { value: "5", label: "Years", subtext: "Experience" },
+  ];
+
   const StatsSection = () => (
     <section className="py-12 bg-gray-50 rounded-xl">
       <div className="container mx-auto px-4">
@@ -230,6 +229,85 @@ export default function Home() {
     </section>
   );
 
+  // New component: Schedule a Demo form
+  const DemoForm = () => (
+    <section className="py-12 bg-white">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
+          Schedule a Demo
+        </h2>
+        <form className="max-w-lg mx-auto bg-gray-50 p-6 rounded-lg shadow-md">
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              placeholder="Your name"
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="role" className="block text-gray-700 font-semibold mb-2">
+              Role
+            </label>
+            <input
+              type="text"
+              id="role"
+              name="role"
+              placeholder="Your role"
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="organization" className="block text-gray-700 font-semibold mb-2">
+              Name of Health System or Organization
+            </label>
+            <input
+              type="text"
+              id="organization"
+              name="organization"
+              placeholder="Organization name"
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="you@example.com"
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="phone" className="block text-gray-700 font-semibold mb-2">
+              Phone Number
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="(123) 456-7890"
+              className="w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </section>
+  );
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Head>
@@ -243,6 +321,7 @@ export default function Home() {
 
       <main className="container mx-auto px-4 py-12">
         <StatsSection />
+        <DemoForm />
       </main>
     </div>
   );
