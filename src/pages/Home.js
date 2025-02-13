@@ -19,6 +19,20 @@ import {
   Skull
 } from 'lucide-react';
 
+import {
+  collection,
+  addDoc,
+  writeBatch,
+  getDocs,
+  query,
+  deleteDoc,
+  doc,
+  setDoc,
+  updateDoc,  
+  where,       
+} from 'firebase/firestore';
+import { firestore } from '../firebase';
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
