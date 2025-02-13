@@ -216,69 +216,126 @@ export default function Home() {
     );
   };
 
-  // Improved Schedule a Demo form
-  const DemoForm = () => (
-    <section className="demo-form-section">
-      <div className="container mx-auto px-4">
-        <h2 className="demo-form-header">Schedule a Demo</h2>
-        <form className="demo-form">
-          <div className="form-group">
-            <label htmlFor="name" className="form-label">Name</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Your name"
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="role" className="form-label">Role</label>
-            <input
-              type="text"
-              id="role"
-              name="role"
-              placeholder="Your role"
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="organization" className="form-label">Name of Health System or Organization</label>
-            <input
-              type="text"
-              id="organization"
-              name="organization"
-              placeholder="Organization name"
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="you@example.com"
-              className="form-input"
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="phone" className="form-label">Phone Number</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              placeholder="(123) 456-7890"
-              className="form-input"
-            />
-          </div>
-          <button type="submit" className="demo-form-button">
-            Submit
-          </button>
-        </form>
-      </div>
-    </section>
-  );
+  // Updated DemoForm component that saves user inputs to Firestore
+  const DemoForm = () => {
+    const [name, setName] = useState('');
+    const [role, setRole] = useState('');
+    const [organization, setOrganization] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      // Clear any previous messages
+      setError(null);
+      setSuccess(null);
+
+      try {
+        await addDoc(collection(firestore, 'User Demo Request'), {
+          name,
+          role,
+          organization,
+          email,
+          phone,
+        });
+        setSuccess('Demo request submitted successfully.');
+        // Optionally clear the form
+        setName('');
+        setRole('');
+        setOrganization('');
+        setEmail('');
+        setPhone('');
+      } catch (error) {
+        console.error('Error saving demo request:', error);
+        setError('Failed to submit demo request. Please try again.');
+      }
+    };
+
+    return (
+      <section className="demo-form-section">
+        <div className="container mx-auto px-4">
+          <h2 className="demo-form-header">Schedule a Demo</h2>
+          {error && <p className="text-red-600 mb-4">{error}</p>}
+          {success && <p className="text-green-600 mb-4">{success}</p>}
+          <form className="demo-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="name" className="form-label">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Your name"
+                className="form-input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="role" className="form-label">Role</label>
+              <input
+                type="text"
+                id="role"
+                name="role"
+                placeholder="Your role"
+                className="form-input"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="organization" className="form-label">
+                Name of Health System or Organization
+              </label>
+              <input
+                type="text"
+                id="organization"
+                name="organization"
+                placeholder="Organization name"
+                className="form-input"
+                value={organization}
+                onChange={(e) => setOrganization(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                className="form-input"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="phone" className="form-label">Phone Number</label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="(123) 456-7890"
+                className="form-input"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="demo-form-button">
+              Submit
+            </button>
+          </form>
+        </div>
+      </section>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
@@ -299,4 +356,3 @@ export default function Home() {
     </div>
   );
 }
-
