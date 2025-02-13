@@ -18,7 +18,7 @@ import {
   X, 
   Skull,
   HeartPulse,
-  BarChart2
+  LineChart
 } from 'lucide-react';
 
 import {
