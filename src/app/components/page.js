@@ -159,7 +159,8 @@ export default function Home() {
   const [department, setDepartment] = useState('');
   const [role, setRole] = useState('');
   const [specialization, setSpecialization] = useState('');
-  const [userType, setUserType] = useState('');
+  // Removed userType dropdown – default is now set to "clinical"
+  const [userType, setUserType] = useState('clinical');
   const [showCaseStudies, setShowCaseStudies] = useState(false);
   const [showSafetyStatement, setShowSafetyStatement] = useState(true);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
@@ -171,6 +172,9 @@ export default function Home() {
   
   // NEW State variable for Care
   const [care, setCare] = useState('');
+
+  // NEW state variable for hovered option definition
+  const [hoveredOptionDefinition, setHoveredOptionDefinition] = useState("");
 
   // Added state variable for certificate popup
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
@@ -442,11 +446,6 @@ export default function Home() {
 
   // Handle taking the assessment
   const handleTakeAssessment = () => {
-    if (!userType) {
-      setError('Please select your User Type before proceeding.');
-      return;
-    }
-
     if (!role || !department) {
       setError('Please select your Role and Department before proceeding.');
       return;
@@ -955,6 +954,55 @@ export default function Home() {
       console.error('Error generating PDF:', err);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // NEW Function: Print Case Study & Questions in a new window
+  const handlePrintCaseStudyAndQuestions = async () => {
+    try {
+      const docPDF = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const pageWidth = docPDF.internal.pageSize.getWidth();
+      let yPosition = 10;
+      if (caseStudies.length === 0) {
+        setError('No case studies available to print.');
+        return;
+      }
+      caseStudies.forEach((caseStudy, index) => {
+        if (index > 0) {
+          docPDF.addPage();
+          yPosition = 10;
+        }
+        docPDF.setFontSize(14);
+        docPDF.text(`Case Study ${index + 1}`, 10, yPosition);
+        yPosition += 8;
+        docPDF.setFontSize(10);
+        const scenarioLines = docPDF.splitTextToSize(caseStudy.scenario, pageWidth - 20);
+        docPDF.text(scenarioLines, 10, yPosition);
+        yPosition += scenarioLines.length * 5 + 5;
+        if (caseStudy.questions && caseStudy.questions.length > 0) {
+          caseStudy.questions.forEach((question, qIndex) => {
+            docPDF.setFontSize(12);
+            docPDF.text(`Question ${qIndex + 1}: ${question.question}`, 10, yPosition);
+            yPosition += 6;
+            if (question.options && question.options.length > 0) {
+              question.options.forEach((option) => {
+                docPDF.setFontSize(10);
+                docPDF.text(`${option.key}. ${option.label}`, 12, yPosition);
+                yPosition += 5;
+              });
+            }
+            yPosition += 5;
+            if (yPosition > docPDF.internal.pageSize.getHeight() - 20) {
+              docPDF.addPage();
+              yPosition = 10;
+            }
+          });
+        }
+      });
+      window.open(docPDF.output('dataurlnewwindow'), '_blank');
+    } catch (error) {
+      setError(error.message || 'Failed to generate PDF.');
+      console.error('Error generating PDF:', error);
     }
   };
 
@@ -1561,27 +1609,7 @@ export default function Home() {
               <div className="professional-info bg-white rounded-lg shadow p-6">
                 <h2 className="text-lg font-semibold mb-4">Professional Information</h2>
   
-                <div className="form-item mb-4">
-                  <label htmlFor="user-type-select" className="block text-sm font-medium text-gray-700">
-                    User Type
-                  </label>
-                  <select
-                    id="user-type-select"
-                    value={userType}
-                    onChange={(e) => {
-                      setUserType(e.target.value);
-                      setDepartment('');
-                      setRole('');
-                      setSpecialization('');
-                      if (error) setError('');
-                    }}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                  >
-                    <option value="">Select</option>
-                    <option value="clinical">Clinical</option>
-                    <option value="non-clinical">Non-Clinical</option>
-                  </select>
-                </div>
+                {/* Removed the User Type dropdown */}
   
                 <div className="form-item mb-4">
                   <label htmlFor="department-select" className="block text-sm font-medium text-gray-700">
@@ -1655,10 +1683,10 @@ export default function Home() {
                       </select>
                     </div>
 
-                    {/* NEW Care dropdown - only visible if userType is clinical */}
+                    {/* NEW Care dropdown with renamed label */}
                     <div className="form-item mb-4">
                       <label htmlFor="care-select" className="block text-sm font-medium text-gray-700">
-                        Care
+                        Care Delivery Setting
                       </label>
                       <select
                         id="care-select"
@@ -1677,6 +1705,17 @@ export default function Home() {
                     </div>
                   </>
                 )}
+
+                {/* NEW Button to print case study and questions */}
+                <div className="form-item mb-4">
+                  <button
+                    type="button"
+                    onClick={handlePrintCaseStudyAndQuestions}
+                    className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700"
+                  >
+                    Print Case Study &amp; Questions
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -1752,71 +1791,59 @@ export default function Home() {
                       }`}
                     </h4>
   
-                    <div className="options-group mt-4 space-y-2">
-                      {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
-                        (option) => {
-                          const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
-                          const currentAttempts = attempts[key] || 0;
-                          const feedbackMessage =
-                            feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
-                              ?.message || '';
-                          const isCorrect = feedbackMessage === 'Correct Answer';
-                          const maxAttemptsReached = currentAttempts >= 2 || isCorrect;
+                    {/* Wrap options in a relative container to show hovered definition */}
+                    <div className="relative">
+                      <div className="options-group mt-4 space-y-2">
+                        {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
+                          (option) => {
+                            const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
+                            const currentAttempts = attempts[key] || 0;
+                            const feedbackMessage =
+                              feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
+                                ?.message || '';
+                            const isCorrect = feedbackMessage === 'Correct Answer';
+                            const maxAttemptsReached = currentAttempts >= 2 || isCorrect;
   
-                          return (
-                            <div className="option-item" key={option.key}>
-                              <label className="flex items-center space-x-2">
-                                <input
-                                  type="radio"
-                                  name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
-                                  value={option.key}
-                                  onChange={(e) =>
-                                    handleAnswerChange(
-                                      currentCaseStudyIndex,
-                                      currentQuestionIndex,
-                                      e.target.value
-                                    )
-                                  }
-                                  disabled={maxAttemptsReached}
-                                  checked={
-                                    selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
-                                    option.key
-                                  }
-                                  className="form-radio h-4 w-4 text-blue-600"
-                                />
-                                <span className="text-gray-700">
-                                  <strong>{`${option.key}.`}</strong> {option.label}
-                                </span>
-                              </label>
-                            </div>
-                          );
-                        }
-                      )}
-                    </div>
-  
-                    {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
-                      <div className="feedback-section mt-4">
-                        <div
-                          className={`feedback-message p-3 rounded-md ${
-                            feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
-                              .message === 'Correct Answer'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-blue-100 text-blue-700'
-                          }`}
-                        >
-                          {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message}
-                        </div>
-                        {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
-                          <div className="hint mt-2 flex items-start space-x-2">
-                            <span className="icon-hint mt-1 text-blue-600"></span>
-                            <span className="text-gray-700">
-                              <strong>Hint:</strong>{' '}
-                              {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint}
-                            </span>
-                          </div>
+                            return (
+                              <div className="option-item" key={option.key}>
+                                <label
+                                  className="flex items-center space-x-2"
+                                  onMouseEnter={() => setHoveredOptionDefinition(option.definition || '')}
+                                  onMouseLeave={() => setHoveredOptionDefinition('')}
+                                >
+                                  <input
+                                    type="radio"
+                                    name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
+                                    value={option.key}
+                                    onChange={(e) =>
+                                      handleAnswerChange(
+                                        currentCaseStudyIndex,
+                                        currentQuestionIndex,
+                                        e.target.value
+                                      )
+                                    }
+                                    disabled={maxAttemptsReached}
+                                    checked={
+                                      selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
+                                      option.key
+                                    }
+                                    className="form-radio h-4 w-4 text-blue-600"
+                                  />
+                                  <span className="text-gray-700">
+                                    <strong>{`${option.key}.`}</strong> {option.label}
+                                  </span>
+                                </label>
+                              </div>
+                            );
+                          }
                         )}
                       </div>
-                    )}
+                      {hoveredOptionDefinition && (
+                        <div className="definition-tooltip absolute right-0 top-0 bg-gray-100 border border-gray-300 p-2 rounded shadow">
+                          {hoveredOptionDefinition}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 ) : (
                   <p className="no-questions text-gray-700 mt-4">
@@ -1851,3 +1878,4 @@ export default function Home() {
     </>
   );
 }
+
