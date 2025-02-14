@@ -1622,8 +1622,7 @@ export default function Home() {
                       setDepartment(e.target.value);
                       if (error) setError('');
                     }}
-                    disabled={!userType}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
                   >
                     <option value="">Select Department</option>
                     {departmentsToUse.map((dept) => (
@@ -1878,4 +1877,3 @@ export default function Home() {
     </>
   );
 }
-
