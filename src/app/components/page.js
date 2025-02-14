@@ -150,6 +150,8 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
 
 export default function Home() {
   // State Variables
+  // NOTE: The original code used an empty string as the default for userType.
+  const [userType, setUserType] = useState('');
   const [caseStudies, setCaseStudies] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -159,8 +161,6 @@ export default function Home() {
   const [department, setDepartment] = useState('');
   const [role, setRole] = useState('');
   const [specialization, setSpecialization] = useState('');
-  // Removed userType dropdown – default is now set to "clinical"
-  const [userType, setUserType] = useState('clinical');
   const [showCaseStudies, setShowCaseStudies] = useState(false);
   const [showSafetyStatement, setShowSafetyStatement] = useState(true);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
@@ -406,8 +406,8 @@ export default function Home() {
 
   // Handle taking the assessment (for "Generate My Personalized Training Scenarios")
   const handleTakeAssessment = () => {
-    if (!role || !department) {
-      setError('Please select your Role and Department before proceeding.');
+    if (!userType || !role || !department) {
+      setError('Please select your User Type, Role, and Department before proceeding.');
       return;
     }
     if (userType === 'clinical' && !specialization) {
@@ -671,7 +671,6 @@ export default function Home() {
     try {
       if (!caseStudies || caseStudies.length === 0) {
         await handleSubmitAssessment();
-        // (A brief delay may be needed for state updates.)
       }
       const docPDF = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       const pageWidth = docPDF.internal.pageSize.getWidth();
@@ -1055,7 +1054,28 @@ export default function Home() {
             <div className="form-container px-4 py-6">
               <div className="professional-info bg-white rounded-lg shadow p-6">
                 <h2 className="text-lg font-semibold mb-4">Professional Information</h2>
-                {/* User Type dropdown removed */}
+                {/* Re-added User Type dropdown */}
+                <div className="form-item mb-4">
+                  <label htmlFor="user-type-select" className="block text-sm font-medium text-gray-700">
+                    User Type
+                  </label>
+                  <select
+                    id="user-type-select"
+                    value={userType}
+                    onChange={(e) => {
+                      setUserType(e.target.value);
+                      setDepartment('');
+                      setRole('');
+                      setSpecialization('');
+                      if (error) setError('');
+                    }}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                  >
+                    <option value="">Select</option>
+                    <option value="clinical">Clinical</option>
+                    <option value="non-clinical">Non-Clinical</option>
+                  </select>
+                </div>
                 <div className="form-item mb-4">
                   <label htmlFor="department-select" className="block text-sm font-medium text-gray-700">
                     Department
@@ -1129,7 +1149,6 @@ export default function Home() {
                   </>
                 )}
   
-                {/* NEW Print button: It now performs the same assessment submission logic as "Generate My Personalized Training Scenarios" but then saves the case study and questions as a PDF and opens it */}
                 <div className="form-item mb-4">
                   <button
                     type="button"
@@ -1201,7 +1220,6 @@ export default function Home() {
                     <h4 className="question-header text-lg font-semibold">
                       {`Question ${currentQuestionIndex + 1}: ${caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question}`}
                     </h4>
-                    {/* Options container with hover showing definition */}
                     <div className="relative">
                       <div className="options-group mt-4 space-y-2">
                         {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map((option) => {
