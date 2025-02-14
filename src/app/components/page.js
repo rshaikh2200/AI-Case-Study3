@@ -232,12 +232,9 @@ export default function Home() {
       }
       const response = await fetch('/api/audio-models', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ input: inputText }),
       });
-
       if (response.ok) {
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
@@ -261,9 +258,7 @@ export default function Home() {
   // Fetch Audio and Toggle Play/Pause
   const fetchAudio = async () => {
     if (isAudioPlaying) {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+      if (audioRef.current) audioRef.current.pause();
       setIsAudioPlaying(false);
     } else {
       const url = await generateSpeech();
@@ -667,18 +662,16 @@ export default function Home() {
     await batch.commit();
   };
 
-  // Modified function for Print Case Study & Questions button:
-  // It first ensures the assessment is fetched (using handleSubmitAssessment) and then
-  // generates a PDF document and opens it in a new window.
+  // Modified Print Case Study & Questions function:
+  // It first ensures that the assessment is fetched (by calling handleSubmitAssessment if needed)
+  // and then saves the case study and questions to a PDF document and opens it in a new window.
   const handlePrintCaseStudyAndQuestions = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      // If no case studies are available, fetch them first.
       if (!caseStudies || caseStudies.length === 0) {
         await handleSubmitAssessment();
-        // Allow a brief moment for state update.
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        // (A brief delay may be needed for state updates.)
       }
       const docPDF = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       const pageWidth = docPDF.internal.pageSize.getWidth();
@@ -807,7 +800,6 @@ export default function Home() {
     }
   };
 
-  // useEffect to detect page refresh and perform cleanup
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const navigationEntries = window.performance.getEntriesByType('navigation');
