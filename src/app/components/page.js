@@ -196,7 +196,7 @@ export default function Home() {
 
   // State variables for score and result details
   const [totalScore, setTotalScore] = useState(0);
-  const [correctCount, setCorrectCount] = useState(0); // New state for correct answers
+  const [correctCount, setCorrectCount] = useState(0);
   const [resultDetails, setResultDetails] = useState([]);
 
   // State variable to track current result case study
@@ -213,13 +213,12 @@ export default function Home() {
   }, [assessmentComplete, totalScore]);
  
 
- // Generate Speech Function
+  // Generate Speech Function
   const generateSpeech = async () => {
     if (!currentCaseStudy) return;
     setIsAudioLoading(true);
     setAudioError('');
     try {
-      // Build the input text to include the scenario, questions, and option choices.
       let inputText = currentCaseStudy.scenario || "";
       if (currentCaseStudy.questions && currentCaseStudy.questions.length > 0) {
         currentCaseStudy.questions.forEach((question, idx) => {
@@ -236,9 +235,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          input: inputText,
-        }),
+        body: JSON.stringify({ input: inputText }),
       });
 
       if (response.ok) {
@@ -269,7 +266,6 @@ export default function Home() {
       }
       setIsAudioPlaying(false);
     } else {
-      // Generate new speech URL for the current case study
       const url = await generateSpeech();
       if (url && audioRef.current) {
         playAudio(url);
@@ -287,9 +283,7 @@ export default function Home() {
         audioRef.current.src = url;
         audioRef.current
           .play()
-          .then(() => {
-            setIsAudioPlaying(true);
-          })
+          .then(() => setIsAudioPlaying(true))
           .catch((error) => {
             console.error('Error playing audio:', error);
             setAudioError('Failed to play audio.');
@@ -300,32 +294,22 @@ export default function Home() {
 
   // Stop audio when switching case studies
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-    // Reset audio-related states when changing case study
+    if (audioRef.current) audioRef.current.pause();
     setAudioUrl(null);
     setIsAudioPlaying(false);
     setAudioError('');
-    setCurrentQuestionIndex(0); // Reset question index when changing case study
+    setCurrentQuestionIndex(0);
   }, [currentCaseStudyIndex]);
 
   // Handle Audio Play/Pause State
   useEffect(() => {
-    const handleAudioEnded = () => {
-      setIsAudioPlaying(false);
-    };
-
-    const handleAudioPause = () => {
-      setIsAudioPlaying(false);
-    };
-
+    const handleAudioEnded = () => setIsAudioPlaying(false);
+    const handleAudioPause = () => setIsAudioPlaying(false);
     const audioElement = audioRef.current;
     if (audioElement) {
       audioElement.addEventListener('ended', handleAudioEnded);
       audioElement.addEventListener('pause', handleAudioPause);
     }
-
     return () => {
       if (audioElement) {
         audioElement.removeEventListener('ended', handleAudioEnded);
@@ -333,7 +317,6 @@ export default function Home() {
       }
     };
   }, []);
-
 
   // Function to save user inputs to Firestore
   const saveUserInputs = async () => {
@@ -351,21 +334,15 @@ export default function Home() {
     } catch (error) {
       console.error('Error saving user inputs:', error.message);
       setError('Failed to save your inputs. Please try again.');
-      throw error; // Propagate error to handleSubmitFinalAssessment
+      throw error;
     }
   };
 
   // Function to save AI response to Firestore
   const saveAiResponse = async () => {
     if (!aiResponse) return;
-
     try {
-      // Save aiResponse inside an object
-      await addDoc(collection(firestore, 'ai_responses'), { 
-        aiResponse,
-        sessionID,
-        
-      });
+      await addDoc(collection(firestore, 'ai_responses'), { aiResponse, sessionID });
       console.log('AI response saved successfully.');
     } catch (error) {
       console.error('Error saving AI response:', error.message);
@@ -375,32 +352,21 @@ export default function Home() {
   // Function to save case studies to a collection based on user selection
   const saveCaseStudies = async () => {
     if (!caseStudies || caseStudies.length === 0) return;
-
     try {
-        // Construct the collection name based on user selection
-        const collectionName = `${department || 'unknownDepartment'}_${role || 'unknownRole'}_${specialization || 'unknownSpecialization'}`;
-        const sanitizedCollectionName = collectionName.replace(/[^a-zA-Z0-9_]/g, '_');
-
-        // Initialize batch for the new collection
-        const batch = writeBatch(firestore);
-        const userCaseStudiesCollection = collection(firestore, sanitizedCollectionName);
-
-        caseStudies.forEach((caseStudy) => {
-            const docRef = doc(userCaseStudiesCollection);
-            batch.set(docRef, {
-                ...caseStudy,
-                sessionID,
-            });
-        });
-
-        // Commit the batch
-        await batch.commit();
-
-        console.log(`Case studies saved to ${sanitizedCollectionName} collection successfully.`);
+      const collectionName = `${department || 'unknownDepartment'}_${role || 'unknownRole'}_${specialization || 'unknownSpecialization'}`;
+      const sanitizedCollectionName = collectionName.replace(/[^a-zA-Z0-9_]/g, '_');
+      const batch = writeBatch(firestore);
+      const userCaseStudiesCollection = collection(firestore, sanitizedCollectionName);
+      caseStudies.forEach((caseStudy) => {
+        const docRef = doc(userCaseStudiesCollection);
+        batch.set(docRef, { ...caseStudy, sessionID });
+      });
+      await batch.commit();
+      console.log(`Case studies saved to ${sanitizedCollectionName} collection successfully.`);
     } catch (error) {
-        console.error('Error saving case studies:', error.message);
-        setError('Failed to save case studies. Please try again.');
-        throw error; // Propagate error to handleSubmitFinalAssessment
+      console.error('Error saving case studies:', error.message);
+      setError('Failed to save case studies. Please try again.');
+      throw error;
     }
   };
 
@@ -408,14 +374,13 @@ export default function Home() {
   const saveSessionData = async (sessionID) => {
     try {
       await addDoc(collection(firestore, 'session table'), {
-        sessionID: sessionID,
+        sessionID,
         employeeID: userID,
         startTime: new Date(),
       });
       console.log('Session data saved successfully.');
     } catch (error) {
       console.error('Error saving session data:', error);
-      // Handle error if needed
     }
   };
 
@@ -431,7 +396,7 @@ export default function Home() {
 
   // Function to get Workflow ID
   const getWorkflowID = (caseIndex, questionIndex) => {
-    let count = 1; // Start from 1 because 'Take Assessment' is at index 0
+    let count = 1;
     for (let i = 0; i < caseIndex; i++) {
       count += caseStudies[i].questions.length;
     }
@@ -444,27 +409,21 @@ export default function Home() {
     return `Case${caseIndex + 1}-Question${questionIndex + 1}`;
   };
 
-  // Handle taking the assessment
+  // Handle taking the assessment (for "Generate My Personalized Training Scenarios")
   const handleTakeAssessment = () => {
     if (!role || !department) {
       setError('Please select your Role and Department before proceeding.');
       return;
     }
-
     if (userType === 'clinical' && !specialization) {
       setError('Please select your Specialization before proceeding.');
       return;
     }
-
-    // Save user inputs when the assessment starts
     saveUserInputs();
-
     const randomSessionID = Math.floor(100000 + Math.random() * 900000).toString();
     setSessionID(randomSessionID);
     saveSessionData(randomSessionID);
-
     handleSubmitAssessment();
-    // Hide the Google Translate menu after clicking the button
     setShowTranslate(false);
   };
 
@@ -478,45 +437,30 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userType, department, role, specialization }),
       });
-
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(
-          `Failed to fetch case studies: ${errorData.error || 'Unknown error'}`
-        );
+        throw new Error(`Failed to fetch case studies: ${errorData.error || 'Unknown error'}`);
       }
-
       const data = await response.json();
-
       if (!data.caseStudies || !Array.isArray(data.caseStudies)) {
         throw new Error('Invalid data format received from server.');
       }
-
       const { caseStudies, aiResponse } = data;
-
-      // Set both caseStudies and aiResponse without merging imageUrl
       setCaseStudies(caseStudies);
       setAiResponse(aiResponse);
-
-      // Generate workflow data
       const workflowNames = ['Take Assessment'];
-
       data.caseStudies.forEach((caseStudy, caseIndex) => {
         caseStudy.questions.forEach((question, questionIndex) => {
           const workflowName = `Case${caseIndex + 1}-Question${questionIndex + 1}`;
           workflowNames.push(workflowName);
         });
       });
-
       const workflows = workflowNames.map((name) => ({
         workflowID: Math.floor(100000 + Math.random() * 900000).toString(),
         workflowName: name,
       }));
-
       setWorkflowData(workflows);
-
-      await saveAiResponse(); // Save AI response
-
+      await saveAiResponse();
       setShowSafetyStatement(false);
       setShowCaseStudies(true);
       setCurrentCaseStudyIndex(0);
@@ -529,88 +473,51 @@ export default function Home() {
     }
   };
 
-  // Modified handleAnswerChange function
+  // Modified handleAnswerChange function with hint and tries-left logic
   const handleAnswerChange = (caseIndex, questionIndex, selectedOption) => {
     const key = `${caseIndex}-${questionIndex}`;
     const currentAttempts = attempts[key] || 0;
-
     const previousFeedback = feedbackMessages[caseIndex]?.[questionIndex];
-
-    if (
-      currentAttempts >= 2 ||
-      (previousFeedback && previousFeedback.message === 'Correct Answer')
-    ) {
-      // User has reached maximum attempts or already answered correctly
+    if (currentAttempts >= 2 || (previousFeedback && previousFeedback.message === 'Correct Answer')) {
       setError('No more tries left!');
       return;
     }
-
-    // Clear any previous error
     setError(null);
-
-    // Cross-check with correctAnswer from aiResponse
     const correctAnswer = aiResponse[caseIndex].questions[questionIndex].correctAnswer;
-    const correctKey = correctAnswer.split(')')[0].trim(); // Extract the key (e.g., 'C')
-
+    const correctKey = correctAnswer.split(')')[0].trim();
     const hint = aiResponse[caseIndex].questions[questionIndex].hint;
-
     let feedbackMessageNew = '';
     let hintToShow = '';
-
     const isCorrect = selectedOption === correctKey;
-
     if (isCorrect) {
       feedbackMessageNew = 'Correct Answer';
-      hintToShow = ''; // No hint needed when correct
+      hintToShow = '';
     } else {
-      const attemptsLeft = 2 - currentAttempts - 1; // Updated to reflect total of 2 attempts
-      hintToShow = hint; // Show hint on every incorrect attempt
+      const attemptsLeft = 2 - currentAttempts - 1;
+      hintToShow = hint;
       if (attemptsLeft > 0) {
         feedbackMessageNew = `Incorrect Answer. ${attemptsLeft} try left.`;
       } else {
         feedbackMessageNew = 'Incorrect Answer. No more tries left!';
       }
     }
-
-    // Update the feedback messages
     setFeedbackMessages((prevFeedback) => ({
       ...prevFeedback,
       [caseIndex]: {
         ...prevFeedback[caseIndex],
-        [questionIndex]: {
-          message: feedbackMessageNew,
-          hint: hintToShow,
-        },
+        [questionIndex]: { message: feedbackMessageNew, hint: hintToShow },
       },
     }));
-
-    // Update the attempts
-    setAttempts((prevAttempts) => ({
-      ...prevAttempts,
-      [key]: currentAttempts + 1,
-    }));
-
-    // Update the selected answers
+    setAttempts((prevAttempts) => ({ ...prevAttempts, [key]: currentAttempts + 1 }));
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
-      [caseIndex]: {
-        ...prevAnswers[caseIndex],
-        [questionIndex]: selectedOption,
-      },
+      [caseIndex]: { ...prevAnswers[caseIndex], [questionIndex]: selectedOption },
     }));
-
-    // Get Workflow ID and Name
     const workflowID = getWorkflowID(caseIndex, questionIndex);
     const workflowName = getWorkflowName(caseIndex, questionIndex);
     const timestamp = new Date();
     const isFirstAttempt = currentAttempts === 0;
-
-    const dataToSave = {
-      workflowID: workflowID,
-      sessionID: sessionID,
-      workflowName: workflowName,
-    };
-
+    const dataToSave = { workflowID, sessionID, workflowName };
     if (isFirstAttempt) {
       dataToSave.attempt1Selection = 'yes';
       dataToSave.attempt1Timestamp = timestamp;
@@ -624,30 +531,16 @@ export default function Home() {
       dataToSave.attempt2Result = isCorrect ? 'Correct' : 'Incorrect';
       dataToSave.secondAttemptMade = 'yes';
     }
-
     saveWorkflowData(dataToSave);
-
-    // Move to next question or case study after feedback with 1-second delay
     if (isCorrect || currentAttempts + 1 >= 2) {
       setTimeout(() => {
         const workflowID = getWorkflowID(caseIndex, questionIndex);
         const workflowName = getWorkflowName(caseIndex, questionIndex);
         const timestamp = new Date();
-
-        const dataToSave = {
-          workflowID: workflowID,
-          sessionID: sessionID,
-          workflowName: workflowName,
-          nextButtonTimestamp: timestamp,
-        };
-
+        const dataToSave = { workflowID, sessionID, workflowName, nextButtonTimestamp: timestamp };
         saveWorkflowData(dataToSave);
-
-        const isLastQuestionInCaseStudy =
-          questionIndex === caseStudies[caseIndex].questions.length - 1;
-
+        const isLastQuestionInCaseStudy = questionIndex === caseStudies[caseIndex].questions.length - 1;
         const isLastCaseStudy = caseIndex === caseStudies.length - 1;
-
         if (isLastQuestionInCaseStudy && isLastCaseStudy) {
           handleSubmitFinalAssessment();
         } else if (isLastQuestionInCaseStudy) {
@@ -665,8 +558,6 @@ export default function Home() {
     let score = 0;
     let totalQuestions = 0;
     const details = [];
-
-    // Iterate over each case study
     caseStudies.forEach((caseStudy, caseIndex) => {
       const caseDetail = {
         caseStudyNumber: caseIndex + 1,
@@ -674,37 +565,28 @@ export default function Home() {
         patientName: caseStudy.patientName || 'Patient: Unknown',
         caseStudyText: caseStudy.scenario || 'No Scenario',
       };
-
       const questions = caseStudy.questions;
       totalQuestions += questions.length;
-
       questions.forEach((question, questionIndex) => {
         const userAnswer = selectedAnswers[caseIndex]?.[questionIndex];
         const correctAnswer = aiResponse[caseIndex].questions[questionIndex].correctAnswer;
         const correctKey = correctAnswer.split(')')[0].trim();
-
         const key = `${caseIndex}-${questionIndex}`;
         const feedbackMessage = feedbackMessages[caseIndex]?.[questionIndex];
-
         let isCorrect = false;
         if (feedbackMessage?.message === 'Correct Answer') {
           isCorrect = true;
           score += 1;
-        } else {
-          isCorrect = false;
         }
-
         caseDetail.questions.push({
           questionNumber: questionIndex + 1,
           questionText: question.question,
           selectedAnswer: userAnswer || 'No Answer',
-          isCorrect: isCorrect,
+          isCorrect,
         });
       });
-
       details.push(caseDetail);
     });
-
     const percentageScore = Math.round((score / totalQuestions) * 100);
     setTotalScore(percentageScore);
     setCorrectCount(score);
@@ -725,23 +607,13 @@ export default function Home() {
     try {
       await saveCaseStudies();
       await saveAiResponse();
-
-      // Save Submit Button Timestamp
       const lastCaseIndex = caseStudies.length - 1;
       const lastQuestionIndex = caseStudies[lastCaseIndex].questions.length - 1;
       const workflowID = getWorkflowID(lastCaseIndex, lastQuestionIndex);
       const workflowName = getWorkflowName(lastCaseIndex, lastQuestionIndex);
       const timestamp = new Date();
-
-      const dataToSave = {
-        workflowID: workflowID,
-        sessionID: sessionID,
-        workflowName: workflowName,
-        submitButtonTimestamp: timestamp,
-      };
-
+      const dataToSave = { workflowID, sessionID, workflowName, submitButtonTimestamp: timestamp };
       await saveWorkflowData(dataToSave);
-
       setAssessmentComplete(true);
       setShowCaseStudies(false);
       setShowSafetyStatement(false);
@@ -788,185 +660,29 @@ export default function Home() {
     const collectionRef = collection(firestore, collectionName);
     const q = query(collectionRef);
     const querySnapshot = await getDocs(q);
-
     const batch = writeBatch(firestore);
     querySnapshot.forEach((doc) => {
       batch.delete(doc.ref);
     });
-
     await batch.commit();
   };
 
-  // Modified handlePrint function
-  const handlePrint = async () => {
+  // Modified function for Print Case Study & Questions button:
+  // It first ensures the assessment is fetched (using handleSubmitAssessment) and then
+  // generates a PDF document and opens it in a new window.
+  const handlePrintCaseStudyAndQuestions = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const docPDF = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4',
-        putOnlyUsedFonts: true,
-        floatPrecision: 16,
-      });
-
-      const pageWidth = docPDF.internal.pageSize.getWidth();
-      const pageHeight = docPDF.internal.pageSize.getHeight();
-      const margin = 10;
-      let yPosition = margin;
-
-      // Add User Information
-      docPDF.setFontSize(10);
-      docPDF.setFont('helvetica', 'bold');
-      docPDF.text(`Full Name: ${fullName}`, margin, yPosition);
-      yPosition += 6;
-      docPDF.text(`User ID: ${userID}`, margin, yPosition);
-      yPosition += 6;
-      docPDF.text(`Assessment Date: ${new Date().toLocaleDateString()}`, margin, yPosition);
-      yPosition += 8;
-
-      // Add Title
-      docPDF.setFontSize(14);
-      docPDF.setFont('helvetica', 'bold');
-      docPDF.text('Safety Assessment Report', pageWidth / 2, yPosition, {
-        align: 'center',
-      });
-      yPosition += 8;
-
-      // Add Total Score
-      docPDF.setFontSize(12);
-      docPDF.setFont('helvetica', 'normal');
-      docPDF.text(`Total Score: ${totalScore}%`, pageWidth / 2, yPosition, {
-        align: 'center',
-      });
-      yPosition += 8;
-
-      // Add a horizontal line
-      docPDF.setLineWidth(0.3);
-      docPDF.line(margin, yPosition, pageWidth - margin, yPosition);
-      yPosition += 8;
-
-      // Iterate through each case study to add details
-      resultDetails.forEach((caseDetail, index) => {
-        if (index !== 0) {
-          docPDF.addPage();
-          yPosition = margin;
-        }
-
-        const caseStudy = caseStudies[index];
-
-        // Add Case Study Title
-        docPDF.setFontSize(12);
-        docPDF.setFont('helvetica', 'bold');
-        docPDF.text(`Case Study ${caseDetail.caseStudyNumber}`, margin, yPosition);
-        yPosition += 6;
-
-        // Add Scenario
-        docPDF.setFontSize(10);
-        docPDF.setFont('helvetica', 'normal');
-        const splitScenarioText = docPDF.splitTextToSize(
-          caseStudy.scenario,
-          pageWidth - 2 * margin
-        );
-        docPDF.text(splitScenarioText, margin, yPosition);
-        yPosition += splitScenarioText.length * 5 + 2;
-
-        // Iterate through each question
-        caseDetail.questions.forEach((question) => {
-          const questionNumber = question.questionNumber;
-          const questionText = question.questionText;
-          const userAnswerKey = question.selectedAnswer;
-          const correctAnswerKey = aiResponse[caseDetail.caseStudyNumber - 1].questions[
-            questionNumber - 1
-          ].correctAnswer.split(')')[0].trim();
-
-          // Retrieve full text for user answer
-          const userOption = caseStudies[index].questions[questionNumber - 1].options.find(
-            (opt) => opt.key === userAnswerKey
-          );
-          const userAnswerText = userOption
-            ? `${userOption.key}. ${userOption.label}`
-            : 'No Answer';
-
-          // Retrieve full text for correct answer
-          const correctOption = caseStudies[index].questions[questionNumber - 1].options.find(
-            (opt) => opt.key === correctAnswerKey
-          );
-          const correctAnswerText = correctOption
-            ? `${correctOption.key}. ${correctOption.label}`
-            : 'No Answer';
-
-          // Add Question Number and Text
-          docPDF.setFontSize(10);
-          docPDF.setFont('helvetica', 'bold');
-          const questionHeader = `Question ${questionNumber}: ${questionText}`;
-          const splitQuestionHeader = docPDF.splitTextToSize(
-            questionHeader,
-            pageWidth - 2 * margin
-          );
-          docPDF.text(splitQuestionHeader, margin, yPosition);
-          yPosition += splitQuestionHeader.length * 4 + 2;
-
-          // Add Your Answer
-          docPDF.setFontSize(10);
-          docPDF.setFont('helvetica', 'bold');
-          docPDF.text('Your Answer:', margin + 2, yPosition);
-          yPosition += 4;
-
-          docPDF.setFontSize(10);
-          docPDF.setFont('helvetica', 'normal');
-          const splitUserAnswer = docPDF.splitTextToSize(
-            userAnswerText,
-            pageWidth - 2 * margin - 4
-          );
-          docPDF.text(splitUserAnswer, margin + 4, yPosition);
-          yPosition += splitUserAnswer.length * 4 + 2;
-
-          // Add Correct Answer
-          docPDF.setFontSize(10);
-          docPDF.setFont('helvetica', 'bold');
-          docPDF.text('Correct Answer:', margin + 2, yPosition);
-          yPosition += 4;
-
-          docPDF.setFontSize(10);
-          docPDF.setFont('helvetica', 'normal');
-          const splitCorrectAnswer = docPDF.splitTextToSize(
-            correctAnswerText,
-            pageWidth - 2 * margin - 4
-          );
-          docPDF.text(splitCorrectAnswer, margin + 4, yPosition);
-          yPosition += splitCorrectAnswer.length * 4 + 6;
-
-          // Check if yPosition exceeds page height
-          if (yPosition > pageHeight - margin - 20) {
-            // For simplicity, assume content fits or handle pagination logic here
-            yPosition = pageHeight - margin - 20;
-          }
-        });
-      });
-
-      const fileName = `Safety_Assessment_Report_${fullName.replace(/\s+/g, '_')}_${new Date()
-        .toLocaleDateString()
-        .replace(/\//g, '-')}.pdf`;
-      docPDF.save(fileName);
-    } catch (err) {
-      setError(err.message || 'Failed to generate PDF.');
-      console.error('Error generating PDF:', err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // NEW Function: Print Case Study & Questions in a new window
-  const handlePrintCaseStudyAndQuestions = async () => {
-    try {
+      // If no case studies are available, fetch them first.
+      if (!caseStudies || caseStudies.length === 0) {
+        await handleSubmitAssessment();
+        // Allow a brief moment for state update.
+        await new Promise((resolve) => setTimeout(resolve, 500));
+      }
       const docPDF = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
       const pageWidth = docPDF.internal.pageSize.getWidth();
       let yPosition = 10;
-      if (caseStudies.length === 0) {
-        setError('No case studies available to print.');
-        return;
-      }
       caseStudies.forEach((caseStudy, index) => {
         if (index > 0) {
           docPDF.addPage();
@@ -1003,12 +719,13 @@ export default function Home() {
     } catch (error) {
       setError(error.message || 'Failed to generate PDF.');
       console.error('Error generating PDF:', error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handlePrintCertificate = () => {
     const certificateElement = document.getElementById("certificate");
-
     if (certificateElement) {
       const printWindow = window.open("", "PRINT", "width=800,height=600");
       printWindow.document.write(`
@@ -1016,133 +733,39 @@ export default function Home() {
         <head>
           <title>Coachcare.ai</title>
           <style>
-            body {
-              margin: 0;
-              padding: 0;
-              font-family: 'Helvetica', 'Arial', sans-serif;
-            }
-            .certificate-container {
-              border: 4px solid #d1d5db;
-              border-radius: 1rem;
-              box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-              padding: 2rem;
-              background: linear-gradient(to bottom right, white, #bfdbfe);
-              max-width: 768px;
-              width: 100%;
-              margin: 2rem auto;
-            }
-            .certificate-popup {
-              position: relative;
-            }
-            .certificate-content {
-              position: relative;
-              z-index: 10;
-            }
-            .absolute-inset {
-              position: absolute;
-              top: 0;
-              left: 0;
-              right: 0;
-              bottom: 0;
-              opacity: 0.05;
-              background: repeating-linear-gradient(
-                45deg,
-                #000,
-                #000 25%,
-                transparent 25%,
-                transparent 50%
-              );
-              background-size: 60px 60px;
-            }
-            .text-center {
-              text-align: center;
-            }
-            .py-10 {
-              padding-top: 2.5rem;
-              padding-bottom: 2.5rem;
-            }
-            .bg-gradient-to-b {
-              background: linear-gradient(to bottom, #dbeafe, white, transparent);
-            }
-            .rounded-t-2xl {
-              border-top-left-radius: 1rem;
-              border-top-right-radius: 1rem;
-            }
-            .border-b {
-              border-bottom: 1px solid #d1d5db;
-            }
-            .text-4xl {
-              font-size: 2.25rem;
-            }
-            .font-bold {
-              font-weight: 700;
-            }
-            .bg-gradient-to-r {
-              background: linear-gradient(to right, #059669, #2563eb);
-            }
-            .bg-clip-text {
-              -webkit-background-clip: text;
-              background-clip: text;
-            }
-            .text-transparent {
-              color: transparent;
-            }
-            .font-semibold {
-              font-weight: 600;
-            }
-            .font-serif {
-              font-family: 'Times New Roman', Times, serif;
-            }
-            .tracking-wide {
-              letter-spacing: 0.05em;
-            }
-            .p-8 {
-              padding: 2rem;
-            }
-            .border-double {
-              border-style: double;
-            }
-            .border-gray-300 {
-              border-color: #d1d5db;
-            }
-            .rounded-lg {
-              border-radius: 0.5rem;
-            }
-            .shadow-lg {
-              box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-            }
-            .bg-yellow-100 {
-              background-color: #fef3c7;
-            }
-            .rounded-full {
-              border-radius: 9999px;
-            }
-            .opacity-50 {
-              opacity: 0.5;
-            }
-            .blur-xl {
-              filter: blur(20px);
-            }
-            .text-yellow-500 {
-              color: #f59e0b;
-            }
-            .mx-auto {
-              margin-left: auto;
-              margin-right: auto;
-            }
-            .mb-6 {
-              margin-bottom: 1.5rem;
-            }
-            .animate-bounce {
-              animation: bounce 2s infinite;
-            }
-            @keyframes bounce {
-              0%, 100% { transform: translateY(0); }
-              50% { transform: translateY(-10px); }
-            }
-            .certificate-content {
-              position: relative;
-            }
+            body { margin: 0; padding: 0; font-family: 'Helvetica', 'Arial', sans-serif; }
+            .certificate-container { border: 4px solid #d1d5db; border-radius: 1rem; box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); padding: 2rem; background: linear-gradient(to bottom right, white, #bfdbfe); max-width: 768px; width: 100%; margin: 2rem auto; }
+            .certificate-popup { position: relative; }
+            .certificate-content { position: relative; z-index: 10; }
+            .absolute-inset { position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.05; background: repeating-linear-gradient(45deg, #000, #000 25%, transparent 25%, transparent 50%); background-size: 60px 60px; }
+            .text-center { text-align: center; }
+            .py-10 { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+            .bg-gradient-to-b { background: linear-gradient(to bottom, #dbeafe, white, transparent); }
+            .rounded-t-2xl { border-top-left-radius: 1rem; border-top-right-radius: 1rem; }
+            .border-b { border-bottom: 1px solid #d1d5db; }
+            .text-4xl { font-size: 2.25rem; }
+            .font-bold { font-weight: 700; }
+            .bg-gradient-to-r { background: linear-gradient(to right, #059669, #2563eb); }
+            .bg-clip-text { -webkit-background-clip: text; background-clip: text; }
+            .text-transparent { color: transparent; }
+            .font-semibold { font-weight: 600; }
+            .font-serif { font-family: 'Times New Roman', Times, serif; }
+            .tracking-wide { letter-spacing: 0.05em; }
+            .p-8 { padding: 2rem; }
+            .border-double { border-style: double; }
+            .border-gray-300 { border-color: #d1d5db; }
+            .rounded-lg { border-radius: 0.5rem; }
+            .shadow-lg { box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); }
+            .bg-yellow-100 { background-color: #fef3c7; }
+            .rounded-full { border-radius: 9999px; }
+            .opacity-50 { opacity: 0.5; }
+            .blur-xl { filter: blur(20px); }
+            .text-yellow-500 { color: #f59e0b; }
+            .mx-auto { margin-left: auto; margin-right: auto; }
+            .mb-6 { margin-bottom: 1.5rem; }
+            .animate-bounce { animation: bounce 2s infinite; }
+            @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+            .certificate-content { position: relative; }
           </style>
         </head>
         <body>
@@ -1194,102 +817,39 @@ export default function Home() {
     }
   }, []);
 
-  // Current Case Study
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
-
-  const isLastQuestion =
-    currentQuestionIndex === currentCaseStudy?.questions.length - 1;
+  const isLastQuestion = currentQuestionIndex === currentCaseStudy?.questions.length - 1;
   const isLastCaseStudy = currentCaseStudyIndex === caseStudies.length - 1;
 
   const departmentRoleSpecializationMap = {
     'Radiology': {
-      'Physician': [
-        'Radiology'
-        
-      ],
-      'Nurse Practitioner': [
-        'Radiology'
-      ],
-      'Radiology Technician': [
-        'Radiology'
-        
-      ],
-      'Physican Associate': [
-        'Radiology'
-      ],
+      'Physician': ['Radiology'],
+      'Nurse Practitioner': ['Radiology'],
+      'Radiology Technician': ['Radiology'],
+      'Physican Associate': ['Radiology'],
     },
-    
     'Neurology': {
-      'Physician': [
-        'Neurology'
-        
-      ],
-      'Nurse Practitioner': [
-        'Neurology'
-      ],
-      'Physician Assistant': [
-        'Neurology'
-        
-      ],
-      'Registered Nurse': [
-        'Neurology'
-      ],
+      'Physician': ['Neurology'],
+      'Nurse Practitioner': ['Neurology'],
+      'Physician Assistant': ['Neurology'],
+      'Registered Nurse': ['Neurology'],
     },
-    
     'Operating Room': {
-      'Surgeon': [
-        'General Surgery',
-        'Orthopedic Surgery',
-        'Neurosurgery',
-        'Cardiothoracic Surgery'
-      ],
-      'Nurse': [
-        'Scrub Nurse',
-        'Circulating Nurse',
-        'Preoperative Nurse',
-        'Post-Anesthesia Care Unit Nurse'
-      ],
-      'Circulator Nurse': [
-        'General Surgery',
-        'Orthopedic Surgery',
-        'Neurosurgery',
-        'Vascular Surgery'
-      ],
-      'Surgical Technologist': [
-        'General Surgery',
-        'Orthopedic Surgery',
-        'Neurosurgery',
-        'Cardiothoracic Surgery'
-      ],
+      'Surgeon': ['General Surgery', 'Orthopedic Surgery', 'Neurosurgery', 'Cardiothoracic Surgery'],
+      'Nurse': ['Scrub Nurse', 'Circulating Nurse', 'Preoperative Nurse', 'Post-Anesthesia Care Unit Nurse'],
+      'Circulator Nurse': ['General Surgery', 'Orthopedic Surgery', 'Neurosurgery', 'Vascular Surgery'],
+      'Surgical Technologist': ['General Surgery', 'Orthopedic Surgery', 'Neurosurgery', 'Cardiothoracic Surgery'],
     },
     'Transplant': {
-      'Surgeon': [
-        'Kidney Transplant',
-        'Heart Transplant',
-        'Liver Transplant',
-        'Pediatric Transplant'
-      ],
-      'Nurse': [
-        'Critical Care Transplant',
-        'Organ Procurement',
-        'Dialysis',
-        'Oncology Transplant'
-      ],
-      'Surgical Technologist': [
-        'Cardiothoracic Transplant',
-        'Living Donor Transplant',
-        'Pediatric Transplant',
-        'Abdominal Transplant'
-      ],
+      'Surgeon': ['Kidney Transplant', 'Heart Transplant', 'Liver Transplant', 'Pediatric Transplant'],
+      'Nurse': ['Critical Care Transplant', 'Organ Procurement', 'Dialysis', 'Oncology Transplant'],
+      'Surgical Technologist': ['Cardiothoracic Transplant', 'Living Donor Transplant', 'Pediatric Transplant', 'Abdominal Transplant'],
     },
-
-    
     'Communication': {
       'IT': [],
       'Patient Experince Coordinator': [],
       'Program Manager': [],
     },
-    
   };
 
   const [rolesToUse, setRolesToUse] = useState([]);
@@ -1309,8 +869,7 @@ export default function Home() {
 
   useEffect(() => {
     if (department && role) {
-      const specializations =
-        departmentRoleSpecializationMap[department][role] || [];
+      const specializations = departmentRoleSpecializationMap[department][role] || [];
       setSpecializationsToUse(specializations);
     } else {
       setSpecializationsToUse([]);
@@ -1319,7 +878,6 @@ export default function Home() {
   }, [department, role]);
 
   const clinicalDepartments = ['Operating Room', 'Transplant', 'Neurology', 'Radiology'];
-  
 
   useEffect(() => {
     const randomID = Math.floor(100000 + Math.random() * 900000).toString();
@@ -1347,9 +905,7 @@ export default function Home() {
 
     const handleLanguageChange = () => {
       const languageDropdown = document.querySelector('.goog-te-combo');
-      if (languageDropdown) {
-        setLanguage(languageDropdown.value);
-      }
+      if (languageDropdown) setLanguage(languageDropdown.value);
     };
 
     const languageDropdown = document.querySelector('.goog-te-combo');
@@ -1357,11 +913,8 @@ export default function Home() {
       languageDropdown.addEventListener('change', handleLanguageChange);
       languageDropdown.style.fontSize = '20px';
     }
-
     return () => {
-      if (languageDropdown) {
-        languageDropdown.removeEventListener('change', handleLanguageChange);
-      }
+      if (languageDropdown) languageDropdown.removeEventListener('change', handleLanguageChange);
     };
   }, []);
 
@@ -1376,13 +929,11 @@ export default function Home() {
         translateSelect.style.backgroundColor = '#f0f0f0';
         translateSelect.style.borderRadius = '5px';
         translateSelect.style.border = '1px solid #ccc';
-
         const container = document.querySelector('.google-translate-element');
         if (container) {
           container.style.display = 'inline-block';
           container.style.marginBottom = '20px';
         }
-
         clearInterval(styleInterval);
       }
     };
@@ -1411,89 +962,32 @@ export default function Home() {
               {/* Logo */}
               <div className="flex items-center">
                 <div className="flex-shrink-0 text-white font-bold">
-                  <span className="hidden sm:block">
-                    AI Personalized Healthcare Safety Module
-                  </span>
+                  <span className="hidden sm:block">AI Personalized Healthcare Safety Module</span>
                   <span className="block sm:hidden">Coachcare.ai</span>
                 </div>
               </div>
-  
               {/* Mobile menu button */}
               <div className="sm:hidden ml-4 mr-4">
-                <button
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="text-white hover:text-gray-200 focus:outline-none"
-                >
-                  {isMobileMenuOpen ? (
-                    <X className="h-6 w-6" />
-                  ) : (
-                    <Menu className="h-6 w-6" />
-                  )}
+                <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="text-white hover:text-gray-200 focus:outline-none">
+                  {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </button>
               </div>
-  
               {/* Desktop Navigation */}
               <div className="hidden sm:flex sm:items-center sm:space-x-4">
-                <Link
-                  href="/Home"
-                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/components"
-                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                >
-                  Safety Module
-                </Link>
-                <Link
-                  href="/dashboard"
-                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  href="/feedback"
-                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                >
-                  Feedback
-                </Link>
+                <Link href="/Home" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+                <Link href="/components" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors">Safety Module</Link>
+                <Link href="/dashboard" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors">Dashboard</Link>
+                <Link href="/feedback" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors">Feedback</Link>
               </div>
             </div>
-  
             {/* Mobile Navigation */}
             {isMobileMenuOpen && (
               <div className="sm:hidden pb-4">
                 <div className="flex flex-col space-y-2">
-                  <Link
-                    href="/"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/components"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Case Studies
-                  </Link>
-                  <Link
-                    href="/dashboard"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
-                  <Link
-                    href="/feedback"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Feedback
-                  </Link>
+                  <Link href="/" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Home</Link>
+                  <Link href="/components" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Case Studies</Link>
+                  <Link href="/dashboard" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Dashboard</Link>
+                  <Link href="/feedback" className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Feedback</Link>
                 </div>
               </div>
             )}
@@ -1505,10 +999,7 @@ export default function Home() {
           <div className="image-container px-4 py-6">
             {showSafetyStatement && (
               <p className="safety-text text-sm sm:text-base text-gray-700 leading-relaxed">
-                Avoidable medical error is a leading cause of death in the USA. Something as simple as
-                using safety behaviors has been proven to decrease harm to patients. The scenarios generated
-                below are from real case studies that have been published in the literature and are customized
-                just for you in order to make the safety behavior more relevant. Thank you for doing your part to put more care into healthcare.
+                Avoidable medical error is a leading cause of death in the USA. Something as simple as using safety behaviors has been proven to decrease harm to patients. The scenarios generated below are from real case studies that have been published in the literature and are customized just for you in order to make the safety behavior more relevant. Thank you for doing your part to put more care into healthcare.
               </p>
             )}
   
@@ -1516,27 +1007,13 @@ export default function Home() {
               <div className="assessment-complete mt-6">
                 <div className="result-container bg-white rounded-lg shadow p-6">
                   <div className="score-info text-center">
-                    <div className="score-header text-xl font-semibold">
-                      <strong>Score:</strong>
-                    </div>
-  
-                    <div className="correct-answers text-2xl font-bold my-2">
-                      {correctCount} out of 12
-                    </div>
-  
+                    <div className="score-header text-xl font-semibold"><strong>Score:</strong></div>
+                    <div className="correct-answers text-2xl font-bold my-2">{correctCount} out of 12</div>
                     <div className="score-circle mx-auto my-4 w-24 h-24 flex items-center justify-center rounded-full bg-blue-100">
                       <span className="text-3xl font-bold text-blue-600">{totalScore}%</span>
                     </div>
-  
-                    <div className="result-header text-xl font-semibold">
-                      <strong>Result:</strong>
-                    </div>
-  
-                    <div
-                      className={`pass-fail text-2xl font-bold mt-2 ${
-                        totalScore >= 70 ? 'text-green-600' : 'text-red-600'
-                      }`}
-                    >
+                    <div className="result-header text-xl font-semibold"><strong>Result:</strong></div>
+                    <div className={`pass-fail text-2xl font-bold mt-2 ${totalScore >= 70 ? 'text-green-600' : 'text-red-600'}`}>
                       {totalScore >= 70 ? 'Pass' : 'Fail'}
                     </div>
                   </div>
@@ -1546,36 +1023,22 @@ export default function Home() {
                   <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail mt-6">
                     <h3 className="text-lg font-semibold">{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
                     <p className="case-study-text text-gray-700 mt-2">{caseDetail.caseStudyText}</p>
-  
                     {caseDetail.questions.map((q) => (
                       <div key={`question-${q.questionNumber}`} className="question-summary mt-4">
                         <div className="question-header-summary flex justify-between items-center">
                           <h4 className="text-md font-semibold">{`Question ${q.questionNumber}`}</h4>
                           <span className="text-xl">{q.isCorrect ? '✅' : '❌'}</span>
                         </div>
-  
                         <p className="question-text text-gray-700 mt-1">{q.questionText}</p>
-  
                         <h5 className="mt-2 font-semibold">Your Answer:</h5>
                         <p className="user-answer text-gray-700">
                           {q.selectedAnswer !== 'No Answer'
-                            ? getOptionLabel(
-                                caseDetail.caseStudyNumber - 1,
-                                q.questionNumber - 1,
-                                q.selectedAnswer
-                              )
+                            ? getOptionLabel(caseDetail.caseStudyNumber - 1, q.questionNumber - 1, q.selectedAnswer)
                             : 'No Answer'}
                         </p>
-  
                         <h5 className="mt-2 font-semibold">Correct Answer:</h5>
                         <p className="correct-answer text-gray-700">
-                          {getOptionLabel(
-                            caseDetail.caseStudyNumber - 1,
-                            q.questionNumber - 1,
-                            aiResponse[caseDetail.caseStudyNumber - 1].questions[
-                              q.questionNumber - 1
-                            ].correctAnswer.split(')')[0].trim()
-                          )}
+                          {getOptionLabel(caseDetail.caseStudyNumber - 1, q.questionNumber - 1, aiResponse[caseDetail.caseStudyNumber - 1].questions[q.questionNumber - 1].correctAnswer.split(')')[0].trim())}
                         </p>
                       </div>
                     ))}
@@ -1583,19 +1046,11 @@ export default function Home() {
                 ))}
   
                 <div className="result-buttons flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
-                  <button
-                    className="print-button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                    onClick={handlePrint}
-                    disabled={isLoading}
-                  >
+                  <button className="print-button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700" onClick={handlePrint} disabled={isLoading}>
                     🖨️ Print Assessment Report
                   </button>
                   {totalScore >= 70 && (
-                    <button
-                      className="certificate-button bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
-                      onClick={() => setIsCertificateOpen(true)}
-                      disabled={isLoading}
-                    >
+                    <button className="certificate-button bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700" onClick={() => setIsCertificateOpen(true)} disabled={isLoading}>
                       🎓 View Certificate
                     </button>
                   )}
@@ -1608,9 +1063,7 @@ export default function Home() {
             <div className="form-container px-4 py-6">
               <div className="professional-info bg-white rounded-lg shadow p-6">
                 <h2 className="text-lg font-semibold mb-4">Professional Information</h2>
-  
-                {/* Removed the User Type dropdown */}
-  
+                {/* User Type dropdown removed */}
                 <div className="form-item mb-4">
                   <label htmlFor="department-select" className="block text-sm font-medium text-gray-700">
                     Department
@@ -1618,17 +1071,12 @@ export default function Home() {
                   <select
                     id="department-select"
                     value={department}
-                    onChange={(e) => {
-                      setDepartment(e.target.value);
-                      if (error) setError('');
-                    }}
+                    onChange={(e) => { setDepartment(e.target.value); if (error) setError(''); }}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
                   >
                     <option value="">Select Department</option>
                     {departmentsToUse.map((dept) => (
-                      <option key={dept} value={dept}>
-                        {dept}
-                      </option>
+                      <option key={dept} value={dept}>{dept}</option>
                     ))}
                   </select>
                 </div>
@@ -1640,23 +1088,17 @@ export default function Home() {
                   <select
                     id="role-select"
                     value={role}
-                    onChange={(e) => {
-                      setRole(e.target.value);
-                      if (error) setError('');
-                    }}
+                    onChange={(e) => { setRole(e.target.value); if (error) setError(''); }}
                     disabled={!department}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
                   >
                     <option value="">Select Role</option>
                     {rolesToUse.map((r) => (
-                      <option key={r} value={r}>
-                        {r}
-                      </option>
+                      <option key={r} value={r}>{r}</option>
                     ))}
                   </select>
                 </div>
   
-                {/* Only show if user is clinical */}
                 {userType === 'clinical' && (
                   <>
                     <div className="form-item mb-4">
@@ -1666,23 +1108,16 @@ export default function Home() {
                       <select
                         id="specialization-select"
                         value={specialization}
-                        onChange={(e) => {
-                          setSpecialization(e.target.value);
-                          if (error) setError('');
-                        }}
+                        onChange={(e) => { setSpecialization(e.target.value); if (error) setError(''); }}
                         disabled={!role}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
                       >
                         <option value="">Select Specialization</option>
                         {specializationsToUse.map((spec) => (
-                          <option key={spec} value={spec}>
-                            {spec}
-                          </option>
+                          <option key={spec} value={spec}>{spec}</option>
                         ))}
                       </select>
                     </div>
-
-                    {/* NEW Care dropdown with renamed label */}
                     <div className="form-item mb-4">
                       <label htmlFor="care-select" className="block text-sm font-medium text-gray-700">
                         Care Delivery Setting
@@ -1690,10 +1125,7 @@ export default function Home() {
                       <select
                         id="care-select"
                         value={care}
-                        onChange={(e) => {
-                          setCare(e.target.value);
-                          if (error) setError('');
-                        }}
+                        onChange={(e) => { setCare(e.target.value); if (error) setError(''); }}
                         disabled={userType !== 'clinical'}
                         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
                       >
@@ -1704,8 +1136,8 @@ export default function Home() {
                     </div>
                   </>
                 )}
-
-                {/* NEW Button to print case study and questions */}
+  
+                {/* NEW Print button: It now performs the same assessment submission logic as "Generate My Personalized Training Scenarios" but then saves the case study and questions as a PDF and opens it */}
                 <div className="form-item mb-4">
                   <button
                     type="button"
@@ -1727,9 +1159,7 @@ export default function Home() {
                 onClick={handleTakeAssessment}
                 disabled={isLoading}
               >
-                {isLoading
-                  ? 'Starting your assessment, please wait...'
-                  : 'Generate My Personalized Training Scenarios'}
+                {isLoading ? 'Starting your assessment, please wait...' : 'Generate My Personalized Training Scenarios'}
               </button>
             )}
           </div>
@@ -1748,7 +1178,6 @@ export default function Home() {
                     />
                   </div>
                 )}
-  
                 <div className="case-study-header flex flex-col sm:flex-row justify-between items-center">
                   <h3 className="text-xl font-semibold">{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
                   <button
@@ -1761,81 +1190,59 @@ export default function Home() {
                       <span>Loading...</span>
                     ) : isAudioPlaying ? (
                       <>
-                        <span className="icon-volume-up"></span>
-                        Pause
+                        <span className="icon-volume-up"></span> Pause
                       </>
                     ) : (
                       <>
-                        <span className="icon-volume-off"></span>
-                        Listen
+                        <span className="icon-volume-off"></span> Listen
                       </>
                     )}
                   </button>
                 </div>
   
                 <audio ref={audioRef} />
-  
                 {audioError && <div className="audio-error text-red-600">{audioError}</div>}
+                <p className="case-study-scenario text-gray-700 mt-4">{caseStudies[currentCaseStudyIndex].scenario}</p>
   
-                <p className="case-study-scenario text-gray-700 mt-4">
-                  {caseStudies[currentCaseStudyIndex].scenario}
-                </p>
-  
-                {caseStudies[currentCaseStudyIndex].questions &&
-                caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
+                {caseStudies[currentCaseStudyIndex].questions && caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
                   <div className="question-section mt-6">
                     <h4 className="question-header text-lg font-semibold">
-                      {`Question ${currentQuestionIndex + 1}: ${
-                        caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
-                      }`}
+                      {`Question ${currentQuestionIndex + 1}: ${caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question}`}
                     </h4>
-  
-                    {/* Wrap options in a relative container to show hovered definition */}
+                    {/* Options container with hover showing definition */}
                     <div className="relative">
                       <div className="options-group mt-4 space-y-2">
-                        {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
-                          (option) => {
-                            const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
-                            const currentAttempts = attempts[key] || 0;
-                            const feedbackMessage =
-                              feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]
-                                ?.message || '';
-                            const isCorrect = feedbackMessage === 'Correct Answer';
-                            const maxAttemptsReached = currentAttempts >= 2 || isCorrect;
-  
-                            return (
-                              <div className="option-item" key={option.key}>
-                                <label
-                                  className="flex items-center space-x-2"
-                                  onMouseEnter={() => setHoveredOptionDefinition(option.definition || '')}
-                                  onMouseLeave={() => setHoveredOptionDefinition('')}
-                                >
-                                  <input
-                                    type="radio"
-                                    name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
-                                    value={option.key}
-                                    onChange={(e) =>
-                                      handleAnswerChange(
-                                        currentCaseStudyIndex,
-                                        currentQuestionIndex,
-                                        e.target.value
-                                      )
-                                    }
-                                    disabled={maxAttemptsReached}
-                                    checked={
-                                      selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
-                                      option.key
-                                    }
-                                    className="form-radio h-4 w-4 text-blue-600"
-                                  />
-                                  <span className="text-gray-700">
-                                    <strong>{`${option.key}.`}</strong> {option.label}
-                                  </span>
-                                </label>
-                              </div>
-                            );
-                          }
-                        )}
+                        {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map((option) => {
+                          const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
+                          const currentAttempts = attempts[key] || 0;
+                          const feedbackMessage = feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex]?.message || '';
+                          const isCorrect = feedbackMessage === 'Correct Answer';
+                          const maxAttemptsReached = currentAttempts >= 2 || isCorrect;
+                          return (
+                            <div className="option-item" key={option.key}>
+                              <label
+                                className="flex items-center space-x-2"
+                                onMouseEnter={() => setHoveredOptionDefinition(option.definition || '')}
+                                onMouseLeave={() => setHoveredOptionDefinition('')}
+                              >
+                                <input
+                                  type="radio"
+                                  name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
+                                  value={option.key}
+                                  onChange={(e) =>
+                                    handleAnswerChange(currentCaseStudyIndex, currentQuestionIndex, e.target.value)
+                                  }
+                                  disabled={maxAttemptsReached}
+                                  checked={selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] === option.key}
+                                  className="form-radio h-4 w-4 text-blue-600"
+                                />
+                                <span className="text-gray-700">
+                                  <strong>{`${option.key}.`}</strong> {option.label}
+                                </span>
+                              </label>
+                            </div>
+                          );
+                        })}
                       </div>
                       {hoveredOptionDefinition && (
                         <div className="definition-tooltip absolute right-0 top-0 bg-gray-100 border border-gray-300 p-2 rounded shadow">
@@ -1845,9 +1252,7 @@ export default function Home() {
                     </div>
                   </div>
                 ) : (
-                  <p className="no-questions text-gray-700 mt-4">
-                    No questions available for this case study.
-                  </p>
+                  <p className="no-questions text-gray-700 mt-4">No questions available for this case study.</p>
                 )}
               </div>
             </div>
