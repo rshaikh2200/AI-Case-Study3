@@ -1171,7 +1171,7 @@ export default function Home() {
       ],
     },
     
-    'Neurology': {
+    'Stroke Center': {
       'Physician': [
         'Neurology'
         
