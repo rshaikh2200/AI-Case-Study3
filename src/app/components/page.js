@@ -200,6 +200,27 @@ export default function Home() {
 
   // State variables for sessionID and workflowData
   const [sessionID, setSessionID] = useState('');
+  const [workflowData, setWorkflowData] = useState([])
+
+  const audioRef = useRef(null);
+
+  // State to track current question within a case study
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  // New state variables for feedback messages and attempts
+  const [feedbackMessages, setFeedbackMessages] = useState({});
+  const [attempts, setAttempts] = useState({});
+
+  // State variables for score and result details
+  const [totalScore, setTotalScore] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0); // New state for correct answers
+  const [resultDetails, setResultDetails] = useState([]);
+
+  // State variable to track current result case study
+  const [currentResultCaseStudyIndex, setCurrentResultCaseStudyIndex] = useState(0);
+
+  // State variables for sessionID and workflowData
+  const [sessionID, setSessionID] = useState('');
   const [workflowData, setWorkflowData] = useState([]);
 
   useEffect(() => {
