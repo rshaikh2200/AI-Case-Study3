@@ -1172,28 +1172,22 @@ export default function Home() {
     },
     
     'Stroke Center': {
-      'Medical Doctor': [
-        'Neurology'
-        
-      ],
-      'Nurse Practitioner': [
-        'Neurology'
-      ],
-      'Physician Assistant': [
-        'Neurology'
-        
-      ],
-      'Registered Nurse': [
-        'Neurology'
-      ],
-
-        
-      ],
-      'Tech Staff': [
-        'Neurology'
-      ],
-      
-    },
+  'Medical Doctor': [
+    'Neurology'
+  ],
+  'Nurse Practitioner': [
+    'Neurology'
+  ],
+  'Physician Assistant': [
+    'Neurology'
+  ],
+  'Registered Nurse': [
+    'Neurology'
+  ],
+  'Tech Staff': [
+    'Neurology'
+  ]
+}
     
     'Operating Room': {
       'Surgeon': [
