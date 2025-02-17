@@ -1270,7 +1270,7 @@ export default function Home() {
     setSpecialization('');
   }, [department, role]);
 
-  const clinicalDepartments = ['Operating Room', 'Transplant', 'Neurology', 'Radiology'];
+  const clinicalDepartments = ['Operating Room', 'Transplant', 'Stroke Centery', 'Radiology'];
   
 
   useEffect(() => {
