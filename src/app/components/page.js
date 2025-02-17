@@ -1173,7 +1173,7 @@ export default function Home() {
 
     
     'Stroke Center': {
-      'Physician': [
+      'Medical Doctor': [
         'Neurology'
         
       ],
