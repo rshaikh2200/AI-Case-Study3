@@ -199,8 +199,8 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Extract  medical case scenarios text from ${retrievedCasesText} and search open source hospital incident reports The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.  After retreiving the relevant scenarios sumarize 4 case scenarios in 250 words without compromsing the clinical integreity of the scenario. Each scenario should have unique situation, and medical error.
-The summarized scenario should: 
+    META_PROMPT = `Extract  medical case study text from ${retrievedCasesText} and search open source hospital incident reports The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.  After retreiving the relevant scenarios write 4 similar medical case studies in 250 words without compromsing the clinical integreity of the scenario. Each medical case study should just include the scenario, and medical error that occured.
+The medical case study should: 
 - **Include the following details before the case study:**
   - **Role:** Specify the role of the individual involved.
   - **Department:** Indicate the department where the scenario takes place.
