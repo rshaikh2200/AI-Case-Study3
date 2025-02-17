@@ -199,7 +199,7 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Extract only the 4 medical case scenarios text from ${retrievedCasesText} and search open source medical literature—including medical forms, news articles, hospital incident reports, WHO publications, and medical journals for medical case scenarios with medical errors that is relevant and direct for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.  After retreiving the relevant scenarios sumarize it in 200 words without compromsing the clinical integreity of the scenario. 
+    META_PROMPT = `Extract  medical case scenarios text from ${retrievedCasesText} and search open source hospital incident reports The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.  After retreiving the relevant scenarios sumarize 4 case scenarios in 250 words without compromsing the clinical integreity of the scenario. Each scenario should have unique situation, and medical error.
 The summarized scenario should: 
 - **Include the following details before the case study:**
   - **Role:** Specify the role of the individual involved.
@@ -208,9 +208,10 @@ The summarized scenario should:
   - **Care:** Mention the care level of the role.
 
 - ** Sumarized Case Study Content:**
-  - The sumarized case study should be dirrect tone, and only feature scenario, different medical proffesionals involved, medical error, and should not include how the error could have been fixed or what the team would have done to avoid it. The clinical integrity shouuld remain intact.
+  - The sumarized case study should be dirrect in tone, and should not include any country names or descriptive words.
   - Use unique patient, and medical staff names from various continents (America, Canada, South America, Europe, Asia, Australia) to reflect global diversity. 
   - The sumarize case study content should be modify to have different names of procedure, name of medications, and speciality. However do not change the clinical integratiy of the new scenario.
+  - If the scenario states medical dossage state the quantity with proper units.
     
     
     
