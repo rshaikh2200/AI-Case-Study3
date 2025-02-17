@@ -207,11 +207,12 @@ The medical case study should:
   - **Specialization:** Mention the specialization of the role.
   - **Care:** Mention the care level of the role.
 
-- ** Sumarized Case Study Content:**
+- ** Medical Case Study Content:**
   - The sumarized case study should be dirrect in tone, and should not include any country names or descriptive words.
   - Use unique patient, and medical staff names from various continents (America, Canada, South America, Europe, Asia, Australia) to reflect global diversity. 
   - The sumarize case study content should be modify to have different names of procedure, name of medications, and speciality. However do not change the clinical integratiy of the new scenario.
   - If the scenario states medical dossage state the quantity with proper units.
+  - If ${department} equals Stroke Center the medical case study should focus on areas but not limited to Anticoagulation status, blood pressure, anti patelet status, glucose status lab errors, similar. Some common medical errors the scenario can focus on but shouldnt be limited to our disruption of seizure medication when admitted to hospital, medicine reconcillation, and etc. 
     
     
     
