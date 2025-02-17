@@ -199,29 +199,18 @@ export async function POST(request) {
   let META_PROMPT;
 
   if (userType === 'clinical') {
-    META_PROMPT = `Generate 4 medical case studies, each 200 words, featuring a scenario for a ${care} ${role} specializing in ${specialization}, and working in the ${department} department. Use the following ${retrievedCasesText} as a reference for examples real-world medical error scenarios. Additionally, search current open source medical literature—including medical forms, news articles, hospital incident reports, WHO publications, and medical journals—to incorporate diverse, realistic, and up-to-date hospital medidcal error examples. Use these examples to help generate unique and descriptive scenarios. Make sure that no two case studies repeat the same scenario. Each case study should: 
-
+    META_PROMPT = `Extract only the 4 medical case scenarios text from ${retrievedCasesText} and search open source medical literature—including medical forms, news articles, hospital incident reports, WHO publications, and medical journals for medical case scenarios with medical errors that is relevant and direct for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.  After retreiving the relevant scenarios sumarize it in 200 words without compromsing the clinical integreity of the scenario. 
+The summarized scenario should: 
 - **Include the following details before the case study:**
   - **Role:** Specify the role of the individual involved.
   - **Department:** Indicate the department where the scenario takes place.
   - **Specialization:** Mention the specialization of the role.
   - **Care:** Mention the care level of the role.
 
-- **Case Study Content:**
-  - Each case study should include a different and unique medical error that occurred involving the ${role}. Information regarding medical errors can be found here: ${retrievedCasesText} or through searches of real-world medical error case studies from news articles, medical journals, hospital incident reports, and other open sources.
-  - The medical case study scenario should follow this narrative structure:
-    1) Start by describing the hospital environment dont use simple words like bustling, more descriptive words, and formal words that are use in a professional enviroment.
-    2) Introduce the main character(s) involved in the error, including their roles and pronouns in parentheses beside their name (e.g., Tim (He/Him)).
-    3) Provide details on the patient’s condition, age, and immediate symptoms. No  medical error case scenario generated should use the same patient condition,symptoms, ${role} diagnosis and response.
-    4) Describe the medical decision-making process leading to the error.
-    5) Depict the error occurring through realistic hospital interactions.
-    6) End with the consequences of the error without including a resolution step.
-  - Use unique patient, and medical staff names from various continents (America, Canada, South America, Europe, Asia, Australia) to reflect global diversity. Include a mix of genders and pronouns without explicitly stating ethnicity, and ensure each character has a defined hospital role.
-  - Each medical case study should focus on a different type of medical error. Utilize ${retrievedCasesText} and other reputable sources to incorporate real-world hospital errors scenarios. 
-  - Employ natural, formal dialogue appropriate to a hospital setting.
-  - Illustrate hierarchical deference (e.g., a resident deferring to an attending, a nurse following physician orders).
-  - Include emotions (e.g., concern, stress, hesitation) to reflect high-stakes hospital decision-making.
-  - Do not provide the hospital name, and location. Also just state the department, dont use descriptive words to describe it.
+- ** Sumarized Case Study Content:**
+  - The sumarized case study should be dirrect tone, and only feature scenario, different medical proffesionals involved, medical error, and should not include how the error could have been fixed or what the team would have done to avoid it. The clinical integrity shouuld remain intact.
+  - Use unique patient, and medical staff names from various continents (America, Canada, South America, Europe, Asia, Australia) to reflect global diversity. 
+  - The sumarize case study content should be modify to have different names of procedure, name of medications, and speciality. However do not change the clinical integratiy of the new scenario.
     
     
     
