@@ -181,7 +181,6 @@ export default function Home() {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioError, setAudioError] = useState('');
 
-  const audioRef = useRef(null);
 
   // State to track current question within a case study
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
