@@ -1186,7 +1186,7 @@ export default function Home() {
   ],
   'Tech Staff': [
     'Neurology'
-  ]
+  ],
 }
     
     'Operating Room': {
