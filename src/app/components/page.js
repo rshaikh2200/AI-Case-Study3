@@ -168,60 +168,30 @@ export default function Home() {
   const [fullName, setFullName] = useState('');
   const [language, setLanguage] = useState('english');
   const [showTranslate, setShowTranslate] = useState(true);
-  
-  // NEW State variable for Care
   const [care, setCare] = useState('');
-
-  // Added state variable for certificate popup
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
-
+  
   // Audio-related states
   const [audioUrl, setAudioUrl] = useState(null);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioError, setAudioError] = useState('');
-
-
-  // State to track current question within a case study
+  
+  // Question and scoring states
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-  // New state variables for feedback messages and attempts
   const [feedbackMessages, setFeedbackMessages] = useState({});
   const [attempts, setAttempts] = useState({});
-
-  // State variables for score and result details
   const [totalScore, setTotalScore] = useState(0);
-  const [correctCount, setCorrectCount] = useState(0); // New state for correct answers
+  const [correctCount, setCorrectCount] = useState(0);
   const [resultDetails, setResultDetails] = useState([]);
-
-  // State variable to track current result case study
   const [currentResultCaseStudyIndex, setCurrentResultCaseStudyIndex] = useState(0);
-
-  // State variables for sessionID and workflowData
-  const [sessionID, setSessionID] = useState('');
-  const [workflowData, setWorkflowData] = useState([])
-
-  const audioRef = useRef(null);
-
-  // State to track current question within a case study
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-
-  // New state variables for feedback messages and attempts
-  const [feedbackMessages, setFeedbackMessages] = useState({});
-  const [attempts, setAttempts] = useState({});
-
-  // State variables for score and result details
-  const [totalScore, setTotalScore] = useState(0);
-  const [correctCount, setCorrectCount] = useState(0); // New state for correct answers
-  const [resultDetails, setResultDetails] = useState([]);
-
-  // State variable to track current result case study
-  const [currentResultCaseStudyIndex, setCurrentResultCaseStudyIndex] = useState(0);
-
-  // State variables for sessionID and workflowData
+  
+  // Session and workflow states
   const [sessionID, setSessionID] = useState('');
   const [workflowData, setWorkflowData] = useState([]);
 
+  const audioRef = useRef(null);
+  
   useEffect(() => {
     if (assessmentComplete && totalScore >= 70) {
       setIsCertificateOpen(true);
