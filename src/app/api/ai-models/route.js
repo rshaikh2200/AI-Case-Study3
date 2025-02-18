@@ -197,20 +197,41 @@ export async function POST(request) {
   const retrievedCasesText = similarCaseStudies.join('\n');
 
 
-const META_PROMPT = `Extract  medical case study text from ${retrievedCasesText} and search open source hospital incident reports The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.  After retreiving the relevant scenarios write 4 similar medical case studies in 250 words without compromsing the clinical integreity of the scenario. Each medical case study should just include the scenario, and medical error that occured.
-The medical case study should: 
+const META_PROMPT = `
+Extract medical case study text from ${retrievedCasesText} and search open source hospital incident reports 
+The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct 
+for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.
+
+${
+  department === "Stroke Center"
+    ? `Since the department is a Stroke Center, the 250-word case studies should also address key areas 
+       such as anticoagulation status, blood pressure management, antiplatelet therapy, glucose status, 
+       and potential lab errors. Include examples of medical errors like disruption of seizure 
+       medication or medication reconciliation. Ensure that you do not focus exclusively on these 
+       specific items; incorporate a variety of possible errors while maintaining clinical integrity.`
+    : ""
+}
+
+After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 250 words 
+each, without compromising the clinical integrity of the scenarios. Each case study should only include 
+the scenario and the medical error that occurred.
+
+The medical case study should:
+
 - **Include the following details before the case study:**
   - **Role:** Specify the role of the individual involved.
   - **Department:** Indicate the department where the scenario takes place.
   - **Specialization:** Mention the specialization of the role.
   - **Care:** Mention the care level of the role.
 
-- ** Medical Case Study Content:**
-  - The sumarized case study should be dirrect in tone, and should not include any country names or descriptive words.
-  - Use unique patient, and medical staff names from various continents (America, Canada, South America, Europe, Asia, Australia) to reflect global diversity. 
-  - The sumarize case study content should be modify to have different names of procedure, name of medications, and speciality. However do not change the clinical integratiy of the new scenario.
-  - If the scenario states medical dossage state the quantity with proper units.
-
+- **Medical Case Study Content:**
+  - The summarized case study should be direct in tone, and should not include any country names or 
+    descriptive words.
+  - Use unique patient and medical staff names from various continents (America, Canada, South America, 
+    Europe, Asia, Australia) to reflect global diversity.
+  - The summarized case study content should be modified to have different names of procedures, 
+    medications, and specialities. However, do not change the clinical integrity of the scenario.
+  - If the scenario states medical dosage, specify the quantity with proper units.
     
     
     
