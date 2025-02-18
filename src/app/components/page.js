@@ -1259,11 +1259,7 @@ export default function Home() {
         'Abdominal Transplant'
       ],
     },
-    Communication: {
-      'IT': [],
-      'Patient Experince Coordinator': [],
-      'Program Manager': [],
-    },
+   
   };
 
   // Departments for the dropdown (no longer filtered by userType)
