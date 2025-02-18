@@ -159,7 +159,7 @@ export default function Home() {
   const [department, setDepartment] = useState('');
   const [role, setRole] = useState('');
   const [specialization, setSpecialization] = useState('');
-  const [userType, setUserType] = useState('');
+  const [userType, setUserType] = useState(''); // Kept for internal references, but no longer displayed
   const [showCaseStudies, setShowCaseStudies] = useState(false);
   const [showSafetyStatement, setShowSafetyStatement] = useState(true);
   const [assessmentComplete, setAssessmentComplete] = useState(false);
@@ -199,7 +199,7 @@ export default function Home() {
   }, [assessmentComplete, totalScore]);
  
 
- const generateSpeech = async () => {
+  const generateSpeech = async () => {
     if (!currentCaseStudy) return;
     setIsAudioLoading(true);
     setAudioError('');
@@ -210,7 +210,7 @@ export default function Home() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          input: currentCaseStudy.scenrio,
+          input: currentCaseStudy.scenario,
         }),
       });
 
@@ -308,9 +308,6 @@ export default function Home() {
       // Generate new speech URL for the current case study
       const url = await generateSpeech();
       if (url) {
-        // Save the url to Firestore (if necessary)
-        // ...
-
         if (audioRef.current) {
           playAudio(url);
         }
@@ -384,7 +381,7 @@ export default function Home() {
         userID,
         fullName,
         language,
-        userType,
+        userType,        // still saved, even though no dropdown
         department,
         role,
         specialization,
@@ -393,7 +390,7 @@ export default function Home() {
     } catch (error) {
       console.error('Error saving user inputs:', error.message);
       setError('Failed to save your inputs. Please try again.');
-      throw error; // Propagate error to handleSubmitFinalAssessment
+      throw error; 
     }
   };
 
@@ -402,11 +399,9 @@ export default function Home() {
     if (!aiResponse) return;
 
     try {
-      // Save aiResponse inside an object
       await addDoc(collection(firestore, 'ai_responses'), { 
         aiResponse,
         sessionID,
-        
       });
       console.log('AI response saved successfully.');
     } catch (error) {
@@ -442,7 +437,7 @@ export default function Home() {
     } catch (error) {
         console.error('Error saving case studies:', error.message);
         setError('Failed to save case studies. Please try again.');
-        throw error; // Propagate error to handleSubmitFinalAssessment
+        throw error; 
     }
   };
 
@@ -457,7 +452,6 @@ export default function Home() {
       console.log('Session data saved successfully.');
     } catch (error) {
       console.error('Error saving session data:', error);
-      // Handle error if needed
     }
   };
 
@@ -488,22 +482,19 @@ export default function Home() {
 
   // Handle taking the assessment
   const handleTakeAssessment = () => {
-    if (!userType) {
-      setError('Please select your User Type before proceeding.');
-      return;
-    }
-
+    // Removed User Type checks so Department can be selected freely
     if (!role || !department) {
       setError('Please select your Role and Department before proceeding.');
       return;
     }
 
-    if (userType === 'clinical' && !specialization) {
+    // Removed userType-specific specialization check
+    // Just check if specialization is selected if you want to enforce it:
+    if (!specialization) {
       setError('Please select your Specialization before proceeding.');
       return;
     }
 
-    // Save user inputs when the assessment starts
     saveUserInputs();
 
     const randomSessionID = Math.floor(100000 + Math.random() * 900000).toString();
@@ -523,6 +514,7 @@ export default function Home() {
       const response = await fetch('/api/ai-models', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        // userType still sent, even though no dropdown is displayed
         body: JSON.stringify({ userType, department, role, specialization }),
       });
 
@@ -541,7 +533,6 @@ export default function Home() {
 
       const { caseStudies, aiResponse } = data;
 
-      // Set both caseStudies and aiResponse without merging imageUrl
       setCaseStudies(caseStudies);
       setAiResponse(aiResponse);
 
@@ -587,7 +578,6 @@ export default function Home() {
       currentAttempts >= 2 ||
       (previousFeedback && previousFeedback.message === 'Correct Answer')
     ) {
-      // User has reached maximum attempts or already answered correctly
       setError('No more tries left!');
       return;
     }
@@ -608,10 +598,10 @@ export default function Home() {
 
     if (isCorrect) {
       feedbackMessageNew = 'Correct Answer';
-      hintToShow = ''; // No hint needed when correct
+      hintToShow = ''; 
     } else {
-      const attemptsLeft = 2 - currentAttempts - 1; // Updated to reflect total of 2 attempts
-      hintToShow = hint; // Show hint on every incorrect attempt
+      const attemptsLeft = 2 - currentAttempts - 1; 
+      hintToShow = hint; 
       if (attemptsLeft > 0) {
         feedbackMessageNew = `Incorrect Answer. ${attemptsLeft} try left.`;
       } else {
@@ -619,7 +609,6 @@ export default function Home() {
       }
     }
 
-    // Update the feedback messages
     setFeedbackMessages((prevFeedback) => ({
       ...prevFeedback,
       [caseIndex]: {
@@ -631,13 +620,11 @@ export default function Home() {
       },
     }));
 
-    // Update the attempts
     setAttempts((prevAttempts) => ({
       ...prevAttempts,
       [key]: currentAttempts + 1,
     }));
 
-    // Update the selected answers
     setSelectedAnswers((prevAnswers) => ({
       ...prevAnswers,
       [caseIndex]: {
@@ -646,7 +633,7 @@ export default function Home() {
       },
     }));
 
-    // Get Workflow ID and Name
+    // Save workflow data
     const workflowID = getWorkflowID(caseIndex, questionIndex);
     const workflowName = getWorkflowName(caseIndex, questionIndex);
     const timestamp = new Date();
@@ -674,7 +661,7 @@ export default function Home() {
 
     saveWorkflowData(dataToSave);
 
-    // Move to next question or case study after feedback with 1-second delay
+    // Move to next question or case study after 1 second if correct or out of attempts
     if (isCorrect || currentAttempts + 1 >= 2) {
       setTimeout(() => {
         const workflowID = getWorkflowID(caseIndex, questionIndex);
@@ -713,7 +700,6 @@ export default function Home() {
     let totalQuestions = 0;
     const details = [];
 
-    // Iterate over each case study
     caseStudies.forEach((caseStudy, caseIndex) => {
       const caseDetail = {
         caseStudyNumber: caseIndex + 1,
@@ -730,15 +716,12 @@ export default function Home() {
         const correctAnswer = aiResponse[caseIndex].questions[questionIndex].correctAnswer;
         const correctKey = correctAnswer.split(')')[0].trim();
 
-        const key = `${caseIndex}-${questionIndex}`;
         const feedbackMessage = feedbackMessages[caseIndex]?.[questionIndex];
 
         let isCorrect = false;
         if (feedbackMessage?.message === 'Correct Answer') {
           isCorrect = true;
           score += 1;
-        } else {
-          isCorrect = false;
         }
 
         caseDetail.questions.push({
@@ -801,7 +784,6 @@ export default function Home() {
     }
   };
 
-  // Handler to navigate back to main page and clear current session data
   const handleBackToMainPage = async () => {
     setIsLoading(true);
     setError(null);
@@ -830,7 +812,7 @@ export default function Home() {
     }
   };
 
-  // Function to delete all documents in a collection
+  // Delete collection function (unused, remains intact)
   const deleteAllDocumentsInCollection = async (collectionName) => {
     const collectionRef = collection(firestore, collectionName);
     const q = query(collectionRef);
@@ -844,7 +826,7 @@ export default function Home() {
     await batch.commit();
   };
 
-  // Modified handlePrint function
+  // handlePrint function (unchanged aside from context usage)
   const handlePrint = async () => {
     setIsLoading(true);
     setError(null);
@@ -888,12 +870,12 @@ export default function Home() {
       });
       yPosition += 8;
 
-      // Add a horizontal line
+      // Horizontal line
       docPDF.setLineWidth(0.3);
       docPDF.line(margin, yPosition, pageWidth - margin, yPosition);
       yPosition += 8;
 
-      // Iterate through each case study to add details
+      // Case details
       resultDetails.forEach((caseDetail, index) => {
         if (index !== 0) {
           docPDF.addPage();
@@ -902,13 +884,13 @@ export default function Home() {
 
         const caseStudy = caseStudies[index];
 
-        // Add Case Study Title
+        // Case Study Title
         docPDF.setFontSize(12);
         docPDF.setFont('helvetica', 'bold');
         docPDF.text(`Case Study ${caseDetail.caseStudyNumber}`, margin, yPosition);
         yPosition += 6;
 
-        // Add Scenario
+        // Scenario
         docPDF.setFontSize(10);
         docPDF.setFont('helvetica', 'normal');
         const splitScenarioText = docPDF.splitTextToSize(
@@ -918,7 +900,7 @@ export default function Home() {
         docPDF.text(splitScenarioText, margin, yPosition);
         yPosition += splitScenarioText.length * 5 + 2;
 
-        // Iterate through each question
+        // Questions
         caseDetail.questions.forEach((question) => {
           const questionNumber = question.questionNumber;
           const questionText = question.questionText;
@@ -943,7 +925,7 @@ export default function Home() {
             ? `${correctOption.key}. ${correctOption.label}`
             : 'No Answer';
 
-          // Add Question Number and Text
+          // Question text
           docPDF.setFontSize(10);
           docPDF.setFont('helvetica', 'bold');
           const questionHeader = `Question ${questionNumber}: ${questionText}`;
@@ -954,7 +936,7 @@ export default function Home() {
           docPDF.text(splitQuestionHeader, margin, yPosition);
           yPosition += splitQuestionHeader.length * 4 + 2;
 
-          // Add Your Answer
+          // User Answer
           docPDF.setFontSize(10);
           docPDF.setFont('helvetica', 'bold');
           docPDF.text('Your Answer:', margin + 2, yPosition);
@@ -969,7 +951,7 @@ export default function Home() {
           docPDF.text(splitUserAnswer, margin + 4, yPosition);
           yPosition += splitUserAnswer.length * 4 + 2;
 
-          // Add Correct Answer
+          // Correct Answer
           docPDF.setFontSize(10);
           docPDF.setFont('helvetica', 'bold');
           docPDF.text('Correct Answer:', margin + 2, yPosition);
@@ -984,10 +966,10 @@ export default function Home() {
           docPDF.text(splitCorrectAnswer, margin + 4, yPosition);
           yPosition += splitCorrectAnswer.length * 4 + 6;
 
-          // Check if yPosition exceeds page height
           if (yPosition > pageHeight - margin - 20) {
-            // For simplicity, assume content fits or handle pagination logic here
-            yPosition = pageHeight - margin - 20;
+            // Basic pagination logic
+            docPDF.addPage();
+            yPosition = margin;
           }
         });
       });
@@ -1182,7 +1164,7 @@ export default function Home() {
     }
   };
 
-  // useEffect to detect page refresh and perform cleanup
+  // Handle reload
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const navigationEntries = window.performance.getEntriesByType('navigation');
@@ -1194,41 +1176,35 @@ export default function Home() {
 
   // Current Case Study
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
-
   const isLastQuestion =
     currentQuestionIndex === currentCaseStudy?.questions.length - 1;
   const isLastCaseStudy = currentCaseStudyIndex === caseStudies.length - 1;
 
+  // Department/Role/Specialization map
   const departmentRoleSpecializationMap = {
-    'Radiology': {
+    Radiology: {
       'Physician': [
         'Radiology'
-        
       ],
       'Nurse Practitioner': [
         'Radiology'
       ],
       'Radiology Technician': [
         'Radiology'
-        
       ],
       'Physican Associate': [
         'Radiology'
       ],
     },
-
-    
     'Stroke Center': {
       'Medical Doctor': [
         'Neurology'
-        
       ],
       'Nurse Practitioner': [
         'Neurology'
       ],
       'Physician Assistant': [
         'Neurology'
-        
       ],
       'Registered Nurse': [
         'Neurology'
@@ -1237,7 +1213,6 @@ export default function Home() {
         'Neurology'
       ],
     },
-    
     'Operating Room': {
       'Surgeon': [
         'General Surgery',
@@ -1264,7 +1239,7 @@ export default function Home() {
         'Cardiothoracic Surgery'
       ],
     },
-    'Transplant': {
+    Transplant: {
       'Surgeon': [
         'Kidney Transplant',
         'Heart Transplant',
@@ -1284,15 +1259,15 @@ export default function Home() {
         'Abdominal Transplant'
       ],
     },
-
-    
-    'Communication': {
+    Communication: {
       'IT': [],
       'Patient Experince Coordinator': [],
       'Program Manager': [],
     },
-    
   };
+
+  // Departments for the dropdown (no longer filtered by userType)
+  const departmentsToUse = Object.keys(departmentRoleSpecializationMap);
 
   const [rolesToUse, setRolesToUse] = useState([]);
   const [specializationsToUse, setSpecializationsToUse] = useState([]);
@@ -1320,20 +1295,10 @@ export default function Home() {
     setSpecialization('');
   }, [department, role]);
 
-  const clinicalDepartments = ['Operating Room', 'Transplant', 'Stroke Center', 'Radiology'];
-  
-
   useEffect(() => {
     const randomID = Math.floor(100000 + Math.random() * 900000).toString();
     setUserID(randomID);
   }, []);
-
-  let departmentsToUse = [];
-  if (userType === 'clinical') {
-    departmentsToUse = clinicalDepartments;
-  } else if (userType === 'non-clinical') {
-    departmentsToUse = nonClinicalDepartments;
-  }
 
   useEffect(() => {
     window.googleTranslateElementInit = () => {
@@ -1611,27 +1576,7 @@ export default function Home() {
               <div className="professional-info bg-white rounded-lg shadow p-6">
                 <h2 className="text-lg font-semibold mb-4">Professional Information</h2>
   
-                <div className="form-item mb-4">
-                  <label htmlFor="user-type-select" className="block text-sm font-medium text-gray-700">
-                    User Type
-                  </label>
-                  <select
-                    id="user-type-select"
-                    value={userType}
-                    onChange={(e) => {
-                      setUserType(e.target.value);
-                      setDepartment('');
-                      setRole('');
-                      setSpecialization('');
-                      if (error) setError('');
-                    }}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                  >
-                    <option value="">Select</option>
-                    <option value="clinical">Clinical</option>
-                    <option value="non-clinical">Non-Clinical</option>
-                  </select>
-                </div>
+                {/* Removed the User Type dropdown entirely */}
   
                 <div className="form-item mb-4">
                   <label htmlFor="department-select" className="block text-sm font-medium text-gray-700">
@@ -1644,8 +1589,7 @@ export default function Home() {
                       setDepartment(e.target.value);
                       if (error) setError('');
                     }}
-                    disabled={!userType}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
                   >
                     <option value="">Select Department</option>
                     {departmentsToUse.map((dept) => (
@@ -1679,54 +1623,49 @@ export default function Home() {
                   </select>
                 </div>
   
-                {/* Only show if user is clinical */}
-                {userType === 'clinical' && (
-                  <>
-                    <div className="form-item mb-4">
-                      <label htmlFor="specialization-select" className="block text-sm font-medium text-gray-700">
-                        Specialization
-                      </label>
-                      <select
-                        id="specialization-select"
-                        value={specialization}
-                        onChange={(e) => {
-                          setSpecialization(e.target.value);
-                          if (error) setError('');
-                        }}
-                        disabled={!role}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
-                      >
-                        <option value="">Select Specialization</option>
-                        {specializationsToUse.map((spec) => (
-                          <option key={spec} value={spec}>
-                            {spec}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                {/* Always show Specialization dropdown */}
+                <div className="form-item mb-4">
+                  <label htmlFor="specialization-select" className="block text-sm font-medium text-gray-700">
+                    Specialization
+                  </label>
+                  <select
+                    id="specialization-select"
+                    value={specialization}
+                    onChange={(e) => {
+                      setSpecialization(e.target.value);
+                      if (error) setError('');
+                    }}
+                    disabled={!role}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
+                  >
+                    <option value="">Select Specialization</option>
+                    {specializationsToUse.map((spec) => (
+                      <option key={spec} value={spec}>
+                        {spec}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-                    {/* NEW Care dropdown - only visible if userType is clinical */}
-                    <div className="form-item mb-4">
-                      <label htmlFor="care-select" className="block text-sm font-medium text-gray-700">
-                        Care
-                      </label>
-                      <select
-                        id="care-select"
-                        value={care}
-                        onChange={(e) => {
-                          setCare(e.target.value);
-                          if (error) setError('');
-                        }}
-                        disabled={userType !== 'clinical'}
-                        className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
-                      >
-                        <option value="">Select Care</option>
-                        <option value="Inpatient">Inpatient</option>
-                        <option value="Outpatient">Outpatient</option>
-                      </select>
-                    </div>
-                  </>
-                )}
+                {/* Renamed "Care" to "Care delivery setting" and removed the userType-based disable */}
+                <div className="form-item mb-4">
+                  <label htmlFor="care-select" className="block text-sm font-medium text-gray-700">
+                    Care delivery setting
+                  </label>
+                  <select
+                    id="care-select"
+                    value={care}
+                    onChange={(e) => {
+                      setCare(e.target.value);
+                      if (error) setError('');
+                    }}
+                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
+                  >
+                    <option value="">Select Care delivery setting</option>
+                    <option value="Inpatient">Inpatient</option>
+                    <option value="Outpatient">Outpatient</option>
+                  </select>
+                </div>
               </div>
             </div>
           )}
