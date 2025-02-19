@@ -1646,7 +1646,7 @@ export default function Home() {
                 {/* Renamed "Care" to "Care delivery setting" and removed the userType-based disable */}
                 <div className="form-item mb-4">
                   <label htmlFor="care-select" className="block text-sm font-medium text-gray-700">
-                    Care delivery setting
+                    Care Delivery Setting
                   </label>
                   <select
                     id="care-select"
@@ -1657,7 +1657,7 @@ export default function Home() {
                     }}
                     className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
                   >
-                    <option value="">Select Care delivery setting</option>
+                    <option value="">Select Care Delivery Setting</option>
                     <option value="Inpatient">Inpatient</option>
                     <option value="Outpatient">Outpatient</option>
                   </select>
