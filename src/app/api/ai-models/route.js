@@ -443,7 +443,7 @@ The medical case study should:
   
 
   try {
-    const deepseekResponse = await axios.post('https://api.deepseekr1.com/v1/chat/completions', {
+    const deepseekResponse = await axios.post('https://api.deepseek.com', {
       model: "deepseek-reasoner",
       messages: [
         {
