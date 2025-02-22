@@ -6,6 +6,8 @@ import { OpenAI } from 'openai';
 import axios from 'axios';
 import FormData from 'form-data';
 
+
+
 export const dynamic = 'force-dynamic';
 
 function parseCaseStudies(responseText) {
@@ -131,6 +133,7 @@ export async function POST(request) {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
   const PINECONE_ENV = process.env.PINECONE_ENVIRONMENT;
+  const DEEPSEEK_Api_Key = process.env.DEEPSEEK_API_KEY;
 
   const pc = new Pinecone({
     apiKey: PINECONE_API_KEY,
@@ -194,7 +197,8 @@ export async function POST(request) {
   // Construct the prompt with retrieved case studies
   const retrievedCasesText = similarCaseStudies.join('\n');
 
-  const META_PROMPT = `
+
+const META_PROMPT = `
 Extract medical case study text from ${retrievedCasesText} and search open source hospital incident reports 
 The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct 
 for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.
@@ -358,7 +362,7 @@ The medical case study should:
     }
     \`\`\`
     
-    Ensure that:
+    **Ensure that:**
     
     - The JSON is **well-formatted** and **free of any syntax errors**.
     - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
@@ -397,7 +401,7 @@ The medical case study should:
                 "D": "Validate and Verify"
               },
               "correct answer": "D) Validate and Verify",
-              "Hint": "Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information \"fit in with my past experience or other information I may have at this time?"
+              "Hint": "Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?"
             },
             {
               "question": "If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying?",
@@ -436,11 +440,9 @@ The medical case study should:
     
     Do not include any additional text outside of the JSON structure.`;
 
+  
+
   try {
-    const deepseekApiKey = process.env.DEEPSEEK_API_KEY;
-    if (!deepseekApiKey) {
-      throw new Error('DeepSeek API key not configured.');
-    }
     const deepseekResponse = await axios.post('https://api.deepseekr1.com/v1/chat/completions', {
       model: "deepseek-reasoner",
       messages: [
@@ -451,18 +453,18 @@ The medical case study should:
       ],
       temperature: 0.5,
       stream: false,
-    }, {
-      headers: {
-        'Authorization': `Bearer ${deepseekApiKey}`,
-        'Content-Type': 'application/json'
-      }
     });
+    
 
-    if (!deepseekResponse.data.choices || deepseekResponse.data.choices.length === 0) {
-      throw new Error('No choices returned from DeepSeek R1 API.');
+    if (!response.choices || response.choices.length === 0) {
+      throw new Error('No choices returned from OpenAI.');
     }
 
-    const aiResponse = deepseekResponse.data.choices[0].message.content;
+    const aiResponse = response.choices[0].message.content;
+
+    if (!aiResponse) {
+      throw new Error('No content returned from OpenAI.');
+    }
 
     console.log('Raw Model Output:', aiResponse);
 
