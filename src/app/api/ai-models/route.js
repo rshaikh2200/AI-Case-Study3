@@ -759,4 +759,4 @@ async function fetchImagesForCaseStudies(
     throw error;
   }
 }
-}
+
