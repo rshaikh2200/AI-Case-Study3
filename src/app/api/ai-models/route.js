@@ -6,10 +6,54 @@ import { OpenAI } from 'openai';
 import axios from 'axios';
 import FormData from 'form-data';
 
+// -------------------------
+// NEW FUNCTION: Google Search API integration for Medical Error Case Studies
+// -------------------------
+async function getMedicalCaseStudiesFromGoogle() {
+  try {
+    // Set your search parameters here – adjust the query and search_depth as needed.
+    const searchTerm = "Medical Error Case Studies";
+    const searchDepth = 10;
+    const googleApiKey = process.env.GOOGLE_API_KEY;
+    const googleCseId = process.env.GOOGLE_CSE_ID;
+    if (!googleApiKey || !googleCseId) {
+      throw new Error("Google API key or Custom Search Engine ID not configured.");
+    }
+    
+    // Construct the request URL and parameters
+    const serviceUrl = 'https://www.googleapis.com/customsearch/v1';
+    const params = {
+      q: searchTerm,
+      key: googleApiKey,
+      cx: googleCseId,
+      num: searchDepth,
+      // Optionally, add a site filter if you wish to target a specific website:
+      // siteSearch: 'jointcommission.org'
+    };
 
+    // Call the Google Search API
+    const response = await axios.get(serviceUrl, { params });
+    const results = response.data;
+    
+    let combinedResultsText = "";
+    if (results && results.items && results.items.length > 0) {
+      results.items.forEach((item) => {
+        // Combine the link and snippet from each result
+        combinedResultsText += `Source: ${item.link} - ${item.snippet}\n`;
+      });
+    } else {
+      combinedResultsText = "No Google search results found for medical error case studies.";
+    }
+    return combinedResultsText;
+  } catch (error) {
+    console.error("Error in getMedicalCaseStudiesFromGoogle:", error.message);
+    return "Error retrieving Google search results.";
+  }
+}
 
-export const dynamic = 'force-dynamic';
-
+// -------------------------
+// Existing functions (unchanged)
+// -------------------------
 function parseCaseStudies(responseText) {
   try {
     let jsonString = '';
@@ -133,7 +177,6 @@ export async function POST(request) {
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
   const PINECONE_ENV = process.env.PINECONE_ENVIRONMENT;
-  const DEEPSEEK_Api_Key = process.env.DEEPSEEK_API_KEY;
 
   const pc = new Pinecone({
     apiKey: PINECONE_API_KEY,
@@ -194,11 +237,14 @@ export async function POST(request) {
     );
   }
 
-  // Construct the prompt with retrieved case studies
-  const retrievedCasesText = similarCaseStudies.join('\n');
+  // NEW: Retrieve additional case studies scenarios from Google Search API
+  const googleResultsText = await getMedicalCaseStudiesFromGoogle();
 
+  // Combine the Pinecone results and Google search results into one text block
+  const retrievedCasesText = similarCaseStudies.join('\n') + "\n" + googleResultsText;
 
-const META_PROMPT = `
+  // Construct the meta prompt with retrieved case studies and Google search results
+  const META_PROMPT = `
 Extract medical case study text from ${retrievedCasesText} and search open source hospital incident reports 
 The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct 
 for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.
@@ -362,7 +408,7 @@ The medical case study should:
     }
     \`\`\`
     
-    **Ensure that:**
+    Ensure that:
     
     - The JSON is **well-formatted** and **free of any syntax errors**.
     - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
@@ -370,7 +416,7 @@ The medical case study should:
     
     Do not include any additional text outside of the JSON structure.
     
-    **Note:**
+    **Ensure that:**
     
     - Each **Error Prevention Tool** is used **exactly once** across all case studies and questions.
     - **No repetition** of the same **Error Prevention Tool** occurs within the same case study or across different case studies.
@@ -443,8 +489,8 @@ The medical case study should:
   
 
   try {
-    const deepseekResponse = await axios.post('https://api.deepseek.com', {
-      model: "deepseek-reasoner",
+    const response = await openai.chat.completions.create({
+      model: "ft:gpt-4o-mini-2024-07-18:personal::AwFckKFA",
       messages: [
         {
           role: "user",
