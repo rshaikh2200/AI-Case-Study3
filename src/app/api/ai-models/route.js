@@ -143,8 +143,8 @@ export async function POST(request) {
   });
 
   // Extract request body
-  const { department, role, specialization, userType } = await request.json();
-  const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization};`;
+  const { department, role, specialization, userType, care } = await request.json();
+  const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization}, Care: ${care};`;
 
   // Create an embedding for the input query
   let queryEmbedding;
@@ -194,26 +194,48 @@ export async function POST(request) {
   // Construct the prompt with retrieved case studies
   const retrievedCasesText = similarCaseStudies.join('\n');
 
-  let META_PROMPT;
+  const META_PROMPT = `
+Extract medical case study text from ${retrievedCasesText} and search open source hospital incident reports 
+The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct 
+for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.
 
-  if (userType === 'clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} as examples of real world medical case studies scenarios to help generate detailed and descriptive medical case studies. Each case study should:
+${
+  department === "Stroke Center"
+    ? `Since the department is a Stroke Center, the 250-word case studies should focus on stroke cases such code stroke, brain emergencies and other stroke related cases found from the extracted from ${retrievedCasesText}. It should also address key areas 
+       such as anticoagulation status, blood pressure management, antiplatelet therapy, glucose status, 
+       and potential lab errors. Include examples of medical errors like disruption of seizure 
+       medication or medication reconciliation. Ensure that you do not focus exclusively on these 
+       specific items; incorporate a variety of possible errors while maintaining clinical integrity.`
+    : ""
+}
 
-    - **Include the following details before the case study:**
-      - **Role:** Specify the role of the individual involved.
-      - **Department:** Indicate the department where the scenario takes place.
-      - **Specialization:** Mention the specialization of the role.
+After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 250 words 
+each, without compromising the clinical integrity of the scenarios. Each case study should only include 
+the scenario and the medical error that occurred.
+
+The medical case study should:
+
+- **Include the following details before the case study:**
+  - **Role:** Specify the role of the individual involved.
+  - **Department:** Indicate the department where the scenario takes place.
+  - **Specialization:** Mention the specialization of the role.
+  - **Care:** Mention the care level of the role.
+
+- **Medical Case Study Content:**
+  - The summarized case study should be direct in tone, and should not include any country names or 
+    descriptive words.
+  - Use unique patient and medical staff names from various continents (America, Canada, South America, 
+    Europe, Asia, Australia) to reflect global diversity.
+  - The summarized case study content should be modified to have different names of procedures, 
+    medications, and specialities. However, do not change the clinical integrity of the scenario.
+  - If the scenario states medical dosage, specify the quantity with proper units.
     
-    - **Case Study Content:**
-      - Include a different medical error that occurred by the ${role} or by the team.
-      - Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
-      - The medical studies should be detailed and focus on the situation, medical error, and consequences.
-      - Each medical case study should include a different medical error that occured in the scenario. Use the following ${retrievedCasesText} for information about meddical errors that occur in Hopsitals.
-      - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
-      - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
+    
     
     - **For each case study, create 3 unique multiple-choice questions that:**
       - Have 4 option choices each.
+      - Each Question should correctly narration and perspective of the question. (e.g. Dr. Harper should be addressing Dr. Chen related to his concerns since Dr.Chen made the oversight, The night shift staft should be asking clarifying questions in this case and not Dr. O'Reilly since the handoff is directed at them, The reciever of the information should be reading and repeating back the information back the information).
+      - Debrief is typically a group effort the question should no reflect debrief being done by a single individual.
       - Provide the correct answer choice and answer in the format: correct answer: C) Validate and Verify
       - Provide the hint in the format: Hint: Double-checking and confirming accuracy before proceeding.
       - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
@@ -251,7 +273,7 @@ export async function POST(request) {
         Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
     
     b. Debrief
-        Definition: Reflect on what went well, what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
+        Definition: Reflect on what went well with team , what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
     
     c. ARCC
         Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
@@ -290,6 +312,7 @@ export async function POST(request) {
             "department" : "${department}",
             "role" : "${role}",
             "specialization": "${specialization}",
+            "care": "${care}",
         },
     
           "caseStudy": "Case Study 1",
@@ -335,7 +358,7 @@ export async function POST(request) {
     }
     \`\`\`
     
-    **Ensure that:**
+    Ensure that:
     
     - The JSON is **well-formatted** and **free of any syntax errors**.
     - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
@@ -358,6 +381,7 @@ export async function POST(request) {
         "department" : "Operating Room",
         "role" : "Surgeon",
         "specialization": "General Surgery"
+        "care": "inpatient"
     },
       "caseStudies": [
         {
@@ -365,7 +389,7 @@ export async function POST(request) {
           "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
           "questions": [
             {
-              "question": "Dr. Patel could have avoided this mix-up by practicing which Error Prevention Tool, which focuses on verifying actions with a internal verification and checking with qualified source?",
+              "question": "Whcich EPT practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
               "options": {
                 "A": "Peer Checking and Coaching",
                 "B": "Debrief",
@@ -373,7 +397,7 @@ export async function POST(request) {
                 "D": "Validate and Verify"
               },
               "correct answer": "D) Validate and Verify",
-              "Hint": "Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?"
+              "Hint": "Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information \"fit in with my past experience or other information I may have at this time?"
             },
             {
               "question": "If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying?",
@@ -387,7 +411,7 @@ export async function POST(request) {
               "Hint": "Ask a question to gently prompt the other person of potential safety issue"
             },
             {
-              "question": "After the surgery, Dr. Patel and his team discussed ways to prevent future errors. This reflection represents which Error Prevention Tool, designed to identify improvements and assign follow-up actions?",
+              "question": "If Dr.Patel, along with the team, had taken a moment after surgery to reflext on the day's task, and discuss what went well or what didn't, whihc EPT practice would they applied?",
               "options": {
                 "A": "ARCC",
                 "B": "Debrief",
@@ -412,248 +436,33 @@ export async function POST(request) {
     
     Do not include any additional text outside of the JSON structure.`;
 
-  } else if (userType === 'non-clinical') {
-    META_PROMPT = `Please generate 4 medical case studies, each 200 words, featuring a scenario for a ${role} in the ${department} department specializing in ${specialization}. Use the following ${retrievedCasesText} to help generate detailed and descriptive medical case studies. Each case study should:
-
-    - **Include the following details before the case study:**
-      - **Role:** Specify the role of the individual involved.
-      - **Department:** Indicate the department where the scenario takes place.
-      - **Specialization:** Mention the specialization of the role.
-    
-    - **Case Study Content:**
-      - Include a different medical error that occurred by the ${role} or by the team.
-      - Incorporate characters with diverse ethnicity names, and genders. For each character specify their pronouns in parentheses, use diverse pronouns. (don't provide the ethnicity)
-      - The medical studies should be detailed and focus on the situation, medical error, and consequences.
-      - The case study should use different styles of narrating such as including emotions between characters, describe the environment, include different medical employees, and be more descriptive. Use formal and English.
-      - Do not include the steps taken to resolve the issue; focus solely on presenting the scenario.
-    
-    - **For each case study, create 3 unique multiple-choice questions that:**
-      - Have 4 option choices each.
-      - Provide the correct answer choice and answer in the format: correct answer: C) Validate and Verify
-      - Provide the hint in the format: Hint: Double-checking and confirming accuracy before proceeding.
-      - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
-      - The question should be strictly from the perspective of the ${role}.
-      - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
-      - Include clues by using buzzwords or synonyms from the correct answer's definition.
-      - Do not explicitly mention the prevention tools by name in the question header.
-    
-    - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
-      - **Question Structure**
-      
-        **Case Study 1:**
-        - Question 1: Focuses on Peer Checking and Coaching
-        - Question 2: Focuses on Debrief
-        - Question 3: Focuses on ARCC
-    
-        **Case Study 2:**
-        - Question 1: Focuses on Validate and Verify
-        - Question 2: Focuses on STAR
-        - Question 3: Focuses on No Distraction Zone
-    
-        **Case Study 3:**
-        - Question 1: Focuses on Effective Handoffs
-        - Question 2: Focuses on Read and Repeat Back
-        - Question 3: Focuses on Ask Clarifying Questions
-    
-        **Case Study 4:**
-        - Question 1: Focuses on Alphanumeric Language
-        - Question 2: Focuses on SBAR
-        - Question 3: Focuses on No Distraction Zone
-    - **Use the following 11 Error Prevention Tools and Definitions:**
-    
-    a. Peer Checking and Coaching
-        Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
-    
-    b. Debrief
-        Definition: Reflect on what went well, what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
-    
-    c. ARCC
-        Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
-    
-    d. Validate and Verify
-        Definition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).
-    
-    e. STAR
-        Definition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).
-    
-    f. No Distraction Zone
-        Definition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like "Stand by" or "Hold on".
-    
-    g. Effective Handoffs
-        Definition: Six important principles that make an Effective Handoffs: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
-    
-    h. Read and Repeat Back
-        Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
-    
-    i. Ask Clarifying Questions
-        Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
-    
-    j. Using Alphanumeric Language
-        Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
-    
-    k. SBAR
-        Definition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions.), Recommendations (what is my recommendation, request, or plan?)
-    
-    Ensure the following format is strictly followed and output the entire response as valid JSON.
-    
-    \`\`\`json
-    {
-      "caseStudies": [
-        {
-          },
-            "department" : "${department}",
-            "role" : "${role}",
-        },
-    
-          "caseStudy": "Case Study 1",
-          "scenario": "Description of the case study scenario.",
-          "questions": [
-            {
-              "question": "Question 1 text",
-              "options": {
-                "A": "Option A",
-                "B": "Option B",
-                "C": "Option C",
-                "D": "Option D"
-              },
-              "correct answer": "C) correct answer",
-              "Hint": "1 sentence sumarized definition of correct answer choice."
-            },
-            {
-              "question": "Question 2 text",
-              "options": {
-                "A": "Option A",
-                "B": "Option B",
-                "C": "Option C",
-                "D": "Option D"
-              },
-              "correct answer": "b) correct answer",
-              "Hint": "1 sentence sumarized definition of correct answer choice."
-            },
-            {
-              "question": "Question 3 text",
-              "options": {
-                "A": "Option A",
-                "B": "Option B",
-                "C": "Option C",
-                "D": "Option D"
-              },
-              "correct answer": "A) correct answer ",
-              "Hint": "1 sentence sumarized definition of correct answer choice."
-            }
-          ]
-       }
-        // Repeat for Case Study 2, 3, and 4
-      ]
-    }
-    \`\`\`
-    
-    **Ensure that:**
-    
-    - The JSON is **well-formatted** and **free of any syntax errors**.
-    - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
-    - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
-    
-    Do not include any additional text outside of the JSON structure.
-    
-    **Note:**
-    
-    - Each **Error Prevention Tool** is used **exactly once** across all case studies and questions.
-    - **No repetition** of the same **Error Prevention Tool** occurs within the same case study or across different case studies.
-    - All **case studies** are **unique** and focus on **distinct Error Prevention Tools**.
-    - The **Question Structure** is strictly followed to ensure consistency and adherence to the specified guidelines.
-    
-    **Example:**
-    
-    \`\`\`json
-    {
-      "caseStudies": [
-        {
-          },
-        "department" : "Communication",
-        "role" : "Surgeon",
-    },
-          "caseStudy": "Case Study 1",
-          "scenario": "Susan was updating the intranet home page with a long and detailed safety alert that needed to go out immediately based on a safety event that had recently occurred at one of the system’s hospitals. She was rushing between tasks and quickly published the page for all 50,000 employees. Moments later, she got an angry email from the system Chief Medical Officer informing her that she got the part number wrong and that this was causing staff to place orders on the wrong product. Her cubicle neighbor Mike was an excellent proofreader and was always happy to assist his coworker when asked.",
-          "questions": [
-            {
-              "question": "Susan could have prevented potential harm to patients by utilizing which of the following strategies involving peer support?",
-              "options": {
-                "A": "Debrief",
-                "B": "ARCC",
-                "C": "Peer Checking and Coaching",
-                "D": "STAR"
-              },
-              correct answer: C) Peer Checking and Coaching
-              "Hint": "Encouraging colleagues to review and assist in confirming decisions."
-            },
-            {
-              "question": "After publishing the incorrect safety alert, Susan could have engaged in which of the following to analyze and learn from the mistake?",
-              "options": {
-                "A": "Debrief",
-                "B": "ARCC",
-                "C": "Peer Checking and Coaching",
-                "D": "STAR"
-              },
-              correct answer: A) Debrief
-              "Hint": "What went well and areas for improvement."
-            },
-            {
-              "question": "What communication framework could Susan have used to express concerns and prevent errors effectively?",
-              "options": {
-                "A": "Debrief",
-                "B": "ARCC",
-                "C": "Peer Checking and Coaching",
-                "D": "STAR"
-              },
-              correct answer: B) ARCC
-              "Hint": "Voice concern and activate chain of command."
-            }
-          ]
-          // Additional case studies...
-        }
-      ]
-    }
-    \`\`\`
-    
-    Ensure that:
-    
-    - The JSON is **well-formatted** and **free of any syntax errors**.
-    - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
-    - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
-    
-    Do not include any additional text outside of the JSON structure.`;
-  } else {
-    console.error('Invalid userType:', userType);
-    return NextResponse.json(
-      { error: 'Invalid userType provided.' },
-      { status: 400 }
-    );
-  }
-
   try {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+    const deepseekApiKey = process.env.DEEPSEEK_API_KEY;
+    if (!deepseekApiKey) {
+      throw new Error('DeepSeek API key not configured.');
+    }
+    const deepseekResponse = await axios.post('https://api.deepseekr1.com/v1/chat/completions', {
+      model: "deepseek-reasoner",
       messages: [
         {
           role: "user",
           content: META_PROMPT,
         },
       ],
-      temperature: 0.0,
+      temperature: 0.5,
       stream: false,
+    }, {
+      headers: {
+        'Authorization': `Bearer ${deepseekApiKey}`,
+        'Content-Type': 'application/json'
+      }
     });
-    
 
-    if (!response.choices || response.choices.length === 0) {
-      throw new Error('No choices returned from OpenAI.');
+    if (!deepseekResponse.data.choices || deepseekResponse.data.choices.length === 0) {
+      throw new Error('No choices returned from DeepSeek R1 API.');
     }
 
-    const aiResponse = response.choices[0].message.content;
-
-    if (!aiResponse) {
-      throw new Error('No content returned from OpenAI.');
-    }
+    const aiResponse = deepseekResponse.data.choices[0].message.content;
 
     console.log('Raw Model Output:', aiResponse);
 
@@ -735,31 +544,38 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
 
 - **Understand the Scenario**: Carefully read the provided scenario to grasp the context, key elements, and desired visual aspects.
 - **Detail and Clarity**: Include specific details such as settings, characters, objects, actions, and emotions to create a vivid image in the mind of the image generation model.
-- ** Realistic **: Make sure each character and object visible in the image do not overlap, and each character should have a full and realistic body. Make sure all body parts, veins, and etc are correct associated with correct object and character. Make sure everything look as realistic as possible.
+- **Realistic Proportions and Placement**:
+  - **Proportions**: Ensure that all characters and objects are proportionally accurate. Specify the size relationships between characters and objects (e.g., "a tall character standing next to a small table").
+  - **Placement**: Clearly define the spatial arrangement of elements within the scene (e.g., "the character is seated on the left side of the table, while the lamp is positioned on the right").
+  - **Orientation and Scale**: Mention the orientation and scale to maintain consistency (e.g., "the character is facing forward with arms at their sides").
+  - **Avoid Overlapping**: Ensure that characters and objects do not overlap unnaturally unless intended for the scenario.
+  - **Anatomical Accuracy**: Describe body parts accurately to maintain realistic anatomy (e.g., "the character has a proportionate head, torso, arms, and legs").
 - **Avoid NSFW Content**: Ensure that the prompt does not contain or imply any inappropriate, offensive, or unsafe content.
+- **Diverse Characters**: Ensure diverse characters with diverse races, genders, and backgrounds.
 - **Language and Tone**: Use clear and concise language. Maintain a neutral and professional tone.
 - **Formatting**: Present the prompt as a single, well-structured paragraph without any markdown or code blocks.
 - **Consistency**: Maintain consistency in descriptions, avoiding contradictions or vague terms.
 - **Descriptive Adjectives**: Utilize descriptive adjectives to enhance the visual richness of the prompt.
-- **Characters**: Characters should consist of different race, gender, and relegions.
+- **Characters**: Characters should consist of different races, genders, and religions.
 
 # Steps
 
 1. **Analyze the Scenario**: Identify the main elements such as location, characters, objects, and actions.
 2. **Expand on Details**: Add descriptive elements to each identified component to enrich the prompt.
-3. **Ensure Appropriateness**: Review the prompt to eliminate any NSFW content or implications.
-4. **Finalize the Prompt**: Ensure the prompt is cohesive, vivid, and suitable for image generation.
+3. **Ensure Realistic Proportions and Placement**: Define the size relationships, spatial arrangements, and anatomical accuracy of all elements.
+4. **Ensure Appropriateness**: Review the prompt to eliminate any NSFW content or implications.
+5. **Finalize the Prompt**: Ensure the prompt is cohesive, vivid, and suitable for image generation.
 
 # Output Format
 
 - **Format**: Plain text paragraph.
-- **Length**: Approximately 20 - 30 words, providing sufficient detail without being overly verbose.
+- **Length**: Approximately 40 - 60 words, providing sufficient detail without being overly verbose.
 - **Style**: Descriptive and clear, suitable for feeding directly into an image generation model.
 
 # Example
 
 **Image Prompt**:
-"A bustling hospital emergency room at night, illuminated by bright overhead lights. Doctors and nurses in white coats move swiftly between beds, attending to patients with focused expressions. Medical equipment and monitors line the walls, while the atmosphere is tense yet organized, reflecting the urgency of a busy night shift."
+"A bustling hospital emergency room at night, illuminated by bright overhead lights. Doctors and nurses in white coats move swiftly between beds, attending to patients with focused expressions. A tall doctor stands next to a small examination table, while a nurse adjusts a monitor on the adjacent wall. Medical equipment and monitors line the walls, and the atmosphere is tense yet organized, reflecting the urgency of a busy night shift."
 
 # Notes
 
