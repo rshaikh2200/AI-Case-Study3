@@ -1,32 +1,30 @@
 "use client";
 
 import { useState } from 'react';
+import aivideoapi from '@api/aivideoapi';
 
 export default function HomePage() {
   const [videoUrl, setVideoUrl] = useState('');
 
   const handleGenerateVideo = async () => {
     try {
-      console.log('Generate button clicked! Making request to /api/ai-models...');
+      console.log('Generate button clicked! Authenticating with aivideoapi...');
       
-      const response = await fetch('/api/ai-models', {
-        method: 'POST',
-      });
+      // Authenticate with the API
+      aivideoapi.auth('1e4f425715d78408a9ac5aeaed15636a4');
 
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
-      }
+      // Await the response from get_task_status_runway_status_get
+      const { data } = await aivideoapi.get_task_status_runway_status_get();
+      console.log('Response from aivideoapi:', data);
 
-      const data = await response.json();
-      console.log('Response from /api/ai-models:', data);
-
+      // Assuming the response data contains a URL property for the generated video
       if (data.url) {
         setVideoUrl(data.url);
       } else {
         console.warn('No "url" property in data:', data);
       }
     } catch (error) {
-      console.error('Error fetching /api/ai-models:', error);
+      console.error('Error fetching video from aivideoapi:', error);
     }
   };
 
