@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@api/aivideoapi": "file:.api/apis/aivideoapi",
     "@aws-sdk/client-bedrock": "^3.645.0",
     "@aws-sdk/client-bedrock-agent-runtime": "^3.645.0",
     "@aws-sdk/credential-providers": "^3.645.0",
@@ -51,4 +52,3 @@
     "eslint-config-next": "14.2.5"
   }
 }
-
