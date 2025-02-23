@@ -1,37 +1,45 @@
-// src/app/api/ai-models/route.js
-import { NextResponse } from 'next/server';
-import aivideoapi from '@api/aivideoapi';
+// pages/api/generate-video.js
+import { NextApiRequest, NextApiResponse } from 'next'
+import aivideoapi from 'aivideoapi' // or wherever you import it from
 
-export async function POST(request) {
+// Authenticate once with your key:
+aivideoapi.auth('1e4f425715d78408a9ac5aeaed15636a4')
+
+export default async function handler(req = NextApiRequest, res = NextApiResponse) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ message: 'Method Not Allowed' })
+  }
+
   try {
-    // Authenticate with the API
-    aivideoapi.auth('1e4f425715d78408a9ac5aeaed15636a4');
-
-    // Build the request body using the gen3 alpha model from Runway.
-    // Extend the video to 50 seconds (5 segments of 10 seconds each).
-    const requestBody = {
+    // Example body payload for text-to-video
+    // Adjust to match your actual prompt / model settings
+    const payload = {
       text_prompt: 'masterpiece, cinematic, man smoking cigarette looking outside window, moving around',
       model: 'gen3',
-      width: 1280,
+      width: 1344,
       height: 768,
       motion: 5,
       seed: 0,
-      callback_url: '', // Update this as needed.
-      time: 10,
-    };
+      callback_url: '',
+      time: 5
+    }
 
-    // Log the callback_url
-    console.log("Callback URL:", requestBody.callback_url);
+    // Pseudo-code: call the library’s method to generate the video
+    // The exact usage depends on how `aivideoapi` is structured
+    const response = await aivideoapi.generateVideo(payload)
 
-    // Generate the video using the API
-    const response = await aivideoapi.generate_by_text_runway_generate_text_post(requestBody);
-    
-    console.log(response);
+    // We assume `response` includes some object with a `video_url`
+    // Adjust based on the actual shape of the response.
+    const { video_url } = response
 
-    // Return the generated data as JSON
-    return NextResponse.json(response.data);
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: 'Error generating video' }, { status: 500 });
+    if (!video_url) {
+      return res.status(500).json({ error: 'No video URL in response.' })
+    }
+
+    // Send the video URL to the client
+    return res.status(200).json({ videoUrl: video_url })
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ error: error.message })
   }
 }
