@@ -9,17 +9,17 @@ import FormData from 'form-data';
 // -------------------------
 // NEW FUNCTION: Google Search API integration for Medical Error Case Studies
 // -------------------------
-async function getMaxResultsFromGoogle() {
-  const googleApiKey = process.env.GOOGLE_API_KEY;
-  const googleCseId = process.env.GOOGLE_CSE_ID;
-  const serviceUrl = 'https://www.googleapis.com/customsearch/v1';
-  const searchTerm = "Medical Case Studies";
-  const resultsPerPage = 10; // max allowed per request
-  const maxResults = 100;    // max total allowed
-
-  if (!googleApiKey || !googleCseId) {
-    throw new Error("Google API key or Custom Search Engine ID not configured.");
-  }
+async function getMedicalCaseStudiesFromGoogle() {
+  try {
+    // Set your search parameters here – adjust the query and search_depth as needed.
+    const searchTerm = "Medical Error Case Studies";
+    const searchDepth = 10;
+    const googleApiKey = process.env.GOOGLE_API_KEY;
+    const googleCseId = process.env.GOOGLE_CSE_ID;
+    const maxResults = 100;
+    if (!googleApiKey || !googleCseId) {
+      throw new Error("Google API key or Custom Search Engine ID not configured.");
+    }
     
     // Construct the request URL and parameters
     const serviceUrl = 'https://www.googleapis.com/customsearch/v1';
