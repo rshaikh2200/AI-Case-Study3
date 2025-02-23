@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useState } from 'react';
 
@@ -7,29 +7,26 @@ export default function HomePage() {
 
   const handleGenerateVideo = async () => {
     try {
-      console.log('Generate button clicked! Making request to /api/generate...');
-
+      console.log('Generate button clicked! Making request to /api/ai-models...');
+      
       const response = await fetch('/api/ai-models', {
         method: 'POST',
       });
 
-      // Check if the request succeeded
       if (!response.ok) {
         throw new Error(`Server error: ${response.status}`);
       }
 
-      // Parse JSON
       const data = await response.json();
-      console.log('Response from /api/generate:', data);
+      console.log('Response from /api/ai-models:', data);
 
-      // Check for the URL
       if (data.url) {
         setVideoUrl(data.url);
       } else {
         console.warn('No "url" property in data:', data);
       }
     } catch (error) {
-      console.error('Error fetching /api/generate:', error);
+      console.error('Error fetching /api/ai-models:', error);
     }
   };
 
@@ -49,4 +46,3 @@ export default function HomePage() {
     </div>
   );
 }
-
