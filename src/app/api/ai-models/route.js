@@ -13,7 +13,7 @@ async function getMedicalCaseStudiesFromGoogle() {
   try {
     // Set your search parameters here – adjust the query and search_depth as needed.
     const searchTerm = "Medical Error Case Studies";
-    const searchDepth = 10;
+    const searchDepth = 30;
     const googleApiKey = process.env.GOOGLE_API_KEY;
     const googleCseId = process.env.GOOGLE_CSE_ID;
     if (!googleApiKey || !googleCseId) {
@@ -27,6 +27,7 @@ async function getMedicalCaseStudiesFromGoogle() {
       key: googleApiKey,
       cx: googleCseId,
       num: searchDepth,
+      siteSearch: 'https://psnet.ahrq.gov/webmm-case-studies'
       // Optionally, add a site filter if you wish to target a specific website:
       // siteSearch: 'jointcommission.org'
     };
