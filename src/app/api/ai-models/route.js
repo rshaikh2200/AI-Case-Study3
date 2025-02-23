@@ -1,6 +1,6 @@
 // pages/api/generate-video.js
 import { NextApiRequest, NextApiResponse } from 'next'
-import aivideoapi from 'aivideoapi' // or wherever you import it from
+import aivideoapi from '@api/aivideoapi';
 
 // Authenticate once with your key:
 aivideoapi.auth('1e4f425715d78408a9ac5aeaed15636a4')
