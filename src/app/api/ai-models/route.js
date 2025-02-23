@@ -20,6 +20,7 @@ export async function POST(request) {
     });
 
     // Return the API data (including uuid) as a JSON response
+    console.log(data);
     return new Response(JSON.stringify(data), { status: 200 });
   } catch (err) {
     console.error(err);
