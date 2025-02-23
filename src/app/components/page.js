@@ -5,6 +5,7 @@ import { useState } from 'react';
 export default function HomePage() {
   const [videoUrl, setVideoUrl] = useState('');
   const [statusData, setStatusData] = useState(null);
+  const [taskUuid, setTaskUuid] = useState('');
 
   // 1) This calls /api/ai-models (POST) to start the generation
   const handleGenerateVideo = async () => {
@@ -22,8 +23,12 @@ export default function HomePage() {
       const data = await response.json();
       console.log('Response from /api/ai-models (generate):', data);
 
-      // If the API returns an immediate URL (unlikely, but possible),
-      // set it here so we can preview it.
+      // Save the task UUID for later status checking
+      if (data.uuid) {
+        setTaskUuid(data.uuid);
+      }
+
+      // Optionally, if the API returns an immediate URL (if ready), set it here
       if (data.url) {
         setVideoUrl(data.url);
       }
@@ -32,21 +37,26 @@ export default function HomePage() {
     }
   };
 
-  // 2) This calls /api/ai-models/status (GET) to check the current status
+  // 2) This calls /api/ai-models/video-status (GET) to check the current status
   const handleCheckStatus = async () => {
     try {
-      console.log('Check Status button clicked. Making request to /api/ai-models/status...');
+      if (!taskUuid) {
+        console.error('No task UUID available. Please generate a video first.');
+        return;
+      }
+
+      console.log('Check Status button clicked. Making request to /api/ai-models/video-status...');
       
-      const response = await fetch('/api/ai-models/video-status'); // GET by default
+      const response = await fetch(`/api/ai-models/video-status`);
       if (!response.ok) {
         throw new Error(`Status error: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Response from /api/ai-models/status:', data);
+      console.log('Response from /api/ai-models/video-status:', data);
       setStatusData(data);
 
-      // If the returned data has a `url` indicating the video is ready, set it
+      // If the returned data has a URL indicating the video is ready, set it
       if (data.url) {
         setVideoUrl(data.url);
       }

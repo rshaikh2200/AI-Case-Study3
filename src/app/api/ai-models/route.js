@@ -1,4 +1,4 @@
-// /app/api/generate/route.js
+// /app/api/ai-models/route.js
 
 import aivideoapi from '@api/aivideoapi';
 
@@ -19,7 +19,7 @@ export async function POST(request) {
       time: 5,
     });
 
-    // Return the API data as a JSON response
+    // Return the API data (including uuid) as a JSON response
     return new Response(JSON.stringify(data), { status: 200 });
   } catch (err) {
     console.error(err);
