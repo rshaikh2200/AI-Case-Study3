@@ -1,18 +1,15 @@
-// pages/api/generate-video.js
-import { NextApiRequest, NextApiResponse } from 'next'
-import aivideoapi from '@api/aivideoapi';
+import { NextResponse } from 'next/server'
+import aivideoapi from '@api/aivideoapi'
 
 // Authenticate once with your key:
 aivideoapi.auth('1e4f425715d78408a9ac5aeaed15636a4')
 
-export default async function handler(req = NextApiRequest, res = NextApiResponse) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method Not Allowed' })
-  }
-
+export async function POST(req) {
   try {
-    // Example body payload for text-to-video
-    // Adjust to match your actual prompt / model settings
+    // If you need to parse a JSON body from the request:
+    // const { text_prompt, model, width, height, ... } = await req.json();
+    
+    // Example payload
     const payload = {
       text_prompt: 'masterpiece, cinematic, man smoking cigarette looking outside window, moving around',
       model: 'gen3',
@@ -22,24 +19,34 @@ export default async function handler(req = NextApiRequest, res = NextApiRespons
       seed: 0,
       callback_url: '',
       time: 5
-    }
+    };
 
-    // Pseudo-code: call the library’s method to generate the video
-    // The exact usage depends on how `aivideoapi` is structured
-    const response = await aivideoapi.generateVideo(payload)
+    // Call your custom AI Video API
+    const response = await aivideoapi.generateVideo(payload);
 
-    // We assume `response` includes some object with a `video_url`
-    // Adjust based on the actual shape of the response.
-    const { video_url } = response
+    // We assume the response includes a field named `video_url`
+    const { video_url } = response || {};
 
     if (!video_url) {
-      return res.status(500).json({ error: 'No video URL in response.' })
+      return NextResponse.json(
+        { error: 'No video URL in response.' },
+        { status: 500 }
+      );
     }
 
-    // Send the video URL to the client
-    return res.status(200).json({ videoUrl: video_url })
+    // Return the video URL to the client
+    return NextResponse.json({ videoUrl: video_url });
   } catch (error) {
-    console.error(error)
-    return res.status(500).json({ error: error.message })
+    console.error(error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+// Optionally handle GET if you want to avoid 405 on GET requests
+export async function GET() {
+  return NextResponse.json(
+    { message: 'Method Not Allowed' },
+    { status: 405 }
+  );
+}
+
