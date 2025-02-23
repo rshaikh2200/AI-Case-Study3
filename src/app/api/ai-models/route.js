@@ -490,7 +490,7 @@ The medical case study should:
 
   try {
     const response = await openai.chat.completions.create({
-      model: "o1",
+      model: "gpt-o1",
       messages: [
         {
           role: "user",
