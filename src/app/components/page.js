@@ -1,38 +1,47 @@
+// /app/page.js
 "use client";
 
 import { useState } from 'react';
-import aivideoapi from '@api/aivideoapi';
 
 export default function HomePage() {
   const [videoUrl, setVideoUrl] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleGenerateVideo = async () => {
+    setLoading(true);
     try {
-      console.log('Generate button clicked! Authenticating with aivideoapi...');
+      console.log('Generate button clicked!');
       
-      // Authenticate with the API
-      aivideoapi.auth('1e4f425715d78408a9ac5aeaed15636a4');
+      // Call the API route that handles video generation
+      const res = await fetch('/api/ai-models', {
+        method: 'POST',
+      });
 
-      // Await the response from get_task_status_runway_status_get
-      const { data } = await aivideoapi.get_task_status_runway_status_get();
-      console.log('Response from aivideoapi:', data);
+      if (!res.ok) {
+        throw new Error('Failed to generate video');
+      }
 
-      // Assuming the response data contains a URL property for the generated video
+      const data = await res.json();
+      console.log('Response from API:', data);
+
+      // Assuming the returned data contains a "url" property for the generated video
       if (data.url) {
         setVideoUrl(data.url);
       } else {
-        console.warn('No "url" property in data:', data);
+        console.warn('No "url" property in API response:', data);
       }
     } catch (error) {
-      console.error('Error fetching video from aivideoapi:', error);
+      console.error('Error fetching video from API:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div style={{ padding: '20px' }}>
       <h1>Generate AI Video</h1>
-      <button onClick={handleGenerateVideo}>
-        Generate Video
+      <button onClick={handleGenerateVideo} disabled={loading}>
+        {loading ? "Generating..." : "Generate Video"}
       </button>
 
       {videoUrl && (
