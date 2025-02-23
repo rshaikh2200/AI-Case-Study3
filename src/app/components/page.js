@@ -12,25 +12,31 @@ export default function Home() {
       const initRes = await fetch('/api/ai-models', { method: 'POST' });
       if (!initRes.ok) throw new Error('Failed to start generation');
       const { generationId } = await initRes.json();
-
-      // Poll for status
+  
+      // Poll for status with error handling
       let videoUrl;
-      while (true) {
+      let attempts = 0;
+      const maxAttempts = 30; // 30 attempts * 2s = 1 minute timeout
+  
+      while (attempts < maxAttempts) {
         const statusRes = await fetch(`/api/ai-models/${generationId}`);
         if (!statusRes.ok) throw new Error('Status check failed');
-        const statusData = await statusRes.json();
-
-        if (statusData.status === 'succeeded') {
-          videoUrl = statusData.video_url;
+        
+        const { status, video_url } = await statusRes.json();
+  
+        if (status === 'succeeded') {
+          videoUrl = video_url;
           break;
-        } else if (statusData.status === 'failed') {
+        }
+        if (status === 'failed') {
           throw new Error('Video generation failed');
         }
-
-        // Wait 2 seconds between checks
+  
+        attempts++;
         await new Promise(resolve => setTimeout(resolve, 2000));
       }
-
+  
+      if (!videoUrl) throw new Error('Generation timed out');
       setVideoUrl(videoUrl);
     } catch (error) {
       console.error(error);
@@ -38,22 +44,5 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
-
-  return (
-    <div style={{ textAlign: 'center', padding: '2rem' }}>
-      <h1>AI Video Generator</h1>
-      <button onClick={handleGenerate} disabled={loading}>
-        {loading ? 'Generating...' : 'Generate Video'}
-      </button>
-      {videoUrl && (
-        <div style={{ marginTop: '2rem' }}>
-          <video width="640" height="360" controls autoPlay>
-            <source src={videoUrl} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      )}
-    </div>
-  );
+  }
 }
