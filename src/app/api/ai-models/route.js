@@ -18,12 +18,15 @@ export async function POST() {
 
     const { data } = await aivideoapi.generate_by_text_runway_generate_text_post(requestBody);
 
-    console.log(`Task initiated. UUID: ${callback_url}`);
+     // Generate the video using the API
+     const response = await aivideoapi.generate_by_text_runway_generate_text_post(requestBody);
     
-    // Return generation ID to client
-    return NextResponse.json({ generationId: data.generation_id });
-  } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
-  }
-}
+    console.log(response)
+
+     // Return the generated data as JSON
+     return NextResponse.json(response.data);
+   } catch (err) {
+     console.error(err);
+     return NextResponse.json({ error: 'Error generating video' }, { status: 500 });
+   }
+ }
