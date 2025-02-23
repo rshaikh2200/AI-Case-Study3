@@ -1,62 +1,41 @@
 // pages/index.js
-"use client";
-
-// hello
-
-import { useState } from 'react'
+import React, { useState } from 'react';
 
 export default function Home() {
-  const [videoUrl, setVideoUrl] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState('')
+  const [result, setResult] = useState(null);
 
   const handleGenerateVideo = async () => {
-    setIsLoading(true)
-    setError('')
-    setVideoUrl('')
-
     try {
-      const res = await fetch('/api/ai-models', {
-        method: 'POST'
-      })
-      if (!res.ok) {
-        throw new Error(`Request failed: ${res.status} ${res.statusText}`)
-      }
+      const url =
+        'https://runwayml.p.rapidapi.com/status?uuid=2858de6f-364c-481e-988a-b930af469aa9';
+      const options = {
+        method: 'GET',
+        headers: {
+          'x-rapidapi-key': '5f480fd5e6mshb21466ec4e56a98p175e3cjsn2d7d41efbe18',
+          'x-rapidapi-host': 'runwayml.p.rapidapi.com',
+        },
+      };
 
-      const data = await res.json()
-      if (!data.videoUrl) {
-        throw new Error('No videoUrl returned from server.')
-      }
-
-      setVideoUrl(data.videoUrl)
-    } catch (err) {
-      console.error(err)
-      setError(err.message)
-    } finally {
-      setIsLoading(false)
+      // Trigger the fetch call on button click
+      const response = await fetch(url, options);
+      const data = await response.text();
+      setResult(data);
+    } catch (error) {
+      console.error(error);
+      setResult('Error fetching data. Check console for details.');
     }
-  }
+  };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Generate Video Example</h1>
-      <button onClick={handleGenerateVideo} disabled={isLoading}>
-        {isLoading ? 'Generating...' : 'Generate Video'}
-      </button>
-
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-
-      {videoUrl && (
-        <div style={{ marginTop: '2rem' }}>
-          <h2>Your Generated Video</h2>
-          <video
-            src={videoUrl}
-            controls
-            autoPlay
-            style={{ maxWidth: '100%', height: 'auto' }}
-          />
+    <div style={{ padding: '20px' }}>
+      <h1>Generate Video</h1>
+      <button onClick={handleGenerateVideo}>Generate Video</button>
+      {result && (
+        <div style={{ marginTop: '20px' }}>
+          <h3>Response:</h3>
+          <pre>{result}</pre>
         </div>
       )}
     </div>
-  )
+  );
 }
