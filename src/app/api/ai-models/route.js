@@ -490,14 +490,14 @@ The medical case study should:
 
   try {
     const response = await openai.chat.completions.create({
-      model: "ft:gpt-4o-mini-2024-07-18:personal::AwFckKFA",
+      model: "o3-mini",
       messages: [
         {
           role: "user",
           content: META_PROMPT,
         },
       ],
-      temperature: 0.5,
+      temperature: 1.0,
       stream: false,
     });
     
