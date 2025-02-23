@@ -16,14 +16,17 @@ export async function POST(request) {
       height: 768,
       motion: 5,
       seed: 0,
-      callback_url: '',
+      callback_url: '', // Update this as needed.
       time: 10,
     };
+
+    // Log the callback_url
+    console.log("Callback URL:", requestBody.callback_url);
 
     // Generate the video using the API
     const response = await aivideoapi.generate_by_text_runway_generate_text_post(requestBody);
     
-    console.log(response)
+    console.log(response);
 
     // Return the generated data as JSON
     return NextResponse.json(response.data);
