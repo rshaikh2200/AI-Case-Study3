@@ -14,9 +14,9 @@ async function getMedicalCaseStudiesFromGoogle() {
     // Set your search parameters here – adjust the query and search_depth as needed.
     const searchTerm = "Medical Case Studies";
     const searchDepth = 10;
+    const maxResults = 100;
     const googleApiKey = process.env.GOOGLE_API_KEY;
     const googleCseId = process.env.GOOGLE_CSE_ID;
-    const maxResults = 100;
     if (!googleApiKey || !googleCseId) {
       throw new Error("Google API key or Custom Search Engine ID not configured.");
     }
@@ -251,7 +251,15 @@ Extract medical case study text from ${retrievedCasesText} and search open sourc
 The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct 
 for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.
 
-${ department === "Stroke Center" ? \`Since the department is a Stroke Center, the 250-word case studies should focus on stroke cases and stroke cases related medical errors found from \${retrievedCasesText}.\` : "" }
+${
+  department === "Stroke Center"
+    ? `Since the department is a Stroke Center, the 250-word case studies should focus on stroke cases such code stroke, brain emergencies and other stroke related cases found from the extracted from ${retrievedCasesText}. It should also address key areas 
+       such as anticoagulation status, blood pressure management, antiplatelet therapy, glucose status, 
+       and potential lab errors. Include examples of medical errors like disruption of seizure 
+       medication or medication reconciliation. Ensure that you do not focus exclusively on these 
+       specific items; incorporate a variety of possible errors while maintaining clinical integrity.`
+    : ""
+}
 
 After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 250 words 
 each, without compromising the clinical integrity of the scenarios. Each case study should only include 
@@ -273,6 +281,8 @@ The medical case study should:
   - The summarized case study content should be modified to have different names of procedures, 
     medications, and specialities. However, do not change the clinical integrity of the scenario.
   - If the scenario states medical dosage, specify the quantity with proper units.
+    
+    
     
     - **For each case study, create 3 unique multiple-choice questions that:**
       - Have 4 option choices each.
@@ -346,15 +356,15 @@ The medical case study should:
     
     Ensure the following format is strictly followed and output the entire response as valid JSON.
     
-    \\`\\`\\`json
+    \`\`\`json
     {
       "caseStudies": [
         {
           },
-            "department" : "\${department}",
-            "role" : "\${role}",
-            "specialization": "\${specialization}",
-            "care": "\${care}"
+            "department" : "${department}",
+            "role" : "${role}",
+            "specialization": "${specialization}",
+            "care": "${care}",
         },
     
           "caseStudy": "Case Study 1",
@@ -390,7 +400,7 @@ The medical case study should:
                 "C": "Option C",
                 "D": "Option D"
               },
-              "correct answer": "A) correct answer",
+              "correct answer": "A) correct answer ",
               "Hint": "1 sentence sumarized definition of correct answer choice."
             }
           ]
@@ -398,13 +408,13 @@ The medical case study should:
         // Repeat for Case Study 2, 3, and 4
       ]
     }
-    \\`\\`\\`
+    \`\`\`
     
     Ensure that:
     
     - The JSON is **well-formatted** and **free of any syntax errors**.
     - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
-    - The JSON is enclosed within \\`\\`\\`json and \\`\\`\\` code fences.
+    - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
     
     Do not include any additional text outside of the JSON structure.
     
@@ -417,12 +427,14 @@ The medical case study should:
     
     **Example:**
     
-    \\`\\`\\`json
+    \`\`\`json
     {
-      "department" : "Operating Room",
-      "role" : "Surgeon",
-      "specialization": "General Surgery",
-      "care": "inpatient",
+      },
+        "department" : "Operating Room",
+        "role" : "Surgeon",
+        "specialization": "General Surgery"
+        "care": "inpatient"
+    },
       "caseStudies": [
         {
           "caseStudy": "Case Study 1",
@@ -437,7 +449,7 @@ The medical case study should:
                 "D": "Validate and Verify"
               },
               "correct answer": "D) Validate and Verify",
-              "Hint": "Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information \"fit in with my past experience or other information I may have at this time?\""
+              "Hint": "Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?"
             },
             {
               "question": "If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying?",
@@ -466,16 +478,17 @@ The medical case study should:
         // Additional case studies...
       ]
     }
-    \\`\\`\\`
+    \`\`\`
     
     Ensure that:
     
     - The JSON is **well-formatted** and **free of any syntax errors**.
     - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
-    - The JSON is enclosed within \\`\\`\\`json and \\`\\`\\` code fences.
+    - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
     
-    Do not include any additional text outside of the JSON structure.
-`;
+    Do not include any additional text outside of the JSON structure.`;
+
+  
 
   try {
     const response = await openai.chat.completions.create({
@@ -749,4 +762,3 @@ async function fetchImagesForCaseStudies(
     throw error;
   }
 }
-
