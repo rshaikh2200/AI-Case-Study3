@@ -170,13 +170,13 @@ export default function Home() {
   const [showTranslate, setShowTranslate] = useState(true);
   const [care, setCare] = useState('');
   const [isCertificateOpen, setIsCertificateOpen] = useState(false);
-
+  
   // Audio-related states
   const [audioUrl, setAudioUrl] = useState(null);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioError, setAudioError] = useState('');
-
+  
   // Question and scoring states
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [feedbackMessages, setFeedbackMessages] = useState({});
@@ -185,7 +185,7 @@ export default function Home() {
   const [correctCount, setCorrectCount] = useState(0);
   const [resultDetails, setResultDetails] = useState([]);
   const [currentResultCaseStudyIndex, setCurrentResultCaseStudyIndex] = useState(0);
-
+  
   // Session and workflow states
   const [sessionID, setSessionID] = useState('');
   const [workflowData, setWorkflowData] = useState([]);
@@ -197,28 +197,17 @@ export default function Home() {
 
   // Definitions map
   const definitionsMap = {
-    a: `Peer Checking and Coaching
-Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)`,
-    b: `Debrief
-Definition: Reflect on what went well with team , what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.`,
-    c: `ARCC
-Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.`,
-    d: `Validate and Verify
-Definition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).`,
-    e: `STAR
-Definition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).`,
-    f: `No Distraction Zone
-Definition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like "Stand by" or "Hold on".`,
-    g: `Effective Handoffs
-Definition: Six important principles that make an Effective Handoff: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.`,
-    h: `Read and Repeat Back
-Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.`,
-    i: `Ask Clarifying Questions
-Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.`,
-    j: `Using Alphanumeric Language
-Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.`,
-    k: `SBAR
-Definition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions.), Recommendations (what is my recommendation, request, or plan?).`
+    a: "Peer Checking and Coaching\nDefinition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)",
+    b: "Debrief\nDefinition: Reflect on what went well with team, what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.",
+    c: "ARCC\nDefinition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.",
+    d: "Validate and Verify\nDefinition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information 'fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).",
+    e: "STAR\nDefinition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).",
+    f: "No Distraction Zone\nDefinition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like 'Stand by' or 'Hold on'.",
+    g: "Effective Handoffs\nDefinition: Six important principles that make an Effective Handoff: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/printed information, Opportunity for questions/clarification.",
+    h: "Read and Repeat Back\nDefinition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating 'that's correct'. If not correct the sender repeats/clarifies the communication beginning the three steps again.",
+    i: "Ask Clarifying Questions\nDefinition: Requesting Additional information, and expressing concerns to avoid misunderstandings.",
+    j: "Using Alphanumeric Language\nDefinition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.",
+    k: "SBAR\nDefinition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions?), Recommendations (what is my recommendation, request, or plan?).",
   };
 
   useEffect(() => {
@@ -511,11 +500,14 @@ Definition: Situation (what is the situation, patient or project?), Background (
 
   // Handle taking the assessment
   const handleTakeAssessment = () => {
+    // Removed User Type checks so Department can be selected freely
     if (!role || !department) {
       setError('Please select your Role and Department before proceeding.');
       return;
     }
 
+    // Removed userType-specific specialization check
+    // Just check if specialization is selected if you want to enforce it:
     if (!specialization) {
       setError('Please select your Specialization before proceeding.');
       return;
@@ -532,7 +524,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
     setShowTranslate(false);
   };
 
-  // Function to get case studies from the server
+  // Function to get case studies from the server (called from handleTakeAssessment)
   const handleSubmitAssessment = async () => {
     setIsLoading(true);
     setError(null);
@@ -540,6 +532,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
       const response = await fetch('/api/ai-models', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        // userType still sent, even though no dropdown is displayed
         body: JSON.stringify({ userType, department, role, specialization }),
       });
 
@@ -594,9 +587,11 @@ Definition: Situation (what is the situation, patient or project?), Background (
 
   // NEW: Function to generate and open PDF of "case studies and questions" WITHOUT displaying them
   const handlePrintCaseStudiesAndQuestions = async () => {
+    // We replicate the same logic as handleTakeAssessment but won't show the case studies in the UI.
     setIsLoading(true);
     setError(null);
 
+    // Basic validation
     if (!role || !department) {
       setError('Please select your Role and Department before proceeding.');
       setIsLoading(false);
@@ -610,11 +605,13 @@ Definition: Situation (what is the situation, patient or project?), Background (
     }
 
     try {
+      // Save user inputs and set up session data
       await saveUserInputs();
       const randomSessionID = Math.floor(100000 + Math.random() * 900000).toString();
       setSessionID(randomSessionID);
       await saveSessionData(randomSessionID);
 
+      // Fetch the personalized scenarios
       const response = await fetch('/api/ai-models', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -637,6 +634,10 @@ Definition: Situation (what is the situation, patient or project?), Background (
       setCaseStudies(caseStudies);
       setAiResponse(aiResponse);
 
+      // We do NOT set showSafetyStatement(false) nor showCaseStudies(true)
+      // because we only want to print them, not display them in the UI.
+
+      // Build a PDF of the case studies + questions
       const docPDF = new jsPDF({
         orientation: 'portrait',
         unit: 'mm',
@@ -650,6 +651,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
       const margin = 10;
       let yPosition = margin;
 
+      // Title
       docPDF.setFontSize(14);
       docPDF.setFont('helvetica', 'bold');
       docPDF.text('Personalized Case Studies & Questions', pageWidth / 2, yPosition, {
@@ -657,6 +659,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
       });
       yPosition += 10;
 
+      // Basic user info
       docPDF.setFontSize(10);
       docPDF.setFont('helvetica', 'normal');
       docPDF.text(`Full Name: ${fullName}`, margin, yPosition);
@@ -666,23 +669,27 @@ Definition: Situation (what is the situation, patient or project?), Background (
       docPDF.text(`Generated on: ${new Date().toLocaleDateString()}`, margin, yPosition);
       yPosition += 10;
 
+      // Loop through caseStudies, list scenario + questions
       caseStudies.forEach((cs, index) => {
         if (index !== 0) {
           docPDF.addPage();
           yPosition = margin;
         }
 
+        // Case Study title
         docPDF.setFontSize(12);
         docPDF.setFont('helvetica', 'bold');
         docPDF.text(`Case Study ${index + 1}`, margin, yPosition);
         yPosition += 6;
 
+        // Scenario
         docPDF.setFontSize(10);
         docPDF.setFont('helvetica', 'normal');
         const scenarioLines = docPDF.splitTextToSize(cs.scenario, pageWidth - margin * 2);
         docPDF.text(scenarioLines, margin, yPosition);
         yPosition += scenarioLines.length * 5 + 5;
 
+        // Questions
         cs.questions.forEach((q, qIndex) => {
           if (yPosition > pageHeight - margin - 30) {
             docPDF.addPage();
@@ -699,6 +706,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
           docPDF.text(questionLines, margin + 5, yPosition);
           yPosition += questionLines.length * 5 + 3;
 
+          // List the options
           q.options.forEach((opt) => {
             if (yPosition > pageHeight - margin - 20) {
               docPDF.addPage();
@@ -710,10 +718,11 @@ Definition: Situation (what is the situation, patient or project?), Background (
             yPosition += optionLines.length * 5 + 2;
           });
 
-          yPosition += 3;
+          yPosition += 3; // extra gap
         });
       });
 
+      // Open the PDF in a new tab
       const blobUrl = docPDF.output('bloburl');
       window.open(blobUrl, '_blank');
 
@@ -732,6 +741,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
     const currentAttempts = attempts[key] || 0;
 
     const previousFeedback = feedbackMessages[caseIndex]?.[questionIndex];
+
     if (
       currentAttempts >= 2 ||
       (previousFeedback && previousFeedback.message === 'Correct Answer')
@@ -740,13 +750,18 @@ Definition: Situation (what is the situation, patient or project?), Background (
       return;
     }
 
+    // Clear any previous error
     setError(null);
 
+    // Cross-check with correctAnswer from aiResponse
     const correctAnswer = aiResponse[caseIndex].questions[questionIndex].correctAnswer;
-    const correctKey = correctAnswer.split(')')[0].trim();
+    const correctKey = correctAnswer.split(')')[0].trim(); // Extract the key (e.g., 'C')
+
     const hint = aiResponse[caseIndex].questions[questionIndex].hint;
+
     let feedbackMessageNew = '';
     let hintToShow = '';
+
     const isCorrect = selectedOption === correctKey;
 
     if (isCorrect) {
@@ -786,6 +801,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
       },
     }));
 
+    // Save workflow data
     const workflowID = getWorkflowID(caseIndex, questionIndex);
     const workflowName = getWorkflowName(caseIndex, questionIndex);
     const timestamp = new Date();
@@ -813,18 +829,25 @@ Definition: Situation (what is the situation, patient or project?), Background (
 
     saveWorkflowData(dataToSave);
 
+    // Move to next question or case study after 1 second if correct or out of attempts
     if (isCorrect || currentAttempts + 1 >= 2) {
       setTimeout(() => {
-        const nextDataToSave = {
+        const workflowID = getWorkflowID(caseIndex, questionIndex);
+        const workflowName = getWorkflowName(caseIndex, questionIndex);
+        const timestamp = new Date();
+
+        const dataToSave = {
           workflowID: workflowID,
           sessionID: sessionID,
           workflowName: workflowName,
-          nextButtonTimestamp: new Date(),
+          nextButtonTimestamp: timestamp,
         };
-        saveWorkflowData(nextDataToSave);
+
+        saveWorkflowData(dataToSave);
 
         const isLastQuestionInCaseStudy =
           questionIndex === caseStudies[caseIndex].questions.length - 1;
+
         const isLastCaseStudy = caseIndex === caseStudies.length - 1;
 
         if (isLastQuestionInCaseStudy && isLastCaseStudy) {
@@ -839,6 +862,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
     }
   };
 
+  // Function to calculate the score
   const calculateScore = () => {
     let score = 0;
     let totalQuestions = 0;
@@ -859,9 +883,10 @@ Definition: Situation (what is the situation, patient or project?), Background (
         const userAnswer = selectedAnswers[caseIndex]?.[questionIndex];
         const correctAnswer = aiResponse[caseIndex].questions[questionIndex].correctAnswer;
         const correctKey = correctAnswer.split(')')[0].trim();
-        const feedbackMessage = feedbackMessages[caseIndex]?.[questionIndex];
-        let isCorrect = false;
 
+        const feedbackMessage = feedbackMessages[caseIndex]?.[questionIndex];
+
+        let isCorrect = false;
         if (feedbackMessage?.message === 'Correct Answer') {
           isCorrect = true;
           score += 1;
@@ -884,12 +909,14 @@ Definition: Situation (what is the situation, patient or project?), Background (
     setResultDetails(details);
   };
 
+  // Handle submitting the final assessment
   const handleSubmitFinalAssessment = () => {
     setTimeout(() => {
       proceedWithSubmission();
     }, 1000);
   };
 
+  // Function to proceed with submission
   const proceedWithSubmission = async () => {
     setIsLoading(true);
     setError(null);
@@ -897,6 +924,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
       await saveCaseStudies();
       await saveAiResponse();
 
+      // Save Submit Button Timestamp
       const lastCaseIndex = caseStudies.length - 1;
       const lastQuestionIndex = caseStudies[lastCaseIndex].questions.length - 1;
       const workflowID = getWorkflowID(lastCaseIndex, lastQuestionIndex);
@@ -952,6 +980,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
     }
   };
 
+  // Delete collection function (unused, remains intact)
   const deleteAllDocumentsInCollection = async (collectionName) => {
     const collectionRef = collection(firestore, collectionName);
     const q = query(collectionRef);
@@ -965,6 +994,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
     await batch.commit();
   };
 
+  // handlePrint function (unchanged aside from context usage)
   const handlePrint = async () => {
     setIsLoading(true);
     setError(null);
@@ -982,6 +1012,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
       const margin = 10;
       let yPosition = margin;
 
+      // Add User Information
       docPDF.setFontSize(10);
       docPDF.setFont('helvetica', 'bold');
       docPDF.text(`Full Name: ${fullName}`, margin, yPosition);
@@ -991,6 +1022,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
       docPDF.text(`Assessment Date: ${new Date().toLocaleDateString()}`, margin, yPosition);
       yPosition += 8;
 
+      // Add Title
       docPDF.setFontSize(14);
       docPDF.setFont('helvetica', 'bold');
       docPDF.text('Safety Assessment Report', pageWidth / 2, yPosition, {
@@ -998,6 +1030,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
       });
       yPosition += 8;
 
+      // Add Total Score
       docPDF.setFontSize(12);
       docPDF.setFont('helvetica', 'normal');
       docPDF.text(`Total Score: ${totalScore}%`, pageWidth / 2, yPosition, {
@@ -1005,10 +1038,12 @@ Definition: Situation (what is the situation, patient or project?), Background (
       });
       yPosition += 8;
 
+      // Horizontal line
       docPDF.setLineWidth(0.3);
       docPDF.line(margin, yPosition, pageWidth - margin, yPosition);
       yPosition += 8;
 
+      // Case details
       resultDetails.forEach((caseDetail, index) => {
         if (index !== 0) {
           docPDF.addPage();
@@ -1017,11 +1052,13 @@ Definition: Situation (what is the situation, patient or project?), Background (
 
         const caseStudy = caseStudies[index];
 
+        // Case Study Title
         docPDF.setFontSize(12);
         docPDF.setFont('helvetica', 'bold');
         docPDF.text(`Case Study ${caseDetail.caseStudyNumber}`, margin, yPosition);
         yPosition += 6;
 
+        // Scenario
         docPDF.setFontSize(10);
         docPDF.setFont('helvetica', 'normal');
         const splitScenarioText = docPDF.splitTextToSize(
@@ -1031,6 +1068,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
         docPDF.text(splitScenarioText, margin, yPosition);
         yPosition += splitScenarioText.length * 5 + 2;
 
+        // Questions
         caseDetail.questions.forEach((question) => {
           const questionNumber = question.questionNumber;
           const questionText = question.questionText;
@@ -1039,6 +1077,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
             questionNumber - 1
           ].correctAnswer.split(')')[0].trim();
 
+          // Retrieve full text for user answer
           const userOption = caseStudies[index].questions[questionNumber - 1].options.find(
             (opt) => opt.key === userAnswerKey
           );
@@ -1046,6 +1085,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
             ? `${userOption.key}. ${userOption.label}`
             : 'No Answer';
 
+          // Retrieve full text for correct answer
           const correctOption = caseStudies[index].questions[questionNumber - 1].options.find(
             (opt) => opt.key === correctAnswerKey
           );
@@ -1053,6 +1093,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
             ? `${correctOption.key}. ${correctOption.label}`
             : 'No Answer';
 
+          // Question text
           docPDF.setFontSize(10);
           docPDF.setFont('helvetica', 'bold');
           const questionHeader = `Question ${questionNumber}: ${questionText}`;
@@ -1063,6 +1104,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
           docPDF.text(splitQuestionHeader, margin, yPosition);
           yPosition += splitQuestionHeader.length * 4 + 2;
 
+          // User Answer
           docPDF.setFontSize(10);
           docPDF.setFont('helvetica', 'bold');
           docPDF.text('Your Answer:', margin + 2, yPosition);
@@ -1077,6 +1119,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
           docPDF.text(splitUserAnswer, margin + 4, yPosition);
           yPosition += splitUserAnswer.length * 4 + 2;
 
+          // Correct Answer
           docPDF.setFontSize(10);
           docPDF.setFont('helvetica', 'bold');
           docPDF.text('Correct Answer:', margin + 2, yPosition);
@@ -1092,6 +1135,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
           yPosition += splitCorrectAnswer.length * 4 + 6;
 
           if (yPosition > pageHeight - margin - 20) {
+            // Basic pagination logic
             docPDF.addPage();
             yPosition = margin;
           }
@@ -1267,6 +1311,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
     }
   };
 
+  // Function to handle page refresh
   const handlePageRefresh = async () => {
     try {
       setUserType('');
@@ -1291,6 +1336,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
     }
   };
 
+  // Handle reload
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const navigationEntries = window.performance.getEntriesByType('navigation');
@@ -1300,11 +1346,13 @@ Definition: Situation (what is the situation, patient or project?), Background (
     }
   }, []);
 
+  // Current Case Study
   const currentCaseStudy = caseStudies[currentCaseStudyIndex];
   const isLastQuestion =
     currentQuestionIndex === currentCaseStudy?.questions.length - 1;
   const isLastCaseStudy = currentCaseStudyIndex === caseStudies.length - 1;
 
+  // Department/Role/Specialization map
   const departmentRoleSpecializationMap = {
     Radiology: {
       'Physician': [
@@ -1385,7 +1433,9 @@ Definition: Situation (what is the situation, patient or project?), Background (
     },
   };
 
+  // Departments for the dropdown (no longer filtered by userType)
   const departmentsToUse = Object.keys(departmentRoleSpecializationMap);
+
   const [rolesToUse, setRolesToUse] = useState([]);
   const [specializationsToUse, setSpecializationsToUse] = useState([]);
 
@@ -1693,6 +1743,8 @@ Definition: Situation (what is the situation, patient or project?), Background (
               <div className="professional-info bg-white rounded-lg shadow p-6">
                 <h2 className="text-lg font-semibold mb-4">Professional Information</h2>
 
+                {/* Removed the User Type dropdown entirely */}
+
                 <div className="form-item mb-4">
                   <label htmlFor="department-select" className="block text-sm font-medium text-gray-700">
                     Department
@@ -1738,11 +1790,9 @@ Definition: Situation (what is the situation, patient or project?), Background (
                   </select>
                 </div>
 
+                {/* Always show Specialization dropdown */}
                 <div className="form-item mb-4">
-                  <label
-                    htmlFor="specialization-select"
-                    className="block text-sm font-medium text-gray-700"
-                  >
+                  <label htmlFor="specialization-select" className="block text-sm font-medium text-gray-700">
                     Specialization
                   </label>
                   <select
@@ -1764,6 +1814,7 @@ Definition: Situation (what is the situation, patient or project?), Background (
                   </select>
                 </div>
 
+                {/* Renamed "Care" to "Care delivery setting" and removed the userType-based disable */}
                 <div className="form-item mb-4">
                   <label htmlFor="care-select" className="block text-sm font-medium text-gray-700">
                     Care Delivery Setting
@@ -1799,6 +1850,8 @@ Definition: Situation (what is the situation, patient or project?), Background (
                     ? 'Starting your assessment, please wait...'
                     : 'Generate My Personalized Training Scenarios'}
                 </button>
+
+                {/* NEW BUTTON: Print Case Studies and Questions */}
                 <button
                   type="button"
                   className="print-cs-button bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700"
@@ -1881,9 +1934,8 @@ Definition: Situation (what is the situation, patient or project?), Background (
                           const maxAttemptsReached = currentAttempts >= 2 || isCorrect;
 
                           return (
-                            // Parent needs to be relative so the definition can be positioned absolutely.
                             <div
-                              className="option-item relative inline-block"
+                              className="option-item"
                               key={option.key}
                               onMouseEnter={() => setHoveredOption(option.key)}
                               onMouseLeave={() => setHoveredOption(null)}
@@ -1910,14 +1962,12 @@ Definition: Situation (what is the situation, patient or project?), Background (
                                 <span className="text-gray-700">
                                   <strong>{`${option.key}.`}</strong> {option.label}
                                 </span>
+                                {hoveredOption === option.key && (
+                                  <span className="ml-2 text-gray-500 whitespace-pre-wrap">
+                                    {definitionsMap[option.key] || ''}
+                                  </span>
+                                )}
                               </label>
-
-                              {/* Definition tooltip: absolute, only shows if hoveredOption == option.key */}
-                              {hoveredOption === option.key && (
-                                <div className="definition-bubble absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-white border border-gray-300 p-2 rounded shadow-lg text-sm text-gray-700 w-64 z-50 whitespace-pre-wrap">
-                                  {definitionsMap[option.key] || ''}
-                                </div>
-                              )}
                             </div>
                           );
                         }
