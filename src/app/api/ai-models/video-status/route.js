@@ -19,7 +19,7 @@ export async function GET(request) {
     aivideoapi.auth('1e4f425715d78408a9ac5aeaed15636a4');
 
     // 2) Fetch status using the provided uuid
-    const { data } = await aivideoapi.get_task_status_runway_status_get({ uuid });
+    const { data } = await aivideoapi.get_task_status_runway_status_get();
 
     // 3) (Optional) Log the data on the server side
     console.log('Received data:', data);
