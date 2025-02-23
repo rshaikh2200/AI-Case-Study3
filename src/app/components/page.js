@@ -37,7 +37,7 @@ export default function HomePage() {
     try {
       console.log('Check Status button clicked. Making request to /api/ai-models/status...');
       
-      const response = await fetch('/api/ai-models/status'); // GET by default
+      const response = await fetch('/api/ai-models/video-status'); // GET by default
       if (!response.ok) {
         throw new Error(`Status error: ${response.status}`);
       }
