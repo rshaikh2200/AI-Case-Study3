@@ -1,52 +1,31 @@
 import { NextResponse } from 'next/server'
 import aivideoapi from '@api/aivideoapi'
 
-// Authenticate once with your key:
-aivideoapi.auth('1e4f425715d78408a9ac5aeaed15636a4')
+const request = require('request');
 
-export async function POST(req) {
-  try {
-    // If you need to parse a JSON body from the request:
-    // const { text_prompt, model, width, height, ... } = await req.json();
-    
-    // Example payload
-    const payload = {
-      text_prompt: 'masterpiece, cinematic, man smoking cigarette looking outside window, moving around',
-      model: 'gen3',
-      width: 1344,
-      height: 768,
-      motion: 5,
-      seed: 0,
-      callback_url: '',
-      time: 5
-    };
+const options = {
+  method: 'POST',
+  url: 'https://runwayml.p.rapidapi.com/generate/text',
+  headers: {
+    'x-rapidapi-key': '5f480fd5e6mshb21466ec4e56a98p175e3cjsn2d7d41efbe18',
+    'x-rapidapi-host': 'runwayml.p.rapidapi.com',
+    'Content-Type': 'application/json'
+  },
+  body: {
+    text_prompt: 'masterpiece, cinematic, man smoking cigarette looking outside window, moving around',
+    model: 'gen3',
+    width: 1344,
+    height: 768,
+    motion: 5,
+    seed: 0,
+    callback_url: '',
+    time: 5
+  },
+  json: true
+};
 
-    // Call your custom AI Video API
-    const response = await aivideoapi.generateVideo(payload);
+request(options, function (error, response, body) {
+	if (error) throw new Error(error);
 
-    // We assume the response includes a field named `video_url`
-    const { video_url } = response || {};
-
-    if (!video_url) {
-      return NextResponse.json(
-        { error: 'No video URL in response.' },
-        { status: 500 }
-      );
-    }
-
-    // Return the video URL to the client
-    return NextResponse.json({ videoUrl: video_url });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
-  }
-}
-
-// Optionally handle GET if you want to avoid 405 on GET requests
-export async function GET() {
-  return NextResponse.json(
-    { message: 'Method Not Allowed' },
-    { status: 405 }
-  );
-}
-
+	console.log(body);
+});
