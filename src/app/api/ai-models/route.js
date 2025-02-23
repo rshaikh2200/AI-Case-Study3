@@ -252,11 +252,7 @@ for a ${care} ${role} specializing in ${specialization}, and working in the ${de
 
 ${
   department === "Stroke Center"
-    ? `Since the department is a Stroke Center, the 250-word case studies should focus on stroke cases such code stroke, brain emergencies and other stroke related cases found from the extracted from ${retrievedCasesText}. It should also address key areas 
-       such as anticoagulation status, blood pressure management, antiplatelet therapy, glucose status, 
-       and potential lab errors. Include examples of medical errors like disruption of seizure 
-       medication or medication reconciliation. Ensure that you do not focus exclusively on these 
-       specific items; incorporate a variety of possible errors while maintaining clinical integrity.`
+    ? `Since the department is a Stroke Center, the 250-word case studies should focus on stroke cases and stroke cases related medical errors found from ${retrievedCasesText}.
     : ""
 }
 
