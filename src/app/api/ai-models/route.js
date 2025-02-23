@@ -17,6 +17,8 @@ export async function POST() {
     };
 
     const { data } = await aivideoapi.generate_by_text_runway_generate_text_post(requestBody);
+
+    console.log(`Task initiated. UUID: ${callback_url}`);
     
     // Return generation ID to client
     return NextResponse.json({ generationId: data.generation_id });
