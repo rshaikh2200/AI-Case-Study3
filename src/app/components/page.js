@@ -1,53 +1,83 @@
-// /app/page.js
 "use client";
 
 import { useState } from 'react';
 
 export default function HomePage() {
   const [videoUrl, setVideoUrl] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [statusData, setStatusData] = useState(null);
 
+  // 1) This calls /api/ai-models (POST) to start the generation
   const handleGenerateVideo = async () => {
-    setLoading(true);
     try {
-      console.log('Generate button clicked!');
+      console.log('Generate button clicked. Making request to /api/ai-models...');
       
-      // Call the API route that handles video generation
-      const res = await fetch('/api/ai-models', {
+      const response = await fetch('/api/ai-models', {
         method: 'POST',
       });
 
-      if (!res.ok) {
-        throw new Error('Failed to generate video');
+      if (!response.ok) {
+        throw new Error(`Generate error: ${response.status}`);
       }
 
-      const data = await res.json();
-      console.log('Response from API:', data);
+      const data = await response.json();
+      console.log('Response from /api/ai-models (generate):', data);
 
-      // Assuming the returned data contains a "url" property for the generated video
+      // If the API returns an immediate URL (unlikely, but possible),
+      // set it here so we can preview it.
       if (data.url) {
         setVideoUrl(data.url);
-      } else {
-        console.warn('No "url" property in API response:', data);
       }
     } catch (error) {
-      console.error('Error fetching video from API:', error);
-    } finally {
-      setLoading(false);
+      console.error('Error generating video:', error);
+    }
+  };
+
+  // 2) This calls /api/ai-models/status (GET) to check the current status
+  const handleCheckStatus = async () => {
+    try {
+      console.log('Check Status button clicked. Making request to /api/ai-models/status...');
+      
+      const response = await fetch('/api/ai-models/status'); // GET by default
+      if (!response.ok) {
+        throw new Error(`Status error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Response from /api/ai-models/status:', data);
+      setStatusData(data);
+
+      // If the returned data has a `url` indicating the video is ready, set it
+      if (data.url) {
+        setVideoUrl(data.url);
+      }
+    } catch (error) {
+      console.error('Error checking status:', error);
     }
   };
 
   return (
     <div style={{ padding: '20px' }}>
       <h1>Generate AI Video</h1>
-      <button onClick={handleGenerateVideo} disabled={loading}>
-        {loading ? "Generating..." : "Generate Video"}
+
+      <button onClick={handleGenerateVideo}>
+        Generate Video
+      </button>
+      
+      <button onClick={handleCheckStatus} style={{ marginLeft: '10px' }}>
+        Check Status
       </button>
 
       {videoUrl && (
         <div style={{ marginTop: '20px' }}>
           <h2>Generated Video:</h2>
           <video src={videoUrl} controls autoPlay width="600" />
+        </div>
+      )}
+
+      {statusData && (
+        <div style={{ marginTop: '20px' }}>
+          <h2>Current Status:</h2>
+          <pre>{JSON.stringify(statusData, null, 2)}</pre>
         </div>
       )}
     </div>
