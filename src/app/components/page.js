@@ -14,8 +14,8 @@ import {
   deleteDoc,
   doc,
   setDoc,
-  updateDoc,  
-  where,       
+  updateDoc,
+  where,
 } from 'firebase/firestore';
 import { firestore } from '../firebase';
 
@@ -191,13 +191,30 @@ export default function Home() {
   const [workflowData, setWorkflowData] = useState([]);
 
   const audioRef = useRef(null);
-  
+
+  // NEW state to track hovered option (for definitions).
+  const [hoveredOption, setHoveredOption] = useState(null);
+
+  // Definitions map
+  const definitionsMap = {
+    a: "Peer Checking and Coaching\nDefinition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)",
+    b: "Debrief\nDefinition: Reflect on what went well with team, what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.",
+    c: "ARCC\nDefinition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.",
+    d: "Validate and Verify\nDefinition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information 'fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).",
+    e: "STAR\nDefinition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).",
+    f: "No Distraction Zone\nDefinition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like 'Stand by' or 'Hold on'.",
+    g: "Effective Handoffs\nDefinition: Six important principles that make an Effective Handoff: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/printed information, Opportunity for questions/clarification.",
+    h: "Read and Repeat Back\nDefinition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating 'that's correct'. If not correct the sender repeats/clarifies the communication beginning the three steps again.",
+    i: "Ask Clarifying Questions\nDefinition: Requesting Additional information, and expressing concerns to avoid misunderstandings.",
+    j: "Using Alphanumeric Language\nDefinition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.",
+    k: "SBAR\nDefinition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions?), Recommendations (what is my recommendation, request, or plan?).",
+  };
+
   useEffect(() => {
     if (assessmentComplete && totalScore >= 70) {
       setIsCertificateOpen(true);
     }
   }, [assessmentComplete, totalScore]);
- 
 
   const generateSpeech = async () => {
     if (!currentCaseStudy) return;
@@ -373,7 +390,6 @@ export default function Home() {
     };
   }, []);
 
-
   // Function to save user inputs to Firestore
   const saveUserInputs = async () => {
     try {
@@ -381,7 +397,7 @@ export default function Home() {
         userID,
         fullName,
         language,
-        userType,        // still saved, even though no dropdown
+        userType, // still saved, even though no dropdown
         department,
         role,
         specialization,
@@ -390,7 +406,7 @@ export default function Home() {
     } catch (error) {
       console.error('Error saving user inputs:', error.message);
       setError('Failed to save your inputs. Please try again.');
-      throw error; 
+      throw error;
     }
   };
 
@@ -399,7 +415,7 @@ export default function Home() {
     if (!aiResponse) return;
 
     try {
-      await addDoc(collection(firestore, 'ai_responses'), { 
+      await addDoc(collection(firestore, 'ai_responses'), {
         aiResponse,
         sessionID,
       });
@@ -414,30 +430,32 @@ export default function Home() {
     if (!caseStudies || caseStudies.length === 0) return;
 
     try {
-        // Construct the collection name based on user selection
-        const collectionName = `${department || 'unknownDepartment'}_${role || 'unknownRole'}_${specialization || 'unknownSpecialization'}`;
-        const sanitizedCollectionName = collectionName.replace(/[^a-zA-Z0-9_]/g, '_');
+      // Construct the collection name based on user selection
+      const collectionName = `${department || 'unknownDepartment'}_${role || 'unknownRole'}_${
+        specialization || 'unknownSpecialization'
+      }`;
+      const sanitizedCollectionName = collectionName.replace(/[^a-zA-Z0-9_]/g, '_');
 
-        // Initialize batch for the new collection
-        const batch = writeBatch(firestore);
-        const userCaseStudiesCollection = collection(firestore, sanitizedCollectionName);
+      // Initialize batch for the new collection
+      const batch = writeBatch(firestore);
+      const userCaseStudiesCollection = collection(firestore, sanitizedCollectionName);
 
-        caseStudies.forEach((caseStudy) => {
-            const docRef = doc(userCaseStudiesCollection);
-            batch.set(docRef, {
-                ...caseStudy,
-                sessionID,
-            });
+      caseStudies.forEach((caseStudy) => {
+        const docRef = doc(userCaseStudiesCollection);
+        batch.set(docRef, {
+          ...caseStudy,
+          sessionID,
         });
+      });
 
-        // Commit the batch
-        await batch.commit();
+      // Commit the batch
+      await batch.commit();
 
-        console.log(`Case studies saved to ${sanitizedCollectionName} collection successfully.`);
+      console.log(`Case studies saved to ${sanitizedCollectionName} collection successfully.`);
     } catch (error) {
-        console.error('Error saving case studies:', error.message);
-        setError('Failed to save case studies. Please try again.');
-        throw error; 
+      console.error('Error saving case studies:', error.message);
+      setError('Failed to save case studies. Please try again.');
+      throw error;
     }
   };
 
@@ -506,7 +524,7 @@ export default function Home() {
     setShowTranslate(false);
   };
 
-  // Function to get case studies from the server
+  // Function to get case studies from the server (called from handleTakeAssessment)
   const handleSubmitAssessment = async () => {
     setIsLoading(true);
     setError(null);
@@ -567,6 +585,156 @@ export default function Home() {
     }
   };
 
+  // NEW: Function to generate and open PDF of "case studies and questions" WITHOUT displaying them
+  const handlePrintCaseStudiesAndQuestions = async () => {
+    // We replicate the same logic as handleTakeAssessment but won't show the case studies in the UI.
+    setIsLoading(true);
+    setError(null);
+
+    // Basic validation
+    if (!role || !department) {
+      setError('Please select your Role and Department before proceeding.');
+      setIsLoading(false);
+      return;
+    }
+
+    if (!specialization) {
+      setError('Please select your Specialization before proceeding.');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // Save user inputs and set up session data
+      await saveUserInputs();
+      const randomSessionID = Math.floor(100000 + Math.random() * 900000).toString();
+      setSessionID(randomSessionID);
+      await saveSessionData(randomSessionID);
+
+      // Fetch the personalized scenarios
+      const response = await fetch('/api/ai-models', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userType, department, role, specialization }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `Failed to fetch case studies: ${errorData.error || 'Unknown error'}`
+        );
+      }
+
+      const data = await response.json();
+      if (!data.caseStudies || !Array.isArray(data.caseStudies)) {
+        throw new Error('Invalid data format received from server.');
+      }
+      const { caseStudies, aiResponse } = data;
+
+      setCaseStudies(caseStudies);
+      setAiResponse(aiResponse);
+
+      // We do NOT set showSafetyStatement(false) nor showCaseStudies(true)
+      // because we only want to print them, not display them in the UI.
+
+      // Build a PDF of the case studies + questions
+      const docPDF = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        putOnlyUsedFonts: true,
+        floatPrecision: 16,
+      });
+
+      const pageWidth = docPDF.internal.pageSize.getWidth();
+      const pageHeight = docPDF.internal.pageSize.getHeight();
+      const margin = 10;
+      let yPosition = margin;
+
+      // Title
+      docPDF.setFontSize(14);
+      docPDF.setFont('helvetica', 'bold');
+      docPDF.text('Personalized Case Studies & Questions', pageWidth / 2, yPosition, {
+        align: 'center',
+      });
+      yPosition += 10;
+
+      // Basic user info
+      docPDF.setFontSize(10);
+      docPDF.setFont('helvetica', 'normal');
+      docPDF.text(`Full Name: ${fullName}`, margin, yPosition);
+      yPosition += 5;
+      docPDF.text(`User ID: ${userID}`, margin, yPosition);
+      yPosition += 5;
+      docPDF.text(`Generated on: ${new Date().toLocaleDateString()}`, margin, yPosition);
+      yPosition += 10;
+
+      // Loop through caseStudies, list scenario + questions
+      caseStudies.forEach((cs, index) => {
+        if (index !== 0) {
+          docPDF.addPage();
+          yPosition = margin;
+        }
+
+        // Case Study title
+        docPDF.setFontSize(12);
+        docPDF.setFont('helvetica', 'bold');
+        docPDF.text(`Case Study ${index + 1}`, margin, yPosition);
+        yPosition += 6;
+
+        // Scenario
+        docPDF.setFontSize(10);
+        docPDF.setFont('helvetica', 'normal');
+        const scenarioLines = docPDF.splitTextToSize(cs.scenario, pageWidth - margin * 2);
+        docPDF.text(scenarioLines, margin, yPosition);
+        yPosition += scenarioLines.length * 5 + 5;
+
+        // Questions
+        cs.questions.forEach((q, qIndex) => {
+          if (yPosition > pageHeight - margin - 30) {
+            docPDF.addPage();
+            yPosition = margin;
+          }
+
+          docPDF.setFontSize(10);
+          docPDF.setFont('helvetica', 'bold');
+          docPDF.text(`Question ${qIndex + 1}:`, margin, yPosition);
+          yPosition += 5;
+
+          docPDF.setFont('helvetica', 'normal');
+          const questionLines = docPDF.splitTextToSize(q.question, pageWidth - margin * 2);
+          docPDF.text(questionLines, margin + 5, yPosition);
+          yPosition += questionLines.length * 5 + 3;
+
+          // List the options
+          q.options.forEach((opt) => {
+            if (yPosition > pageHeight - margin - 20) {
+              docPDF.addPage();
+              yPosition = margin;
+            }
+            const optionText = `${opt.key}. ${opt.label}`;
+            const optionLines = docPDF.splitTextToSize(optionText, pageWidth - margin * 2 - 5);
+            docPDF.text(optionLines, margin + 10, yPosition);
+            yPosition += optionLines.length * 5 + 2;
+          });
+
+          yPosition += 3; // extra gap
+        });
+      });
+
+      // Open the PDF in a new tab
+      const blobUrl = docPDF.output('bloburl');
+      window.open(blobUrl, '_blank');
+
+    } catch (err) {
+      setError(err.message || 'An error occurred');
+      console.error('Error fetching/printing case studies:', err);
+    } finally {
+      setIsLoading(false);
+      setShowTranslate(false);
+    }
+  };
+
   // Modified handleAnswerChange function
   const handleAnswerChange = (caseIndex, questionIndex, selectedOption) => {
     const key = `${caseIndex}-${questionIndex}`;
@@ -598,10 +766,10 @@ export default function Home() {
 
     if (isCorrect) {
       feedbackMessageNew = 'Correct Answer';
-      hintToShow = ''; 
+      hintToShow = '';
     } else {
-      const attemptsLeft = 2 - currentAttempts - 1; 
-      hintToShow = hint; 
+      const attemptsLeft = 2 - currentAttempts - 1;
+      hintToShow = hint;
       if (attemptsLeft > 0) {
         feedbackMessageNew = `Incorrect Answer. ${attemptsLeft} try left.`;
       } else {
@@ -991,8 +1159,8 @@ export default function Home() {
 
     if (certificateElement) {
       const printWindow = window.open("", "PRINT", "width=800,height=600");
-      printWindow.document.write(`
-        <html>
+      printWindow.document.write(
+        `<html>
         <head>
           <title>Coachcare.ai</title>
           <style>
@@ -1030,7 +1198,11 @@ export default function Home() {
                 #000,
                 #000 25%,
                 transparent 25%,
-                transparent 50%
+                transparent 50%,
+                #000 50%,
+                #000 75%,
+                transparent 75%,
+                transparent
               );
               background-size: 60px 60px;
             }
@@ -1130,8 +1302,8 @@ export default function Home() {
             ${certificateElement.outerHTML}
           </div>
         </body>
-        </html>
-      `);
+        </html>`
+      );
       printWindow.document.close();
       printWindow.focus();
       printWindow.print();
@@ -1259,7 +1431,6 @@ export default function Home() {
         'Abdominal Transplant'
       ],
     },
-   
   };
 
   // Departments for the dropdown (no longer filtered by userType)
@@ -1380,7 +1551,7 @@ export default function Home() {
                   <span className="block sm:hidden">Coachcare.ai</span>
                 </div>
               </div>
-  
+
               {/* Mobile menu button */}
               <div className="sm:hidden ml-4 mr-4">
                 <button
@@ -1394,7 +1565,7 @@ export default function Home() {
                   )}
                 </button>
               </div>
-  
+
               {/* Desktop Navigation */}
               <div className="hidden sm:flex sm:items-center sm:space-x-4">
                 <Link
@@ -1424,7 +1595,7 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-  
+
             {/* Mobile Navigation */}
             {isMobileMenuOpen && (
               <div className="sm:hidden pb-4">
@@ -1462,7 +1633,7 @@ export default function Home() {
             )}
           </div>
         </nav>
-  
+
         <div className="content-wrapper">
           {/* Image and Assessment Complete Form Container */}
           <div className="image-container px-4 py-6">
@@ -1474,7 +1645,7 @@ export default function Home() {
                 just for you in order to make the safety behavior more relevant. Thank you for doing your part to put more care into healthcare.
               </p>
             )}
-  
+
             {assessmentComplete && (
               <div className="assessment-complete mt-6">
                 <div className="result-container bg-white rounded-lg shadow p-6">
@@ -1482,19 +1653,19 @@ export default function Home() {
                     <div className="score-header text-xl font-semibold">
                       <strong>Score:</strong>
                     </div>
-  
+
                     <div className="correct-answers text-2xl font-bold my-2">
                       {correctCount} out of 12
                     </div>
-  
+
                     <div className="score-circle mx-auto my-4 w-24 h-24 flex items-center justify-center rounded-full bg-blue-100">
                       <span className="text-3xl font-bold text-blue-600">{totalScore}%</span>
                     </div>
-  
+
                     <div className="result-header text-xl font-semibold">
                       <strong>Result:</strong>
                     </div>
-  
+
                     <div
                       className={`pass-fail text-2xl font-bold mt-2 ${
                         totalScore >= 70 ? 'text-green-600' : 'text-red-600'
@@ -1504,21 +1675,21 @@ export default function Home() {
                     </div>
                   </div>
                 </div>
-  
+
                 {resultDetails.map((caseDetail) => (
                   <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail mt-6">
                     <h3 className="text-lg font-semibold">{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
                     <p className="case-study-text text-gray-700 mt-2">{caseDetail.caseStudyText}</p>
-  
+
                     {caseDetail.questions.map((q) => (
                       <div key={`question-${q.questionNumber}`} className="question-summary mt-4">
                         <div className="question-header-summary flex justify-between items-center">
                           <h4 className="text-md font-semibold">{`Question ${q.questionNumber}`}</h4>
                           <span className="text-xl">{q.isCorrect ? '✅' : '❌'}</span>
                         </div>
-  
+
                         <p className="question-text text-gray-700 mt-1">{q.questionText}</p>
-  
+
                         <h5 className="mt-2 font-semibold">Your Answer:</h5>
                         <p className="user-answer text-gray-700">
                           {q.selectedAnswer !== 'No Answer'
@@ -1529,7 +1700,7 @@ export default function Home() {
                               )
                             : 'No Answer'}
                         </p>
-  
+
                         <h5 className="mt-2 font-semibold">Correct Answer:</h5>
                         <p className="correct-answer text-gray-700">
                           {getOptionLabel(
@@ -1544,7 +1715,7 @@ export default function Home() {
                     ))}
                   </div>
                 ))}
-  
+
                 <div className="result-buttons flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
                   <button
                     className="print-button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
@@ -1566,14 +1737,14 @@ export default function Home() {
               </div>
             )}
           </div>
-  
+
           {showSafetyStatement && (
             <div className="form-container px-4 py-6">
               <div className="professional-info bg-white rounded-lg shadow p-6">
                 <h2 className="text-lg font-semibold mb-4">Professional Information</h2>
-  
+
                 {/* Removed the User Type dropdown entirely */}
-  
+
                 <div className="form-item mb-4">
                   <label htmlFor="department-select" className="block text-sm font-medium text-gray-700">
                     Department
@@ -1595,7 +1766,7 @@ export default function Home() {
                     ))}
                   </select>
                 </div>
-  
+
                 <div className="form-item mb-4">
                   <label htmlFor="role-select" className="block text-sm font-medium text-gray-700">
                     Role
@@ -1618,7 +1789,7 @@ export default function Home() {
                     ))}
                   </select>
                 </div>
-  
+
                 {/* Always show Specialization dropdown */}
                 <div className="form-item mb-4">
                   <label htmlFor="specialization-select" className="block text-sm font-medium text-gray-700">
@@ -1665,24 +1836,38 @@ export default function Home() {
               </div>
             </div>
           )}
-  
+
           <div className="button-container text-center my-6">
             {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
-              <button
-                type="button"
-                className="assessment-button bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
-                onClick={handleTakeAssessment}
-                disabled={isLoading}
-              >
-                {isLoading
-                  ? 'Starting your assessment, please wait...'
-                  : 'Generate My Personalized Training Scenarios'}
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="assessment-button bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 mr-2"
+                  onClick={handleTakeAssessment}
+                  disabled={isLoading}
+                >
+                  {isLoading
+                    ? 'Starting your assessment, please wait...'
+                    : 'Generate My Personalized Training Scenarios'}
+                </button>
+
+                {/* NEW BUTTON: Print Case Studies and Questions */}
+                <button
+                  type="button"
+                  className="print-cs-button bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700"
+                  onClick={handlePrintCaseStudiesAndQuestions}
+                  disabled={isLoading}
+                >
+                  {isLoading
+                    ? 'Preparing PDF, please wait...'
+                    : 'Print Case Studies and Questions'}
+                </button>
+              </>
             )}
           </div>
-  
+
           {error && <div className="error-alert text-red-600 text-center">{error}</div>}
-  
+
           {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
             <div className="case-studies px-4 py-6">
               <div className="case-study" key={currentCaseStudyIndex}>
@@ -1695,7 +1880,7 @@ export default function Home() {
                     />
                   </div>
                 )}
-  
+
                 <div className="case-study-header flex flex-col sm:flex-row justify-between items-center">
                   <h3 className="text-xl font-semibold">{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
                   <button
@@ -1719,15 +1904,15 @@ export default function Home() {
                     )}
                   </button>
                 </div>
-  
+
                 <audio ref={audioRef} />
-  
+
                 {audioError && <div className="audio-error text-red-600">{audioError}</div>}
-  
+
                 <p className="case-study-scenario text-gray-700 mt-4">
                   {caseStudies[currentCaseStudyIndex].scenario}
                 </p>
-  
+
                 {caseStudies[currentCaseStudyIndex].questions &&
                 caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
                   <div className="question-section mt-6">
@@ -1736,7 +1921,7 @@ export default function Home() {
                         caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
                       }`}
                     </h4>
-  
+
                     <div className="options-group mt-4 space-y-2">
                       {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
                         (option) => {
@@ -1747,9 +1932,14 @@ export default function Home() {
                               ?.message || '';
                           const isCorrect = feedbackMessage === 'Correct Answer';
                           const maxAttemptsReached = currentAttempts >= 2 || isCorrect;
-  
+
                           return (
-                            <div className="option-item" key={option.key}>
+                            <div
+                              className="option-item"
+                              key={option.key}
+                              onMouseEnter={() => setHoveredOption(option.key)}
+                              onMouseLeave={() => setHoveredOption(null)}
+                            >
                               <label className="flex items-center space-x-2">
                                 <input
                                   type="radio"
@@ -1772,13 +1962,18 @@ export default function Home() {
                                 <span className="text-gray-700">
                                   <strong>{`${option.key}.`}</strong> {option.label}
                                 </span>
+                                {hoveredOption === option.key && (
+                                  <span className="ml-2 text-gray-500 whitespace-pre-wrap">
+                                    {definitionsMap[option.key] || ''}
+                                  </span>
+                                )}
                               </label>
                             </div>
                           );
                         }
                       )}
                     </div>
-  
+
                     {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
                       <div className="feedback-section mt-4">
                         <div
@@ -1789,14 +1984,20 @@ export default function Home() {
                               : 'bg-blue-100 text-blue-700'
                           }`}
                         >
-                          {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message}
+                          {
+                            feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
+                              .message
+                          }
                         </div>
                         {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
                           <div className="hint mt-2 flex items-start space-x-2">
                             <span className="icon-hint mt-1 text-blue-600"></span>
                             <span className="text-gray-700">
                               <strong>Hint:</strong>{' '}
-                              {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint}
+                              {
+                                feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
+                                  .hint
+                              }
                             </span>
                           </div>
                         )}
@@ -1811,18 +2012,18 @@ export default function Home() {
               </div>
             </div>
           )}
-  
+
           {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
             <div className="no-case-studies text-center text-gray-700 py-6">
               No case studies available at the moment. Please try again later.
             </div>
           )}
         </div>
-  
+
         <footer className="footer bg-gray-800 text-white text-center py-4">
           <p>© 2024 CoachCare.ai | Contact: operations@coachcare.ai</p>
         </footer>
-  
+
         {isCertificateOpen && (
           <CertificatePopup
             isOpen={isCertificateOpen}
