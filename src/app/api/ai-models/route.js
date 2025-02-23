@@ -2,15 +2,13 @@
 import { NextResponse } from 'next/server';
 import aivideoapi from '@api/aivideoapi';
 
-//hi
-
 export async function POST(request) {
   try {
     // Authenticate with the API
     aivideoapi.auth('1e4f425715d78408a9ac5aeaed15636a4');
 
-    // Build the request body using the gen3 alpha model from Runway.
-    // Extend the video to 50 seconds (5 segments of 10 seconds each).
+    // Build the request body for the Runway model
+    // Adjust 'time' to a valid number, e.g., 5
     const requestBody = {
       text_prompt: 'masterpiece, cinematic, man smoking cigarette looking outside window, moving around',
       model: 'gen3',
@@ -19,16 +17,17 @@ export async function POST(request) {
       motion: 5,
       seed: 0,
       callback_url: '',
-      time: 15,
+      time: 5,  // Make sure 'time' is valid for the API
     };
 
-    // Generate the video using the API
-    const response = await aivideoapi.generate_by_text_runway_generate_text_post(requestBody);
-    
+    // Call the API
+    const { data } = await aivideoapi.generate_by_text_runway_generate_text_post(requestBody);
+
     // Return the generated data as JSON
-    return NextResponse.json(response.data);
+    return NextResponse.json(data);
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: 'Error generating video' }, { status: 500 });
+    // Return a 500 if there's any server or request error
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
