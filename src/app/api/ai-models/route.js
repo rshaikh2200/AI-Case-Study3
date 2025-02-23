@@ -12,7 +12,7 @@ import FormData from 'form-data';
 async function getMedicalCaseStudiesFromGoogle() {
   try {
     // Set your search parameters here – adjust the query and search_depth as needed.
-    const searchTerm = "Medical Case Studies";
+    const searchTerm = "Case Studies";
     const searchDepth = 10;
     const maxResults = 100;
     const googleApiKey = process.env.GOOGLE_API_KEY;
