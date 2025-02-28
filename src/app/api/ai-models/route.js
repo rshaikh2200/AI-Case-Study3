@@ -492,7 +492,7 @@ The medical case study should:
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4.5-preview",
+      model: "chatgpt-4o-latest",
       messages: [
         {
           role: "user",
