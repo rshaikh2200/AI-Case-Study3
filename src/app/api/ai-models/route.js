@@ -254,8 +254,7 @@ for a ${care} ${role} specializing in ${specialization}, and working in the ${de
 ${
   department === "Stroke Center"
     ? `Since the department is a Stroke Center, the 250-word case studies should focus on stroke cases
-       and potential medical errors. Ensure that you do not focus exclusively on these 
-       specific items; incorporate a variety of possible errors while maintaining clinical integrity.`
+       and potential medical errors. Ensure the medical case studies focus on unique medical error,  and incorporate a variety of possible errors while maintaining clinical integrity.`
     : ""
 }
 
