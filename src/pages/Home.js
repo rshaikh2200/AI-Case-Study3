@@ -370,7 +370,7 @@ export default function Home() {
           phone,
           timestamp: new Date(),
         });
-        setSuccess('Demo request submitted successfully! We'll contact you shortly.');
+        setSuccess('Demo request submitted successfully! We\'ll contact you shortly.');
         setName('');
         setRole('');
         setOrganization('');
