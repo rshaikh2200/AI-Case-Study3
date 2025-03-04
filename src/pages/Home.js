@@ -371,7 +371,7 @@ export default function Home() {
           phone,
           timestamp: new Date(),
         });
-        setSuccess('Demo request submitted successfully! We\'ll contact you shortly.');
+        setSuccess('Demo request submitted successfully! We&apos;ll contact you shortly.');
         setName('');
         setRole('');
         setOrganization('');
@@ -543,7 +543,7 @@ export default function Home() {
               avatar: "/api/placeholder/80/80"
             },
             {
-              quote: "As a quality director, I've tried many safety programs. CoachCare.ai is the first one that actually changed behaviors among our staff.",
+              quote: "As a quality director, I&apos;ve tried many safety programs. CoachCare.ai is the first one that actually changed behaviors among our staff.",
               name: "James Thompson",
               role: "Quality Improvement Director, City General",
               avatar: "/api/placeholder/80/80"
