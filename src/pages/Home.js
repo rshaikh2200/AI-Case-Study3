@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { 
   ArrowRight, 
@@ -556,9 +557,15 @@ export default function Home() {
                 <Star className="text-yellow-400" size={24} />
                 <Star className="text-yellow-400" size={24} />
               </div>
-              <p className="text-gray-700 mb-6 italic">"{testimonial.quote}"</p>
+              <p className="text-gray-700 mb-6 italic">&quot;{testimonial.quote}&quot;</p>
               <div className="flex items-center">
-                <img src={testimonial.avatar} alt={testimonial.name} className="w-12 h-12 rounded-full mr-4" />
+              <Image 
+                src={testimonial.avatar} 
+                alt={testimonial.name} 
+                width={48}
+                height={48}
+                className="rounded-full mr-4" 
+              />
                 <div>
                   <h4 className="font-bold text-gray-800">{testimonial.name}</h4>
                   <p className="text-gray-600 text-sm">{testimonial.role}</p>
@@ -652,8 +659,7 @@ export default function Home() {
         <title>CoachCare.ai - Healthcare Safety Training</title>
         <meta name="description" content="CoachCare.ai provides AI-driven healthcare safety training with personalized case scenarios and error prevention tools to reduce patient harm." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </Head>
 
       <AppBar />
