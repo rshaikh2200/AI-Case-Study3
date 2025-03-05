@@ -124,38 +124,62 @@ export default function Home() {
           </div>
 
           <div className="hidden sm:flex sm:items-center sm:space-x-1">
-            {['Home', 'Safety Module', 'Dashboard', 'Feedback'].map((item, index) => (
-              <Link
-                key={index}
-                href={index === 0 ? '/' : `/${item.toLowerCase().replace(' ', '-')}`}
-                className={`px-4 py-2 mx-1 rounded-full text-sm font-medium transition-all duration-200 ${
-                  scrolled 
-                    ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' 
-                    : 'text-white hover:bg-blue-500'
-                }`}
-              >
-                {item}
-              </Link>
-            ))}
+            {['Home', 'Safety Module', 'Dashboard', 'Feedback'].map((item, index) => {
+              let href;
+              let linkClassName;
+              if (item === 'Home') {
+                href = '/';
+                linkClassName = scrolled
+                  ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
+                  : 'text-white hover:bg-blue-500';
+              } else if (item === 'Safety Module') {
+                href = '/components';
+                // Use the provided styling for Safety Module
+                linkClassName =
+                  'text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors';
+              } else {
+                href = `/${item.toLowerCase().replace(' ', '-')}`;
+                linkClassName = scrolled
+                  ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
+                  : 'text-white hover:bg-blue-500';
+              }
+              return (
+                <Link
+                  key={index}
+                  href={href}
+                  className={`px-4 py-2 mx-1 rounded-full text-sm font-medium transition-all duration-200 ${linkClassName}`}
+                >
+                  {item}
+                </Link>
+              );
+            })}
           </div>
         </div>
 
         {isMobileMenuOpen && (
           <div className="sm:hidden mt-3 pb-3 space-y-1 animate-fadeIn">
-            {['Home', 'Safety Module', 'Dashboard', 'Feedback'].map((item, index) => (
-              <Link
-                key={index}
-                href={index === 0 ? '/' : `/${item.toLowerCase().replace(' ', '-')}`}
-                className={`block px-4 py-3 rounded-md text-base font-medium ${
-                  scrolled 
-                    ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' 
-                    : 'text-white hover:bg-blue-500'
-                }`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {item}
-              </Link>
-            ))}
+            {['Home', 'Safety Module', 'Dashboard', 'Feedback'].map((item, index) => {
+              let href;
+              if (item === 'Home') {
+                href = '/';
+              } else if (item === 'Safety Module') {
+                href = '/components';
+              } else {
+                href = `/${item.toLowerCase().replace(' ', '-')}`;
+              }
+              return (
+                <Link
+                  key={index}
+                  href={href}
+                  className={`block px-4 py-3 rounded-md text-base font-medium ${
+                    scrolled ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' : 'text-white hover:bg-blue-500'
+                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item}
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>
@@ -572,9 +596,24 @@ export default function Home() {
           <div>
             <h3 className="text-xl font-semibold mb-4">Platform</h3>
             <ul className="space-y-2">
-              <li><Link href="/safety-module" className="text-gray-400 hover:text-white transition-colors">Safety Module</Link></li>
-              <li><Link href="/dashboard" className="text-gray-400 hover:text-white transition-colors">Dashboard</Link></li>
-              <li><Link href="/feedback" className="text-gray-400 hover:text-white transition-colors">Feedback</Link></li>
+              <li>
+                <Link
+                  href="/components"
+                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                >
+                  Safety Module
+                </Link>
+              </li>
+              <li>
+                <Link href="/dashboard" className="text-gray-400 hover:text-white transition-colors">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link href="/feedback" className="text-gray-400 hover:text-white transition-colors">
+                  Feedback
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
