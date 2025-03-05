@@ -76,7 +76,87 @@ export default function Home() {
           <div className={`p-3 rounded-full ${isActive ? 'bg-blue-500/30' : 'bg-blue-100'}`}>
             <IconComponent size={24} className={isActive ? 'text-white' : 'text-blue-600'} />
           </div>
-          <h3 className="text-xl font-bold ml-4 mt-1">{tool.title}</h3>
+        
+        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-gray-400 text-sm mb-4 md:mb-0">
+            &copy; {new Date().getFullYear()} CoachCare.ai. All rights reserved.
+          </p>
+          <div className="flex space-x-6">
+            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
+            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
+            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+
+  return (
+    <div className="min-h-screen">
+      <Head>
+        <title>CoachCare.ai - Advanced Healthcare Safety Training Platform</title>
+        <meta name="description" content="CoachCare.ai - AI-powered healthcare safety training platform that reduces patient harm and medical errors through personalized learning and actionable insights." />
+        <link rel="icon" href="/favicon.ico" />
+        {/* Add preconnect for Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+        
+        {/* Additional meta tags for SEO and sharing */}
+        <meta property="og:title" content="CoachCare.ai - Advanced Healthcare Safety Training" />
+        <meta property="og:description" content="AI-powered healthcare safety training that reduces patient harm and medical errors through personalized learning." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://coachcare.ai" />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+
+      <AppBar />
+      <Hero />
+      <StatsSection />
+      <MarketingSection />
+      <ProcessSection />
+      <TestimonialSection />
+      <DemoForm />
+      <Footer />
+    </div>
+  );
+}  
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Platform</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Safety Module</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">AI-Driven Training</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Analytics Dashboard</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Implementation</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Resources</h3>
+            <ul className="space-y-2">
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Case Studies</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Knowledge Base</a></li>
+              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Research</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Contact</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <Mail size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
+                <a href="mailto:info@coachcare.ai" className="text-gray-400 hover:text-white transition-colors">info@coachcare.ai</a>
+              </li>
+              <li className="flex items-start">
+                <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
+                <a href="tel:+18005551234" className="text-gray-400 hover:text-white transition-colors">+1 (800) 555-1234</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <h3 className="text-xl font-bold ml-4 mt-1">{tool.title}</h3>
         </div>
         <p className={`text-sm ${isActive ? 'text-blue-50' : 'text-gray-600'} leading-relaxed`}>
           {tool.definition}
@@ -365,7 +445,7 @@ export default function Home() {
             </svg>
           </div>
           <blockquote className="text-2xl font-light mb-8 leading-relaxed">
-            "CoachCare.ai has transformed our approach to safety training. The personalized scenarios and data-driven insights have helped us reduce preventable errors by 45% in just six months. It's been a game-changer for our hospital system."
+            &quot;CoachCare.ai has transformed our approach to safety training. The personalized scenarios and data-driven insights have helped us reduce preventable errors by 45% in just six months. It&apos;s been a game-changer for our hospital system.&quot;
           </blockquote>
           <div className="flex items-center justify-center">
             <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mr-4">
@@ -438,7 +518,7 @@ export default function Home() {
                   </div>
                   <div className="ml-4">
                     <h3 className="text-lg font-semibold text-gray-800">Personalized Implementation</h3>
-                    <p className="text-gray-600">Tailored to your organization's specific needs and challenges</p>
+                    <p className="text-gray-600">Tailored to your organization&apos;s specific needs and challenges</p>
                   </div>
                 </div>
                 
@@ -616,84 +696,3 @@ export default function Home() {
               </a>
             </div>
           </div>
-          
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Platform</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Safety Module</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">AI-Driven Training</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Analytics Dashboard</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Implementation</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Resources</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Case Studies</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Blog</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Knowledge Base</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Research</a></li>
-            </ul>
-          </div>
-          
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Contact</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start">
-                <Mail size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
-                <a href="mailto:info@coachcare.ai" className="text-gray-400 hover:text-white transition-colors">info@coachcare.ai</a>
-              </li>
-              <li className="flex items-start">
-                <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
-                <a href="tel:+18005551234" className="text-gray-400 hover:text-white transition-colors">+1 (800) 555-1234</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-400 text-sm mb-4 md:mb-0">
-            &copy; {new Date().getFullYear()} CoachCare.ai. All rights reserved.
-          </p>
-          <div className="flex space-x-6">
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-
-  return (
-    <div className="min-h-screen">
-      <Head>
-        <title>CoachCare.ai - Advanced Healthcare Safety Training Platform</title>
-        <meta name="description" content="CoachCare.ai - AI-powered healthcare safety training platform that reduces patient harm and medical errors through personalized learning and actionable insights." />
-        <link rel="icon" href="/favicon.ico" />
-        {/* Add preconnect for Google Fonts */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-        
-        {/* Additional meta tags for SEO and sharing */}
-        <meta property="og:title" content="CoachCare.ai - Advanced Healthcare Safety Training" />
-        <meta property="og:description" content="AI-powered healthcare safety training that reduces patient harm and medical errors through personalized learning." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://coachcare.ai" />
-        <meta property="og:image" content="/og-image.jpg" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Head>
-
-      <AppBar />
-      <Hero />
-      <StatsSection />
-      <MarketingSection />
-      <ProcessSection />
-      <TestimonialSection />
-      <DemoForm />
-      <Footer />
-    </div>
-  );
-}
