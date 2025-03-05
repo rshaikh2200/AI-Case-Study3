@@ -1,284 +1,368 @@
 // pages/index.js
-import Head from 'next/head';
-import Link from 'next/link';
 import { useState } from 'react';
-import { 
-  Icon, 
-  ArrowRight, 
-  Users, 
-  ClipboardList, 
-  GitMerge, 
-  CheckCircle, 
-  Star, 
-  BellOff, 
-  RefreshCw, 
-  Repeat, 
-  HelpCircle, 
-  Type, 
-  Layers,
-  Menu,
-  X, 
-  Skull
-} from 'lucide-react';
-const errorPreventionTools = [
-    {
-      title: "Peer Checking and Coaching",
-      definition: "Peer Checking involves asking colleagues to review your work and assisting in reviewing theirs. Peer Coaching encourages publicly celebrating correct actions and privately correcting mistakes.",
-      icon: Users
-    },
-    {
-      title: "Debrief",
-      definition: "Reflect on successes, failures, improvements, and follow-through responsibilities. Debriefs are short discussions where everyone is encouraged to speak freely.",
-      icon: ClipboardList
-    },
-    {
-      title: "ARCC",
-      definition: "ARCC involves asking questions to highlight safety concerns, requesting changes, and voicing concerns if risks remain. If necessary, escalate through the chain of command to prevent harm.",
-      icon: GitMerge
-    },
-    {
-      title: "Validate and Verify",
-      definition: "Validate by internally checking if the information makes sense based on past experience or expectations. Verify by consulting an independent qualified source.",
-      icon: CheckCircle
-    },
-    {
-      title: "STAR",
-      definition: "STAR stands for Stop, Think, Act, and Review, focusing on thoughtful and error-free task completion. Each step ensures tasks are carried out with attention and reviewed for accuracy.",
-      icon: Star
-    },
-    {
-      title: "No Distraction Zone",
-      definition: "Avoid interruptions or distractions during critical tasks by setting clear boundaries. Use phrases like 'Stand by' or 'Hold on' to maintain focus.",
-      icon: BellOff
-    },
-    {
-      title: "Effective Handoffs",
-      definition: "Effective handoffs follow six principles: standardization, minimal distractions, interactivity, acknowledgments, combining verbal and written communication, and allowing clarifications. These principles ensure smooth and safe transitions.",
-      icon: RefreshCw
-    },
-    {
-      title: "Read and Repeat Back",
-      definition: "The sender communicates information, and the receiver repeats it back to confirm accuracy. This ensures clarity and prevents misunderstandings through a three-step process.",
-      icon: Repeat
-    },
-    {
-      title: "Ask Clarifying Questions",
-      definition: "Request additional details or express concerns to avoid misinterpretation. This helps ensure clear and effective communication.",
-      icon: HelpCircle
-    },
-    {
-      title: "Using Alphanumeric Language",
-      definition: "Alphanumeric language improves clarity by using phonetic alphabets and precise numerical terms. This avoids confusion in critical communication.",
-      icon: Type
-    },
-    {
-      title: "SBAR",
-      definition: "SBAR is a framework for structured communication, including Situation, Background, Assessment, and Recommendations. It ensures clear, concise, and effective information sharing.",
-      icon: Layers
-    }
-  ];
-  
-
-const stats = [
-  { label: "Leading Cause Of Death", value: "3rd" },
-  { label: "Hospitals At Risk", value: "6K+", subtext: "In The U.S" },
-  { label: "Patient experience some form of preventable harm ", value: "400k+" },
-  { label: "Anual Hospital Cost To Cover Patient Harm", value: "$20bn - $45bn" }
-];
+import Head from 'next/head';
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // State for form values
+  const [formData, setFormData] = useState({
+    topic: 'A random AI Story,
+    voice: 'Charlie',
+    theme: 'Hormozi_1',
+    style: 'None',
+    language: 'English',
+    duration: '30-60',
+    aspect_ratio: '1:11',
+    prompt: '',
+    custom_instruction: '',
+    use_ai: '1',
+    include_voiceover: '1',
+    size: '',
+    ypos: '',
+    url: '',
+    bg_music: '',
+    bg_music_volume: '50',
+  });
 
-  const ErrorPreventionCard = ({ tool, isActive, onClick }) => {
-    const IconComponent = tool.icon;
-    return (
-      <div
-        className={`p-6 rounded-lg transition-all duration-300 cursor-pointer card-hover-effect ${
-          isActive
-            ? 'bg-blue-600 text-white shadow-lg scale-105'
-            : 'bg-white text-gray-800 shadow-md hover:shadow-lg'
-        }`}
-        onClick={onClick}
-      >
-        <div className="flex items-start mb-4">
-          <IconComponent size={24} className={isActive ? 'text-white' : 'text-blue-600'} />
-          <h3 className="text-xl font-semibold ml-3">{tool.title}</h3>
-        </div>
-        <p className={`text-sm ${isActive ? 'text-blue-50' : 'text-gray-600'}`}>
-          {tool.definition}
-        </p>
-      </div>
-    );
+  // State for API key input
+  const [apiKey, setApiKey] = useState('');
+  
+  // States for managing video generation and playback
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [videoId, setVideoId] = useState(null);
+  const [videoUrl, setVideoUrl] = useState('');
+  const [videoStatus, setVideoStatus] = useState('');
+  const [error, setError] = useState('');
+
+  // Handle form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
-  const AppBar = () => (
-    <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex items-center">
-            <div className="flex-shrink-0 text-white font-bold">
-              <span className="hidden sm:block">
-                AI Personalized Healthcare Safety Module
-              </span>
-              <span className="block sm:hidden">Coachcare.ai</span>
-            </div>
-          </div>
+  // Handle API key input
+  const handleApiKeyChange = (e) => {
+    setApiKey(e.target.value);
+  };
 
-          {/* Mobile menu button */}
-          <div className="sm:hidden ml-4 mr-4">
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="text-white hover:text-gray-200 focus:outline-none"
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
-            </button>
-          </div>
+  // Generate video
+  const generateVideo = async (e) => {
+    e.preventDefault();
+    
+    if (!apiKey) {
+      setError('API Key is required');
+      return;
+    }
 
-          {/* Desktop Navigation */}
-          <div className="hidden sm:flex sm:items-center sm:space-x-4">
-          <Link
-                href="/"
-                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-              >
-                Home
-              </Link>
-            <Link
-              href="/components"
-              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-            >
-              Safety Module
-            </Link>
-            <Link
-              href="/dashboard"
-              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-            >
-              Dashboard
-            </Link>
-            <Link
-              href="/feedback"
-              className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-            >
-              Feedback
-            </Link>
-          </div>
+    setIsGenerating(true);
+    setError('');
+    
+    try {
+      const response = await fetch('https://viralapi.vadoo.tv/api/generate_video', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': apiKey,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setVideoId(data.vid);
+      
+      // Start polling for video status
+      checkVideoStatus(data.vid);
+    } catch (err) {
+      setError(`Error generating video: ${err.message}`);
+      setIsGenerating(false);
+    }
+  };
+
+  // Poll for video status
+  const checkVideoStatus = async (vid) => {
+    try {
+      const response = await fetch(`https://viralapi.vadoo.tv/api/get_video_url?id=${vid}`, {
+        method: 'GET',
+        headers: {
+          'X-API-KEY': apiKey,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setVideoStatus(data.status);
+
+      if (data.status === 'complete') {
+        setVideoUrl(data.url);
+        setIsGenerating(false);
+      } else if (data.status === 'processing') {
+        // Poll again after 10 seconds
+        setTimeout(() => checkVideoStatus(vid), 10000);
+      } else {
+        setError(`Unexpected video status: ${data.status}`);
+        setIsGenerating(false);
+      }
+    } catch (err) {
+      setError(`Error checking video status: ${err.message}`);
+      setIsGenerating(false);
+    }
+  };
+
+  return (
+    <div className="container mx-auto p-4">
+      <Head>
+        <title>AI Video Generator</title>
+        <meta name="description" content="Generate AI videos with customizable parameters" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold mb-6 text-center">AI Video Generator</h1>
+        
+        <div className="mb-6">
+          <label className="block mb-2 font-semibold">API Key</label>
+          <input
+            type="text"
+            value={apiKey}
+            onChange={handleApiKeyChange}
+            className="w-full p-2 border rounded"
+            placeholder="Enter your API key"
+          />
         </div>
 
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className="sm:hidden pb-4">
-            <div className="flex flex-col space-y-2">
-            <Link
-                href="/"
-                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+        <form onSubmit={generateVideo} className="space-y-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block mb-1">Topic</label>
+              <select 
+                name="topic" 
+                value={formData.topic} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
               >
-                Home
-              </Link>
-              <Link
-                href="/components"
-                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
+                <option value="Random AI Story">Random AI Story</option>
+                <option value="Custom">Custom</option>
+                {/* Add more options as needed */}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block mb-1">Voice</label>
+              <select 
+                name="voice" 
+                value={formData.voice} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
               >
-                Safety Module
-              </Link>
-              <Link
-                href="/dashboard"
-                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
+                <option value="Charlie">Charlie</option>
+                {/* Add more options as needed */}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block mb-1">Theme</label>
+              <select 
+                name="theme" 
+                value={formData.theme} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
               >
-                Dashboard
-              </Link>
-              <Link
-                href="/feedback"
-                className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
+                <option value="Hormozi_1">Hormozi_1</option>
+                {/* Add more options as needed */}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block mb-1">Style</label>
+              <select 
+                name="style" 
+                value={formData.style} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
               >
-                Feedback
-              </Link>
+                <option value="None">None</option>
+                {/* Add more options as needed */}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block mb-1">Language</label>
+              <select 
+                name="language" 
+                value={formData.language} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              >
+                <option value="English">English</option>
+                <option value="Spanish">Spanish</option>
+                <option value="French">French</option>
+                {/* Add more language options */}
+              </select>
+            </div>
+            
+            <div>
+              <label className="block mb-1">Duration</label>
+              <select 
+                name="duration" 
+                value={formData.duration} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              >
+                <option value="30-60">30-60 seconds</option>
+                <option value="60-90">60-90 seconds</option>
+                <option value="90-120">90-120 seconds</option>
+                <option value="5 min">5 minutes</option>
+                <option value="10 min">10 minutes</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block mb-1">Aspect Ratio</label>
+              <select 
+                name="aspect_ratio" 
+                value={formData.aspect_ratio} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              >
+                <option value="9:16">9:16 (Vertical)</option>
+                <option value="1:1">1:1 (Square)</option>
+                <option value="16:9">16:9 (Horizontal)</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block mb-1">Use AI</label>
+              <select 
+                name="use_ai" 
+                value={formData.use_ai} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              >
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block mb-1">Include Voiceover</label>
+              <select 
+                name="include_voiceover" 
+                value={formData.include_voiceover} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+              >
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            
+            <div>
+              <label className="block mb-1">Background Music Volume</label>
+              <input 
+                type="range" 
+                name="bg_music_volume" 
+                value={formData.bg_music_volume} 
+                onChange={handleChange}
+                min="0" 
+                max="100" 
+                className="w-full"
+              />
+              <div className="text-sm text-center">{formData.bg_music_volume}%</div>
+            </div>
+          </div>
+          
+          {formData.topic === 'Custom' && (
+            <div>
+              <label className="block mb-1">Custom Prompt</label>
+              <textarea 
+                name="prompt" 
+                value={formData.prompt} 
+                onChange={handleChange}
+                className="w-full p-2 border rounded"
+                rows="3"
+                placeholder="Enter your custom prompt"
+              ></textarea>
+            </div>
+          )}
+          
+          <div>
+            <label className="block mb-1">Custom Instructions (Optional)</label>
+            <textarea 
+              name="custom_instruction" 
+              value={formData.custom_instruction} 
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              rows="3"
+              placeholder="Enter custom instructions to guide AI"
+            ></textarea>
+          </div>
+          
+          <div>
+            <label className="block mb-1">URL (Optional, for Blog to Video)</label>
+            <input 
+              type="text" 
+              name="url" 
+              value={formData.url} 
+              onChange={handleChange}
+              className="w-full p-2 border rounded"
+              placeholder="Enter URL for blog to video conversion"
+            />
+          </div>
+          
+          <div className="text-center">
+            <button 
+              type="submit" 
+              className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors"
+              disabled={isGenerating}
+            >
+              {isGenerating ? 'Generating Video...' : 'Generate Video'}
+            </button>
+          </div>
+        </form>
+
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            {error}
+          </div>
+        )}
+
+        {videoId && (
+          <div className="bg-gray-100 p-4 rounded mb-4">
+            <h2 className="font-bold mb-2">Video ID: {videoId}</h2>
+            <p className="mb-2">Status: {videoStatus || 'Processing'}</p>
+          </div>
+        )}
+
+        {videoUrl && (
+          <div className="mb-4">
+            <h2 className="font-bold text-xl mb-4">Your Generated Video</h2>
+            <div className="aspect-video bg-black">
+              <video 
+                src={videoUrl} 
+                controls
+                className="w-full h-full"
+              />
+            </div>
+            <div className="mt-4 text-center">
+              <a 
+                href={videoUrl} 
+                download
+                className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-colors inline-block"
+              >
+                Download Video
+              </a>
             </div>
           </div>
         )}
-      </div>
-    </nav>
-  );
-
-  const Hero = () => (
-    <div className="relative bg-blue-600 text-white">
-      <div className="container mx-auto px-4 py-16">
-        <div className="max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Elevate Patient Safety Through Prevention
-          </h1>
-          <p className="text-xl mb-8">
-          Avoidable medical errors in hospitals are the third leading cause of death in the USA. 99% Of
-avoidable medical errors can be traced back to the misuse or lack of use of the 4 safety
-principles and corresponding 11 error prevention tools (EPTs). By understanding and using this
-safety language, harm to patients can be drastically reduced.
-          </p>
-          <Link href="/components">
-          <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold flex items-center hover:bg-blue-50 transition-colors">
-            Start Patient Safety Module
-            <ArrowRight className="ml-2" size={20} />
-          </button>
-          </Link>
-        </div>
-      </div>
-      <div className="absolute bottom-0 right-0 w-1/3 h-full bg-blue-500 opacity-50 clip-path-diagonal hidden lg:block"></div>
-    </div>
-  );
-
-  const StatsSection = () => (
-    <section className="py-12 bg-gray-50 rounded-xl">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-          Medical Errors Statistics
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {stats.map((stat, index) => (
-            <div key={index} className="text-center">
-              <div className="text-4xl font-bold text-blue-600 mb-2">{stat.value}</div>
-              <div className="text-lg font-semibold text-gray-800 mb-1">{stat.label}</div>
-              <div className="text-sm text-gray-600">{stat.subtext}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <Head>
-        <title>Healthcare Safety Training Module</title>
-        <meta name="description" content="Healthcare Safety Training Module with Error Prevention Tools" />
-      </Head>
-
-      <AppBar />
-      <Hero />
-
-      <main className="container mx-auto px-4 py-12">
-        <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
-             Medical Error Prevention Tools
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {errorPreventionTools.map((tool, index) => (
-              <ErrorPreventionCard
-                key={index}
-                tool={tool}
-                isActive={activeTab === index}
-                onClick={() => setActiveTab(index)}
-              />
-            ))}
-          </div>
-        </section>
-
-        <StatsSection />
       </main>
     </div>
   );
