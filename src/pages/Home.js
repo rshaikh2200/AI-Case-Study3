@@ -11,7 +11,7 @@ export default function Home() {
     style: 'Realistic',
     language: 'English',
     duration: '30-60',
-    aspect_ratio: '9:16',
+    aspect_ratio: '1:1',
     prompt: '',
     custom_instruction: '',
     use_ai: '1',
