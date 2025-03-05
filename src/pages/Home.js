@@ -341,7 +341,7 @@ export default function Home() {
       {
         title: "Our Vision: Advancing Healthcare Safety",
         description:
-          "We're on a mission to reduce avoidable harm to patients. Our proven technology solution decreases liability risk for healthcare providers, making health systems safer for everyone.",
+          "We&apos;re on a mission to reduce avoidable harm to patients. Our proven technology solution decreases liability risk for healthcare providers, making health systems safer for everyone.",
         icon: HeartPulse,
       },     
       {
