@@ -46,8 +46,6 @@ import {
 } from 'firebase/firestore';
 import { firestore } from '../../src/app/firebase';
 
-//hi
-
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -62,6 +60,8 @@ export default function Home() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Define sub-components before the main return
 
   const ErrorPreventionCard = ({ tool, isActive, onClick }) => {
     const IconComponent = tool.icon;
@@ -93,36 +93,6 @@ export default function Home() {
     );
   };
 
-  return (
-    <div className="min-h-screen">
-      <Head>
-        <title>CoachCare.ai - Advanced Healthcare Safety Training Platform</title>
-        <meta name="description" content="CoachCare.ai - AI-powered healthcare safety training platform that reduces patient harm and medical errors through personalized learning and actionable insights." />
-        <link rel="icon" href="/favicon.ico" />
-        {/* Add preconnect for Google Fonts */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-        
-        {/* Additional meta tags for SEO and sharing */}
-        <meta property="og:title" content="CoachCare.ai - Advanced Healthcare Safety Training" />
-        <meta property="og:description" content="AI-powered healthcare safety training that reduces patient harm and medical errors through personalized learning." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://coachcare.ai" />
-        <meta property="og:image" content="/og-image.jpg" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Head>
-
-      <AppBar />
-      <Hero />
-      <ComparisonDiagram />
-      <MarketingSection />
-      <ProcessSection />
-      <DemoForm />
-      <Footer />
-    </div>
-  );
-
   const AppBar = () => (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg py-2' : 'bg-gradient-to-r from-blue-600 to-blue-700 py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -147,7 +117,6 @@ export default function Home() {
 
           <div className="hidden sm:flex sm:items-center sm:space-x-1">
             {['Home', 'Safety Module', 'Dashboard', 'Feedback'].map((item, index) => {
-              // For Safety Module, update href to "/components" only.
               const href = item === 'Home' ? '/' : (item === 'Safety Module' ? '/components' : `/${item.toLowerCase().replace(' ', '-')}`);
               return (
                 <Link
@@ -194,7 +163,7 @@ export default function Home() {
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-blue-900 opacity-20"></div>
         <div className="absolute inset-0" style={{ 
-          backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23FFFFFF" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+          backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23FFFFFF\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
           backgroundSize: '60px 60px' 
         }}></div>
       </div>
@@ -228,7 +197,6 @@ export default function Home() {
     </div>
   );
 
-  // Replaced StatsSection with ComparisonDiagram
   const ComparisonDiagram = () => (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -750,5 +718,35 @@ export default function Home() {
       </section>
     );
   };
+
+  // Main return with all sub-components rendered
+  return (
+    <div className="min-h-screen">
+      <Head>
+        <title>CoachCare.ai - Advanced Healthcare Safety Training Platform</title>
+        <meta name="description" content="CoachCare.ai - AI-powered healthcare safety training platform that reduces patient harm and medical errors through personalized learning and actionable insights." />
+        <link rel="icon" href="/favicon.ico" />
+        {/* Add preconnect for Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+        {/* Additional meta tags for SEO and sharing */}
+        <meta property="og:title" content="CoachCare.ai - Advanced Healthcare Safety Training" />
+        <meta property="og:description" content="AI-powered healthcare safety training that reduces patient harm and medical errors through personalized learning." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://coachcare.ai" />
+        <meta property="og:image" content="/og-image.jpg" />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+      <AppBar />
+      <Hero />
+      <ComparisonDiagram />
+      <MarketingSection />
+      <ProcessSection />
+      <DemoForm />
+      <Footer />
+    </div>
+  );
+}
 
 }
