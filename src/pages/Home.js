@@ -48,17 +48,10 @@ export default function Home() {
   // Handle navbar scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const ErrorPreventionCard = ({ tool, isActive, onClick }) => {
@@ -92,15 +85,11 @@ export default function Home() {
   };
 
   const AppBar = () => (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white shadow-lg py-2' : 'bg-gradient-to-r from-blue-600 to-blue-700 py-4'
-    }`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg py-2' : 'bg-gradient-to-r from-blue-600 to-blue-700 py-4'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <div className={`flex-shrink-0 font-extrabold text-xl tracking-tight transition-colors ${
-              scrolled ? 'text-blue-600' : 'text-white'
-            }`}>
+            <div className={`flex-shrink-0 font-extrabold text-xl tracking-tight transition-colors ${scrolled ? 'text-blue-600' : 'text-white'}`}>
               <span className="flex items-center">
                 <Shield size={24} className="mr-2" />
                 CoachCare.ai
@@ -111,43 +100,25 @@ export default function Home() {
           <div className="sm:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                scrolled ? 'text-blue-600 hover:bg-blue-50' : 'text-white hover:bg-blue-500'
-              }`}
+              className={`p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${scrolled ? 'text-blue-600 hover:bg-blue-50' : 'text-white hover:bg-blue-500'}`}
             >
-              {isMobileMenuOpen ? (
-                <X className="h-6 w-6" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
 
           <div className="hidden sm:flex sm:items-center sm:space-x-1">
             {['Home', 'Safety Module', 'Dashboard', 'Feedback'].map((item, index) => {
-              let href;
-              let linkClassName;
-              if (item === 'Home') {
-                href = '/';
-                linkClassName = scrolled
-                  ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
-                  : 'text-white hover:bg-blue-500';
-              } else if (item === 'Safety Module') {
-                href = '/components';
-                // Use the provided styling for Safety Module
-                linkClassName =
-                  'text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors';
-              } else {
-                href = `/${item.toLowerCase().replace(' ', '-')}`;
-                linkClassName = scrolled
-                  ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
-                  : 'text-white hover:bg-blue-500';
-              }
+              // For Safety Module, update href to "/components" only.
+              const href = item === 'Home' ? '/' : (item === 'Safety Module' ? '/components' : `/${item.toLowerCase().replace(' ', '-')}`);
               return (
                 <Link
                   key={index}
                   href={href}
-                  className={`px-4 py-2 mx-1 rounded-full text-sm font-medium transition-all duration-200 ${linkClassName}`}
+                  className={`px-4 py-2 mx-1 rounded-full text-sm font-medium transition-all duration-200 ${
+                    scrolled 
+                      ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
+                      : 'text-white hover:bg-blue-500'
+                  }`}
                 >
                   {item}
                 </Link>
@@ -159,14 +130,7 @@ export default function Home() {
         {isMobileMenuOpen && (
           <div className="sm:hidden mt-3 pb-3 space-y-1 animate-fadeIn">
             {['Home', 'Safety Module', 'Dashboard', 'Feedback'].map((item, index) => {
-              let href;
-              if (item === 'Home') {
-                href = '/';
-              } else if (item === 'Safety Module') {
-                href = '/components';
-              } else {
-                href = `/${item.toLowerCase().replace(' ', '-')}`;
-              }
+              const href = item === 'Home' ? '/' : (item === 'Safety Module' ? '/components' : `/${item.toLowerCase().replace(' ', '-')}`);
               return (
                 <Link
                   key={index}
@@ -533,9 +497,7 @@ export default function Home() {
                   <button
                     type="submit"
                     disabled={formLoading}
-                    className={`w-full py-4 px-6 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors ${
-                      formLoading ? 'opacity-70 cursor-not-allowed' : ''
-                    }`}
+                    className={`w-full py-4 px-6 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors ${formLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                   >
                     {formLoading ? (
                       <span className="flex items-center justify-center">
@@ -597,10 +559,7 @@ export default function Home() {
             <h3 className="text-xl font-semibold mb-4">Platform</h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="/components"
-                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                >
+                <Link href="/components" className="text-gray-400 hover:text-white transition-colors">
                   Safety Module
                 </Link>
               </li>
