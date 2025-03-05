@@ -46,6 +46,8 @@ import {
 } from 'firebase/firestore';
 import { firestore } from '../../src/app/firebase';
 
+//hi
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
