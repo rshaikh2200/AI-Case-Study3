@@ -8,7 +8,7 @@ export default function Home() {
     topic: 'Random AI Story',
     voice: 'Charlie',
     theme: 'Hormozi_1',
-    style: 'None',
+    style: 'Realistic',
     language: 'English',
     duration: '30-60',
     aspect_ratio: '9:16',
