@@ -5,13 +5,13 @@ import Head from 'next/head';
 export default function Home() {
   // State for form values
   const [formData, setFormData] = useState({
-    topic: 'A random AI Story',
+    topic: 'Random AI Story',
     voice: 'Charlie',
     theme: 'Hormozi_1',
     style: 'None',
     language: 'English',
     duration: '30-60',
-    aspect_ratio: '1:11',
+    aspect_ratio: '9:16',
     prompt: '',
     custom_instruction: '',
     use_ai: '1',
@@ -55,6 +55,12 @@ export default function Home() {
       setError('API Key is required');
       return;
     }
+    
+    // Validate required fields for Custom topic
+    if (formData.topic === 'Custom' && !formData.prompt) {
+      setError('Custom prompt is required when topic is set to Custom');
+      return;
+    }
 
     setIsGenerating(true);
     setError('');
@@ -64,13 +70,18 @@ export default function Home() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': apiKey,
+          'X-API-KEY': ,
         },
         body: JSON.stringify(formData),
       });
+      
+      console.log('API Response:', response.status);
+      console.log('Request payload:', JSON.stringify(formData, null, 2));
 
       if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+        const errorText = await response.text().catch(() => 'No error details available');
+        console.error('Error response:', errorText);
+        throw new Error(`API error: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
@@ -90,7 +101,7 @@ export default function Home() {
       const response = await fetch(`https://viralapi.vadoo.tv/api/get_video_url?id=${vid}`, {
         method: 'GET',
         headers: {
-          'X-API-KEY': apiKey,
+          'X-API-KEY': GVNt4-W8sHuwECZZdUHIlsM43ZBKQZK0_3jHzn7mc0,
         },
       });
 
@@ -129,14 +140,16 @@ export default function Home() {
         <h1 className="text-3xl font-bold mb-6 text-center">AI Video Generator</h1>
         
         <div className="mb-6">
-          <label className="block mb-2 font-semibold">API Key</label>
+          <label className="block mb-2 font-semibold">API Key *</label>
           <input
             type="text"
             value={apiKey}
             onChange={handleApiKeyChange}
             className="w-full p-2 border rounded"
             placeholder="Enter your API key"
+            required
           />
+          <p className="text-sm text-gray-500 mt-1">Required for API authentication</p>
         </div>
 
         <form onSubmit={generateVideo} className="space-y-4 mb-8">
