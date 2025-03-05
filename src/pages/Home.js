@@ -8,7 +8,7 @@ export default function Home() {
     topic: 'Random AI Story',
     voice: 'Sarah',
     theme: 'Ella',
-    style: 'Realistic',
+    style: 'None',
     language: 'English',
     duration: '30-60',
     aspect_ratio: '1:1',
