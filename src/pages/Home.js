@@ -2,8 +2,6 @@
 import { useState } from 'react';
 import Head from 'next/head';
 
-//api key: GVNt4-W8sHuwECZZdUHIlsM43ZBKQZK0_3jHzn7mc0,
-
 export default function Home() {
   // State for form values
   const [formData, setFormData] = useState({
@@ -87,7 +85,9 @@ export default function Home() {
       }
 
       const data = await response.json();
+      console.log('Video generation successful, received ID:', data.vid);
       setVideoId(data.vid);
+      setVideoStatus('processing');
       
       // Start polling for video status
       checkVideoStatus(data.vid);
@@ -100,6 +100,7 @@ export default function Home() {
   // Poll for video status
   const checkVideoStatus = async (vid) => {
     try {
+      // Here we just check the status, not requesting the URL yet
       const response = await fetch(`https://viralapi.vadoo.tv/api/get_video_url?id=${vid}`, {
         method: 'GET',
         headers: {
@@ -108,17 +109,23 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error(`API error: ${response.status}`);
+        const errorText = await response.text().catch(() => 'No error details available');
+        console.error('Error response:', errorText);
+        throw new Error(`API error: ${response.status} - ${errorText}`);
       }
 
       const data = await response.json();
+      console.log('Video status check response:', data);
       setVideoStatus(data.status);
 
       if (data.status === 'complete') {
+        // Only when complete, we get the URL and update the UI
         setVideoUrl(data.url);
         setIsGenerating(false);
+        console.log('Video ready at URL:', data.url);
       } else if (data.status === 'processing') {
         // Poll again after 10 seconds
+        console.log('Video still processing, checking again in 10 seconds...');
         setTimeout(() => checkVideoStatus(vid), 10000);
       } else {
         setError(`Unexpected video status: ${data.status}`);
@@ -353,17 +360,28 @@ export default function Home() {
         {videoId && (
           <div className="bg-gray-100 p-4 rounded mb-4">
             <h2 className="font-bold mb-2">Video ID: {videoId}</h2>
-            <p className="mb-2">Status: {videoStatus || 'Processing'}</p>
+            <p className="mb-2">
+              Status: <span className={videoStatus === 'complete' ? 'text-green-600 font-bold' : 'text-yellow-600 font-bold'}>
+                {videoStatus || 'Processing'}
+              </span>
+            </p>
+            {videoStatus === 'processing' && (
+              <div className="flex items-center mt-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-700 mr-2"></div>
+                <p className="text-sm text-gray-600">This may take 2-3 minutes. Please wait...</p>
+              </div>
+            )}
           </div>
         )}
 
-        {videoUrl && (
-          <div className="mb-4">
-            <h2 className="font-bold text-xl mb-4">Your Generated Video</h2>
+        {videoUrl && videoStatus === 'complete' && (
+          <div className="mb-4 border p-4 rounded-lg shadow-md">
+            <h2 className="font-bold text-xl mb-4 text-center">Your Generated Video</h2>
             <div className="aspect-video bg-black">
               <video 
                 src={videoUrl} 
                 controls
+                autoPlay
                 className="w-full h-full"
               />
             </div>
@@ -375,6 +393,7 @@ export default function Home() {
               >
                 Download Video
               </a>
+              <p className="text-sm text-gray-600 mt-2">This video will be available for 30 minutes before expiry</p>
             </div>
           </div>
         )}
