@@ -7,7 +7,7 @@ export default function Home() {
   const [formData, setFormData] = useState({
     topic: 'Random AI Story',
     voice: 'Sarah',
-    theme: 'cinematic',
+    theme: 'Ella',
     style: 'Realistic',
     language: 'English',
     duration: '30-60',
@@ -224,7 +224,7 @@ export default function Home() {
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               >
-                <option value="Hormozi_1">Hormozi_1</option>
+                <option value="Ella">Ella</option>
                 {/* Add more options as needed */}
               </select>
             </div>
