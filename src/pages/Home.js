@@ -86,7 +86,6 @@ export default function Home() {
             <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
             <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
           </div>
-        </div>
       </div>
     </footer>
   );
