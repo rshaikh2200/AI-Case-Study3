@@ -32,6 +32,8 @@ export default function Home() {
   const [videoUrl, setVideoUrl] = useState('');
   const [videoStatus, setVideoStatus] = useState('');
   const [error, setError] = useState('');
+  const [pollingCount, setPollingCount] = useState(0);
+  const MAX_POLLING_ATTEMPTS = 30; // Stop after ~5 minutes (30 attempts × 10 seconds)
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -61,6 +63,12 @@ export default function Home() {
       setError('Custom prompt is required when topic is set to Custom');
       return;
     }
+    
+    // Reset states before starting new video generation
+    setVideoUrl('');
+    setVideoStatus('');
+    setVideoId(null);
+    setPollingCount(0);
 
     setIsGenerating(true);
     setError('');
@@ -100,7 +108,7 @@ export default function Home() {
   // Poll for video status
   const checkVideoStatus = async (vid) => {
     try {
-      // Here we just check the status, not requesting the URL yet
+      console.log('Checking status for video ID:', vid);
       const response = await fetch(`https://viralapi.vadoo.tv/api/get_video_url?id=${vid}`, {
         method: 'GET',
         headers: {
@@ -116,22 +124,40 @@ export default function Home() {
 
       const data = await response.json();
       console.log('Video status check response:', data);
-      setVideoStatus(data.status);
-
-      if (data.status === 'complete') {
-        // Only when complete, we get the URL and update the UI
+      
+      if (data.status === 'complete' && data.url) {
+        // Video is complete and URL is available
+        setVideoStatus('complete');
         setVideoUrl(data.url);
         setIsGenerating(false);
         console.log('Video ready at URL:', data.url);
-      } else if (data.status === 'processing') {
-        // Poll again after 10 seconds
-        console.log('Video still processing, checking again in 10 seconds...');
+      } else if (data.status === 'complete' && !data.url) {
+        // Odd case: Status is complete but no URL
+        console.error('Status is complete but no URL returned');
+        setError('Video processing completed but URL is not available. Please try again.');
+        setIsGenerating(false);
+      } else if (data.status === 'processing' || !data.status) {
+        // Still processing or status not provided
+        setVideoStatus('processing');
+        // Increment the polling count
+        const newPollingCount = pollingCount + 1;
+        setPollingCount(newPollingCount);
+        
+        if (newPollingCount >= MAX_POLLING_ATTEMPTS) {
+          setError('Video processing timed out after 5 minutes. Please try again later.');
+          setIsGenerating(false);
+          return;
+        }
+        
+        console.log(`Video still processing (attempt ${newPollingCount}/${MAX_POLLING_ATTEMPTS}), checking again in 10 seconds...`);
         setTimeout(() => checkVideoStatus(vid), 10000);
       } else {
+        // Unexpected status
         setError(`Unexpected video status: ${data.status}`);
         setIsGenerating(false);
       }
     } catch (err) {
+      console.error('Error in checkVideoStatus:', err);
       setError(`Error checking video status: ${err.message}`);
       setIsGenerating(false);
     }
@@ -368,7 +394,10 @@ export default function Home() {
             {videoStatus === 'processing' && (
               <div className="flex items-center mt-2">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-700 mr-2"></div>
-                <p className="text-sm text-gray-600">This may take 2-3 minutes. Please wait...</p>
+                <p className="text-sm text-gray-600">
+                  This may take 2-3 minutes. Please wait... 
+                  {pollingCount > 0 && ` (Check ${pollingCount}/${MAX_POLLING_ATTEMPTS})`}
+                </p>
               </div>
             )}
           </div>
@@ -388,10 +417,11 @@ export default function Home() {
             <div className="mt-4 text-center">
               <a 
                 href={videoUrl} 
-                download
+                target="_blank"
+                rel="noopener noreferrer"
                 className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-colors inline-block"
               >
-                Download Video
+                Open Video in New Tab
               </a>
               <p className="text-sm text-gray-600 mt-2">This video will be available for 30 minutes before expiry</p>
             </div>
