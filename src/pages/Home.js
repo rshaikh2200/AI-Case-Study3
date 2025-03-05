@@ -7,7 +7,7 @@ export default function Home() {
   const [formData, setFormData] = useState({
     topic: 'Random AI Story',
     voice: 'Sarah',
-    theme: 'ELLA',
+    theme: 'None',
     style: 'Realistic',
     language: 'English',
     duration: '30-60',
