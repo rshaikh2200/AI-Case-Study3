@@ -137,16 +137,6 @@ export default function Home() {
                 {item}
               </Link>
             ))}
-            <Link
-              href="/contact"
-              className={`ml-2 px-5 py-2 rounded-full text-sm font-medium transition-all duration-200
-               ${scrolled 
-                 ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                 : 'bg-white text-blue-600 hover:bg-blue-50'
-               }`}
-            >
-              Get Started
-            </Link>
           </div>
         </div>
 
@@ -166,17 +156,6 @@ export default function Home() {
                 {item}
               </Link>
             ))}
-            <Link
-              href="/contact"
-              className={`block px-4 py-3 rounded-md text-base font-medium ${
-                scrolled 
-                  ? 'bg-blue-600 text-white mt-3' 
-                  : 'bg-white text-blue-600 mt-3'
-              }`}
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Get Started
-            </Link>
           </div>
         )}
       </div>
@@ -209,9 +188,6 @@ export default function Home() {
           <div className="flex flex-wrap gap-4">
             <a href="#demo" className="px-8 py-4 bg-white text-blue-700 rounded-full font-bold text-lg hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
               Schedule a Demo
-            </a>
-            <a href="#features" className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-bold text-lg hover:bg-white/10 transition-all">
-              Learn More
             </a>
           </div>
         </div>
@@ -292,9 +268,6 @@ export default function Home() {
                 <p className="text-gray-600 flex-grow mb-4 leading-relaxed">
                   {point.description}
                 </p>
-                <a href="#" className="flex items-center text-blue-600 font-medium hover:text-blue-700 transition-colors mt-auto">
-                  Learn more <ChevronRight size={16} className="ml-1" />
-                </a>
               </div>
             ))}
           </div>
@@ -360,32 +333,6 @@ export default function Home() {
       </section>
     );
   };
-
-  const TestimonialSection = () => (
-    <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-6">
-            <svg className="w-12 h-12 mx-auto text-blue-300" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-              <path d="M464 256h-80v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8c-88.4 0-160 71.6-160 160v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zm-288 0H96v-64c0-35.3 28.7-64 64-64h8c13.3 0 24-10.7 24-24V56c0-13.3-10.7-24-24-24h-8C71.6 32 0 103.6 0 192v240c0 26.5 21.5 48 48 48h128c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48z"></path>
-            </svg>
-          </div>
-          <blockquote className="text-2xl font-light mb-8 leading-relaxed">
-            &quot;CoachCare.ai has transformed our approach to safety training. The personalized scenarios and data-driven insights have helped us reduce preventable errors by 45% in just six months. It&apos;s been a game-changer for our hospital system.&quot;
-          </blockquote>
-          <div className="flex items-center justify-center">
-            <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mr-4">
-              <span className="text-white font-bold">JD</span>
-            </div>
-            <div className="text-left">
-              <div className="font-semibold">Dr. Jane Doe</div>
-              <div className="text-blue-200">Chief Medical Officer, Memorial Healthcare</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
 
   const DemoForm = () => {
     const [name, setName] = useState('');
@@ -590,7 +537,7 @@ export default function Home() {
   const Footer = () => (
     <footer className="bg-gray-900 text-white py-12">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center mb-4">
               <Shield size={24} className="mr-2 text-blue-400" />
@@ -625,23 +572,11 @@ export default function Home() {
           <div>
             <h3 className="text-xl font-semibold mb-4">Platform</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Safety Module</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">AI-Driven Training</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Analytics Dashboard</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Implementation</a></li>
+              <li><Link href="/safety-module" className="text-gray-400 hover:text-white transition-colors">Safety Module</Link></li>
+              <li><Link href="/dashboard" className="text-gray-400 hover:text-white transition-colors">Dashboard</Link></li>
+              <li><Link href="/feedback" className="text-gray-400 hover:text-white transition-colors">Feedback</Link></li>
             </ul>
           </div>
-          
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Resources</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Case Studies</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Blog</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Knowledge Base</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Research</a></li>
-            </ul>
-          </div>
-          
           <div>
             <h3 className="text-xl font-semibold mb-4">Contact</h3>
             <ul className="space-y-4">
@@ -685,7 +620,6 @@ export default function Home() {
       <StatsSection />
       <MarketingSection />
       <ProcessSection />
-      <TestimonialSection />
       <DemoForm />
       <Footer />
     </div>
