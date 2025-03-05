@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import Head from 'next/head';
 
+//api key: GVNt4-W8sHuwECZZdUHIlsM43ZBKQZK0_3jHzn7mc0,
+
 export default function Home() {
   // State for form values
   const [formData, setFormData] = useState({
@@ -101,7 +103,7 @@ export default function Home() {
       const response = await fetch(`https://viralapi.vadoo.tv/api/get_video_url?id=${vid}`, {
         method: 'GET',
         headers: {
-          'X-API-KEY': GVNt4-W8sHuwECZZdUHIlsM43ZBKQZK0_3jHzn7mc0,
+          'X-API-KEY': apiKey,
         },
       });
 
