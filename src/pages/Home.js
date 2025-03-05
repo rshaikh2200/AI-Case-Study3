@@ -89,6 +89,7 @@ export default function Home() {
         </div>
       </div>
     );
+  };
 
   return (
     <div className="min-h-screen">
@@ -119,7 +120,6 @@ export default function Home() {
       <Footer />
     </div>
   );
-  };
 
   const AppBar = () => (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg py-2' : 'bg-gradient-to-r from-blue-600 to-blue-700 py-4'}`}>
@@ -492,8 +492,6 @@ export default function Home() {
       </div>
     </footer>
   );
-    );
-  };
 
   const ProcessSection = () => {
     const steps = [
@@ -748,3 +746,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+    );
+  };
+
+}
