@@ -72,7 +72,7 @@ export default function Home() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': ,
+          'X-API-KEY': apiKey,
         },
         body: JSON.stringify(formData),
       });
