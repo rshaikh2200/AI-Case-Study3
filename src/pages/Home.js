@@ -5,7 +5,7 @@ import Head from 'next/head';
 export default function Home() {
   // State for form values
   const [formData, setFormData] = useState({
-    topic: 'A random AI Story,
+    topic: 'A random AI Story',
     voice: 'Charlie',
     theme: 'Hormozi_1',
     style: 'None',
