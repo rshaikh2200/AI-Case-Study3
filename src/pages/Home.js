@@ -22,7 +22,14 @@ import {
   Shield,
   ChevronRight,
   Mail,
-  Phone
+  Phone,
+  AlertTriangle,
+  BookOpen,
+  Video,
+  Target,
+  Cpu,
+  Award,
+  Activity
 } from 'lucide-react';
 
 import {
@@ -189,21 +196,140 @@ export default function Home() {
     </div>
   );
 
-  const StatsSection = () => (
-    <section className="py-10 bg-white">
+  // Replaced StatsSection with ComparisonDiagram
+  const ComparisonDiagram = () => (
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-16">
-          <div className="text-center p-6">
-            <div className="text-5xl font-bold text-blue-600 mb-2">80%</div>
-            <p className="text-gray-600">of medical errors could be prevented with proper safety behaviors</p>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
+            Traditional Training vs <span className="text-blue-600">CoachCare.ai</span>
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            See how our approach transforms healthcare safety education
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          {/* Traditional Training - Left Column */}
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold text-gray-700 pb-2 border-b-2 border-red-200 inline-block">
+                Traditional Training Challenges
+              </h3>
+            </div>
+            
+            <div className="bg-red-50 p-6 rounded-xl border border-red-100 shadow-sm">
+              <div className="flex items-start">
+                <div className="bg-red-100 p-3 rounded-full mr-4">
+                  <AlertTriangle size={24} className="text-red-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">Generic, One-Size-Fits-All</h4>
+                  <p className="text-gray-600">Not specialized for different roles, departments, or individual learning styles</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-red-50 p-6 rounded-xl border border-red-100 shadow-sm">
+              <div className="flex items-start">
+                <div className="bg-red-100 p-3 rounded-full mr-4">
+                  <BookOpen size={24} className="text-red-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">Lacks Critical Safety Focus</h4>
+                  <p className="text-gray-600">Fails to emphasize key behaviors proven to prevent the most common medical errors</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-red-50 p-6 rounded-xl border border-red-100 shadow-sm">
+              <div className="flex items-start">
+                <div className="bg-red-100 p-3 rounded-full mr-4">
+                  <HelpCircle size={24} className="text-red-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">Abstract, Not Real-World</h4>
+                  <p className="text-gray-600">Uses theoretical examples instead of authentic case studies from clinical practice</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="text-center p-6">
-            <div className="text-5xl font-bold text-blue-600 mb-2">10</div>
-            <p className="text-gray-600">key safety behaviors identified by our AI that can prevent most errors</p>
+          
+          {/* CoachCare.ai Approach - Right Column */}
+          <div className="space-y-6">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold text-blue-700 pb-2 border-b-2 border-blue-200 inline-block">
+                CoachCare.ai Innovation
+              </h3>
+            </div>
+            
+            <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 shadow-sm">
+              <div className="flex items-start">
+                <div className="bg-blue-100 p-3 rounded-full mr-4">
+                  <Cpu size={24} className="text-blue-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">AI-Powered Personalization</h4>
+                  <p className="text-gray-600">Tailored case studies based on real clinical scenarios relevant to each practitioner's role</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 shadow-sm">
+              <div className="flex items-start">
+                <div className="bg-blue-100 p-3 rounded-full mr-4">
+                  <Target size={24} className="text-blue-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">Focus on 10 Key Safety Behaviors</h4>
+                  <p className="text-gray-600">Concentrated training on the specific behaviors proven to prevent the majority of clinical errors</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 shadow-sm">
+              <div className="flex items-start">
+                <div className="bg-blue-100 p-3 rounded-full mr-4">
+                  <Video size={24} className="text-blue-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">Interactive Multimedia Learning</h4>
+                  <p className="text-gray-600">Engaging visuals, videos, and simulations for better retention and real-world application</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="text-center p-6">
-            <div className="text-5xl font-bold text-blue-600 mb-2">200K+</div>
-            <p className="text-gray-600">patients die yearly due to preventable clinical mistakes</p>
+        </div>
+        
+        {/* Arrow pointing to outcomes */}
+        <div className="flex justify-center my-10">
+          <div className="bg-gray-100 p-4 rounded-full">
+            <ChevronRight size={32} className="text-blue-600" />
+          </div>
+        </div>
+        
+        {/* Outcomes */}
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-8 rounded-2xl shadow-xl text-white max-w-3xl mx-auto">
+          <h3 className="text-2xl font-bold mb-6 text-center">The Result: Better Outcomes</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="bg-white/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <Activity size={32} className="text-white" />
+              </div>
+              <p className="font-semibold">Reduced Patient Harm</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-white/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <Award size={32} className="text-white" />
+              </div>
+              <p className="font-semibold">Improved Care Quality</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-white/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                <Users size={32} className="text-white" />
+              </div>
+              <p className="font-semibold">Stronger Safety Culture</p>
+            </div>
           </div>
         </div>
       </div>
@@ -262,6 +388,80 @@ export default function Home() {
         </div>
       </section>
     );
+  };
+
+  const Footer = () => (
+    <footer className="bg-gray-900 text-white py-12">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <div className="flex items-center mb-4">
+              <Shield size={24} className="mr-2 text-blue-400" />
+              <span className="font-bold text-xl">CoachCare.ai</span>
+            </div>
+            <p className="text-gray-400 mb-4">
+              Transforming healthcare safety through AI-powered training and insights.
+            </p>
+            <div className="flex space-x-4">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                </svg>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                </svg>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                </svg>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fillRule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clipRule="evenodd" />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Platform</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/components" className="text-gray-400 hover:text-white transition-colors">
+                  Safety Module
+                </Link>
+              </li>
+              <li>
+                <Link href="/dashboard" className="text-gray-400 hover:text-white transition-colors">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link href="/feedback" className="text-gray-400 hover:text-white transition-colors">
+                  Feedback
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Contact</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <Mail size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
+                <a href="mailto:info@coachcare.ai" className="text-gray-400 hover:text-white transition-colors">info@coachcare.ai</a>
+              </li>
+              <li className="flex items-start">
+                <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
+                <a href="tel:+18005551234" className="text-gray-400 hover:text-white transition-colors">+1 (800) 555-1234</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
   };
 
   const ProcessSection = () => {
@@ -492,134 +692,3 @@ export default function Home() {
                       placeholder="(123) 456-7890"
                       required
                     />
-                  </div>
-                  
-                  <button
-                    type="submit"
-                    disabled={formLoading}
-                    className={`w-full py-4 px-6 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors ${formLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
-                  >
-                    {formLoading ? (
-                      <span className="flex items-center justify-center">
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Processing...
-                      </span>
-                    ) : (
-                      'Request Your Demo'
-                    )}
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    );
-  };
-
-  const Footer = () => (
-    <footer className="bg-gray-900 text-white py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <div className="flex items-center mb-4">
-              <Shield size={24} className="mr-2 text-blue-400" />
-              <span className="font-bold text-xl">CoachCare.ai</span>
-            </div>
-            <p className="text-gray-400 mb-4">
-              Transforming healthcare safety through AI-powered training and insights.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fillRule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clipRule="evenodd" />
-                </svg>
-              </a>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Platform</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/components" className="text-gray-400 hover:text-white transition-colors">
-                  Safety Module
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="text-gray-400 hover:text-white transition-colors">
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link href="/feedback" className="text-gray-400 hover:text-white transition-colors">
-                  Feedback
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Contact</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start">
-                <Mail size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
-                <a href="mailto:info@coachcare.ai" className="text-gray-400 hover:text-white transition-colors">info@coachcare.ai</a>
-              </li>
-              <li className="flex items-start">
-                <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
-                <a href="tel:+18005551234" className="text-gray-400 hover:text-white transition-colors">+1 (800) 555-1234</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-
-  return (
-    <div className="min-h-screen">
-      <Head>
-        <title>CoachCare.ai - Advanced Healthcare Safety Training Platform</title>
-        <meta name="description" content="CoachCare.ai - AI-powered healthcare safety training platform that reduces patient harm and medical errors through personalized learning and actionable insights." />
-        <link rel="icon" href="/favicon.ico" />
-        {/* Add preconnect for Google Fonts */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-        
-        {/* Additional meta tags for SEO and sharing */}
-        <meta property="og:title" content="CoachCare.ai - Advanced Healthcare Safety Training" />
-        <meta property="og:description" content="AI-powered healthcare safety training that reduces patient harm and medical errors through personalized learning." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://coachcare.ai" />
-        <meta property="og:image" content="/og-image.jpg" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Head>
-
-      <AppBar />
-      <Hero />
-      <StatsSection />
-      <MarketingSection />
-      <ProcessSection />
-      <DemoForm />
-      <Footer />
-    </div>
-  );
-}
