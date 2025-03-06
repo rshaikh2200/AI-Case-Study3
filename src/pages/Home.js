@@ -370,19 +370,26 @@ export default function Home() {
     </section>
   );
 
-  // NEW SECTION: Insightful Performance Dashboard 
+  // UPDATED SECTION: Now includes two images with the heading in the center
   const InsightfulDepartmentStatistics = () => (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 text-center">
-          Insightful Performance Dashboard
-        </h2>
-        <div className="max-w-4xl mx-auto mt-8">
+        <div className="flex flex-col md:flex-row items-center justify-center space-x-4">
           <Image
             src="/dashboard.png"
-            alt="Insightful Department Statistics"
-            width={800}
-            height={600}
+            alt="Insightful Department Statistics - Image One"
+            width={400}
+            height={300}
+            className="rounded shadow"
+          />
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center">
+            Insightful Performance Dashboard
+          </h2>
+          <Image
+            src="/dashboard2.png"
+            alt="Insightful Department Statistics - Image Two"
+            width={400}
+            height={300}
             className="rounded shadow"
           />
         </div>
@@ -925,7 +932,7 @@ export default function Home() {
       <AppBar />
       <Hero />
       <ComparisonDiagram />
-      {/* Added the new section here */}
+      {/* Updated section with two images + heading in center */}
       <InsightfulDepartmentStatistics />
       <MarketingSection />
       <ProcessSection />
