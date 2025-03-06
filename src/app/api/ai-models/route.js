@@ -256,12 +256,12 @@ ${
     ? `Since the department is a Stroke Center, the sumarized 150-word case studies should focus on stroke cases
        and potential medical errors. Make sure to provide measurements (E.g. 100 Mg) when needed. Ensure the medical case studies incorporate a variety of  medical errors errors when dealing with a stroke patient while maintaining clinical integrity. Keep the case studies short and concise and do not mention countries name or where a patient is from. Also do not state team assessment or review of situation, or the imporantnace of steps to solve the issue. Also do not include incident reviews, analysis.
        The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
-       The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 250 words.
+       The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 200 words.
        The case studies should not include any countries name or which country a patient or employee is from (ex: Maria from America,  Dr. O'Malley from Europe). `
     : ""
 }
 
-After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 250 words 
+After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 200 words 
 each, without compromising the clinical integrity of the scenarios. Each case study should only include 
 the scenario and the medical error that occurred.
 
@@ -296,6 +296,7 @@ The medical case study should:
       - Include clues by using buzzwords or synonyms from the correct answer's definition.
       - Do not explicitly mention the prevention tools by name in the question header.
       - The question should be straight forward, and conise, do not state any buzzwords in the question itself (e.g. using buzzwords like check and validate?)
+      - The question should include direct language and not include words, like wish. 
       
     
     - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
