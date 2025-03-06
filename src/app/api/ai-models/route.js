@@ -253,8 +253,8 @@ for a ${care} ${role} specializing in ${specialization}, and working in the ${de
 
 ${
   department === "Stroke Center"
-    ? `Since the department is a Stroke Center, the 150-word case studies should focus on stroke cases
-       and potential medical errors. Make sure to provide measurements (E.g. 100 Mg) when needed. Ensure the medical case studies focus on unique medical error,  and incorporate a variety of possible errors while maintaining clinical integrity. Keep the case studies short and concise and do not mention countries name or where a patient is from. Also do not state team assessment or review of situation.`
+    ? `Since the department is a Stroke Center, the sumarized 150-word case studies should focus on stroke cases
+       and potential medical errors. Make sure to provide measurements (E.g. 100 Mg) when needed. Ensure the medical case studies incorporate a variety of  medical errors errors when dealing with a stroke patient while maintaining clinical integrity. Keep the case studies short and concise and do not mention countries name or where a patient is from. Also do not state team assessment or review of situation, or the imporantnace of steps to solve the issue. It should be no longer than 5 setences long.`
     : ""
 }
 
