@@ -261,7 +261,7 @@ ${
     : ""
 }
 
-After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 150 words 
+After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 250 words 
 each, without compromising the clinical integrity of the scenarios. Each case study should only include 
 the scenario and the medical error that occurred.
 
@@ -274,8 +274,9 @@ The medical case study should:
   - **Care:** Mention the care level of the role.
 
 - **Medical Case Study Content:**
-  - The summarized case study should be direct in tone, and should not include any country names or 
-    descriptive words.
+  - The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
+  - The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 250 words.
+  - The case studies should not include any countries name or which country a patient or employee is from (ex: Maria from America,  Dr. O'Malley from Europe). 
   - Use unique patient and medical staff names from various continents (America, Canada, South America, 
     Europe, Asia, Australia) to reflect global diversity.
   - The summarized case study content should be modified to have different names of procedures, 
@@ -286,16 +287,16 @@ The medical case study should:
     
     - **For each case study, create 3 unique multiple-choice questions that:**
       - Have 4 option choices each.
-      - Each Question should correctly narration and perspective of the question. (e.g. Dr. Harper should be addressing Dr. Chen related to his concerns since Dr.Chen made the oversight, The night shift staft should be asking clarifying questions in this case and not Dr. O'Reilly since the handoff is directed at them, The reciever of the information should be reading and repeating back the information back the information).
       - Debrief is typically a group effort the question should no reflect debrief being done by a single individual.
       - Provide the correct answer choice and answer in the format: correct answer: C) Validate and Verify
       - Provide the hint in the format: Hint: Double-checking and confirming accuracy before proceeding.
       - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
-      - The question should be strictly from the perspective of the ${role}.
+      - The question should be strictly from the perspective of the ${role}. Ex: If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying
       - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
       - Include clues by using buzzwords or synonyms from the correct answer's definition.
       - Do not explicitly mention the prevention tools by name in the question header.
       - The question should be straight forward, and conise, do not state any buzzwords in the question itself (e.g. using buzzwords like check and validate?)
+      
     
     - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
       - **Question Structure**
