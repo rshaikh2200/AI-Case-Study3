@@ -1689,7 +1689,7 @@ return (
                     <div className="score-circle relative w-32 h-32 mx-auto mb-4">
                       <div className="absolute inset-0 rounded-full bg-blue-100"></div>
                       <div 
-                        className={`absolute inset-0 rounded-full 
+                        className={`absolute inset-0 rounded-full transition-all duration-500 ease-in-out
                         ${totalScore >= 90 ? 'bg-green-500' : 
                           totalScore >= 70 ? 'bg-blue-500' : 'bg-red-500'}`}
                         style={{
@@ -2100,7 +2100,7 @@ return (
                     <img
                       src={aiResponse[currentCaseStudyIndex].imageUrl}
                       alt={`Case Study ${currentCaseStudyIndex + 1} Illustration`}
-                      className="w-full h-auto rounded-lg shadow-md object-cover max-h-96"
+                      className="max-w-sm mx-auto h-auto rounded-lg shadow-md"
                     />
                   </div>
                 )}
@@ -2239,33 +2239,8 @@ return (
                         </div>
                       </div>
                     )}
-                    
-                    {/* Navigation buttons */}
-                    <div className="mt-8 flex justify-between">
-                      <button
-                        type="button"
-                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        onClick={() => {}}
-                        disabled={currentQuestionIndex === 0}
-                      >
-                        <svg className="-ml-1 mr-2 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                        </svg>
-                        Previous Question
-                      </button>
-                      
-                      <button
-                        type="button"
-                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        onClick={() => {}}
-                        disabled={currentQuestionIndex === caseStudies[currentCaseStudyIndex].questions.length - 1}
-                      >
-                        Next Question
-                        <svg className="-mr-1 ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </button>
-                    </div>
+
+                    {/* Removed the Next/Previous Question buttons as requested */}
                   </div>
                 ) : (
                   <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
