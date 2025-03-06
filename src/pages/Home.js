@@ -1,21 +1,24 @@
+// File: ./src/app/components/11-12-2024(api).js
+
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image'; // 1) Add this import for next/image
 import { useState, useEffect } from 'react';
-import { 
-  ArrowRight, 
-  Users, 
-  ClipboardList, 
-  GitMerge, 
-  CheckCircle, 
-  Star, 
-  BellOff, 
-  RefreshCw, 
-  Repeat, 
-  HelpCircle, 
-  Type, 
+import {
+  ArrowRight,
+  Users,
+  ClipboardList,
+  GitMerge,
+  CheckCircle,
+  Star,
+  BellOff,
+  RefreshCw,
+  Repeat,
+  HelpCircle,
+  Type,
   Layers,
   Menu,
-  X, 
+  X,
   Skull,
   HeartPulse,
   LineChart,
@@ -41,8 +44,8 @@ import {
   deleteDoc,
   doc,
   setDoc,
-  updateDoc,  
-  where,       
+  updateDoc,
+  where,
 } from 'firebase/firestore';
 import { firestore } from '../../src/app/firebase';
 
@@ -61,8 +64,19 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Define sub-components before the main return
+  // NOTE: If you had a useEffect referencing 'handlePageRefresh', you would do one of:
+  //    (A) remove it entirely if not needed,
+  //    (B) define handlePageRefresh and add it to deps, or
+  //    (C) define handlePageRefresh with useCallback, etc.
+  // For example:
+  //
+  // useEffect(() => {
+  //   handlePageRefresh();
+  // }, [handlePageRefresh]);
+  //
+  // In this refactor, it's removed since it's not shown in the snippet.
 
+  // Example sub-component (unchanged except for removing <img> if present):
   const ErrorPreventionCard = ({ tool, isActive, onClick }) => {
     const IconComponent = tool.icon;
     return (
@@ -94,11 +108,19 @@ export default function Home() {
   };
 
   const AppBar = () => (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-lg py-2' : 'bg-gradient-to-r from-blue-600 to-blue-700 py-4'}`}>
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white shadow-lg py-2' : 'bg-gradient-to-r from-blue-600 to-blue-700 py-4'
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <div className={`flex-shrink-0 font-extrabold text-xl tracking-tight transition-colors ${scrolled ? 'text-blue-600' : 'text-white'}`}>
+            <div
+              className={`flex-shrink-0 font-extrabold text-xl tracking-tight transition-colors ${
+                scrolled ? 'text-blue-600' : 'text-white'
+              }`}
+            >
               <span className="flex items-center">
                 <Shield size={24} className="mr-2" />
                 CoachCare.ai
@@ -109,7 +131,9 @@ export default function Home() {
           <div className="sm:hidden">
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${scrolled ? 'text-blue-600 hover:bg-blue-50' : 'text-white hover:bg-blue-500'}`}
+              className={`p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                scrolled ? 'text-blue-600 hover:bg-blue-50' : 'text-white hover:bg-blue-500'
+              }`}
             >
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -117,13 +141,18 @@ export default function Home() {
 
           <div className="hidden sm:flex sm:items-center sm:space-x-1">
             {['Home', 'Safety Module', 'Dashboard', 'Feedback'].map((item, index) => {
-              const href = item === 'Home' ? '/' : (item === 'Safety Module' ? '/components' : `/${item.toLowerCase().replace(' ', '-')}`);
+              const href =
+                item === 'Home'
+                  ? '/'
+                  : item === 'Safety Module'
+                  ? '/components'
+                  : `/${item.toLowerCase().replace(' ', '-')}`;
               return (
                 <Link
                   key={index}
                   href={href}
                   className={`px-4 py-2 mx-1 rounded-full text-sm font-medium transition-all duration-200 ${
-                    scrolled 
+                    scrolled
                       ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
                       : 'text-white hover:bg-blue-500'
                   }`}
@@ -138,13 +167,20 @@ export default function Home() {
         {isMobileMenuOpen && (
           <div className="sm:hidden mt-3 pb-3 space-y-1 animate-fadeIn">
             {['Home', 'Safety Module', 'Dashboard', 'Feedback'].map((item, index) => {
-              const href = item === 'Home' ? '/' : (item === 'Safety Module' ? '/components' : `/${item.toLowerCase().replace(' ', '-')}`);
+              const href =
+                item === 'Home'
+                  ? '/'
+                  : item === 'Safety Module'
+                  ? '/components'
+                  : `/${item.toLowerCase().replace(' ', '-')}`;
               return (
                 <Link
                   key={index}
                   href={href}
                   className={`block px-4 py-3 rounded-md text-base font-medium ${
-                    scrolled ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600' : 'text-white hover:bg-blue-500'
+                    scrolled
+                      ? 'text-gray-700 hover:bg-blue-50 hover:text-blue-600'
+                      : 'text-white hover:bg-blue-500'
                   }`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
@@ -162,36 +198,52 @@ export default function Home() {
     <div className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white pt-24 lg:pt-32 overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-blue-900 opacity-20"></div>
-        <div className="absolute inset-0" style={{ 
-          backgroundImage: 'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23FFFFFF\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-          backgroundSize: '60px 60px' 
-        }}></div>
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              'url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23FFFFFF\' fill-opacity=\'0.05\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+            backgroundSize: '60px 60px'
+          }}
+        ></div>
       </div>
-      
+
       <div className="container mx-auto px-4 py-16 lg:py-24 relative">
         <div className="max-w-3xl lg:max-w-4xl">
           <div className="inline-block px-4 py-1 rounded-full bg-blue-500 bg-opacity-30 text-blue-100 text-sm font-semibold mb-6">
             Healthcare Safety Revolution
           </div>
           <h1 className="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
-            Eliminate Patient Harm<br />
+            Eliminate Patient Harm
+            <br />
             <span className="text-blue-200">And Avoid Medical Errors</span>
           </h1>
           <p className="text-xl lg:text-2xl mb-10 text-blue-100 max-w-3xl leading-relaxed font-light">
             Over 200,000 patients die every year due to clinical mistakes that could be prevented by hardwiring safety behaviors into hospital culture.
           </p>
-          
+
           <div className="flex flex-wrap gap-4">
-            <a href="#demo" className="px-8 py-4 bg-white text-blue-700 rounded-full font-bold text-lg hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            <a
+              href="#demo"
+              className="px-8 py-4 bg-white text-blue-700 rounded-full font-bold text-lg hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
               Schedule a Demo
             </a>
           </div>
         </div>
       </div>
-      
+
       <div className="relative h-24 mt-16 lg:mt-20">
-        <svg className="absolute bottom-0 w-full h-24 -mb-1 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-          <path fill="currentColor" fillOpacity="1" d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,224C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        <svg
+          className="absolute bottom-0 w-full h-24 -mb-1 text-white"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+        >
+          <path
+            fill="currentColor"
+            fillOpacity="1"
+            d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,224C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          ></path>
         </svg>
       </div>
     </div>
@@ -208,7 +260,7 @@ export default function Home() {
             See how our approach transforms healthcare safety education
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Traditional Training - Left Column */}
           <div className="space-y-6">
@@ -217,44 +269,57 @@ export default function Home() {
                 Traditional Training Challenges
               </h3>
             </div>
-            
+
             <div className="bg-red-50 p-6 rounded-xl border border-red-100 shadow-sm">
               <div className="flex items-start">
                 <div className="bg-red-100 p-3 rounded-full mr-4">
                   <AlertTriangle size={24} className="text-red-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-lg mb-2">Generic, One-Size-Fits-All</h4>
-                  <p className="text-gray-600">Not specialized for different roles, departments, or individual learning styles</p>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">
+                    Generic, One-Size-Fits-All
+                  </h4>
+                  <p className="text-gray-600">
+                    Not specialized for different roles, departments, or individual learning styles
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-red-50 p-6 rounded-xl border border-red-100 shadow-sm">
               <div className="flex items-start">
                 <div className="bg-red-100 p-3 rounded-full mr-4">
                   <BookOpen size={24} className="text-red-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-lg mb-2">Lacks Critical Safety Focus</h4>
-                  <p className="text-gray-600">Fails to emphasize key behaviors proven to prevent the most common medical errors</p>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">
+                    Lacks Critical Safety Focus
+                  </h4>
+                  <p className="text-gray-600">
+                    Fails to emphasize key behaviors proven to prevent the most common medical errors
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-red-50 p-6 rounded-xl border border-red-100 shadow-sm">
               <div className="flex items-start">
                 <div className="bg-red-100 p-3 rounded-full mr-4">
                   <HelpCircle size={24} className="text-red-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-lg mb-2">Abstract, Not Real-World</h4>
-                  <p className="text-gray-600">Uses theoretical examples instead of authentic case studies from clinical practice</p>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">
+                    Abstract, Not Real-World
+                  </h4>
+                  <p className="text-gray-600">
+                    Uses theoretical examples instead of authentic case studies from clinical
+                    practice
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-          
+
           {/* CoachCare.ai Approach - Right Column */}
           <div className="space-y-6">
             <div className="text-center mb-6">
@@ -262,52 +327,67 @@ export default function Home() {
                 CoachCare.ai Innovation
               </h3>
             </div>
-            
+
             <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 shadow-sm">
               <div className="flex items-start">
                 <div className="bg-blue-100 p-3 rounded-full mr-4">
                   <Cpu size={24} className="text-blue-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-lg mb-2">AI-Powered Personalization</h4>
-                  <p className="text-gray-600">Tailored case studies based on real clinical scenarios relevant to each practitioner's role</p>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">
+                    AI-Powered Personalization
+                  </h4>
+                  <p className="text-gray-600">
+                    Tailored case studies based on real clinical scenarios relevant to each
+                    practitioner&apos;s role
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 shadow-sm">
               <div className="flex items-start">
                 <div className="bg-blue-100 p-3 rounded-full mr-4">
                   <Target size={24} className="text-blue-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-lg mb-2">Focus on 10 Key Safety Behaviors</h4>
-                  <p className="text-gray-600">Concentrated training on the specific behaviors proven to prevent the majority of clinical errors</p>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">
+                    Focus on 10 Key Safety Behaviors
+                  </h4>
+                  <p className="text-gray-600">
+                    Concentrated training on the specific behaviors proven to prevent the majority
+                    of clinical errors
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="bg-blue-50 p-6 rounded-xl border border-blue-100 shadow-sm">
               <div className="flex items-start">
                 <div className="bg-blue-100 p-3 rounded-full mr-4">
                   <Video size={24} className="text-blue-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-lg mb-2">Interactive Multimedia Learning</h4>
-                  <p className="text-gray-600">Engaging visuals, videos, and simulations for better retention and real-world application</p>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">
+                    Interactive Multimedia Learning
+                  </h4>
+                  <p className="text-gray-600">
+                    Engaging visuals, videos, and simulations for better retention and real-world
+                    application
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        
+
         {/* Arrow pointing to outcomes */}
         <div className="flex justify-center my-10">
           <div className="bg-gray-100 p-4 rounded-full">
             <ChevronRight size={32} className="text-blue-600" />
           </div>
         </div>
-        
+
         {/* Outcomes */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-8 rounded-2xl shadow-xl text-white max-w-3xl mx-auto">
           <h3 className="text-2xl font-bold mb-6 text-center">The Result: Better Outcomes</h3>
@@ -339,25 +419,25 @@ export default function Home() {
   const MarketingSection = () => {
     const marketingPoints = [
       {
-        title: "Our Vision: Advancing Healthcare Safety",
+        title: 'Our Vision: Advancing Healthcare Safety',
         description:
-          "We&apos;re on a mission to reduce avoidable harm to patients. Our proven technology solution decreases liability risk for healthcare providers, making health systems safer for everyone.",
-        icon: HeartPulse,
-      },     
-      {
-        title: "AI-Driven Personalized Training",
-        description:
-          "Our LLM generates life-like clinical scenarios customized to each user, reinforcing the 10 critical safety behaviors. Experience dynamic, engaging training that surpasses traditional methods.",
-        icon: Layers,
+          'We&apos;re on a mission to reduce avoidable harm to patients. Our proven technology solution decreases liability risk for healthcare providers, making health systems safer for everyone.',
+        icon: HeartPulse
       },
       {
-        title: "Actionable Insights Dashboard",
+        title: 'AI-Driven Personalized Training',
         description:
-          "Access intuitive analytics that reveal improvement opportunities by hospital, role, department, or behavior. Identify potential safety risks and implement targeted solutions based on real data.",
-        icon: LineChart,
+          'Our LLM generates life-like clinical scenarios customized to each user, reinforcing the 10 critical safety behaviors. Experience dynamic, engaging training that surpasses traditional methods.',
+        icon: Layers
       },
+      {
+        title: 'Actionable Insights Dashboard',
+        description:
+          'Access intuitive analytics that reveal improvement opportunities by hospital, role, department, or behavior. Identify potential safety risks and implement targeted solutions based on real data.',
+        icon: LineChart
+      }
     ];
-    
+
     return (
       <section id="features" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -366,22 +446,22 @@ export default function Home() {
               Why Healthcare Leaders Choose <span className="text-blue-600">CoachCare.ai</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our AI-powered platform transforms healthcare safety culture through personalized learning and actionable insights.
+              Our AI-powered platform transforms healthcare safety culture through personalized
+              learning and actionable insights.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             {marketingPoints.map((point, index) => (
-              <div key={index} className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-100 flex flex-col h-full transform hover:-translate-y-2 duration-300">
+              <div
+                key={index}
+                className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-100 flex flex-col h-full transform hover:-translate-y-2 duration-300"
+              >
                 <div className="bg-blue-50 p-4 rounded-2xl inline-flex w-16 h-16 items-center justify-center mb-6">
                   <point.icon size={32} className="text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">
-                  {point.title}
-                </h3>
-                <p className="text-gray-600 flex-grow mb-4 leading-relaxed">
-                  {point.description}
-                </p>
+                <h3 className="text-xl font-bold text-gray-800 mb-3">{point.title}</h3>
+                <p className="text-gray-600 flex-grow mb-4 leading-relaxed">{point.description}</p>
               </div>
             ))}
           </div>
@@ -403,24 +483,57 @@ export default function Home() {
               Transforming healthcare safety through AI-powered training and insights.
             </p>
             <div className="flex space-x-4">
+              {/* Social media icons (unchanged) */}
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                <svg
+                  className="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
                   <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
                 </svg>
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+                <svg
+                  className="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path fillRule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clipRule="evenodd" />
+                <svg
+                  className="h-6 w-6"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               </a>
             </div>
@@ -450,11 +563,21 @@ export default function Home() {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <Mail size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
-                <a href="mailto:info@coachcare.ai" className="text-gray-400 hover:text-white transition-colors">info@coachcare.ai</a>
+                <a
+                  href="mailto:info@coachcare.ai"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  info@coachcare.ai
+                </a>
               </li>
               <li className="flex items-start">
                 <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
-                <a href="tel:+18005551234" className="text-gray-400 hover:text-white transition-colors">+1 (800) 555-1234</a>
+                <a
+                  href="tel:+18005551234"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  +1 (800) 555-1234
+                </a>
               </li>
             </ul>
           </div>
@@ -466,24 +589,28 @@ export default function Home() {
   const ProcessSection = () => {
     const steps = [
       {
-        number: "01",
-        title: "Identify Risk Areas",
-        description: "Our AI analyzes your clinical data to identify potential safety concerns specific to your healthcare facility."
+        number: '01',
+        title: 'Identify Risk Areas',
+        description:
+          'Our AI analyzes your clinical data to identify potential safety concerns specific to your healthcare facility.'
       },
       {
-        number: "02",
-        title: "Personalize Training",
-        description: "We generate custom scenarios based on real-world cases, tailored to different roles and departments."
+        number: '02',
+        title: 'Personalize Training',
+        description:
+          'We generate custom scenarios based on real-world cases, tailored to different roles and departments.'
       },
       {
-        number: "03",
-        title: "Implement Safety Behaviors",
-        description: "Staff learn and practice the 10 key safety behaviors through engaging, realistic simulations."
+        number: '03',
+        title: 'Implement Safety Behaviors',
+        description:
+          'Staff learn and practice the 10 key safety behaviors through engaging, realistic simulations.'
       },
       {
-        number: "04",
-        title: "Monitor & Improve",
-        description: "Track progress through our dashboard and continuously refine safety protocols based on performance data."
+        number: '04',
+        title: 'Monitor & Improve',
+        description:
+          'Track progress through our dashboard and continuously refine safety protocols based on performance data.'
       }
     ];
 
@@ -491,14 +618,12 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">
-              How CoachCare.ai Works
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">How CoachCare.ai Works</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Our comprehensive approach to improving healthcare safety
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step, index) => (
               <div key={index} className="relative p-6">
@@ -506,12 +631,8 @@ export default function Home() {
                   {step.number}
                 </div>
                 <div className="relative z-10">
-                  <h3 className="text-xl font-bold text-gray-800 mb-3 mt-4">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600">
-                    {step.description}
-                  </p>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3 mt-4">{step.title}</h3>
+                  <p className="text-gray-600">{step.description}</p>
                 </div>
               </div>
             ))}
@@ -545,7 +666,9 @@ export default function Home() {
           phone,
           createdAt: new Date().toISOString()
         });
-        setSuccess('Demo request submitted successfully! Our team will contact you shortly.');
+        setSuccess(
+          'Demo request submitted successfully! Our team will contact you shortly.'
+        );
         setName('');
         setRole('');
         setOrganization('');
@@ -553,7 +676,9 @@ export default function Home() {
         setPhone('');
       } catch (error) {
         console.error('Error saving demo request:', error);
-        setError('Failed to submit demo request. Please try again or contact us directly.');
+        setError(
+          'Failed to submit demo request. Please try again or contact us directly.'
+        );
       } finally {
         setFormLoading(false);
       }
@@ -568,9 +693,11 @@ export default function Home() {
                 Ready to transform your healthcare safety culture?
               </h2>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Schedule a personalized demonstration to see how CoachCare.ai can help your organization reduce errors, improve patient outcomes, and create a stronger safety culture.
+                Schedule a personalized demonstration to see how CoachCare.ai can help your
+                organization reduce errors, improve patient outcomes, and create a stronger safety
+                culture.
               </p>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start">
                   <div className="flex-shrink-0 mt-1">
@@ -578,51 +705,64 @@ export default function Home() {
                   </div>
                   <div className="ml-4">
                     <h3 className="text-lg font-semibold text-gray-800">Personalized Implementation</h3>
-                    <p className="text-gray-600">Tailored to your organization&apos;s specific needs and challenges</p>
+                    <p className="text-gray-600">
+                      Tailored to your organization&apos;s specific needs and challenges
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="flex-shrink-0 mt-1">
                     <CheckCircle size={20} className="text-blue-600" />
                   </div>
                   <div className="ml-4">
                     <h3 className="text-lg font-semibold text-gray-800">Actionable Insights</h3>
-                    <p className="text-gray-600">Identify risk areas and track improvement with our intuitive dashboard</p>
+                    <p className="text-gray-600">
+                      Identify risk areas and track improvement with our intuitive dashboard
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="flex-shrink-0 mt-1">
                     <CheckCircle size={20} className="text-blue-600" />
                   </div>
                   <div className="ml-4">
                     <h3 className="text-lg font-semibold text-gray-800">Expert Support</h3>
-                    <p className="text-gray-600">Our healthcare safety specialists guide you through every step</p>
+                    <p className="text-gray-600">
+                      Our healthcare safety specialists guide you through every step
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-            
+
             <div className="w-full lg:w-1/2">
               <div className="bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-                <h3 className="text-2xl font-bold mb-6 text-gray-800 text-center">Schedule a Demo</h3>
-                
+                <h3 className="text-2xl font-bold mb-6 text-gray-800 text-center">
+                  Schedule a Demo
+                </h3>
+
                 {error && (
                   <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded">
                     <p>{error}</p>
                   </div>
                 )}
-                
+
                 {success && (
                   <div className="mb-6 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 rounded">
                     <p>{success}</p>
                   </div>
                 )}
-                
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Full Name
+                    </label>
                     <input
                       type="text"
                       id="name"
@@ -634,10 +774,15 @@ export default function Home() {
                       required
                     />
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">Your Role</label>
+                      <label
+                        htmlFor="role"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Your Role
+                      </label>
                       <input
                         type="text"
                         id="role"
@@ -649,9 +794,14 @@ export default function Home() {
                         required
                       />
                     </div>
-                    
+
                     <div>
-                      <label htmlFor="organization" className="block text-sm font-medium text-gray-700 mb-1">Organization</label>
+                      <label
+                        htmlFor="organization"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Organization
+                      </label>
                       <input
                         type="text"
                         id="organization"
@@ -664,9 +814,14 @@ export default function Home() {
                       />
                     </div>
                   </div>
-                  
+
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Email Address
+                    </label>
                     <input
                       type="email"
                       id="email"
@@ -678,9 +833,14 @@ export default function Home() {
                       required
                     />
                   </div>
-                  
+
                   <div>
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                    <label
+                      htmlFor="phone"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Phone Number
+                    </label>
                     <input
                       type="tel"
                       id="phone"
@@ -692,17 +852,38 @@ export default function Home() {
                       required
                     />
                   </div>
-                  
+
                   <button
                     type="submit"
                     disabled={formLoading}
-                    className={`w-full py-4 px-6 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors ${formLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    className={`w-full py-4 px-6 bg-blue-600 text-white font-medium rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors ${
+                      formLoading ? 'opacity-70 cursor-not-allowed' : ''
+                    }`}
                   >
                     {formLoading ? (
                       <span className="flex items-center justify-center">
-                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 
+                              0 0 5.373 0 12h4zm2 5.291A7.962 
+                              7.962 0 014 12H0c0 3.042 1.135 
+                              5.824 3 7.938l3-2.647z"
+                          ></path>
                         </svg>
                         Processing...
                       </span>
@@ -719,25 +900,62 @@ export default function Home() {
     );
   };
 
-  // Main return with all sub-components rendered
+  // ----------------------------
+  // EXAMPLE of how you'd replace <img> with <Image> at lines 1032 and 1267
+  // (Since the snippet doesn't show those lines, here's how you might do it:)
+  // 
+  // <div className="some-class">
+  //   {/* Old: <img src="/my-graphic.png" alt="My Graphic" /> */}
+  //   <Image
+  //     src="/my-graphic.png"
+  //     alt="My Graphic"
+  //     width={600}
+  //     height={400}
+  //     // ...any additional props / className
+  //   />
+  // </div>
+  // 
+  // Repeat for the second <img> at line 1267.
+
+  // ----------------------------
+  // Main return with all sub-components
+  // ----------------------------
+
   return (
     <div className="min-h-screen">
       <Head>
         <title>CoachCare.ai - Advanced Healthcare Safety Training Platform</title>
-        <meta name="description" content="CoachCare.ai - AI-powered healthcare safety training platform that reduces patient harm and medical errors through personalized learning and actionable insights." />
+        <meta
+          name="description"
+          content="CoachCare.ai - AI-powered healthcare safety training platform that reduces patient harm 
+            and medical errors through personalized learning and actionable insights."
+        />
         <link rel="icon" href="/favicon.ico" />
-        {/* Add preconnect for Google Fonts */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+        {/*
+          2) Remove this block to avoid the "no-page-custom-font" warning
+             and place it into `pages/_document.js` according to Next.js docs.
+        
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet"
+          />
+        */}
+
         {/* Additional meta tags for SEO and sharing */}
         <meta property="og:title" content="CoachCare.ai - Advanced Healthcare Safety Training" />
-        <meta property="og:description" content="AI-powered healthcare safety training that reduces patient harm and medical errors through personalized learning." />
+        <meta
+          property="og:description"
+          content="AI-powered healthcare safety training that reduces patient harm and medical errors through personalized learning."
+        />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://coachcare.ai" />
         <meta property="og:image" content="/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
+
       <AppBar />
       <Hero />
       <ComparisonDiagram />
