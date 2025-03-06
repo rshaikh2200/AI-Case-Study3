@@ -1,11 +1,8 @@
-// File: ./src/app/components/11-12-2024(api).js
-
 import Head from 'next/head';
 import Link from 'next/link';
-import Image from 'next/image'; // 1) Add this import for next/image
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import {
-  ArrowRight,
   Users,
   ClipboardList,
   GitMerge,
@@ -34,7 +31,6 @@ import {
   Award,
   Activity
 } from 'lucide-react';
-
 import {
   collection,
   addDoc,
@@ -64,19 +60,7 @@ export default function Home() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // NOTE: If you had a useEffect referencing 'handlePageRefresh', you would do one of:
-  //    (A) remove it entirely if not needed,
-  //    (B) define handlePageRefresh and add it to deps, or
-  //    (C) define handlePageRefresh with useCallback, etc.
-  // For example:
-  //
-  // useEffect(() => {
-  //   handlePageRefresh();
-  // }, [handlePageRefresh]);
-  //
-  // In this refactor, it's removed since it's not shown in the snippet.
-
-  // Example sub-component (unchanged except for removing <img> if present):
+  // Example card component
   const ErrorPreventionCard = ({ tool, isActive, onClick }) => {
     const IconComponent = tool.icon;
     return (
@@ -98,9 +82,15 @@ export default function Home() {
             &copy; {new Date().getFullYear()} CoachCare.ai. All rights reserved.
           </p>
           <div className="flex space-x-6">
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
-            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Cookie Policy</a>
+            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+              Privacy Policy
+            </a>
+            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+              Terms of Service
+            </a>
+            <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">
+              Cookie Policy
+            </a>
           </div>
         </div>
       </div>
@@ -219,7 +209,8 @@ export default function Home() {
             <span className="text-blue-200">And Avoid Medical Errors</span>
           </h1>
           <p className="text-xl lg:text-2xl mb-10 text-blue-100 max-w-3xl leading-relaxed font-light">
-            Over 200,000 patients die every year due to clinical mistakes that could be prevented by hardwiring safety behaviors into hospital culture.
+            Over 200,000 patients die every year due to clinical mistakes that could be prevented
+            by hardwiring safety behaviors into hospital culture.
           </p>
 
           <div className="flex flex-wrap gap-4">
@@ -242,7 +233,10 @@ export default function Home() {
           <path
             fill="currentColor"
             fillOpacity="1"
-            d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,224C672,213,768,171,864,149.3C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,224C672,213,768,171,864,149.3
+            C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320
+            C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320
+            C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           ></path>
         </svg>
       </div>
@@ -276,9 +270,7 @@ export default function Home() {
                   <AlertTriangle size={24} className="text-red-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-lg mb-2">
-                    Generic, One-Size-Fits-All
-                  </h4>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">Generic, One-Size-Fits-All</h4>
                   <p className="text-gray-600">
                     Not specialized for different roles, departments, or individual learning styles
                   </p>
@@ -292,9 +284,7 @@ export default function Home() {
                   <BookOpen size={24} className="text-red-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-lg mb-2">
-                    Lacks Critical Safety Focus
-                  </h4>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">Lacks Critical Safety Focus</h4>
                   <p className="text-gray-600">
                     Fails to emphasize key behaviors proven to prevent the most common medical errors
                   </p>
@@ -308,9 +298,7 @@ export default function Home() {
                   <HelpCircle size={24} className="text-red-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-lg mb-2">
-                    Abstract, Not Real-World
-                  </h4>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">Abstract, Not Real-World</h4>
                   <p className="text-gray-600">
                     Uses theoretical examples instead of authentic case studies from clinical
                     practice
@@ -334,9 +322,7 @@ export default function Home() {
                   <Cpu size={24} className="text-blue-600" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800 text-lg mb-2">
-                    AI-Powered Personalization
-                  </h4>
+                  <h4 className="font-bold text-gray-800 text-lg mb-2">AI-Powered Personalization</h4>
                   <p className="text-gray-600">
                     Tailored case studies based on real clinical scenarios relevant to each
                     practitioner&apos;s role
@@ -381,37 +367,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Arrow pointing to outcomes */}
-        <div className="flex justify-center my-10">
-          <div className="bg-gray-100 p-4 rounded-full">
-            <ChevronRight size={32} className="text-blue-600" />
-          </div>
-        </div>
-
-        {/* Outcomes */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-8 rounded-2xl shadow-xl text-white max-w-3xl mx-auto">
-          <h3 className="text-2xl font-bold mb-6 text-center">The Result: Better Outcomes</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="bg-white/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Activity size={32} className="text-white" />
-              </div>
-              <p className="font-semibold">Reduced Patient Harm</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-white/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Award size={32} className="text-white" />
-              </div>
-              <p className="font-semibold">Improved Care Quality</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-white/20 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                <Users size={32} className="text-white" />
-              </div>
-              <p className="font-semibold">Stronger Safety Culture</p>
-            </div>
-          </div>
-        </div>
+        {/*
+          Removed:
+            - The arrow pointing to outcomes
+            - The entire "The Result: Better Outcomes" block
+        */}
       </div>
     </section>
   );
@@ -469,122 +429,6 @@ export default function Home() {
       </section>
     );
   };
-
-  const Footer = () => (
-    <footer className="bg-gray-900 text-white py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div>
-            <div className="flex items-center mb-4">
-              <Shield size={24} className="mr-2 text-blue-400" />
-              <span className="font-bold text-xl">CoachCare.ai</span>
-            </div>
-            <p className="text-gray-400 mb-4">
-              Transforming healthcare safety through AI-powered training and insights.
-            </p>
-            <div className="flex space-x-4">
-              {/* Social media icons (unchanged) */}
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <svg
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </a>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Platform</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/components" className="text-gray-400 hover:text-white transition-colors">
-                  Safety Module
-                </Link>
-              </li>
-              <li>
-                <Link href="/dashboard" className="text-gray-400 hover:text-white transition-colors">
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link href="/feedback" className="text-gray-400 hover:text-white transition-colors">
-                  Feedback
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Contact</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start">
-                <Mail size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
-                <a
-                  href="mailto:info@coachcare.ai"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  info@coachcare.ai
-                </a>
-              </li>
-              <li className="flex items-start">
-                <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
-                <a
-                  href="tel:+18005551234"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  +1 (800) 555-1234
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
 
   const ProcessSection = () => {
     const steps = [
@@ -879,10 +723,10 @@ export default function Home() {
                           <path
                             className="opacity-75"
                             fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 
-                              0 0 5.373 0 12h4zm2 5.291A7.962 
-                              7.962 0 014 12H0c0 3.042 1.135 
-                              5.824 3 7.938l3-2.647z"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 
+                              5.373 0 12h4zm2 5.291A7.962 7.962 
+                              0 014 12H0c0 3.042 1.135 5.824 
+                              3 7.938l3-2.647z"
                           ></path>
                         </svg>
                         Processing...
@@ -900,26 +744,148 @@ export default function Home() {
     );
   };
 
-  // ----------------------------
-  // EXAMPLE of how you'd replace <img> with <Image> at lines 1032 and 1267
-  // (Since the snippet doesn't show those lines, here's how you might do it:)
-  // 
-  // <div className="some-class">
-  //   {/* Old: <img src="/my-graphic.png" alt="My Graphic" /> */}
-  //   <Image
-  //     src="/my-graphic.png"
-  //     alt="My Graphic"
-  //     width={600}
-  //     height={400}
-  //     // ...any additional props / className
-  //   />
-  // </div>
-  // 
-  // Repeat for the second <img> at line 1267.
-
-  // ----------------------------
-  // Main return with all sub-components
-  // ----------------------------
+  // Adjusted footer spacing: changed `gap-8` to `gap-4` to reduce spacing
+  const Footer = () => (
+    <footer className="bg-gray-900 text-white py-12">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <div className="flex items-center mb-4">
+              <Shield size={24} className="mr-2 text-blue-400" />
+              <span className="font-bold text-xl">CoachCare.ai</span>
+            </div>
+            <p className="text-gray-400 mb-4">
+              Transforming healthcare safety through AI-powered training and insights.
+            </p>
+            <div className="flex space-x-4">
+              {/* Example Social Icons */}
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    fillRule="evenodd"
+                    d="M22 12c0-5.523-4.477-10-10-10S2 
+                      6.477 2 12c0 4.991 3.657 9.128 
+                      8.438 9.878v-6.987h-2.54V12h2.54V9.797
+                      c0-2.506 1.492-3.89 3.777-3.89 1.094 
+                      0 2.238.195 2.238.195v2.46h-1.26c-1.243 
+                      0-1.63.771-1.63 1.562V12h2.773l-.443 
+                      2.89h-2.33v6.988C18.343 21.128 22 
+                      16.991 22 12z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    d="M8.29 20.251c7.547 0 11.675-6.253 
+                      11.675-11.675 0-.178 0-.355-.012-.53A8.348 
+                      8.348 0 0022 5.92a8.19 8.19 0 
+                      01-2.357.646 4.118 4.118 0 001.804-2.27 
+                      8.224 8.224 0 01-2.605.996 4.107 4.107 
+                      0 00-6.993 3.743 11.65 11.65 0 
+                      01-8.457-4.287 4.106 4.106 0 001.27 
+                      5.477A4.072 4.072 0 012.8 
+                      9.713v.052a4.105 4.105 0 003.292 4.022 
+                      4.095 4.095 0 01-1.853.07 4.108 4.108 
+                      0 003.834 2.85A8.233 8.233 0 012 
+                      18.407a11.616 11.616 0 006.29 1.84"
+                  />
+                </svg>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    fillRule="evenodd"
+                    d="M12 2C6.477 2 2 6.484 2 
+                      12.017c0 4.425 2.865 8.18 6.839 
+                      9.504.5.092.682-.217.682-.483 
+                      0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003 
+                      .07 1.531 1.032 1.531 1.032.892 1.53 
+                      2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22
+                      -.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 
+                      1.029-2.688-.103-.253-.446-1.272.098-2.65 
+                      0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 
+                      6.844c.85.004 1.705.115 2.504.337 
+                      1.909-1.296 2.747-1.027 
+                      2.747-1.027.546 1.379.202 2.398.1 
+                      2.651.64.7 1.028 1.595 1.028 
+                      2.688 0 3.848-2.339 4.695-4.566 
+                      4.943.359.309.678.92.678 1.855 
+                      0 1.338-.012 2.419-.012 
+                      2.747 0 .268.18.58.688.482A10.019 
+                      10.019 0 0022 12.017C22 6.484 17.522 2 
+                      12 2z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </a>
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path
+                    fillRule="evenodd"
+                    d="M19 0h-14c-2.761 0-5 2.239-5 
+                      5v14c0 2.761 2.239 5 5 
+                      5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 
+                      19h-3v-11h3v11zm-1.5-12.268c-.966 
+                      0-1.75-.79-1.75-1.764s.784-1.764 
+                      1.75-1.764 1.75.79 1.75 1.764-.783 
+                      1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 
+                      0v5.604h-3v-11h3v1.765c1.396-2.586 
+                      7-2.777 7 2.476v6.759z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Platform</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link href="/components" className="text-gray-400 hover:text-white transition-colors">
+                  Safety Module
+                </Link>
+              </li>
+              <li>
+                <Link href="/dashboard" className="text-gray-400 hover:text-white transition-colors">
+                  Dashboard
+                </Link>
+              </li>
+              <li>
+                <Link href="/feedback" className="text-gray-400 hover:text-white transition-colors">
+                  Feedback
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold mb-4">Contact</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start">
+                <Mail size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
+                <a
+                  href="mailto:info@coachcare.ai"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  info@coachcare.ai
+                </a>
+              </li>
+              <li className="flex items-start">
+                <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
+                <a
+                  href="tel:+18005551234"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  +1 (800) 555-1234
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 
   return (
     <div className="min-h-screen">
@@ -931,20 +897,7 @@ export default function Home() {
             and medical errors through personalized learning and actionable insights."
         />
         <link rel="icon" href="/favicon.ico" />
-
-        {/*
-          2) Remove this block to avoid the "no-page-custom-font" warning
-             and place it into `pages/_document.js` according to Next.js docs.
-        
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-            rel="stylesheet"
-          />
-        */}
-
-        {/* Additional meta tags for SEO and sharing */}
+        {/* Move custom fonts to pages/_document.js to avoid Next.js warnings. */}
         <meta property="og:title" content="CoachCare.ai - Advanced Healthcare Safety Training" />
         <meta
           property="og:description"
@@ -955,7 +908,6 @@ export default function Home() {
         <meta property="og:image" content="/og-image.jpg" />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-
       <AppBar />
       <Hero />
       <ComparisonDiagram />
