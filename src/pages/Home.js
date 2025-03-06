@@ -312,7 +312,7 @@ export default function Home() {
           <div className="space-y-6">
             <div className="text-center mb-6">
               <h3 className="text-2xl font-bold text-blue-700 pb-2 border-b-2 border-blue-200 inline-block">
-                CoachCare.ai Innovation
+                CoachCare.ai AI Modules
               </h3>
             </div>
 
