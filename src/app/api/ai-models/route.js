@@ -292,6 +292,7 @@ The medical case study should:
       - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
       - Include clues by using buzzwords or synonyms from the correct answer's definition.
       - Do not explicitly mention the prevention tools by name in the question header.
+      - The question should be straight forward, and conise, do not state any buzzwords in the question itself (e.g. using buzzwords like check and validate?)
     
     - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
       - **Question Structure**
@@ -491,7 +492,7 @@ The medical case study should:
     const response = await openai.chat.completions.create({
       model: "o3-mini",
       reasoning_effort: "low",
-      temperature: 1.0,
+      temperature: 0.5,
       messages: [
         {
           role: "user",
