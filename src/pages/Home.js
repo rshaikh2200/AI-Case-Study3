@@ -366,12 +366,26 @@ export default function Home() {
             </div>
           </div>
         </div>
+      </div>
+    </section>
+  );
 
-        {/*
-          Removed:
-            - The arrow pointing to outcomes
-            - The entire "The Result: Better Outcomes" block
-        */}
+  // NEW SECTION: Insightful Performance Dashboard 
+  const InsightfulDepartmentStatistics = () => (
+    <section className="py-16 bg-gray-50">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 text-center">
+          Insightful Performance Dashboard
+        </h2>
+        <div className="max-w-4xl mx-auto mt-8">
+          <Image
+            src="/dashboard.png"
+            alt="Insightful Department Statistics"
+            width={800}
+            height={600}
+            className="rounded shadow"
+          />
+        </div>
       </div>
     </section>
   );
@@ -381,7 +395,7 @@ export default function Home() {
       {
         title: 'Our Vision: Advancing Healthcare Safety',
         description:
-          'We&apos;re on a mission to reduce avoidable harm to patients. Our proven technology solution decreases liability risk for healthcare providers, making health systems safer for everyone.',
+          'We\'re on a mission to reduce avoidable harm to patients. Our proven technology solution decreases liability risk for healthcare providers, making health systems safer for everyone.',
         icon: HeartPulse
       },
       {
@@ -911,6 +925,8 @@ export default function Home() {
       <AppBar />
       <Hero />
       <ComparisonDiagram />
+      {/* Added the new section here */}
+      <InsightfulDepartmentStatistics />
       <MarketingSection />
       <ProcessSection />
       <DemoForm />
