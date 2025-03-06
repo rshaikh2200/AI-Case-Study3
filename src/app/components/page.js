@@ -32,7 +32,7 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
       onClose={onClose}
       PaperProps={{
         className:
-          "certificate-container border-4 border-gray-300 rounded-2xl shadow-lg p-6 bg-gradient-to-br from-white to-blue-50 max-w-md w-full",
+          "certificate-container border-0 rounded-3xl shadow-2xl p-0 bg-white max-w-3xl w-full overflow-hidden",
         sx: {
           position: "absolute",
           top: "50%",
@@ -42,18 +42,23 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
         },
       }}
       BackdropProps={{
-        className: "bg-black/60",
-        sx: { backdropFilter: "blur(4px)" },
+        className: "bg-black/70",
+        sx: { backdropFilter: "blur(8px)" },
       }}
     >
       <div className="certificate-popup">
+        {/* Decorative Elements */}
+        <div className="absolute -top-32 -right-32 w-96 h-96 bg-blue-100 rounded-full opacity-30" />
+        <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-green-100 rounded-full opacity-30" />
+        
         {/* Popup Header */}
-        <div className="text-center py-6 bg-gradient-to-b from-blue-50 via-white to-transparent rounded-t-2xl border-b border-gray-100">
-          <div className="relative">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-24 bg-yellow-100 rounded-full opacity-50 blur-xl" />
-            <Trophy className="relative w-16 h-16 text-yellow-500 mx-auto mb-4 animate-bounce" />
+        <div className="text-center py-8 relative">
+          <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-500 via-green-500 to-blue-500" />
+          <div className="relative z-10">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-28 h-28 bg-yellow-100 rounded-full opacity-50 blur-xl" />
+            <Trophy className="relative w-16 h-16 text-yellow-600 mx-auto mb-4 drop-shadow-lg" />
           </div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent mb-2">
+          <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-700 via-green-600 to-blue-700 bg-clip-text text-transparent mb-2 font-serif tracking-wide">
             Congratulations!
           </h2>
         </div>
@@ -61,36 +66,50 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
         {/* Certificate Content */}
         <div
           id="certificate"
-          className="certificate-content mx-2 my-4 border-4 border-double border-gray-300 p-6 rounded-lg shadow-lg relative"
+          className="certificate-content mx-8 my-6 border-[3px] border-double border-gray-300 p-10 rounded-xl shadow-lg relative bg-gray-50"
         >
+          {/* Background Pattern */}
           <div className="absolute inset-0 opacity-5">
             <div className="absolute inset-0 bg-[linear-gradient(45deg,#000_25%,transparent_25%,transparent_75%,#000_75%,#000),linear-gradient(45deg,#000_25%,transparent_25%,transparent_75%,#000_75%,#000)] bg-[length:60px_60px] bg-[position:0_0,30px_30px]" />
           </div>
-          <div className="text-center mb-4 relative">
+          
+          {/* Gold Seal */}
+          <div className="absolute -right-4 -bottom-4 w-24 h-24">
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-300 to-yellow-600 rounded-full opacity-70 shadow-lg"></div>
+            <div className="absolute inset-2 border-2 border-dashed border-yellow-100 rounded-full"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <svg className="w-12 h-12 text-yellow-100 opacity-70" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          
+          <div className="text-center mb-6 relative">
             <img
               src="/Picture1.jpg"
               alt="CoachCare.ai Logo"
-              className="mx-auto h-20 mb-2 drop-shadow-md"
+              className="mx-auto h-24 mb-2 drop-shadow-md"
             />
           </div>
-          <div className="text-center space-y-4 relative">
-            <h2 className="text-3xl font-semibold text-gray-800 font-serif tracking-wide">
+          
+          <div className="text-center space-y-6 relative">
+            <h2 className="text-3xl font-semibold text-gray-800 font-serif tracking-wider">
               Certificate of Completion
             </h2>
-            <p className="text-xl text-gray-600">
-              This certificate is proudly presented to you
+            <p className="text-xl text-gray-600 italic">
+              This certificate is proudly presented to
             </p>
-            <p className="text-4xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent my-2 font-serif tracking-wide">
+            <p className="text-4xl font-bold bg-gradient-to-r from-blue-800 to-blue-600 bg-clip-text text-transparent my-3 font-serif tracking-wider py-2">
               {fullName}
             </p>
             <p className="text-xl leading-relaxed text-gray-700">
               For successfully completing the{" "}
-              <span className="font-semibold">
+              <span className="font-semibold text-blue-700">
                 Patient Safety Language Basics
               </span>{" "}
               module.
             </p>
-            <div className="mt-4 pt-4 border-t border-gray-200">
+            <div className="mt-6 pt-6 border-t border-gray-200">
               <p className="text-lg text-gray-600">
                 Issued on: <span className="font-semibold">{date}</span>
               </p>
@@ -99,14 +118,16 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
         </div>
 
         {/* Enhanced Action Buttons */}
-        <div className="flex justify-center gap-4 pt-4">
+        <div className="flex justify-center gap-6 pt-4 pb-8">
           <button
             onClick={onPrint}
-            className="group relative px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
+            className="group relative px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
           >
-            <span className="relative z-10 flex items-center gap-2">
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-blue-700 transition-all group-hover:opacity-0"></span>
+            <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-700 to-blue-800 opacity-0 transition-all group-hover:opacity-100"></span>
+            <span className="relative z-10 flex items-center justify-center gap-3">
               <svg
-                className="w-4 h-4 transition-transform group-hover:rotate-12"
+                className="w-5 h-5 transition-transform group-hover:rotate-12"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -115,7 +136,7 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2-2H9a2 2-0-2 2v4a2 2 0 002 2zm8-12V5a2 2-2H9a2 2-2H2v4a2 2-2H9a2 2v2v0H8m4 0z"
+                  d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z"
                 />
               </svg>
               Print Certificate
@@ -123,11 +144,11 @@ const CertificatePopup = ({ isOpen, onClose, fullName, date, onPrint }) => {
           </button>
           <button
             onClick={onClose}
-            className="group px-6 py-2 bg-white text-gray-700 rounded-xl font-semibold shadow-md border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:-translate-y-0.5 transition-all duration-200 hover:shadow-lg"
+            className="group px-8 py-3 bg-white text-gray-700 rounded-xl font-semibold shadow-md border border-gray-200 hover:bg-gray-50 hover:border-gray-300 hover:-translate-y-0.5 transition-all duration-200 hover:shadow-lg"
           >
-            <span className="flex items-center gap-2">
+            <span className="flex items-center justify-center gap-3">
               <svg
-                className="w-4 h-4 transition-transform group-hover:-translate-x-1"
+                className="w-5 h-5 transition-transform group-hover:-translate-x-1"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -1532,397 +1553,591 @@ export default function Home() {
     return option ? `${option.key}. ${option.label}` : 'No Answer';
   };
 
-  return (
-    <>
-      <Head>
-        <title>Health Care Safety</title>
-      </Head>
-      <div className="container mx-auto px-4">
-        {/* Responsive App Bar */}
-        <nav className="sticky top-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 shadow-md">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              {/* Logo */}
-              <div className="flex items-center">
-                <div className="flex-shrink-0 text-white font-bold">
+ return (
+  <>
+    <Head>
+      <title>Health Care Safety</title>
+      <meta name="description" content="AI Personalized Healthcare Safety Training Module" />
+    </Head>
+    <div className="min-h-screen flex flex-col bg-gray-50">
+      {/* Modern App Bar with depth */}
+      <nav className="sticky top-0 z-50 bg-gradient-to-r from-blue-700 to-blue-800 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="text-white font-bold text-lg">
                   <span className="hidden sm:block">
                     AI Personalized Healthcare Safety Module
                   </span>
-                  <span className="block sm:hidden">Coachcare.ai</span>
+                  <span className="block sm:hidden">CoachCare.ai</span>
                 </div>
               </div>
+            </div>
 
-              {/* Mobile menu button */}
-              <div className="sm:hidden ml-4 mr-4">
-                <button
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className="text-white hover:text-gray-200 focus:outline-none"
-                >
-                  {isMobileMenuOpen ? (
-                    <X className="h-6 w-6" />
-                  ) : (
-                    <Menu className="h-6 w-6" />
-                  )}
-                </button>
-              </div>
+            {/* Mobile menu button */}
+            <div className="sm:hidden ml-4">
+              <button
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-white hover:text-gray-200 focus:outline-none transition-colors duration-200 flex items-center"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
+            </div>
 
-              {/* Desktop Navigation */}
-              <div className="hidden sm:flex sm:items-center sm:space-x-4">
+            {/* Desktop Navigation */}
+            <div className="hidden sm:flex sm:items-center sm:space-x-1">
+              <Link
+                href="/Home"
+                className="text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-200"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                href="/components"
+                className="text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-200"
+              >
+                Safety Module
+              </Link>
+              <Link
+                href="/dashboard"
+                className="text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-200"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href="/feedback"
+                className="text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-200"
+              >
+                Feedback
+              </Link>
+            </div>
+          </div>
+
+          {/* Mobile Navigation - Enhanced with animation */}
+          {isMobileMenuOpen && (
+            <div className="sm:hidden pb-4 pt-2 border-t border-blue-600">
+              <div className="flex flex-col space-y-1">
                 <Link
-                  href="/Home"
-                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                  href="/"
+                  className="text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-200"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Home
                 </Link>
                 <Link
                   href="/components"
-                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                  className="text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Safety Module
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                  className="text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Dashboard
                 </Link>
                 <Link
                   href="/feedback"
-                  className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
+                  className="text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-all duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Feedback
                 </Link>
               </div>
             </div>
+          )}
+        </div>
+      </nav>
 
-            {/* Mobile Navigation */}
-            {isMobileMenuOpen && (
-              <div className="sm:hidden pb-4">
-                <div className="flex flex-col space-y-2">
-                  <Link
-                    href="/"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/components"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Case Studies
-                  </Link>
-                  <Link
-                    href="/dashboard"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
-                  <Link
-                    href="/feedback"
-                    className="text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-500 transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Feedback
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
-        </nav>
-
-        <div className="content-wrapper">
-          {/* Image and Assessment Complete Form Container */}
-          <div className="image-container px-4 py-6">
-            {showSafetyStatement && (
-              <p className="safety-text text-sm sm:text-base text-gray-700 leading-relaxed">
+      <main className="flex-grow">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Safety Statement with better formatting */}
+          {showSafetyStatement && (
+            <div className="mb-8 bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-600">
+              <p className="text-gray-700 leading-relaxed">
+                <span className="font-semibold text-blue-700 block mb-2 text-lg">Why This Matters:</span>
                 Avoidable medical error is a leading cause of death in the USA. Something as simple as
                 using safety behaviors has been proven to decrease harm to patients. The scenarios generated
                 below are from real case studies that have been published in the literature and are customized
-                just for you in order to make the safety behavior more relevant. Thank you for doing your part to put more care into healthcare.
+                just for you in order to make the safety behavior more relevant. 
+                <span className="mt-2 block font-medium text-blue-600">Thank you for doing your part to put more care into healthcare.</span>
               </p>
-            )}
+            </div>
+          )}
 
-            {assessmentComplete && (
-              <div className="assessment-complete mt-6">
-                <div className="result-container bg-white rounded-lg shadow p-6">
-                  <div className="score-info text-center">
-                    <div className="score-header text-xl font-semibold">
-                      <strong>Score:</strong>
+          {/* Assessment Complete Section with enhanced design */}
+          {assessmentComplete && (
+            <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                <h2 className="text-xl font-bold text-white">Assessment Results</h2>
+              </div>
+              
+              <div className="p-6">
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+                  {/* Score Card */}
+                  <div className="bg-blue-50 rounded-xl p-6 text-center flex-shrink-0 w-full md:w-64">
+                    <div className="score-circle relative w-32 h-32 mx-auto mb-4">
+                      <div className="absolute inset-0 rounded-full bg-blue-100"></div>
+                      <div 
+                        className={`absolute inset-0 rounded-full 
+                        ${totalScore >= 90 ? 'bg-green-500' : 
+                          totalScore >= 70 ? 'bg-blue-500' : 'bg-red-500'}`}
+                        style={{
+                          clipPath: `polygon(50% 50%, 50% 0%, ${
+                            50 + 50 * Math.sin(((totalScore / 100) * 360 * Math.PI) / 180)
+                          }% ${
+                            50 - 50 * Math.cos(((totalScore / 100) * 360 * Math.PI) / 180)
+                          }%, ${totalScore > 25 ? '0% 0%, 0% 100%, 100% 100%' : ''})` 
+                        }}
+                      >
+                      </div>
+                      <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center">
+                        <span className="text-3xl font-bold">{totalScore}%</span>
+                      </div>
                     </div>
-
-                    <div className="correct-answers text-2xl font-bold my-2">
-                      {correctCount} out of 12
+                    
+                    <div className="text-lg font-medium text-gray-700">
+                      {correctCount} out of 12 correct
                     </div>
-
-                    <div className="score-circle mx-auto my-4 w-24 h-24 flex items-center justify-center rounded-full bg-blue-100">
-                      <span className="text-3xl font-bold text-blue-600">{totalScore}%</span>
-                    </div>
-
-                    <div className="result-header text-xl font-semibold">
-                      <strong>Result:</strong>
-                    </div>
-
-                    <div
-                      className={`pass-fail text-2xl font-bold mt-2 ${
-                        totalScore >= 70 ? 'text-green-600' : 'text-red-600'
+                    
+                    <div 
+                      className={`mt-4 py-2 px-4 rounded-full font-bold text-white ${
+                        totalScore >= 70 ? 'bg-green-600' : 'bg-red-600'
                       }`}
                     >
-                      {totalScore >= 70 ? 'Pass' : 'Fail'}
+                      {totalScore >= 70 ? 'PASS' : 'NEEDS REVIEW'}
                     </div>
                   </div>
-                </div>
-
-                {resultDetails.map((caseDetail) => (
-                  <div key={`case-${caseDetail.caseStudyNumber}`} className="case-detail mt-6">
-                    <h3 className="text-lg font-semibold">{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
-                    <p className="case-study-text text-gray-700 mt-2">{caseDetail.caseStudyText}</p>
-
-                    {caseDetail.questions.map((q) => (
-                      <div key={`question-${q.questionNumber}`} className="question-summary mt-4">
-                        <div className="question-header-summary flex justify-between items-center">
-                          <h4 className="text-md font-semibold">{`Question ${q.questionNumber}`}</h4>
-                          <span className="text-xl">{q.isCorrect ? '✅' : '❌'}</span>
+                  
+                  {/* Result Summary */}
+                  <div className="flex-grow">
+                    <h3 className="text-lg font-semibold text-gray-700 mb-4">Performance Summary</h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {resultDetails.slice(0, 2).map((caseDetail) => (
+                        <div key={`summary-${caseDetail.caseStudyNumber}`} className="bg-gray-50 rounded-lg p-4">
+                          <h4 className="font-medium text-blue-700 mb-2">{`Case Study ${caseDetail.caseStudyNumber}`}</h4>
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                              {caseDetail.questions.filter(q => q.isCorrect).length}/{caseDetail.questions.length}
+                            </div>
+                            <div className="text-sm text-gray-600">questions answered correctly</div>
+                          </div>
                         </div>
-
-                        <p className="question-text text-gray-700 mt-1">{q.questionText}</p>
-
-                        <h5 className="mt-2 font-semibold">Your Answer:</h5>
-                        <p className="user-answer text-gray-700">
-                          {q.selectedAnswer !== 'No Answer'
-                            ? getOptionLabel(
-                                caseDetail.caseStudyNumber - 1,
-                                q.questionNumber - 1,
-                                q.selectedAnswer
-                              )
-                            : 'No Answer'}
-                        </p>
-
-                        <h5 className="mt-2 font-semibold">Correct Answer:</h5>
-                        <p className="correct-answer text-gray-700">
-                          {getOptionLabel(
-                            caseDetail.caseStudyNumber - 1,
-                            q.questionNumber - 1,
-                            aiResponse[caseDetail.caseStudyNumber - 1].questions[
-                              q.questionNumber - 1
-                            ].correctAnswer.split(')')[0].trim()
-                          )}
-                        </p>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
+                    
+                    <div className="mt-6 flex flex-col sm:flex-row gap-4">
+                      <button
+                        className="flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+                        onClick={handlePrint}
+                        disabled={isLoading}
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2z" />
+                        </svg>
+                        Print Report
+                      </button>
+                      
+                      {totalScore >= 70 && (
+                        <button
+                          className="flex items-center justify-center gap-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors shadow-md"
+                          onClick={() => setIsCertificateOpen(true)}
+                          disabled={isLoading}
+                        >
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          View Certificate
+                        </button>
+                      )}
+                    </div>
                   </div>
-                ))}
-
-                <div className="result-buttons flex flex-col sm:flex-row items-center justify-center mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
-                  <button
-                    className="print-button bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                    onClick={handlePrint}
-                    disabled={isLoading}
-                  >
-                    🖨️ Print Assessment Report
-                  </button>
-                  {totalScore >= 70 && (
-                    <button
-                      className="certificate-button bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
-                      onClick={() => setIsCertificateOpen(true)}
-                      disabled={isLoading}
-                    >
-                      🎓 View Certificate
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {showSafetyStatement && (
-            <div className="form-container px-4 py-6">
-              <div className="professional-info bg-white rounded-lg shadow p-6">
-                <h2 className="text-lg font-semibold mb-4">Professional Information</h2>
-
-                {/* Removed the User Type dropdown entirely */}
-
-                <div className="form-item mb-4">
-                  <label htmlFor="department-select" className="block text-sm font-medium text-gray-700">
-                    Department
-                  </label>
-                  <select
-                    id="department-select"
-                    value={department}
-                    onChange={(e) => {
-                      setDepartment(e.target.value);
-                      if (error) setError('');
-                    }}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                  >
-                    <option value="">Select Department</option>
-                    {departmentsToUse.map((dept) => (
-                      <option key={dept} value={dept}>
-                        {dept}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="form-item mb-4">
-                  <label htmlFor="role-select" className="block text-sm font-medium text-gray-700">
-                    Role
-                  </label>
-                  <select
-                    id="role-select"
-                    value={role}
-                    onChange={(e) => {
-                      setRole(e.target.value);
-                      if (error) setError('');
-                    }}
-                    disabled={!department}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
-                  >
-                    <option value="">Select Role</option>
-                    {rolesToUse.map((r) => (
-                      <option key={r} value={r}>
-                        {r}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Always show Specialization dropdown */}
-                <div className="form-item mb-4">
-                  <label htmlFor="specialization-select" className="block text-sm font-medium text-gray-700">
-                    Specialization
-                  </label>
-                  <select
-                    id="specialization-select"
-                    value={specialization}
-                    onChange={(e) => {
-                      setSpecialization(e.target.value);
-                      if (error) setError('');
-                    }}
-                    disabled={!role}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 disabled:bg-gray-100"
-                  >
-                    <option value="">Select Specialization</option>
-                    {specializationsToUse.map((spec) => (
-                      <option key={spec} value={spec}>
-                        {spec}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Renamed "Care" to "Care delivery setting" and removed the userType-based disable */}
-                <div className="form-item mb-4">
-                  <label htmlFor="care-select" className="block text-sm font-medium text-gray-700">
-                    Care Delivery Setting
-                  </label>
-                  <select
-                    id="care-select"
-                    value={care}
-                    onChange={(e) => {
-                      setCare(e.target.value);
-                      if (error) setError('');
-                    }}
-                    className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3"
-                  >
-                    <option value="">Select Care Delivery Setting</option>
-                    <option value="Inpatient">Inpatient</option>
-                    <option value="Outpatient">Outpatient</option>
-                  </select>
                 </div>
               </div>
             </div>
           )}
 
-          <div className="button-container text-center my-6">
-            {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
-              <>
-                <button
-                  type="button"
-                  className="assessment-button bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 mr-2"
-                  onClick={handleTakeAssessment}
-                  disabled={isLoading}
-                >
-                  {isLoading
-                    ? 'Starting your assessment, please wait...'
-                    : 'Generate My Personalized Training Scenarios'}
-                </button>
+          {/* Detailed Results with collapsible sections */}
+          {assessmentComplete && (
+            <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                <h2 className="text-xl font-bold text-white">Detailed Results</h2>
+              </div>
+              
+              <div className="divide-y divide-gray-200">
+                {resultDetails.map((caseDetail) => (
+                  <details key={`case-${caseDetail.caseStudyNumber}`} className="group">
+                    <summary className="p-6 cursor-pointer list-none flex justify-between items-center hover:bg-gray-50">
+                      <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white ${
+                          caseDetail.questions.filter(q => q.isCorrect).length === caseDetail.questions.length 
+                            ? 'bg-green-600' : 'bg-blue-600'
+                        }`}>
+                          {caseDetail.questions.filter(q => q.isCorrect).length}/{caseDetail.questions.length}
+                        </div>
+                        <h3 className="text-lg font-semibold">{`Case Study ${caseDetail.caseStudyNumber}`}</h3>
+                      </div>
+                      <svg className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </summary>
+                    
+                    <div className="px-6 pb-6">
+                      <div className="bg-gray-50 p-4 rounded-lg mb-6">
+                        <p className="text-gray-700">{caseDetail.caseStudyText}</p>
+                      </div>
+                      
+                      <div className="space-y-6">
+                        {caseDetail.questions.map((q) => (
+                          <div key={`question-${q.questionNumber}`} className={`p-4 rounded-lg border ${
+                            q.isCorrect ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'
+                          }`}>
+                            <div className="flex items-center gap-2 mb-3">
+                              <span className={`text-xl ${q.isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                                {q.isCorrect ? '✓' : '✗'}
+                              </span>
+                              <h4 className="text-lg font-medium">{`Question ${q.questionNumber}`}</h4>
+                            </div>
+                            
+                            <p className="mb-4">{q.questionText}</p>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="bg-white p-3 rounded-md">
+                                <h5 className="font-semibold text-sm text-gray-500 mb-1">Your Answer:</h5>
+                                <p className={`${q.isCorrect ? 'text-green-700' : 'text-red-700'}`}>
+                                  {q.selectedAnswer !== 'No Answer'
+                                    ? getOptionLabel(
+                                        caseDetail.caseStudyNumber - 1,
+                                        q.questionNumber - 1,
+                                        q.selectedAnswer
+                                      )
+                                    : 'No Answer'}
+                                </p>
+                              </div>
+                              
+                              <div className="bg-white p-3 rounded-md">
+                                <h5 className="font-semibold text-sm text-gray-500 mb-1">Correct Answer:</h5>
+                                <p className="text-green-700">
+                                  {getOptionLabel(
+                                    caseDetail.caseStudyNumber - 1,
+                                    q.questionNumber - 1,
+                                    aiResponse[caseDetail.caseStudyNumber - 1].questions[
+                                      q.questionNumber - 1
+                                    ].correctAnswer.split(')')[0].trim()
+                                  )}
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            </div>
+          )}
 
-                {/* NEW BUTTON: Print Case Studies and Questions */}
-                <button
-                  type="button"
-                  className="print-cs-button bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700"
-                  onClick={handlePrintCaseStudiesAndQuestions}
-                  disabled={isLoading}
-                >
-                  {isLoading
-                    ? 'Preparing PDF, please wait...'
-                    : 'Print Case Studies and Questions'}
-                </button>
-              </>
-            )}
-          </div>
+          {/* Form Container with modern card design */}
+          {showSafetyStatement && (
+            <div className="mb-8">
+              <div className="bg-white rounded-xl shadow-md overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                  <h2 className="text-xl font-bold text-white">Professional Information</h2>
+                </div>
+                
+                <div className="p-6 space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="form-item">
+                      <label htmlFor="department-select" className="block text-sm font-medium text-gray-700 mb-1">
+                        Department
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="department-select"
+                          value={department}
+                          onChange={(e) => {
+                            setDepartment(e.target.value);
+                            if (error) setError('');
+                          }}
+                          className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 pl-3 pr-10 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        >
+                          <option value="">Select Department</option>
+                          {departmentsToUse.map((dept) => (
+                            <option key={dept} value={dept}>
+                              {dept}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
 
-          {error && <div className="error-alert text-red-600 text-center">{error}</div>}
+                    <div className="form-item">
+                      <label htmlFor="role-select" className="block text-sm font-medium text-gray-700 mb-1">
+                        Role
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="role-select"
+                          value={role}
+                          onChange={(e) => {
+                            setRole(e.target.value);
+                            if (error) setError('');
+                          }}
+                          disabled={!department}
+                          className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 pl-3 pr-10 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
+                        >
+                          <option value="">Select Role</option>
+                          {rolesToUse.map((r) => (
+                            <option key={r} value={r}>
+                              {r}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
 
+                    <div className="form-item">
+                      <label htmlFor="specialization-select" className="block text-sm font-medium text-gray-700 mb-1">
+                        Specialization
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="specialization-select"
+                          value={specialization}
+                          onChange={(e) => {
+                            setSpecialization(e.target.value);
+                            if (error) setError('');
+                          }}
+                          disabled={!role}
+                          className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 pl-3 pr-10 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed"
+                        >
+                          <option value="">Select Specialization</option>
+                          {specializationsToUse.map((spec) => (
+                            <option key={spec} value={spec}>
+                              {spec}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="form-item">
+                      <label htmlFor="care-select" className="block text-sm font-medium text-gray-700 mb-1">
+                        Care Delivery Setting
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="care-select"
+                          value={care}
+                          onChange={(e) => {
+                            setCare(e.target.value);
+                            if (error) setError('');
+                          }}
+                          className="block w-full border border-gray-300 rounded-lg shadow-sm py-2 pl-3 pr-10 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                        >
+                          <option value="">Select Care Delivery Setting</option>
+                          <option value="Inpatient">Inpatient</option>
+                          <option value="Outpatient">Outpatient</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                {showSafetyStatement && !showCaseStudies && !assessmentComplete && (
+                  <>
+                    <button
+                      type="button"
+                      className="w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-md"
+                      onClick={handleTakeAssessment}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Starting your assessment...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                          Generate My Personalized Training Scenarios
+                        </>
+                      )}
+                    </button>
+
+                    <button
+                      type="button"
+                      className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white text-blue-600 border border-blue-300 px-8 py-3 rounded-lg hover:bg-blue-50 transition-all duration-200 shadow-sm"
+                      onClick={handlePrintCaseStudiesAndQuestions}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Preparing PDF...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                          Print Case Studies and Questions
+                        </>
+                      )}
+                    </button>
+                  </>
+                )}
+              </div>
+
+              {/* Error Display */}
+              {error && (
+                <div className="mt-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-lg">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <svg className="h-5 w-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm text-red-700">{error}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Case Studies with enhanced card design */}
           {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length > 0 && (
-            <div className="case-studies px-4 py-6">
-              <div className="case-study" key={currentCaseStudyIndex}>
+            <div className="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-4">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-xl font-bold text-white">{`Case Study ${currentCaseStudyIndex + 1}`}</h2>
+                  
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors
+                        ${isAudioLoading ? 'bg-gray-200 text-gray-600 cursor-wait' : 
+                          isAudioPlaying ? 'bg-red-500 text-white hover:bg-red-600' : 'bg-white text-blue-700 hover:bg-blue-50'}`}
+                      onClick={fetchAudio}
+                      disabled={isAudioLoading}
+                    >
+                      {isAudioLoading ? (
+                        <>
+                          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Loading
+                        </>
+                      ) : isAudioPlaying ? (
+                        <>
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          Pause
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15.536a5 5 0 001.414-7.072m-2.828 9.9a9 9 0 010-12.728" />
+                          </svg>
+                          Listen
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="p-6">
                 {aiResponse[currentCaseStudyIndex].imageUrl && (
-                  <div className="case-study-image mb-4">
+                  <div className="mb-6">
                     <img
                       src={aiResponse[currentCaseStudyIndex].imageUrl}
-                      alt={`Case Study ${currentCaseStudyIndex + 1} Image`}
-                      className="header-image w-full h-auto rounded-lg"
+                      alt={`Case Study ${currentCaseStudyIndex + 1} Illustration`}
+                      className="w-full h-auto rounded-lg shadow-md object-cover max-h-96"
                     />
                   </div>
                 )}
 
-                <div className="case-study-header flex flex-col sm:flex-row justify-between items-center">
-                  <h3 className="text-xl font-semibold">{`Case Study ${currentCaseStudyIndex + 1}`}</h3>
-                  <button
-                    type="button"
-                    className="audio-button bg-blue-600 text-black px-4 py-2 rounded-md hover:bg-blue-700 mt-4 sm:mt-0"
-                    onClick={fetchAudio}
-                    disabled={isAudioLoading}
-                  >
-                    {isAudioLoading ? (
-                      <span>Loading...</span>
-                    ) : isAudioPlaying ? (
-                      <>
-                        <span className="icon-volume-up"></span>
-                        Pause
-                      </>
-                    ) : (
-                      <>
-                        <span className="icon-volume-off"></span>
-                        Listen
-                      </>
-                    )}
-                  </button>
+                <audio ref={audioRef} className="hidden" />
+                
+                {audioError && (
+                  <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm text-red-700">{audioError}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                <div className="bg-blue-50 p-6 rounded-lg mb-8 border border-blue-100">
+                  <p className="text-gray-700 leading-relaxed">
+                    {caseStudies[currentCaseStudyIndex].scenario}
+                  </p>
                 </div>
-
-                <audio ref={audioRef} />
-
-                {audioError && <div className="audio-error text-red-600">{audioError}</div>}
-
-                <p className="case-study-scenario text-gray-700 mt-4">
-                  {caseStudies[currentCaseStudyIndex].scenario}
-                </p>
 
                 {caseStudies[currentCaseStudyIndex].questions &&
                 caseStudies[currentCaseStudyIndex].questions.length > 0 ? (
-                  <div className="question-section mt-6">
-                    <h4 className="question-header text-lg font-semibold">
+                  <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+                    <h4 className="text-lg font-semibold text-gray-800 mb-4">
                       {`Question ${currentQuestionIndex + 1}: ${
                         caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].question
                       }`}
                     </h4>
 
-                    <div className="options-group mt-4 space-y-2">
+                    <div className="space-y-3 mt-6">
                       {caseStudies[currentCaseStudyIndex].questions[currentQuestionIndex].options.map(
                         (option) => {
                           const key = `${currentCaseStudyIndex}-${currentQuestionIndex}`;
@@ -1935,39 +2150,52 @@ export default function Home() {
 
                           return (
                             <div
-                              className="option-item"
+                              className={`option-item relative p-4 rounded-lg border-2 transition-all duration-200 ${
+                                selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] === option.key
+                                  ? maxAttemptsReached && isCorrect
+                                    ? 'border-green-400 bg-green-50'
+                                    : maxAttemptsReached && !isCorrect
+                                    ? 'border-red-400 bg-red-50'
+                                    : 'border-blue-400 bg-blue-50'
+                                  : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                              }`}
                               key={option.key}
                               onMouseEnter={() => setHoveredOption(option.key)}
                               onMouseLeave={() => setHoveredOption(null)}
                             >
-                              <label className="flex items-center space-x-2">
-                                <input
-                                  type="radio"
-                                  name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
-                                  value={option.key}
-                                  onChange={(e) =>
-                                    handleAnswerChange(
-                                      currentCaseStudyIndex,
-                                      currentQuestionIndex,
-                                      e.target.value
-                                    )
-                                  }
-                                  disabled={maxAttemptsReached}
-                                  checked={
-                                    selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
-                                    option.key
-                                  }
-                                  className="form-radio h-4 w-4 text-blue-600"
-                                />
-                                <span className="text-gray-700">
-                                  <strong>{`${option.key}.`}</strong> {option.label}
-                                </span>
-                                {hoveredOption === option.key && (
-                                  <span className="ml-2 text-gray-500 whitespace-pre-wrap">
-                                    {definitionsMap[option.key] || ''}
-                                  </span>
-                                )}
+                              <label className="flex items-start cursor-pointer">
+                                <div className="flex items-center h-5">
+                                  <input
+                                    type="radio"
+                                    name={`question-${currentCaseStudyIndex}-${currentQuestionIndex}`}
+                                    value={option.key}
+                                    onChange={(e) =>
+                                      handleAnswerChange(
+                                        currentCaseStudyIndex,
+                                        currentQuestionIndex,
+                                        e.target.value
+                                      )
+                                    }
+                                    disabled={maxAttemptsReached}
+                                    checked={
+                                      selectedAnswers[currentCaseStudyIndex]?.[currentQuestionIndex] ===
+                                      option.key
+                                    }
+                                    className="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+                                  />
+                                </div>
+                                <div className="ml-3 text-sm">
+                                  <span className="font-medium text-gray-800">{`${option.key}.`}</span>{" "}
+                                  <span className="text-gray-700">{option.label}</span>
+                                </div>
                               </label>
+                              
+                              {hoveredOption === option.key && definitionsMap[option.key] && (
+                                <div className="absolute z-10 left-full ml-4 top-0 w-64 bg-gray-800 text-white text-sm rounded-lg shadow-lg p-3 transition-opacity duration-150">
+                                  <div className="absolute left-0 top-4 -ml-2 w-0 h-0 border-t-4 border-r-4 border-b-4 border-t-transparent border-r-gray-800 border-b-transparent"></div>
+                                  {definitionsMap[option.key]}
+                                </div>
+                              )}
                             </div>
                           );
                         }
@@ -1975,65 +2203,135 @@ export default function Home() {
                     </div>
 
                     {feedbackMessages[currentCaseStudyIndex]?.[currentQuestionIndex] && (
-                      <div className="feedback-section mt-4">
+                      <div className="mt-6">
                         <div
-                          className={`feedback-message p-3 rounded-md ${
+                          className={`p-4 rounded-lg flex items-start ${
                             feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
                               .message === 'Correct Answer'
-                              ? 'bg-green-100 text-green-700'
-                              : 'bg-blue-100 text-blue-700'
+                              ? 'bg-green-50 border-l-4 border-green-400'
+                              : 'bg-blue-50 border-l-4 border-blue-400'
                           }`}
                         >
-                          {
-                            feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
-                              .message
-                          }
-                        </div>
-                        {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
-                          <div className="hint mt-2 flex items-start space-x-2">
-                            <span className="icon-hint mt-1 text-blue-600"></span>
-                            <span className="text-gray-700">
-                              <strong>Hint:</strong>{' '}
-                              {
-                                feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
-                                  .hint
-                              }
-                            </span>
+                          <div className="flex-shrink-0 mt-0.5">
+                            {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message === 'Correct Answer' ? (
+                              <svg className="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            ) : (
+                              <svg className="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                              </svg>
+                            )}
                           </div>
-                        )}
+                          <div className="ml-3">
+                            <h3 className={`text-md font-medium ${
+                              feedbackMessages[currentCaseStudyIndex][currentQuestionIndex]
+                                .message === 'Correct Answer' ? 'text-green-800' : 'text-blue-800'
+                            }`}>
+                              {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].message}
+                            </h3>
+                            {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint && (
+                              <div className="mt-2 text-sm text-gray-700">
+                                <p><strong>Hint:</strong> {feedbackMessages[currentCaseStudyIndex][currentQuestionIndex].hint}</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     )}
+                    
+                    {/* Navigation buttons */}
+                    <div className="mt-8 flex justify-between">
+                      <button
+                        type="button"
+                        className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        onClick={/* Previous question handler */}
+                        disabled={currentQuestionIndex === 0}
+                      >
+                        <svg className="-ml-1 mr-2 h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                        Previous Question
+                      </button>
+                      
+                      <button
+                        type="button"
+                        className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                        onClick={/* Next question handler */}
+                        disabled={currentQuestionIndex === caseStudies[currentCaseStudyIndex].questions.length - 1}
+                      >
+                        Next Question
+                        <svg className="-mr-1 ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 ) : (
-                  <p className="no-questions text-gray-700 mt-4">
-                    No questions available for this case study.
-                  </p>
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-8 text-center">
+                    <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3 className="mt-2 text-sm font-medium text-gray-900">No questions available</h3>
+                    <p className="mt-1 text-sm text-gray-500">No questions are available for this case study.</p>
+                  </div>
                 )}
               </div>
             </div>
           )}
 
           {showCaseStudies && Array.isArray(caseStudies) && caseStudies.length === 0 && (
-            <div className="no-case-studies text-center text-gray-700 py-6">
-              No case studies available at the moment. Please try again later.
+            <div className="bg-white rounded-xl shadow-md p-8 text-center">
+              <svg className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+              </svg>
+              <h3 className="mt-2 text-lg font-medium text-gray-900">No case studies available</h3>
+              <p className="mt-1 text-gray-500">No case studies are available at the moment. Please try again later.</p>
+              <div className="mt-6">
+                <button
+                  type="button"
+                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+                  onClick={/* Handler to return to selection screen */}
+                >
+                  Return to Selection
+                </button>
+              </div>
             </div>
           )}
         </div>
+      </main>
 
-        <footer className="footer bg-gray-800 text-white text-center py-4">
-          <p>© 2024 CoachCare.ai | Contact: operations@coachcare.ai</p>
-        </footer>
+      <footer className="bg-gray-800 text-white mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <div className="mb-4 md:mb-0">
+              <p className="text-sm">© 2024 CoachCare.ai | Contact: operations@coachcare.ai</p>
+            </div>
+            <div className="flex space-x-6">
+              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                Terms of Service
+              </a>
+              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                Privacy Policy
+              </a>
+              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+                Support
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
 
-        {isCertificateOpen && (
-          <CertificatePopup
-            isOpen={isCertificateOpen}
-            onClose={() => setIsCertificateOpen(false)}
-            fullName={fullName}
-            date={new Date().toLocaleDateString()}
-            onPrint={handlePrintCertificate}
-          />
-        )}
-      </div>
-    </>
-  );
+      {isCertificateOpen && (
+        <CertificatePopup
+          isOpen={isCertificateOpen}
+          onClose={() => setIsCertificateOpen(false)}
+          fullName={fullName}
+          date={new Date().toLocaleDateString()}
+          onPrint={handlePrintCertificate}
+        />
+      )}
+    </div>
+  </>
+);
 }
