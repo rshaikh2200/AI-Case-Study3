@@ -253,12 +253,12 @@ for a ${care} ${role} specializing in ${specialization}, and working in the ${de
 
 ${
   department === "Stroke Center"
-    ? `Since the department is a Stroke Center, the 250-word case studies should focus on stroke cases
-       and potential medical errors. When describing medical dosage and blood pressure provide quantity and measurements (E.g. 100 Mg). Ensure the medical case studies focus on unique medical error,  and incorporate a variety of possible errors while maintaining clinical integrity.`
+    ? `Since the department is a Stroke Center, the 150-word case studies should focus on stroke cases
+       and potential medical errors. When describing medical dosage and blood pressure provide quantity and measurements (E.g. 100 Mg). Ensure the medical case studies focus on unique medical error,  and incorporate a variety of possible errors while maintaining clinical integrity. Keep the case studies short and concise.`
     : ""
 }
 
-After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 250 words 
+After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 150 words 
 each, without compromising the clinical integrity of the scenarios. Each case study should only include 
 the scenario and the medical error that occurred.
 
@@ -490,7 +490,7 @@ The medical case study should:
   try {
     const response = await openai.chat.completions.create({
       model: "o3-mini",
-      reasoning_effort: "medium",
+      reasoning_effort: "low",
       messages: [
         {
           role: "user",
