@@ -868,16 +868,16 @@ export default function Home() {
                   href="mailto:info@coachcare.ai"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  info@coachcare.ai
+                  coachcareai@gmail.com
                 </a>
               </li>
               <li className="flex items-start">
                 <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
                 <a
-                  href="tel:+18005551234"
+                  href="tel:+14046732019"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  +1 (800) 555-1234
+                  +1 (404) 673-2019
                 </a>
               </li>
             </ul>
