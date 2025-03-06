@@ -370,10 +370,13 @@ export default function Home() {
     </section>
   );
 
-  // UPDATED SECTION: Now includes two images with the heading in the center
+  // UPDATED SECTION: Heading centered above the two images, both images same size
   const InsightfulDepartmentStatistics = () => (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center mb-8">
+          Insightful Performance Dashboard
+        </h2>
         <div className="flex flex-col md:flex-row items-center justify-center space-x-4">
           <Image
             src="/dashboard.png"
@@ -382,9 +385,6 @@ export default function Home() {
             height={300}
             className="rounded shadow"
           />
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 text-center">
-            Insightful Performance Dashboard
-          </h2>
           <Image
             src="/dashboard2.png"
             alt="Insightful Department Statistics - Image Two"
@@ -932,7 +932,7 @@ export default function Home() {
       <AppBar />
       <Hero />
       <ComparisonDiagram />
-      {/* Updated section with two images + heading in center */}
+      {/* Updated section with heading above, both images same size */}
       <InsightfulDepartmentStatistics />
       <MarketingSection />
       <ProcessSection />
@@ -941,3 +941,4 @@ export default function Home() {
     </div>
   );
 }
+
