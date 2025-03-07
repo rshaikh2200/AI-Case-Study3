@@ -261,7 +261,7 @@ ${
     : ""
 }
 
-After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 200 words 
+After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 150 words 
 each, without compromising the clinical integrity of the scenarios. Each case study should only include 
 the scenario and the medical error that occurred.
 
