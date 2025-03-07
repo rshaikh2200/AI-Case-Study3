@@ -295,7 +295,8 @@ The medical case study should:
       - Include clues by using buzzwords or synonyms from the correct answer's definition.
       - Do not explicitly mention the prevention tools by name in the question header.
       - The question should be straight forward, and conise, do not state any buzzwords in the question itself (e.g. using buzzwords like check and validate?)
-      - The question should address directly to ${role} and not include words, like wish (ex:  Ex: If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying) 
+      - The question should address directly to ${role} and include the name of ${role} from the scenario and not include words, like wish . 
+      - Thw question should be written similarly to this example: If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying) 
       
     
     - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
