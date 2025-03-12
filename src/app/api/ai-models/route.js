@@ -289,8 +289,8 @@ systems are in use.
 - Use synonyms or “buzzwords” from the definition of the tool in the question, but **do not**:
   - Explicitly name the tool in the question header.
   - Use the exact word or phrase that names the tool in the question text.
-- Provide the correct answer in this format: `correct answer: C) Validate and Verify`
-- Provide the hint as: `Hint: Double-checking and confirming accuracy before proceeding.`
+- Provide the correct answer in this format: \`correct answer: C) Validate and Verify\`
+- Provide the hint as: \`Hint: Double-checking and confirming accuracy before proceeding.\`
 - The question should be concise, referencing how stopping to confirm or clarify could have averted the error (if relevant to the tool’s definition).
 
 Finally, ensure all medication names are capitalized properly (e.g., Labetalol, Alteplase). 
@@ -555,10 +555,10 @@ Focus on typical inpatient workflows and realistic dosing to maintain clinical i
         questions: cs.questions.map(q => ({
           question: q.question,
           options: q.options,
-          correctAnswer: q.correctAnswer,  // Correctly access the property
-          hint: q.hint,                    // Correctly access the property
+          correctAnswer: q.correctAnswer,
+          hint: q.hint,
         })),
-        imageUrl: cs.imageUrl,  // Include the image URL if it's available
+        imageUrl: cs.imageUrl,
         role: cs.role,
         department: cs.department,
         specialization: cs.specialization,
