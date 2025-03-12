@@ -266,7 +266,7 @@ ${
 
 After retrieving the relevant scenarios, write 4 similar but distinct medical case studies (150 words each, 
 no more than 5 sentences). Each case study should only include what happened and what went wrong, 
-focusing on realistic inpatient processes: the NP/PA writes the order, the pharmacy prepares, and the RN 
+focusing on realistic ${care} processes: e.g. the Nurse Practicioner/ Physician Assistance writes the order, the pharmacy prepares, and the RN 
 administers (with a second RN check if needed). Remove extraneous information such as providers’ 
 countries of origin or unnecessary backstories. Avoid purely verbal orders; assume electronic order 
 systems are in use.
@@ -282,6 +282,7 @@ systems are in use.
 - Do not mention any country name or staff origin.
 - Use realistic medication names/doses (e.g., Labetalol 20 mg IV, Alteplase 0.9 mg/kg, Vitamin K 5 mg).
 - Omit statements about broader incident reviews or the importance of teamwork and communication lapses.
+- Include diverse characters names, and gender from each country in the world.
 
 **After each case study, create 3 unique multiple-choice questions (4 answer options each) that:**
 - Directly address ${role} from the case study (use the individual’s name and role in the question).
