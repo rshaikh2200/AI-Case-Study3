@@ -498,8 +498,7 @@ Focus on typical inpatient workflows and realistic dosing to maintain clinical i
 
   try {
     const response = await openai.chat.completions.create({
-      model: "o3-mini",
-      reasoning_effort: "low",
+      model: "gpt-4.5-preview",
       temperature: 1.0,
       messages: [
         {
