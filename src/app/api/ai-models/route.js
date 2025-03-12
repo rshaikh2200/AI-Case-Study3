@@ -274,11 +274,11 @@ The medical case study should:
     Europe, Asia, Australia) to reflect global diversity.
   - The summarized case study content should be modified to have different names of procedures, 
     medications, and specialities. However, do not change the clinical integrity of the scenario.
-  -  Use realistic medication names/doses (e.g., Labetalol 20 mg IV, Alteplase 0.9 mg/kg, Vitamin K 5 mg).
+  -  Use realistic medication names/doses.
   - Keep the case studies short and concise and do not mention countries name or where a patient is from. Also do not state team assessment or review of situation, or the imporantnace of steps to solve the issue. Also do not include incident reviews, analysis.
   - The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
   - The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 200 words.
-  - If the ${department} is Stroke Center the case study should focus on only stroke cases.  Ensure the case studies highlight a range of medication errors in stroke treatment (e.g., incorrect dosage of Alteplase or inadequate blood pressure control) while maintaining clinical integrity.
+  - If the ${department} is Stroke Center the case study should focus on only stroke cases.  Ensure the case studies highlight a range of medication errors in stroke treatment, while maintaining clinical integrity.
     
     
     - **For each case study, create 3 unique multiple-choice questions that:**
