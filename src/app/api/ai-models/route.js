@@ -278,6 +278,7 @@ The medical case study should:
   - The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
   - The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 150 words.
   - If the ${department} is Stroke Center the case study should focus on only stroke cases.  Ensure the case studies highlight a range of medication errors in stroke treatment, while maintaining clinical integrity.
+  - The case study should omit statements about broader incident reviews or the importance of teamwork and communication lapses  or incident reviews. Also, exclude statements about the significance of  communication lapses or teamwork failures (e.g., do not include sentences like  "The error was directly linked to failure in communicating critical timing and dose details among staff.")
     
     
     - **For each case study, create 3 unique multiple-choice questions that:**
