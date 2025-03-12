@@ -253,50 +253,50 @@ for a ${care} ${role} specializing in ${specialization}, and working in the ${de
 
 ${
   department === "Stroke Center"
-    ? `Since the department is a Stroke Center, the sumarized 150-word case studies should focus on stroke cases
-       and potential medical errors. Make sure to provide measurements (E.g. 100 Mg) when needed. Ensure the medical case studies incorporate a variety of  medical errors errors when dealing with a stroke patient while maintaining clinical integrity. Keep the case studies short and concise and do not mention countries name or where a patient is from. Also do not state team assessment or review of situation, or the imporantnace of steps to solve the issue. Also do not include incident reviews, analysis.
-       The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
-       The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 200 words.
-       The case studies should not include any countries name or which country a patient or employee is from (ex: Maria from America,  Dr. O'Malley from Europe). `
+    ? `Since the department is a Stroke Center, the summarized 150-word case studies should focus on stroke cases
+       and potential medical errors. Provide measurements (e.g., 100 mg) when needed. Ensure the case studies 
+       highlight a range of medication errors in stroke treatment (e.g., incorrect dosage of Alteplase or 
+       inadequate blood pressure control) while maintaining clinical integrity. Keep each case study 
+       concise (no more than 5 sentences and 200 words). Do not mention country names, staff origins, 
+       team assessments, or incident reviews. Also, exclude statements about the significance of 
+       communication lapses or teamwork failures (e.g., do not include sentences like 
+       "The error was directly linked to failure in communicating critical timing and dose details among staff.").`
     : ""
 }
 
-After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 150 words 
-each, without compromising the clinical integrity of the scenarios. Each case study should only include 
-the scenario and the medical error that occurred.
+After retrieving the relevant scenarios, write 4 similar but distinct medical case studies (150 words each, 
+no more than 5 sentences). Each case study should only include what happened and what went wrong, 
+focusing on realistic inpatient processes: the NP/PA writes the order, the pharmacy prepares, and the RN 
+administers (with a second RN check if needed). Remove extraneous information such as providers’ 
+countries of origin or unnecessary backstories. Avoid purely verbal orders; assume electronic order 
+systems are in use.
 
-The medical case study should:
+**For each case study, include the following details before the scenario:**
+- **Role:** The role of the individual (e.g., Registered Nurse, Nurse Practitioner, Physician Assistant)
+- **Department:** The department where the event occurs
+- **Specialization:** The specialty of the role
+- **Care:** The care level of the role
 
-- **Include the following details before the case study:**
-  - **Role:** Specify the role of the individual involved.
-  - **Department:** Indicate the department where the scenario takes place.
-  - **Specialization:** Mention the specialization of the role.
-  - **Care:** Mention the care level of the role.
+**Then, for each medical case study:**
+- Present the scenario and the error that occurred (5 sentences, up to 200 words).
+- Do not mention any country name or staff origin.
+- Use realistic medication names/doses (e.g., Labetalol 20 mg IV, Alteplase 0.9 mg/kg, Vitamin K 5 mg).
+- Omit statements about broader incident reviews or the importance of teamwork and communication lapses.
 
-- **Medical Case Study Content:**
-  - The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
-  - The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 250 words.
-  - The case studies should not include any countries name or which country a patient or employee is from (ex: Maria from America,  Dr. O'Malley from Europe). 
-  - Use unique patient and medical staff names from various continents (America, Canada, South America, 
-    Europe, Asia, Australia) to reflect global diversity.
-  - The summarized case study content should be modified to have different names of procedures, 
-    medications, and specialities. However, do not change the clinical integrity of the scenario.
-  - If the scenario states medical dosage, specify the quantity with proper units.
-    
-    
-    
-    - **For each case study, create 3 unique multiple-choice questions that:**
-      - Have 4 option choices each.
-      - Debrief is typically a group effort the question should no reflect debrief being done by a single individual.
-      - Provide the correct answer choice and answer in the format: correct answer: C) Validate and Verify
-      - Provide the hint in the format: Hint: Double-checking and confirming accuracy before proceeding.
-      - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
-      - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
-      - Include clues by using buzzwords or synonyms from the correct answer's definition.
-      - Do not explicitly mention the prevention tools by name in the question header.
-      - The question should be straight forward, and conise, do not state any buzzwords in the question itself (e.g. using buzzwords like check and validate?)
-      - The question should address directly to ${role} and include the name of ${role} from the scenario and not include words, like wish . 
-      - Thw question should be written similarly to this example: If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying) 
+**After each case study, create 3 unique multiple-choice questions (4 answer options each) that:**
+- Directly address ${role} from the case study (use the individual’s name and role in the question).
+- Center on the assigned Error Prevention Tool and how it could have prevented the error.
+- Use synonyms or “buzzwords” from the definition of the tool in the question, but **do not**:
+  - Explicitly name the tool in the question header.
+  - Use the exact word or phrase that names the tool in the question text.
+- Provide the correct answer in this format: `correct answer: C) Validate and Verify`
+- Provide the hint as: `Hint: Double-checking and confirming accuracy before proceeding.`
+- The question should be concise, referencing how stopping to confirm or clarify could have averted the error (if relevant to the tool’s definition).
+
+Finally, ensure all medication names are capitalized properly (e.g., Labetalol, Alteplase). 
+Consistently mention the advanced practice provider (NP/PA) as the one writing orders, 
+and the RN as the one administering (with a second RN check if the protocol requires it). 
+Focus on typical inpatient workflows and realistic dosing to maintain clinical integrity.
       
     
     - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
