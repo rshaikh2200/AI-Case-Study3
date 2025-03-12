@@ -1400,6 +1400,10 @@ export default function Home() {
       'Registered Nurse': [
         'Neurology'
       ],
+
+       'Technical Staff': [
+        'Neurology'
+      ],
       
     },
     'Operating Room': {
