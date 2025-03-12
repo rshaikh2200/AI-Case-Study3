@@ -252,7 +252,7 @@ The Joint Commission datasets for medical case scenarios with medical errors tha
 for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.
 
 
-After retrieving the relevant scenarios, write 4 similar but distinct medical case studies (150 words each, 
+After retrieving the relevant scenarios, write 4 similar but distinct medical case studies (200 words each, 
 no more than 5 sentences). Each case study should only include what happened and what went wrong, 
 focusing on realistic ${care} processes: e.g. the Nurse Practicioner/ Physician Assistance writes the order, the pharmacy prepares, and the RN 
 administers (with a second RN check if needed). Remove extraneous information such as providers’ 
@@ -268,7 +268,7 @@ The medical case study should:
 
 - **Medical Case Study Content:**
   - The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
-  - The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 250 words.
+  - The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 200 words.
   - The case studies should not mention country names, staff origins. 
   - Use unique patient and medical staff names from various continents (America, Canada, South America, 
     Europe, Asia, Australia) to reflect global diversity.
