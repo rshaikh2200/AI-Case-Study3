@@ -282,7 +282,9 @@ systems are in use.
 - Do not mention any country name or staff origin.
 - Use realistic medication names/doses (e.g., Labetalol 20 mg IV, Alteplase 0.9 mg/kg, Vitamin K 5 mg).
 - Omit statements about broader incident reviews or the importance of teamwork and communication lapses.
-- Include diverse characters names, and gender from each country in the world.
+- unique patient and medical staff names from various continents (America, Canada, South America, 
+- Europe, Asia, Australia) to reflect global diversity.
+- The case study should be direct towards the ${role}
 
 **After each case study, create 3 unique multiple-choice questions (4 answer options each) that:**
 - Directly address ${role} from the case study (use the individual’s name and role in the question).
