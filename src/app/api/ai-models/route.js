@@ -251,19 +251,12 @@ Extract medical case study text from ${retrievedCasesText} and search open sourc
 The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct 
 for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.
 
-${
-  department === "Stroke Center"
-    ? `Since the department is a Stroke Center, the sumarized 150-word case studies should focus on stroke cases
-       and potential medical errors. Make sure to provide measurements (E.g. 100 Mg) when needed. Ensure the medical case studies incorporate a variety of  medical errors errors when dealing with a stroke patient while maintaining clinical integrity. Keep the case studies short and concise and do not mention countries name or where a patient is from. Also do not state team assessment or review of situation, or the imporantnace of steps to solve the issue. Also do not include incident reviews, analysis.
-       The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
-       The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 200 words.
-       The case studies should not include any countries name or which country a patient or employee is from (ex: Maria from America,  Dr. O'Malley from Europe). `
-    : ""
-}
 
-After retrieving the relevant scenarios, write 4 similar but distinct medical case studies in 150 words 
-each, without compromising the clinical integrity of the scenarios. Each case study should only include 
-the scenario and the medical error that occurred.
+After retrieving the relevant scenarios, write 4 similar but distinct medical case studies (150 words each, 
+no more than 5 sentences). Each case study should only include what happened and what went wrong, 
+focusing on realistic ${care} processes: e.g. the Nurse Practicioner/ Physician Assistance writes the order, the pharmacy prepares, and the RN 
+administers (with a second RN check if needed). Remove extraneous information such as providers’ 
+countries of origin or unnecessary backstories
 
 The medical case study should:
 
@@ -276,13 +269,16 @@ The medical case study should:
 - **Medical Case Study Content:**
   - The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
   - The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 250 words.
-  - The case studies should not include any countries name or which country a patient or employee is from (ex: Maria from America,  Dr. O'Malley from Europe). 
+  - The case studies should not mention country names, staff origins. 
   - Use unique patient and medical staff names from various continents (America, Canada, South America, 
     Europe, Asia, Australia) to reflect global diversity.
   - The summarized case study content should be modified to have different names of procedures, 
     medications, and specialities. However, do not change the clinical integrity of the scenario.
-  - If the scenario states medical dosage, specify the quantity with proper units.
-    
+  -  Use realistic medication names/doses (e.g., Labetalol 20 mg IV, Alteplase 0.9 mg/kg, Vitamin K 5 mg).
+  - Keep the case studies short and concise and do not mention countries name or where a patient is from. Also do not state team assessment or review of situation, or the imporantnace of steps to solve the issue. Also do not include incident reviews, analysis.
+  - The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
+  - The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 200 words.
+  - If the ${department} is Stroke Center the case study should focus on only stroke cases.  Ensure the case studies highlight a range of medication errors in stroke treatment (e.g., incorrect dosage of Alteplase or inadequate blood pressure control) while maintaining clinical integrity.
     
     
     - **For each case study, create 3 unique multiple-choice questions that:**
