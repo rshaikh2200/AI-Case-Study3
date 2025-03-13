@@ -1401,7 +1401,7 @@ export default function Home() {
         'Neurology'
       ],
 
-       'Technical Staff': [
+       'Surgical Technologist': [
         'Neurology'
       ],
       
