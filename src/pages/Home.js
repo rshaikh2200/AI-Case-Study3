@@ -204,9 +204,9 @@ export default function Home() {
             Healthcare Safety Revolution
           </div>
           <h1 className="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
-            Eliminate Patient Harm
+            The First Patient Safety Focused LLM Powered Healthcare Training 
             <br />
-            <span className="text-blue-200">And Avoid Medical Errors</span>
+            <span className="text-blue-200">Eliminate Patient Harm and Avoid Medical Errors</span>
           </h1>
           <p className="text-xl lg:text-2xl mb-10 text-blue-100 max-w-3xl leading-relaxed font-light">
             Over 200,000 patients die every year due to clinical mistakes that could be prevented
@@ -894,12 +894,7 @@ export default function Home() {
               </li>
               <li className="flex items-start">
                 <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
-                <a
-                  href="tel:+14046732019"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  +1 (404) 673-2019
-                </a>
+              
               </li>
             </ul>
           </div>
