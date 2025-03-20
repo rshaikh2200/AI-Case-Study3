@@ -1,104 +1,127 @@
-import requests
+import time
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
-import re
+from fpdf import FPDF
 
-API_KEY = 'olostep_beta_api_WlodlgVDr5103KtByUO0gCeeFBJrRWaYWLu2'  # Replace with your API key
-baseurl = "https://psnet.ahrq.gov/webmm-case-studies?items_per_page=100&page=3"  # The URL to scrape
-
-
-def sanitize_filename(filename):
+def scrape_psnet_selenium():
     """
-    Replace invalid characters in the filename with underscores.
-    Invalid characters for filenames include: /, \, :, *, ?, ", <, >, |
+    Uses Selenium + BeautifulSoup to:
+      1) Load the PSNet case-study listing page.
+      2) Extract subpage links from div.h5.
+      3) Visit each subpage to collect:
+         - h1 title
+         - All h2 titles
+         - Paragraphs under h2#The-Case until next h2
+      Returns a list of dictionaries containing the data.
     """
-    return re.sub(r'[\/:*?"<>|]', '_', filename)
-
-# Function to scrape case studies
-def scrape_case_study(url):
-    headers = {"User-Agent": "Mozilla/5.0"}
-
-    # Send a request to get the case study page content
-    response = requests.get(url, headers=headers)
+    listing_url = "https://psnet.ahrq.gov/webmm-case-studies?page=1&items_per_page=100"
+    base_url = "https://psnet.ahrq.gov"
     
-    # Check if the request was successful
-    if response.status_code != 200:
-        print(f"Failed to retrieve the page: {response.status_code}")
-        return None
-    
-    # Parse the page with BeautifulSoup
-    soup = BeautifulSoup(response.text, 'html.parser')
+    # Optional: Use a custom User-Agent to reduce chance of being blocked
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")  # run in headless mode (no browser UI)
+    chrome_options.add_argument(
+        "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"
+    )
 
-    # Extract the title of the case study
-    title_tag = soup.find('h3')
-    if not title_tag:
-        print("Could not find the case study title.")
-        return None
-    
-    title = title_tag.get_text(strip=True)
+    # Initialize the driver (make sure the 'chromedriver' is in your PATH)
+    driver = webdriver.Chrome(options=chrome_options)
 
-    # Extract "The Case" section
-    case_section_header = soup.find('h2',string=lambda text: text and ("case" in text.lower()))
-    if not case_section_header:
-        print("'The Case' section not found.")
-        return None
+    # 1) Load the main listing page
+    driver.get(listing_url)
+    time.sleep(2)  # give the page a moment to load
 
-    # Find all paragraphs after "The Case" header until the next heading (h2)
-    case_content = []
-    next_element = case_section_header.find_next_sibling()
-    
-    while next_element and next_element.name != 'h2':
-        if next_element.name == 'p':
-            case_content.append(next_element.get_text(strip=True))
-        next_element = next_element.find_next_sibling()
-    
-    case_text = "\n\n".join(case_content)
-    
-    if not case_text:
-        print("No content found under 'The Case'.")
-        return None
-    
-    return {
-        'title': title,
-        'case_text': case_text
-    }
+    # 2) Parse via BeautifulSoup
+    soup = BeautifulSoup(driver.page_source, "html.parser")
 
-# Function to scrape the main page and get all case study links
-def scrape_all_case_studies(baseurl):
-    headers = {"User-Agent": "Mozilla/5.0"}
+    # Find the divs with class="h5"
+    links_divs = soup.find_all("div", class_="h5")
 
-    # Send a request to the main page
-    response = requests.get(baseurl, headers=headers)
-    
-    if response.status_code != 200:
-        print(f"Failed to retrieve the page: {response.status_code}")
-        return
-    
-    # Parse the main page with BeautifulSoup
-    soup = BeautifulSoup(response.text, 'html.parser')
-    
-    # Find all links within the <div class="h5">
-    case_study_links = soup.find_all('div', class_='h5')
+    # Collect subpage links
+    subpage_links = []
+    for div in links_divs:
+        a_tag = div.find("a")
+        if a_tag and a_tag.get("href"):
+            subpage_links.append(base_url + a_tag["href"])
 
-    # Open a single text file to save all case studies
-    with open('case_study_3.txt', 'w', encoding='utf-8') as file:
-        # Loop through each div and scrape the corresponding case study
-        for div in case_study_links:
-            link = div.find('a', href=True)
-            if link:
-                href = link['href']
-                # Ensure the URL is complete by adding baseurl if necessary
-                case_url = href if href.startswith('http') else f"https://psnet.ahrq.gov{href}"
+    # 3) Visit each subpage, parse, and extract data
+    all_results = []
+    for link in subpage_links:
+        driver.get(link)
+        time.sleep(2)  # wait for subpage to load
 
-                print(f"Scraping case study: {case_url}")
-                case_study_data = scrape_case_study(case_url)
-                
-                if case_study_data:
-                    # Write the case study to the single file
-                    file.write(f"Title: {case_study_data['title']}\n\n")
-                    file.write(f"The Case:\n{case_study_data['case_text']}\n")
-                    file.write("\n" + "="*80 + "\n\n")  # Add a separator between case studies
-                    print(f"Saved case study: {case_study_data['title']}")
+        sub_soup = BeautifulSoup(driver.page_source, "html.parser")
 
-# Start the scraping process
-scrape_all_case_studies(baseurl)
+        # Extract the H1
+        h1_tag = sub_soup.find("h1")
+        h1_text = h1_tag.get_text(strip=True) if h1_tag else ""
 
+        # Extract all H2
+        h2_tags = sub_soup.find_all("h2")
+        h2_texts = [h2.get_text(strip=True) for h2 in h2_tags]
+
+        # Extract paragraphs between h2#The-Case and the next h2
+        the_case_h2 = sub_soup.find("h2", id="The-Case")
+        the_case_paragraphs = []
+        if the_case_h2:
+            # Look at each sibling until the next H2
+            for sibling in the_case_h2.next_siblings:
+                if sibling.name == "h2":
+                    break
+                if sibling.name == "p":
+                    the_case_paragraphs.append(sibling.get_text(strip=True))
+
+        # Store results
+        all_results.append({
+            "h1_title": h1_text,
+            "h2_titles": h2_texts,
+            "the_case_paragraphs": the_case_paragraphs
+        })
+
+    # Close the browser
+    driver.quit()
+
+    return all_results
+
+def save_to_pdf(results, filename="psnet_cases.pdf"):
+    """
+    Takes the list of scraped results and saves them to a PDF using FPDF.
+    """
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    for idx, item in enumerate(results, start=1):
+        # Case heading
+        pdf.multi_cell(0, 10, f"Case {idx}: {item['h1_title']}")
+        pdf.ln(5)
+
+        # H2 titles
+        if item["h2_titles"]:
+            pdf.cell(200, 10, "H2 Titles:", ln=1)
+            for h2 in item["h2_titles"]:
+                pdf.multi_cell(0, 10, f" - {h2}")
+            pdf.ln(5)
+
+        # Paragraphs under "The Case"
+        if item["the_case_paragraphs"]:
+            pdf.cell(200, 10, "Paragraphs under 'The Case':", ln=1)
+            for para in item["the_case_paragraphs"]:
+                pdf.multi_cell(0, 10, para)
+                pdf.ln(2)
+
+        # Add some space before next case
+        pdf.ln(10)
+
+    pdf.output(filename)
+    print(f"PDF saved as '{filename}'")
+
+if __name__ == "__main__":
+    # 1) Scrape data via Selenium
+    results = scrape_psnet_selenium()
+
+    # 2) Save data to a PDF
+    save_to_pdf(results, "psnet_cases.pdf")
