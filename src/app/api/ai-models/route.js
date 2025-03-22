@@ -422,9 +422,8 @@ The medical case study should:
 
   try {
     const response = await openai.chat.completions.create({
-      model: "o3-mini",
-      reasoning_effort: "low",
-      temperature: 1.0,
+      model: "gpt-4o-mini",
+      temperature: 0.0,
       messages: [
         {
           role: "user",
