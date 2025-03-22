@@ -243,17 +243,11 @@ export async function POST(request) {
   const googleResultsText = await getMedicalCaseStudiesFromGoogle();
 
   // Combine the Pinecone results and Google search results into one text block
-  const retrievedCasesText = similarCaseStudies.join('\n') + "\n" + googleResultsText;
+  const retrievedCasesText = similarCaseStudies.join('\n');
 
   // Construct the meta prompt with retrieved case studies and Google search results
   const META_PROMPT = `
-Extract medical case study text from ${retrievedCasesText} and search open source hospital incident reports 
-The Joint Commission datasets for medical case scenarios with medical errors that is relevant and direct 
-for a ${care} ${role} specializing in ${specialization}, and working in the ${department}.
-
-
-After retrieving the relevant scenarios, write 4 similar but distinct medical case studies (150 words each, 
-no more than 5 sentences). Each case study should only include what happened and what went wrong, 
+Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (200 words each). Each case study should only include what happened and what went wrong, 
 focusing on realistic ${care} processes, without compromising the clinical integrity. Remove extraneous information such as providers’ 
 countries of origin or unnecessary backstories
 
@@ -273,11 +267,10 @@ The medical case study should:
     Europe, Asia, Australia) to reflect global diversity.
   - The summarized case study content should be modified to have different names of procedures, 
     medications, and specialities. However, do not change the clinical integrity of the scenario.
-  -  The case studies should use realistic medication names/doses and provide realistic quantity measurments for doses, blood pressure, and etc with proper clinical intergretity. Define each quantity with proper units. 
+  -  The case study should define medication with quantity with proper units.
   - Keep the case studies short and concise and do not mention countries name or where a patient is from. Also do not state team assessment or review of situation, or the imporantnace of steps to solve the issue. Also do not include incident reviews, analysis.
   - The case studies shouild not includes this sentence or anything similae: Ex: The error was directly linked to failure in communicating critical timing and dose details among staff. The incident underscores that even with standard protocols, a lapse in teamwork and internal checks can lead to medication mismanagement and the neglect of continuous vital monitoring during stroke treatment.
-  - The case study should only include the scenario and what went wrong in the case study, and the case study should be limited to 5 sentences and 150 words.
-  - If the ${department} is Stroke Center the case study should focus on only stroke cases.  Ensure the case studies highlight a range of medication errors in stroke treatment, while maintaining clinical integrity.
+  - The case study should only include the scenario and what went wrong in the case study. 
   - The case study should omit statements about broader incident reviews or the importance of teamwork and communication lapses  or incident reviews. Also, exclude statements about the significance of  communication lapses or teamwork failures (e.g., do not include sentences like  "The error was directly linked to failure in communicating critical timing and dose details among staff.")
     
     
