@@ -247,7 +247,7 @@ export async function POST(request) {
 
   // Construct the meta prompt with retrieved case studies and Google search results
   const META_PROMPT = `
-Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (200 words each), without compromising the clinical integrity. Remove extraneous information such as providers’ 
+Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (150 words), without compromising the clinical integrity. Remove extraneous information such as providers’ 
 countries of origin or unnecessary backstories.
 
 The medical case study should:
