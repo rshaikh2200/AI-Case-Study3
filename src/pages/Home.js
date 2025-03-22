@@ -204,7 +204,7 @@ export default function Home() {
             Healthcare Safety Revolution
           </div>
           <h1 className="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
-            The First Patient Safety Focused LLM Powered Healthcare Training 
+            First LLM Healthcare Training Focused On Patient Safety
             <br />
             <span className="text-blue-200">Eliminate Patient Harm and Avoid Medical Errors</span>
           </h1>
@@ -251,7 +251,7 @@ export default function Home() {
             Traditional Training vs <span className="text-blue-600">CoachCare.ai</span>
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            See how our approach transforms healthcare safety education
+            See how our approach transforms healthcare safety education and training
           </p>
         </div>
 
@@ -324,8 +324,8 @@ export default function Home() {
                 <div>
                   <h4 className="font-bold text-gray-800 text-lg mb-2">AI-Powered Personalization</h4>
                   <p className="text-gray-600">
-                    Tailored case studies based on real clinical scenarios relevant to each
-                    practitioner&apos;s role
+                    Tailored case studies based on 1000+ real clinical scenarios relevant to each
+                    practitioner.
                   </p>
                 </div>
               </div>
@@ -358,7 +358,7 @@ export default function Home() {
                     Interactive Multimedia Learning
                   </h4>
                   <p className="text-gray-600">
-                    Engaging visuals, videos, and simulations for better retention and real-world
+                    Engaging images, videos, and simulations for better retention and real-world
                     application
                   </p>
                 </div>
@@ -408,7 +408,7 @@ export default function Home() {
       {
         title: 'AI-Driven Personalized Training',
         description:
-          'Our LLM generates life-like clinical scenarios customized to each user, reinforcing the 10 critical safety behaviors. Experience dynamic, engaging training that surpasses traditional methods.',
+          'Our LLM is trained on 1000+ real medical case studies in order to generates life-like clinical scenarios customized to each user, reinforcing the 10 critical safety behaviors. Experience dynamic, engaging training that surpasses traditional methods.',
         icon: Layers
       },
       {
