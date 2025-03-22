@@ -29,7 +29,8 @@ import {
   Target,
   Cpu,
   Award,
-  Activity
+  Activity,
+  Linkedin
 } from 'lucide-react';
 import {
   collection,
@@ -891,12 +892,12 @@ export default function Home() {
                 </a>
               </li>
               <li className="flex items-start">
-                <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
+                <Linkedin size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
                 <a
-                  href="tel:1234567890"
+                  href="https://www.linkedin.com/company/coachcare-ai"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  (123) 456-7890
+                  CoachCare.ai on LinkedIn
                 </a>
               </li>
             </ul>
