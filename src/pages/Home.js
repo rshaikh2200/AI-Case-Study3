@@ -891,9 +891,7 @@ export default function Home() {
                   coachcareai@gmail.com
                 </a>
               </li>
-              <li className="flex items-start">
-                <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
-              
+                         
               </li>
             </ul>
           </div>
