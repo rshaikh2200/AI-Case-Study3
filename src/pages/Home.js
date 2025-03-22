@@ -890,9 +890,6 @@ export default function Home() {
                 >
                   coachcareai@gmail.com
                 </a>
-              </li>
-                         
-              </li>
             </ul>
           </div>
         </div>
