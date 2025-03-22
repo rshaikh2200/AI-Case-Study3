@@ -205,9 +205,8 @@ export default function Home() {
           </div>
           {/* Header text modified so it's all on one line before the highlighted text */}
           <h1 className="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
-            <span>The First LLM Healthcare Training Focused On Patient Safety. Eliminate Patient Harm and Avoid Medical Errors</span>
+            First LLM Healthcare Training Focused On Patient Safety <span className="text-blue-200">Eliminate Patient Harm and Avoid Medical Errors</span>
           </h1>
-
           <p className="text-xl lg:text-2xl mb-10 text-blue-100 max-w-3xl leading-relaxed font-light">
             Over 200,000 patients die every year due to clinical mistakes that could be prevented
             by hardwiring safety behaviors into hospital culture.
@@ -403,7 +402,7 @@ export default function Home() {
       {
         title: 'Our Vision: Advancing Healthcare Safety',
         description:
-          "We're on a mission to reduce avoidable harm to patients. Our proven technology solution decreases liability risk for healthcare providers, making health systems safer for everyone.",
+          'We\'re on a mission to reduce avoidable harm to patients. Our proven technology solution decreases liability risk for healthcare providers, making health systems safer for everyone.',
         icon: HeartPulse
       },
       {
@@ -766,7 +765,7 @@ export default function Home() {
     );
   };
 
-  // Adjusted footer spacing: changed gap-8 to gap-4 to reduce spacing
+  // Adjusted footer spacing: changed `gap-8` to `gap-4` to reduce spacing
   const Footer = () => (
     <footer className="bg-gray-900 text-white py-12">
       <div className="container mx-auto px-4">
@@ -787,7 +786,7 @@ export default function Home() {
                     fillRule="evenodd"
                     d="M22 12c0-5.523-4.477-10-10-10S2 
                       6.477 2 12c0 4.991 3.657 9.128 
-                      8.438 9.504v-6.987h-2.54V12h2.54V9.797
+                      8.438 9.878v-6.987h-2.54V12h2.54V9.797
                       c0-2.506 1.492-3.89 3.777-3.89 1.094 
                       0 2.238.195 2.238.195v2.46h-1.26c-1.243 
                       0-1.63.771-1.63 1.562V12h2.773l-.443 
@@ -842,7 +841,7 @@ export default function Home() {
                   />
                 </svg>
               </a>
-              <a href="https://www.linkedin.com/company/coachcare-ai/" className="text-gray-400 hover:text-white transition-colors">
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
                   <path
                     d="M19 0h-14c-2.761 0-5 2.239-5 
@@ -889,6 +888,15 @@ export default function Home() {
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   coachcareai@gmail.com
+                </a>
+              </li>
+              <li className="flex items-start">
+                <Phone size={20} className="mt-1 mr-3 text-blue-400 flex-shrink-0" />
+                <a
+                  href="tel:1234567890"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  (123) 456-7890
                 </a>
               </li>
             </ul>
