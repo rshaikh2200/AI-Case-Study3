@@ -220,13 +220,18 @@ export async function POST(request) {
   }
 
   // Query Pinecone for similar case studies
-  let similarCaseStudies = [];
-  try {
-    const pineconeResponse = await index.query({
-      vector: queryEmbedding,
-      topK: 3,
-      includeMetadata: true,
-    });
+ let similarCaseStudies = [];
+try {
+  const pineconeResponse = await index.query({
+    vector: queryEmbedding,
+    topK: 1000, // Set to maximum allowable value
+    includeMetadata: true,
+  });
+  // Process the response as needed
+} catch (error) {
+  console.error('Error querying Pinecone:', error);
+}
+
 
     similarCaseStudies = pineconeResponse.matches.map(
       (match) => match.metadata.content
@@ -284,17 +289,17 @@ The medical case study should:
   - Documentation is typically **electronic**, so do not mention paper order sheets.
   - If you include ARCC, it should be used properly by the person raising the concern, not necessarily by the one providing direct care.
 
-- **For each case study, create 3 unique multiple-choice questions that:**
-  - Have 4 option choices each.
-  - Debrief is typically a group effort; the question should not reflect debrief being done by a single individual.
-  - Provide the correct answer choice and answer in the format: \`correct answer: C) Validate and Verify\`
-  - Provide the hint in the format: \`Hint: Double-checking and confirming accuracy before proceeding.\`
-  - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
-  - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
-  - Include clues by using buzzwords or synonyms from the correct answer's definition.
-  - Do not explicitly mention the prevention tools by name in the question header.
-  - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” or “validate?”).
-  - The question should address ${role} directly and include the name of ${role} from the scenario, avoiding phrases like “wish.”
+    - **For each case study, create 3 unique multiple-choice questions that:**
+        - Have 4 option choices each.
+        - Debrief is typically a group effort; the question should not reflect debrief being done by a single individual.
+        - Provide the correct answer choice and answer in the format: \`correct answer: C) Validate and Verify\`
+        - Provide the hint in the format: \`Hint: Double-checking and confirming accuracy before proceeding.\`
+        - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
+        - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
+        - Include clues by using buzzwords or synonyms from the correct answer's definition.
+        -  Do not explicitly mention the prevention tools by name in the question header.
+        - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” or “validate?”).
+          - The question should address ${role} directly and following this example format: If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying
 
     
     - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
@@ -322,38 +327,38 @@ The medical case study should:
     
     - **Use the following 11 Error Prevention Tools and Definitions:**
     
-    a. Peer Checking and Coaching
-        Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
+        a. Peer Checking and Coaching
+            Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
     
-    b. Debrief
-        Definition: Reflect on what went well with team , what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
+        b. Debrief
+            Definition: Reflect on what went well with team , what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
+      
+        c. ARCC
+            Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
     
-    c. ARCC
-        Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
+        d. Validate and Verify
+            Definition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).
     
-    d. Validate and Verify
-        Definition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).
+        e. STAR
+            Definition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).
     
-    e. STAR
-        Definition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).
+        f. No Distraction Zone
+            Definition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like "Stand by" or "Hold on".
     
-    f. No Distraction Zone
-        Definition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like "Stand by" or "Hold on".
+        g. Effective Handoffs
+            Definition: Six important principles that make an Effective Handoffs: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
     
-    g. Effective Handoffs
-        Definition: Six important principles that make an Effective Handoffs: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
+        h. Read and Repeat Back
+            Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
     
-    h. Read and Repeat Back
-        Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
+        i. Ask Clarifying Questions
+            Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
     
-    i. Ask Clarifying Questions
-        Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
+        j. Using Alphanumeric Language
+            Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
     
-    j. Using Alphanumeric Language
-        Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
-    
-    k. SBAR
-        Definition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions.), Recommendations (what is my recommendation, request, or plan?)
+        k. SBAR
+            Definition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions.), Recommendations (what is my recommendation, request, or plan?)
     
     Ensure the following format is strictly followed and output the entire response as valid JSON.
     
