@@ -259,15 +259,16 @@ The medical case study should:
   - **Care:** Mention the care level of the role.
 
 - **Medical Case Study Content:**
-  - The case study should only include the scenario and what went wrong in the case study.
+  - The case study should only include the scenario and the medical error that occured.
   - The case studies should not mention country names, staff origins.
   - Use unique patient and medical staff names from various continents (America, Canada, South America, 
     Europe, Asia, Australia) to reflect global diversity.
-  - The case study should define medication with quantity with proper units, and proper names without changing the clinical integrity from source case study.
+  - The case study should define medication with quantity with proper units, and proper names without changing the clinical integrity from source  ${retrievedCasesText} case study.
   - Keep the case studies short and concise, and do not mention countries by name or the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
   - The case study should strictly focus on what went wrong. Avoid mentioning any broader communication lapses or the significance of teamwork in preventing the error.
   - The case study should not mention any error prevention tools and how they the situation lacked the EPT which could have avoided the error.
   - The case study should  only include the scenario and remove /not include any analysis on what went wrong, how it could have been prevented, and any highlights of the process to fix the issue (ex:  The mistake was due to a misinterpretation of the dosing guidelines and a lack of a second check from a colleague. The incident underscores the need for mutual review and coaching among peers to confirm the accuracy of medication orders before administration. The event uniquely highlighted a break in the typical peer review process, and the error was not caught before reaching the patient.)
+  - Make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies.
 
 - **For each case study, create 3 unique multiple-choice questions that:**
   - Have 4 option choices each.
