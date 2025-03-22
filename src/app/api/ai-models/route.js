@@ -268,7 +268,8 @@ The medical case study should:
   - The case study should strictly focus on what went wrong. Avoid mentioning any broader communication lapses or the significance of teamwork in preventing the error.
   - The case study should not mention any error prevention tools and how they the situation lacked the EPT which could have avoided the error.
   - The case study should  only include the scenario and remove /not include any analysis on what went wrong, how it could have been prevented, and any highlights of the process to fix the issue. 
-  - Make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies.
+  - If department is ${department} make sure all the case studies scenario focus on stroke related medical errors and scenarios, but also Make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies
+  - For all case studies, make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies.
 
 - **For each case study, create 3 unique multiple-choice questions that:**
   - Have 4 option choices each.
