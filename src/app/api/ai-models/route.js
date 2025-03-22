@@ -266,6 +266,7 @@ The medical case study should:
   - The case study should define medication with quantity with proper units, and proper names without changing the clinical integrity from source case study.
   - Keep the case studies short and concise, and do not mention countries by name or the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
   - The case study should strictly focus on what went wrong. Avoid mentioning any broader communication lapses or the significance of teamwork in preventing the error.
+  - The case study should not mention any error prevention tools and how they the situation lacked the EPT which could have avoided the error.
 
 - **For each case study, create 3 unique multiple-choice questions that:**
   - Have 4 option choices each.
