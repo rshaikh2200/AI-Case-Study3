@@ -271,20 +271,20 @@ The medical case study should:
 - **For each case study, create 3 unique multiple-choice questions that:**
   - Have 4 option choices each.
   - Debrief is typically a group effort; the question should not reflect debrief being done by a single individual.
-  - Provide the correct answer choice and answer in the format: `correct answer: C) Validate and Verify`
-  - Provide the hint in the format: `Hint: Double-checking and confirming accuracy before proceeding.`
+  - Provide the correct answer choice and answer in the format: \`correct answer: C) Validate and Verify\`
+  - Provide the hint in the format: \`Hint: Double-checking and confirming accuracy before proceeding.\`
   - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
   - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
   - Include clues by using buzzwords or synonyms from the correct answer's definition.
   - Do not explicitly mention the prevention tools by name in the question header.
   - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” and “validate?”).
-  - The question should address directly to `${role}` and include the name of `${role}` from the scenario and not include words like “wish.”
+  - The question should address directly to ${role} and include the name of ${role} from the scenario and not include words like “wish.”
   - The question should be written similarly to this example: 
-    `If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying)`
+    \`If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying)\`
 
 **Incorporate the following feedback into the case studies and questions without altering any other instructions or logic:**
 - For the **Registered Nurse** role, ensure nurses do not write medication orders; they may administer medications, and if there is a concern from another nurse, that nurse would apply ARCC (not the one administering).
-- Ensure correct usage and spelling of `mmHg` when referencing blood pressure measurements.
+- Ensure correct usage and spelling of \`mmHg\` when referencing blood pressure measurements.
 - For the **Advanced Practice Provider (NP or PA)**, they typically write medication orders rather than administer them; they may have a peer check their order electronically before finalizing.
 - Use **unique names** for the patient and provider; avoid any duplicate names.
 - For **aspirin allergy**, reflect a more appropriate reaction such as hives (not just gastrointestinal discomfort).
@@ -413,77 +413,7 @@ The medical case study should:
     Ensure that:
     
     - The JSON is **well-formatted** and **free of any syntax errors**.
-    - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
-    - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
-    
-    Do not include any additional text outside of the JSON structure.
-    
-    **Ensure that:**
-    
-    - Each **Error Prevention Tool** is used **exactly once** across all case studies and questions.
-    - **No repetition** of the same **Error Prevention Tool** occurs within the same case study or across different case studies.
-    - All **case studies** are **unique** and focus on **distinct Error Prevention Tools**.
-    - The **Question Structure** is strictly followed to ensure consistency and adherence to the specified guidelines.
-    
-    **Example:**
-    
-    \`\`\`json
-    {
-      },
-        "department" : "Operating Room",
-        "role" : "Surgeon",
-        "specialization": "General Surgery"
-        "care": "inpatient"
-    },
-      "caseStudies": [
-        {
-          "caseStudy": "Case Study 1",
-          "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
-          "questions": [
-            {
-              "question": "Whcich EPT practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
-              "options": {
-                "A": "Peer Checking and Coaching",
-                "B": "Debrief",
-                "C": "ARCC",
-                "D": "Validate and Verify"
-              },
-              "correct answer": "D) Validate and Verify",
-              "Hint": "Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?"
-            },
-            {
-              "question": "If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying?",
-              "options": {
-                "A": "STAR",
-                "B": "No Distraction Zone",
-                "C": "ARCC",
-                "D": "Effective Handoffs"
-              },
-              "correct answer": "C) ARCC",
-              "Hint": "Ask a question to gently prompt the other person of potential safety issue"
-            },
-            {
-              "question": "If Dr.Patel, along with the team, had taken a moment after surgery to reflext on the day's task, and discuss what went well or what didn't, whihc EPT practice would they applied?",
-              "options": {
-                "A": "ARCC",
-                "B": "Debrief",
-                "C": "No Distraction Zone",
-                "D": "Read and Repeat Back"
-              },
-              "correct answer": "B) Debrief",
-              "Hint": "3 minute discussion focusing on what went well and areas for improvement."
-            }
-          ]
-        }
-        // Additional case studies...
-      ]
-    }
-    \`\`\`
-    
-    Ensure that:
-    
-    - The JSON is **well-formatted** and **free of any syntax errors**.
-    - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
+    - There are **no comments** (e.g., lines starting with //), **no trailing commas**, and **no additional text** outside the JSON block.
     - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
     
     Do not include any additional text outside of the JSON structure.`;
@@ -552,10 +482,10 @@ The medical case study should:
         questions: cs.questions.map(q => ({
           question: q.question,
           options: q.options,
-          correctAnswer: q.correctAnswer,  // Correctly access the property
-          hint: q.hint,                    // Correctly access the property
+          correctAnswer: q.correctAnswer,
+          hint: q.hint,
         })),
-        imageUrl: cs.imageUrl,  // Include the image URL if it's available
+        imageUrl: cs.imageUrl,
         role: cs.role,
         department: cs.department,
         specialization: cs.specialization,
@@ -567,8 +497,6 @@ The medical case study should:
         aiResponse: parsedCaseStudiesWithAnswers,
       });
       
-      
-
     } catch (error) {
       console.error('Error generating images:', error);
       return NextResponse.json(
