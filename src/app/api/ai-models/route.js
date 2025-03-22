@@ -109,6 +109,7 @@ function parseCaseStudies(responseText) {
     throw new Error('Failed to parse case studies JSON. Ensure the model outputs valid JSON.');
   }
 }
+
 function parseCaseStudiesWithAnswers(responseText) {
   try {
     let jsonString = '';
@@ -220,19 +221,14 @@ export async function POST(request) {
   }
 
   // Query Pinecone for similar case studies
- let similarCaseStudies = [];
-try {
-  const pineconeResponse = await index.query({
-    vector: queryEmbedding,
-    topK: 500, // Set to maximum allowable value
-    includeMetadata: true,
-  });
-  // Process the response as needed
-} catch (error) {
-  console.error('Error querying Pinecone:', error);
-}
-
-
+  let similarCaseStudies = [];
+  try {
+    const pineconeResponse = await index.query({
+      vector: queryEmbedding,
+      topK: 500, // Set to maximum allowable value
+      includeMetadata: true,
+    });
+    // Process the response as needed
     similarCaseStudies = pineconeResponse.matches.map(
       (match) => match.metadata.content
     );
@@ -302,7 +298,7 @@ The medical case study should:
           - The question should address ${role} directly and following this example format: If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying
 
     
-    - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
+    - **Strictly follow the Question Structure Below and make sure the options choices match the correct error prevention tool focused in the question:**
       - **Question Structure**
       
         **Case Study 1:**
@@ -424,8 +420,6 @@ The medical case study should:
     
     Do not include any additional text outside of the JSON structure.`;
 
-  
-
   try {
     const response = await openai.chat.completions.create({
       model: "chatgpt-4o-latest",
@@ -439,7 +433,6 @@ The medical case study should:
       stream: false,
     });
     
-
     if (!response.choices || response.choices.length === 0) {
       throw new Error('No choices returned from OpenAI.');
     }
@@ -496,7 +489,6 @@ The medical case study should:
         specialization: cs.specialization,
       }));
       
-
       return NextResponse.json({
         caseStudies: parsedCaseStudiesWithImages,
         aiResponse: parsedCaseStudiesWithAnswers,
