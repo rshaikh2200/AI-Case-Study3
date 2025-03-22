@@ -224,7 +224,7 @@ export async function POST(request) {
 try {
   const pineconeResponse = await index.query({
     vector: queryEmbedding,
-    topK: 1000, // Set to maximum allowable value
+    topK: 500, // Set to maximum allowable value
     includeMetadata: true,
   });
   // Process the response as needed
