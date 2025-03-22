@@ -205,7 +205,7 @@ export default function Home() {
           </div>
           {/* Header text modified so it's all on one line before the highlighted text */}
           <h1 className="text-4xl lg:text-6xl font-extrabold mb-6 leading-tight">
-            The First LLM Healthcare Training Focused On Patient Safety <span className="text-blue-200">Eliminate Patient Harm and Avoid Medical Errors</span>
+            </span>The First LLM Healthcare Training Focused On Patient Safety. Eliminate Patient Harm and Avoid Medical Errors</span>
           </h1>
           <p className="text-xl lg:text-2xl mb-10 text-blue-100 max-w-3xl leading-relaxed font-light">
             Over 200,000 patients die every year due to clinical mistakes that could be prevented
