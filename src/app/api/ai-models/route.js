@@ -247,7 +247,7 @@ export async function POST(request) {
 
   // Construct the meta prompt with retrieved case studies and Google search results
   const META_PROMPT = `
-Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (200 words), without compromising the clinical integrity. Remove extraneous information such as providers’ 
+Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (200 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department, without compromising the clinical integrity. Remove extraneous information such as providers’ 
 countries of origin or unnecessary backstories.
 
 The medical case study should:
@@ -271,19 +271,7 @@ The medical case study should:
   - If department is ${department} make sure all the case studies scenario focus on stroke related medical errors and scenarios, but also Make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies
   - For all case studies, make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies.
 
-- **For each case study, create 3 unique multiple-choice questions that:**
-  - Have 4 option choices each.
-  - Debrief is typically a group effort; the question should not reflect debrief being done by a single individual.
-  - Provide the correct answer choice and answer in the format: \`correct answer: C) Validate and Verify\`
-  - Provide the hint in the format: \`Hint: Double-checking and confirming accuracy before proceeding.\`
-  - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
-  - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
-  - Include clues by using buzzwords or synonyms from the correct answer's definition.
-  - Do not explicitly mention the prevention tools by name in the question header.
-  - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” or “validate?”).
-  - The question should address ${role} directly and include the name of ${role} from the scenario, avoiding phrases like “wish.”
-
-- **Incorporate the following feedback into the case studies and questions without altering any other instructions or logic:**
+  - **Incorporate the following feedback into the case studies and questions without altering any other instructions or logic:**
   - For the **Registered Nurse** role, ensure nurses do not write medication orders; they may administer medications, and if there is a concern from another nurse, that nurse would apply ARCC (not the one administering).
   - Ensure correct usage and spelling of \`mmHg\` when referencing blood pressure measurements.
   - For the **Advanced Practice Provider (NP or PA)**, they typically write medication orders rather than administer them; they may have a peer check their order electronically before finalizing.
@@ -295,6 +283,18 @@ The medical case study should:
   - Adjust **Labetalol** doses to be consistent with treating significantly elevated blood pressure.
   - Documentation is typically **electronic**, so do not mention paper order sheets.
   - If you include ARCC, it should be used properly by the person raising the concern, not necessarily by the one providing direct care.
+
+- **For each case study, create 3 unique multiple-choice questions that:**
+  - Have 4 option choices each.
+  - Debrief is typically a group effort; the question should not reflect debrief being done by a single individual.
+  - Provide the correct answer choice and answer in the format: \`correct answer: C) Validate and Verify\`
+  - Provide the hint in the format: \`Hint: Double-checking and confirming accuracy before proceeding.\`
+  - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
+  - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
+  - Include clues by using buzzwords or synonyms from the correct answer's definition.
+  - Do not explicitly mention the prevention tools by name in the question header.
+  - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” or “validate?”).
+  - The question should address ${role} directly and include the name of ${role} from the scenario, avoiding phrases like “wish.”
 
     
     - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
