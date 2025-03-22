@@ -248,7 +248,7 @@ export async function POST(request) {
   // Construct the meta prompt with retrieved case studies and Google search results
   const META_PROMPT = `
 Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (200 words each), without compromising the clinical integrity. Remove extraneous information such as providers’ 
-countries of origin or unnecessary backstories
+countries of origin or unnecessary backstories.
 
 The medical case study should:
 
@@ -260,13 +260,12 @@ The medical case study should:
 
 - **Medical Case Study Content:**
   - The case study should only include the scenario and what went wrong in the case study.
-  - The case studies should not mention country names, staff origins. 
+  - The case studies should not mention country names, staff origins.
   - Use unique patient and medical staff names from various continents (America, Canada, South America, 
     Europe, Asia, Australia) to reflect global diversity.
   - The case study should define medication with quantity with proper units, and proper names without changing the clinical integrity from source case study.
-  - Keep the case studies short and concise and do not mention countries name or where a patient is from. Also do not state team assessment or review of situation, or the imporantnace of steps to solve the issue. Also do not include incident reviews, analysis.
-  - The case study should only include the scenario and what went wrong in the case study. 
-  - The case study should omit statements about broader incident reviews or the importance of teamwork and communication lapses or incident reviews. Also, exclude statements about the significance of communication lapses or teamwork failures.
+  - Keep the case studies short and concise, and do not mention countries by name or the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
+  - The case study should strictly focus on what went wrong. Avoid mentioning any broader communication lapses or the significance of teamwork in preventing the error.
 
 - **For each case study, create 3 unique multiple-choice questions that:**
   - Have 4 option choices each.
@@ -277,23 +276,21 @@ The medical case study should:
   - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
   - Include clues by using buzzwords or synonyms from the correct answer's definition.
   - Do not explicitly mention the prevention tools by name in the question header.
-  - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” and “validate?”).
-  - The question should address directly to ${role} and include the name of ${role} from the scenario and not include words like “wish.”
-  - The question should be written similarly to this example: 
-    \`If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying)\`
+  - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” or “validate?”).
+  - The question should address ${role} directly and include the name of ${role} from the scenario, avoiding phrases like “wish.”
 
-**Incorporate the following feedback into the case studies and questions without altering any other instructions or logic:**
-- For the **Registered Nurse** role, ensure nurses do not write medication orders; they may administer medications, and if there is a concern from another nurse, that nurse would apply ARCC (not the one administering).
-- Ensure correct usage and spelling of \`mmHg\` when referencing blood pressure measurements.
-- For the **Advanced Practice Provider (NP or PA)**, they typically write medication orders rather than administer them; they may have a peer check their order electronically before finalizing.
-- Use **unique names** for the patient and provider; avoid any duplicate names.
-- For **aspirin allergy**, reflect a more appropriate reaction such as hives (not just gastrointestinal discomfort).
-- If referencing **Clopidogrel**, note it is usually given once a day and a 15-minute difference is typically acceptable.
-- **Heparin** should be administered via a pump if it’s an infusion (not via injection).
-- Correct the spelling of **Digoxin** (avoid misspellings).
-- Adjust **Labetalol** doses to be consistent with treating significantly elevated blood pressure.
-- Documentation is typically **electronic**, so do not mention paper order sheets.
-- If you include ARCC, it should be used properly by the person raising the concern, not necessarily by the one providing the direct care.
+- **Incorporate the following feedback into the case studies and questions without altering any other instructions or logic:**
+  - For the **Registered Nurse** role, ensure nurses do not write medication orders; they may administer medications, and if there is a concern from another nurse, that nurse would apply ARCC (not the one administering).
+  - Ensure correct usage and spelling of \`mmHg\` when referencing blood pressure measurements.
+  - For the **Advanced Practice Provider (NP or PA)**, they typically write medication orders rather than administer them; they may have a peer check their order electronically before finalizing.
+  - Use **unique names** for the patient and provider; avoid any duplicate names.
+  - For **aspirin allergy**, reflect a more appropriate reaction such as hives (not just gastrointestinal discomfort).
+  - If referencing **Clopidogrel**, note it is usually given once a day and a 15-minute difference is typically acceptable.
+  - **Heparin** should be administered via a pump if it’s an infusion (not via injection).
+  - Correct the spelling of **Digoxin** (avoid misspellings).
+  - Adjust **Labetalol** doses to be consistent with treating significantly elevated blood pressure.
+  - Documentation is typically **electronic**, so do not mention paper order sheets.
+  - If you include ARCC, it should be used properly by the person raising the concern, not necessarily by the one providing direct care.
 
     
     - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
