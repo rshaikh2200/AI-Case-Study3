@@ -192,7 +192,7 @@ export async function POST(request) {
 
   // Extract request body
   const { department, role, specialization, userType, care } = await request.json();
-  const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization}, Care: ${care};`;
+  const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization};`;
 
   // Create an embedding for the input query
   let queryEmbedding;
