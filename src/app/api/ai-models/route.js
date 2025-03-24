@@ -273,15 +273,14 @@ The medical case study should:
   - For all case studies, make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies.
 
   - **Incorporate the following feedback into the case studies and questions without altering any other instructions or logic:**
-  - For the **Registered Nurse** role, ensure nurses do not write medication orders; they may administer medications, and if there is a concern from another nurse, that nurse would apply ARCC (not the one administering).
-  - Ensure correct usage and spelling of \`mmHg\` when referencing blood pressure measurements.
-  - For the **Advanced Practice Provider (NP or PA)**, they typically write medication orders rather than administer them; they may have a peer check their order electronically before finalizing.
+  - If ${role} equals registered nurse, ensure nurses do not write medication orders; they may administer medications, and if there is a concern from another nurse, that nurse would apply ARCC (not the one administering).
+  - Ensure correct usage and spelling of \`mmHg\` and other units.
+  - If ${role} equals Nurse Practictioner or Medical Aisstant,  they typically write medication orders rather than administer them; they may have a peer check their order electronically before finalizing.
   - Use **unique names** for the patient and provider; avoid any duplicate names.
-  - For **aspirin allergy**, reflect a more appropriate reaction such as hives (not just gastrointestinal discomfort).
-  - If referencing **Clopidogrel**, note it is usually given once a day and a 15-minute difference is typically acceptable.
-  - **Heparin** should be administered via a pump if it’s an infusion (not via injection).
-  - Correct the spelling of **Digoxin** (avoid misspellings).
-  - Adjust **Labetalol** doses to be consistent with treating significantly elevated blood pressure.
+  - For **medication allegeries**, reflect a more appropriate and clinical accurate reactions.
+  - Make sure the case study follow clinical integrity when describing when a patient should take a certain medication, or timely adminstration of medication.
+  - make sure certain medication should be administered via a pump if it’s an infusion (not via injection), this should follow the clinical integrity.
+  - Correct and make sure there is no misspelling in Medication Nmaes, and Procedures. 
   - Documentation is typically **electronic**, so do not mention paper order sheets.
   - If you include ARCC, it should be used properly by the person raising the concern, not necessarily by the one providing direct care.
 
@@ -290,15 +289,15 @@ The medical case study should:
         - Debrief is typically a group effort; the question should not reflect debrief being done by a single individual.
         - Provide the correct answer choice and answer in the format: \`correct answer: C) Validate and Verify\`
         - Provide the hint in the format: \`Hint: Double-checking and confirming accuracy before proceeding.\`
-        - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the relevant error prevention tool to assist the user. The error prevention tool name should not be included in the question.
-        - Each question should strictly focus on the assigned Error Prevention Tool and how it could have been applied to prevent the error in the case study.
+        - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the safety behavior to assist the user. The safety behaviors name should not be included in the question.
+        - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error in the case study.
         - Include clues by using buzzwords or synonyms from the correct answer's definition.
         -  Do not explicitly mention the prevention tools by name in the question header.
         - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” or “validate?”).
-          - The question should address ${role} directly and following this example format: If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying
+          - The question should address ${role} directly and following this example format: If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying
 
     
-    - **Strictly follow the Question Structure Below and make sure the options choices match the correct error prevention tool focused in the question:**
+    - **Strictly follow the Question Structure Below and make sure the options choices match the correct safety behaviors focused in the question:**
       - **Question Structure**
       
         **Case Study 1:**
@@ -321,7 +320,7 @@ The medical case study should:
         - Question 2: Focuses on SBAR
         - Question 3: Focuses on STAR
     
-    - **Use the following 11 Error Prevention Tools and Definitions:**
+    - **Use the following 11 Safety Behaviors and Definitions:**
     
         a. Peer Checking and Coaching
             Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
