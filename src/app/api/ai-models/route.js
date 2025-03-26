@@ -7,7 +7,6 @@ import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs';
 import path from 'path';
-import os from 'os';
 
 // -------------------------
 // NEW FUNCTION: Google Search API integration for Medical Error Case Studies
@@ -302,24 +301,22 @@ The medical case study should:
 
     
     - **Strictly follow the Question Structure Below and make sure the options choices match the correct safety behaviors focused in the question:**
-      - **Question Structure**
-      
-        **Case Study 1:**
+      - **Case Study 1:**
         - Question 1: Focuses on Peer Checking and Coaching
         - Question 2: Focuses on Debrief
         - Question 3: Focuses on ARCC
     
-        **Case Study 2:**
+      **Case Study 2:**
         - Question 1: Focuses on Validate and Verify
         - Question 2: Focuses on STAR
         - Question 3: Focuses on No Distraction Zone
     
-        **Case Study 3:**
+      **Case Study 3:**
         - Question 1: Focuses on Effective Handoffs
         - Question 2: Focuses on Read and Repeat Back
         - Question 3: Focuses on Ask Clarifying Questions
     
-        **Case Study 4:**
+      **Case Study 4:**
         - Question 1: Focuses on Alphanumeric Language
         - Question 2: Focuses on SBAR
         - Question 3: Focuses on STAR
@@ -452,7 +449,7 @@ The medical case study should:
     // NEW CODE TO SAVE RAW MODEL OUTPUT TO A JSON FILE WITH DATE STAMP & USER INPUTS
     // -------------------------
     try {
-      const directory = path.join(os.tmpdir(), 'case studies json');
+      const directory = path.join(process.cwd(), 'src', 'app', 'case studies json');
       if (!fs.existsSync(directory)) {
         fs.mkdirSync(directory, { recursive: true });
       }
@@ -720,4 +717,5 @@ async function fetchImagesForCaseStudies(
     throw error;
   }
 }
+
 
