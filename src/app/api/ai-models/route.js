@@ -448,28 +448,41 @@ The medical case study should:
     // -------------------------
     // NEW CODE TO SAVE RAW MODEL OUTPUT TO A JSON FILE WITH DATE STAMP & USER INPUTS
     // -------------------------
-    try {
-      const directory = '/tmp/case studies json';
-      if (!fs.existsSync(directory)) {
-        fs.mkdirSync(directory, { recursive: true });
-      }
+try {
+  // Step 1: Write to /tmp (safe in serverless environments)
+  const tmpDirectory = '/tmp/case studies json';
+  if (!fs.existsSync(tmpDirectory)) {
+    fs.mkdirSync(tmpDirectory, { recursive: true });
+  }
 
-      const fileName = `case-studies-${Date.now()}.json`;
-      const filePath = path.join(directory, fileName);
+  const fileName = `case-studies-${Date.now()}.json`;
+  const tmpFilePath = path.join(tmpDirectory, fileName);
 
-      const dataToSave = {
-        date: new Date().toISOString(),
-        department,
-        role,
-        care,
-        specialization,
-        rawModelOutput: aiResponse
-      };
+  const dataToSave = {
+    date: new Date().toISOString(),
+    department,
+    role,
+    care,
+    specialization,
+    rawModelOutput: aiResponse
+  };
 
-      fs.writeFileSync(filePath, JSON.stringify(dataToSave, null, 2), 'utf8');
-    } catch (err) {
-      console.error('Error writing raw model output to file:', err);
-    }
+  fs.writeFileSync(tmpFilePath, JSON.stringify(dataToSave, null, 2), 'utf8');
+
+  // Step 2: Copy the file from /tmp to the project directory (src/app)
+  const appDirectory = path.join(process.cwd(), 'src', 'app');
+  if (!fs.existsSync(appDirectory)) {
+    fs.mkdirSync(appDirectory, { recursive: true });
+  }
+
+  const finalFilePath = path.join(appDirectory, fileName);
+  fs.copyFileSync(tmpFilePath, finalFilePath);
+
+  console.log(`✅ JSON file written to: ${finalFilePath}`);
+} catch (err) {
+  console.error('❌ Error saving JSON file:', err);
+}
+
     // -------------------------
     // END OF NEW CODE
     // -------------------------
