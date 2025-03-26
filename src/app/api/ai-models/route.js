@@ -449,7 +449,7 @@ The medical case study should:
     // NEW CODE TO SAVE RAW MODEL OUTPUT TO A JSON FILE WITH DATE STAMP & USER INPUTS
     // -------------------------
     try {
-      const directory = path.join(process.cwd(), 'src', 'app', 'case studies json');
+      const directory = '/tmp/case studies json';
       if (!fs.existsSync(directory)) {
         fs.mkdirSync(directory, { recursive: true });
       }
@@ -717,5 +717,3 @@ async function fetchImagesForCaseStudies(
     throw error;
   }
 }
-
-
