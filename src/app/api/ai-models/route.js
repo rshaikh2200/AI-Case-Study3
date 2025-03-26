@@ -5,6 +5,8 @@ import { Pinecone } from '@pinecone-database/pinecone';
 import { OpenAI } from 'openai';
 import axios from 'axios';
 import FormData from 'form-data';
+import fs from 'fs';
+import path from 'path';
 
 // -------------------------
 // NEW FUNCTION: Google Search API integration for Medical Error Case Studies
@@ -247,8 +249,8 @@ export async function POST(request) {
   const retrievedCasesText = similarCaseStudies.join('\n');
 
   // Construct the meta prompt with retrieved case studies and Google search results
-  const META_PROMPT = `
-Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department, without compromising the clinical integrity. Remove extraneous information such as providers’ 
+  const META_PROMPT = 
+`Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department, without compromising the clinical integrity. Remove extraneous information such as providers’ 
 countries of origin or unnecessary backstories.
 
 The medical case study should:
@@ -275,7 +277,7 @@ The medical case study should:
 
   - **Incorporate the following feedback into the case studies and questions without altering any other instructions or logic:**
   - If ${role} equals registered nurse, ensure nurses do not write medication orders; they may administer medications, and if there is a concern from another nurse, that nurse would apply ARCC (not the one administering).
-  - Ensure correct usage and spelling of \`mmHg\` and other units.
+  - Ensure correct usage and spelling of \\mmHg\\ and other units.
   - If ${role} equals Nurse Practictioner or Medical Aisstant,  they typically write medication orders rather than administer them; they may have a peer check their order electronically before finalizing.
   - Use **unique names** for the patient and provider; avoid any duplicate names.
   - For **medication allegeries**, reflect a more appropriate and clinical accurate reactions.
@@ -288,8 +290,8 @@ The medical case study should:
     - **For each case study, create 3 unique multiple-choice questions that:**
         - Have 4 option choices each.
         - Debrief is typically a group effort; the question should not reflect debrief being done by a single individual.
-        - Provide the correct answer choice and answer in the format: \`correct answer: C) Validate and Verify\`
-        - Provide the hint in the format: \`Hint: Double-checking and confirming accuracy before proceeding.\`
+        - Provide the correct answer choice and answer in the format: \\correct answer: C) Validate and Verify\\
+        - Provide the hint in the format: \\Hint: Double-checking and confirming accuracy before proceeding.\\
         - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the safety behavior to assist the user. The safety behaviors name should not be included in the question.
         - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error in the case study.
         - Include clues by using buzzwords or synonyms from the correct answer's definition.
@@ -445,6 +447,35 @@ The medical case study should:
 
     console.log('Raw Model Output:', aiResponse);
 
+    // -------------------------
+    // NEW CODE TO SAVE RAW MODEL OUTPUT TO A JSON FILE WITH DATE STAMP & USER INPUTS
+    // -------------------------
+    try {
+      const directory = path.join(process.cwd(), 'case studies json');
+      if (!fs.existsSync(directory)) {
+        fs.mkdirSync(directory, { recursive: true });
+      }
+
+      const fileName = `case-studies-${Date.now()}.json`;
+      const filePath = path.join(directory, fileName);
+
+      const dataToSave = {
+        date: new Date().toISOString(),
+        department,
+        role,
+        care,
+        specialization,
+        rawModelOutput: aiResponse
+      };
+
+      fs.writeFileSync(filePath, JSON.stringify(dataToSave, null, 2), 'utf8');
+    } catch (err) {
+      console.error('Error writing raw model output to file:', err);
+    }
+    // -------------------------
+    // END OF NEW CODE
+    // -------------------------
+
     // Parse the AI response using the existing function (without correct answers)
     const parsedCaseStudies = parseCaseStudies(aiResponse);
 
@@ -513,8 +544,8 @@ The medical case study should:
 
 // Function to generate image prompt via OpenAI
 async function generateImagePrompt(caseStudy) {
-  const META_PROMPT = `
-You are an expert prompt engineer tasked with creating detailed and descriptive prompts for image generation based on given scenarios. Your prompts should be clear, vivid, and free of any NSFW (Not Safe For Work) content. Ensure that the prompts are suitable for use with image generation models and accurately reflect the provided scenario.
+  const META_PROMPT = 
+`You are an expert prompt engineer tasked with creating detailed and descriptive prompts for image generation based on given scenarios. Your prompts should be clear, vivid, and free of any NSFW (Not Safe For Work) content. Ensure that the prompts are suitable for use with image generation models and accurately reflect the provided scenario.
 
 # Guidelines
 
@@ -558,8 +589,8 @@ You are an expert prompt engineer tasked with creating detailed and descriptive 
 
 - **Edge Cases**: If the scenario is abstract or lacks detail, infer reasonable visual elements to create a coherent prompt.
 - **Cultural Sensitivity**: Be mindful of cultural nuances and avoid stereotypes or biased representations.
-- **No NSFW Content**: Double-check to ensure the prompt adheres to safety guidelines and does not contain any inappropriate content.
-`.trim();
+- **No NSFW Content**: Double-check to ensure the prompt adheres to safety guidelines and does not contain any inappropriate content.`.trim();
+
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   if (!OPENAI_API_KEY) {
     throw new Error('OpenAI API key not configured.');
