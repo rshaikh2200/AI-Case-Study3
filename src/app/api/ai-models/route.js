@@ -15,8 +15,8 @@ async function getMedicalCaseStudiesFromGoogle() {
   try {
     // Set your search parameters here – adjust the query and search_depth as needed.
     const searchTerm = "Case Studies";
-    const searchDepth = 10;
-    const maxResults = 100;
+    const searchDepth = 00;
+    const maxResults = 200;
     const googleApiKey = process.env.GOOGLE_API_KEY;
     const googleCseId = process.env.GOOGLE_CSE_ID;
     if (!googleApiKey || !googleCseId) {
