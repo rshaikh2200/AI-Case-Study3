@@ -1,50 +1,58 @@
-// /pages/index.js
-"use client";
-
 import { useState } from 'react';
 
 export default function Home() {
-  const [query, setQuery] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [prompt, setPrompt] = useState('');
+  const [result, setResult] = useState('');
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setAnswer("Loading...");
-
+  const handleSubmit = async () => {
+    // Replace <your-username>/<your-model-id> with your model details
+    const inferenceUrl = 'https://api-inference.huggingface.co/models/rshaikh22/coachcarellm';
+    
     try {
-      const response = await fetch('/api/ai-models', {
+      const response = await fetch(inferenceUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userQuery: query })
+        headers: {
+          'Content-Type': 'application/json',
+          // Use your environment variable to securely access the API key
+          'Authorization': `Bearer ${process.env.NEXT_PUBLIC_HF_API_KEY}`,
+        },
+        body: JSON.stringify({ inputs: prompt }),
       });
-      const data = await response.json();
-      if (data.error) {
-        setAnswer("Error: " + data.error);
-      } else {
-        setAnswer(data.answer);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error from API:', errorData);
+        setResult(`Error: ${errorData.error || 'Unknown error occurred.'}`);
+        return;
       }
-    } catch (err) {
-      setAnswer("Error: " + err.message);
+      
+      const data = await response.json();
+      console.log('API Response:', data);
+      setResult(JSON.stringify(data, null, 2));
+      
+    } catch (error) {
+      console.error('Fetch error:', error);
+      setResult(`Fetch error: ${error.message}`);
     }
   };
 
   return (
-    <div>
-      <h1>Chat with my PDF documents!</h1>
-      <form onSubmit={handleSubmit}>
-        <textarea
-          rows={3}
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Ask your question here..."
-        />
-        <br />
-        <button type="submit">Ask</button>
-      </form>
-
-      <div style={{ marginTop: '1rem' }}>
-        <strong>Answer:</strong>
-        <p>{answer}</p>
+    <div style={{ padding: '2rem' }}>
+      <h1>Hugging Face API Inference</h1>
+      <textarea
+        placeholder="Enter your prompt here..."
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        rows={4}
+        cols={50}
+      />
+      <br />
+      <button onClick={handleSubmit} style={{ marginTop: '1rem' }}>
+        Submit
+      </button>
+      <div style={{ marginTop: '2rem' }}>
+        <h2>Response:</h2>
+        <pre style={{ background: '#f4f4f4', padding: '1rem' }}>{result}</pre>
       </div>
     </div>
   );
