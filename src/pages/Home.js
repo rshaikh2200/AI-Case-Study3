@@ -14,7 +14,7 @@ export default function Home() {
         headers: {
           'Content-Type': 'application/json',
           // Use your environment variable to securely access the API key
-          'Authorization': `Bearer ${HF_TOKEN}`,
+          'Authorization': `Bearer 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`,
         },
         body: JSON.stringify({ inputs: prompt }),
       });
