@@ -9,7 +9,7 @@ import FormData     from 'form-data';
 import fs           from 'fs';
 import path         from 'path';
 
-/* ───────────────────────── Google Custom Search helper ─────────────────── */
+/* ───────────────────────── Google Custom Search helper ─────────────────── */
 async function getMedicalCaseStudiesFromGoogle() {
   try {
     const searchTerm  = 'Case Studies';
@@ -57,7 +57,7 @@ export async function POST(request) {
   const OPENAI_API_KEY   = process.env.OPENAI_API_KEY;
   const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
 
-  /* Hugging Face inference credentials (for case‑study generation) */
+  /* Hugging Face inference credentials (for case‑study generation) */
   const HF_INFERENCE_URL = process.env.HF_INFERENCE_URL;
   const HF_API_KEY       = process.env.HF_API_KEY;
 
@@ -100,9 +100,9 @@ export async function POST(request) {
   const googleResultsText = await getMedicalCaseStudiesFromGoogle();
   const retrievedCasesText = similarCaseStudies.join('\n');
 
-  /* ---------------- FULL META_PROMPT (unchanged text) -- */
+  /* ---------------- FULL META_PROMPT (fixed JSON template) -- */
   const META_PROMPT = 
-    `Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department, without compromising the clinical integrity. Remove extraneous information such as providers’ 
+    `Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department, without compromising the clinical integrity. Remove extraneous information such as providers' 
 countries of origin or unnecessary backstories.
 
 The medical case study should:
@@ -134,7 +134,7 @@ The medical case study should:
   - Use **unique names** for the patient and provider; avoid any duplicate names.
   - For **medication allegeries**, reflect a more appropriate and clinical accurate reactions.
   - Make sure the case study follow clinical integrity when describing when a patient should take a certain medication, or timely adminstration of medication.
-  - make sure certain medication should be administered via a pump if it’s an infusion (not via injection), this should follow the clinical integrity.
+  - make sure certain medication should be administered via a pump if it's an infusion (not via injection), this should follow the clinical integrity.
   - Correct and make sure there is no misspelling in Medication Nmaes, and Procedures. 
   - Documentation is typically **electronic**, so do not mention paper order sheets.
   - If you include ARCC, it should be used properly by the person raising the concern, not necessarily by the one providing direct care.
@@ -148,7 +148,7 @@ The medical case study should:
         - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error in the case study.
         - Include clues by using buzzwords or synonyms from the correct answer's definition.
         -  Do not explicitly mention the prevention tools by name in the question header.
-        - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” or “validate?”).
+        - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like "check" or "validate?").
           - The question should address ${role} directly and following this example format: If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying
 
     
@@ -214,13 +214,10 @@ The medical case study should:
     {
       "caseStudies": [
         {
-          },
-            "department" : "${department}",
-            "role" : "${role}",
-            "specialization": "${specialization}",
-            "care": "${care}",
-        },
-    
+          "department": "${department}",
+          "role": "${role}",
+          "specialization": "${specialization}",
+          "care": "${care}",
           "caseStudy": "Case Study 1",
           "scenario": "Description of the case study scenario.",
           "questions": [
@@ -258,7 +255,7 @@ The medical case study should:
               "Hint": "1 sentence sumarized definition of correct answer choice."
             }
           ]
-       }
+        }
         // Repeat for Case Study 2, 3, and 4
       ]
     }
@@ -273,7 +270,7 @@ The medical case study should:
     Do not include any additional text outside of the JSON structure.`;
 
 
-  /* ───────────── Hugging Face generation (robust) ────── */
+  /* ───────────── Hugging Face generation (robust) ────── */
   let aiResponse;
   try {
     const hfRes = await fetch(HF_INFERENCE_URL, {
@@ -303,6 +300,8 @@ The medical case study should:
       aiResponse = data.generated_text;
     } else if (typeof data === 'string') {
       aiResponse = data;
+    } else {
+      throw new Error('Unexpected response format from HF endpoint');
     }
 
     if (!aiResponse || typeof aiResponse !== 'string' || !aiResponse.trim())
