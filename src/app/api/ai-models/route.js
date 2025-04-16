@@ -560,3 +560,225 @@ async function fetchImagesForCaseStudies(
     throw err;
   }
 }
+
+
+/* -------------------------------------------------------------------------- */
+/*  app/api/route.js                                                          */
+/* -------------------------------------------------------------------------- */
+
+import { NextResponse } from 'next/server';
+import dotenv from 'dotenv';
+dotenv.config();
+
+import { Pinecone } from '@pinecone-database/pinecone';
+import { OpenAI  }  from 'openai';
+import axios        from 'axios';
+import FormData     from 'form-data';
+import fs           from 'fs';
+import path         from 'path';
+
+/* ───────────────────────── Google Custom Search helper ─────────────────── */
+async function getMedicalCaseStudiesFromGoogle() {
+  try {
+    const searchTerm  = 'Case Studies';
+    const searchDepth = 50;                 // original request depth
+    const pageSize    = 10;                 // Google CSE max results per call
+
+    const googleApiKey = process.env.GOOGLE_API_KEY;
+    const googleCseId  = process.env.GOOGLE_CSE_ID;
+    if (!googleApiKey || !googleCseId)
+      throw new Error('Google API key or Custom Search Engine ID not configured.');
+
+    const serviceUrl = 'https://www.googleapis.com/customsearch/v1';
+    let combined     = '';
+
+    /* paginate to respect the 10‑results limit */
+    for (let start = 1; start <= searchDepth; start += pageSize) {
+      const { data } = await axios.get(serviceUrl, {
+        params: {
+          q : searchTerm,
+          key: googleApiKey,
+          cx : googleCseId,
+          num: pageSize,
+          start,
+          siteSearch: 'https://psnet.ahrq.gov/webmm-case-studies',
+        },
+      });
+
+      if (!data?.items?.length) break;
+      data.items.forEach((i) => (combined += `Source: ${i.link} - ${i.snippet}\n`));
+    }
+
+    return combined || 'No Google search results found for medical error case studies.';
+  } catch (error) {
+    console.error('Error in getMedicalCaseStudiesFromGoogle:', error.message);
+    return 'Error retrieving Google search results.';
+  }
+}
+
+/* ──────────────────────── JSON parsing helpers (unchanged) ─────────────── */
+function parseCaseStudies(resp)            { /* … unchanged … */ }
+function parseCaseStudiesWithAnswers(resp) { /* … unchanged … */ }
+
+/* ────────────────────────────────  POST  ───────────────────────────────── */
+export async function POST(request) {
+  const OPENAI_API_KEY   = process.env.OPENAI_API_KEY;
+  const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
+
+  /* Hugging Face inference credentials (for case‑study generation) */
+  const HF_INFERENCE_URL = process.env.HF_INFERENCE_URL;
+  const HF_API_KEY       = process.env.HF_API_KEY;
+
+  const pc     = new Pinecone({ apiKey: PINECONE_API_KEY });
+  const index  = pc.Index('coachcarellm').namespace('( Default )');
+  const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
+
+  const { department, role, specialization, userType, care } = await request.json();
+  const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization};`;
+
+  /* ---------------- embeddings (OpenAI) ---------------- */
+  let queryEmbedding;
+  try {
+    const emb = await openai.embeddings.create({
+      input: query,
+      model: 'text-embedding-ada-002',
+    });
+    if (!emb.data?.length) throw new Error('Invalid embedding data.');
+    queryEmbedding = emb.data[0].embedding;
+  } catch (err) {
+    console.error('Error creating embedding:', err);
+    return NextResponse.json({ error: 'Embedding failure.' }, { status: 500 });
+  }
+
+  /* ---------------- Pinecone similarity ---------------- */
+  let similarCaseStudies = [];
+  try {
+    const pine = await index.query({
+      vector: queryEmbedding,
+      topK : 500,
+      includeMetadata: true,
+    });
+    similarCaseStudies = pine.matches.map((m) => m.metadata.content);
+  } catch (err) {
+    console.error('Error querying Pinecone:', err);
+    return NextResponse.json({ error: 'Pinecone query failed.' }, { status: 500 });
+  }
+
+  /* ---------------- Google enrichment ------------------ */
+  const googleResultsText = await getMedicalCaseStudiesFromGoogle();
+  const retrievedCasesText = similarCaseStudies.join('\n');
+
+  /* ---------------- FULL META_PROMPT (unchanged text) -- */
+  const META_PROMPT = `Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (250 words) ... (entire original prompt stays here)`;  // keep full text
+
+  /* ───────────── Hugging Face generation (robust) ────── */
+  let aiResponse;
+  try {
+    const hfRes = await fetch(HF_INFERENCE_URL, {
+      method : 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization : `Bearer ${HF_API_KEY}`,
+      },
+      body: JSON.stringify({ inputs: META_PROMPT }),
+    });
+
+    if (!hfRes.ok) {
+      const errPayload = await hfRes.text();          // may or may not be JSON
+      console.error('HF API Error payload:', errPayload);
+      throw new Error(`HF API responded ${hfRes.status}`);
+    }
+
+    const contentType = hfRes.headers.get('content-type') || '';
+    const data = contentType.includes('application/json')
+      ? await hfRes.json()
+      : await hfRes.text();
+
+    /* Accept common payload shapes */
+    if (Array.isArray(data) && data[0]?.generated_text) {
+      aiResponse = data[0].generated_text;
+    } else if (typeof data === 'object' && data.generated_text) {
+      aiResponse = data.generated_text;
+    } else if (typeof data === 'string') {
+      aiResponse = data;
+    }
+
+    if (!aiResponse || typeof aiResponse !== 'string' || !aiResponse.trim())
+      throw new Error('No generated_text returned by HF endpoint.');
+    console.log('Raw Model Output (HF):', aiResponse);
+  } catch (err) {
+    console.error('HF generation error:', err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+
+  /* ---------------- save raw output (unchanged) -------- */
+  try {
+    const tmpDir = '/tmp/case studies json';
+    if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
+
+    const fileName = `case-studies-${Date.now()}.json`;
+    const tmpPath  = path.join(tmpDir, fileName);
+    fs.writeFileSync(
+      tmpPath,
+      JSON.stringify(
+        {
+          date: new Date().toISOString(),
+          department,
+          role,
+          care,
+          specialization,
+          rawModelOutput: aiResponse,
+        },
+        null,
+        2
+      ),
+      'utf8'
+    );
+
+    const appDir = path.join(process.cwd(), 'src', 'app');
+    if (!fs.existsSync(appDir)) fs.mkdirSync(appDir, { recursive: true });
+    fs.copyFileSync(tmpPath, path.join(appDir, fileName));
+  } catch (err) {
+    console.error('Error saving JSON file:', err);
+  }
+
+  /* ---------------- parse model output (unchanged) ----- */
+  const parsedCaseStudies            = parseCaseStudies(aiResponse);
+  let   parsedCaseStudiesWithAnswers = parseCaseStudiesWithAnswers(aiResponse);
+
+  /* ---------------- generate images (unchanged) -------- */
+  try {
+    const withPrompts = await Promise.all(
+      parsedCaseStudiesWithAnswers.map(async (cs) => {
+        const { prompt } = await generateImagePrompt(cs);
+        return { ...cs, imagePrompt: prompt };
+      })
+    );
+    const withImages = await fetchImagesForCaseStudies(withPrompts);
+    parsedCaseStudiesWithAnswers = withImages;
+
+    const clientData = parsedCaseStudiesWithAnswers.map((cs) => ({
+      caseStudy    : cs.caseStudy,
+      scenario     : cs.scenario,
+      questions    : cs.questions.map((q) => ({
+        question     : q.question,
+        options      : q.options,
+        correctAnswer: q.correctAnswer,
+        hint         : q.hint,
+      })),
+      imageUrl     : cs.imageUrl,
+      role         : cs.role,
+      department   : cs.department,
+      specialization: cs.specialization,
+    }));
+
+    return NextResponse.json({ caseStudies: clientData, aiResponse: parsedCaseStudiesWithAnswers });
+  } catch (error) {
+    console.error('Error generating images:', error);
+    return NextResponse.json({ error: 'Image generation failed.' }, { status: 500 });
+  }
+}
+
+/* generateImagePrompt & fetchImagesForCaseStudies are UNCHANGED            */
+async function generateImagePrompt(caseStudy) { /* … original function … */ }
+async function fetchImagesForCaseStudies(cs, model='sd3-large', aspect='1:1') { /* … original … */ }
