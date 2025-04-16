@@ -157,18 +157,18 @@ The medical case study should:
         - Question 1: Focuses on Peer Checking and Coaching
         - Question 2: Focuses on Debrief
         - Question 3: Focuses on ARCC
-    
-      **Case Study 2:**
+      
+      - **Case Study 2:**
         - Question 1: Focuses on Validate and Verify
         - Question 2: Focuses on STAR
         - Question 3: Focuses on No Distraction Zone
     
-      **Case Study 3:**
+      - **Case Study 3:**
         - Question 1: Focuses on Effective Handoffs
         - Question 2: Focuses on Read and Repeat Back
         - Question 3: Focuses on Ask Clarifying Questions
     
-      **Case Study 4:**
+      - **Case Study 4:**
         - Question 1: Focuses on Alphanumeric Language
         - Question 2: Focuses on SBAR
         - Question 3: Focuses on STAR
@@ -255,8 +255,136 @@ The medical case study should:
               "Hint": "1 sentence sumarized definition of correct answer choice."
             }
           ]
+        },
+        {
+          "department": "${department}",
+          "role": "${role}",
+          "specialization": "${specialization}",
+          "care": "${care}",
+          "caseStudy": "Case Study 2",
+          "scenario": "Description of the case study scenario.",
+          "questions": [
+            {
+              "question": "Question 1 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "C) correct answer",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            },
+            {
+              "question": "Question 2 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "b) correct answer",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            },
+            {
+              "question": "Question 3 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "A) correct answer ",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            }
+          ]
+        },
+        {
+          "department": "${department}",
+          "role": "${role}",
+          "specialization": "${specialization}",
+          "care": "${care}",
+          "caseStudy": "Case Study 3",
+          "scenario": "Description of the case study scenario.",
+          "questions": [
+            {
+              "question": "Question 1 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "C) correct answer",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            },
+            {
+              "question": "Question 2 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "b) correct answer",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            },
+            {
+              "question": "Question 3 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "A) correct answer ",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            }
+          ]
+        },
+        {
+          "department": "${department}",
+          "role": "${role}",
+          "specialization": "${specialization}",
+          "care": "${care}",
+          "caseStudy": "Case Study 4",
+          "scenario": "Description of the case study scenario.",
+          "questions": [
+            {
+              "question": "Question 1 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "C) correct answer",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            },
+            {
+              "question": "Question 2 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "b) correct answer",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            },
+            {
+              "question": "Question 3 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "A) correct answer ",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            }
+          ]
         }
-        // Repeat for Case Study 2, 3, and 4
       ]
     }
     \`\`\`
@@ -304,9 +432,29 @@ The medical case study should:
       throw new Error('Unexpected response format from HF endpoint');
     }
 
-    if (!aiResponse || typeof aiResponse !== 'string' || !aiResponse.trim())
+    if (!aiResponse) {
       throw new Error('No generated_text returned by HF endpoint.');
-    console.log('Raw Model Output (HF):', aiResponse);
+    }
+    
+    if (typeof aiResponse !== 'string') {
+      console.error('Response is not a string:', typeof aiResponse, aiResponse);
+      throw new Error('HF response is not a string');
+    }
+    
+    if (!aiResponse.trim()) {
+      throw new Error('Empty generated_text returned by HF endpoint.');
+    }
+    
+    // Attempt to extract JSON if wrapped in markdown code block
+    if (aiResponse.includes('```json') && aiResponse.includes('```')) {
+      const jsonMatch = aiResponse.match(/```json\s*([\s\S]*?)\s*```/);
+      if (jsonMatch && jsonMatch[1]) {
+        console.log('Extracted JSON from markdown');
+        aiResponse = jsonMatch[1].trim();
+      }
+    }
+    
+    console.log('Raw Model Output (HF):', aiResponse.substring(0, 200) + '...');
   } catch (err) {
     console.error('HF generation error:', err);
     return NextResponse.json({ error: err.message }, { status: 500 });
