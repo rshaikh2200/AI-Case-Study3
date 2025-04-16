@@ -6,7 +6,7 @@ export default function Home() {
 
   const handleSubmit = async () => {
     // Replace <your-username>/<your-model-id> with your model details
-    const inferenceUrl = 'https://api-inference.huggingface.co/models/rshaikh22/coachcarellm';
+    const inferenceUrl = 'https://yji0gm5ep0e3duvt.us-east-1.aws.endpoints.huggingface.cloud';
     
     try {
       const response = await fetch(inferenceUrl, {
