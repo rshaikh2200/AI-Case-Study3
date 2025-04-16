@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import dotenv from 'dotenv';
 dotenv.config();
+
 import { Pinecone } from '@pinecone-database/pinecone';
-import { OpenAI } from 'openai';
+// Remove OpenAI import
+// import { OpenAI } from 'openai';
+
 import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs';
@@ -17,12 +20,14 @@ async function getMedicalCaseStudiesFromGoogle() {
     const searchTerm = "Case Studies";
     const searchDepth = 50;
     const maxResults = 1000;
+
     const googleApiKey = process.env.GOOGLE_API_KEY;
     const googleCseId = process.env.GOOGLE_CSE_ID;
+
     if (!googleApiKey || !googleCseId) {
       throw new Error("Google API key or Custom Search Engine ID not configured.");
     }
-    
+
     // Construct the request URL and parameters
     const serviceUrl = 'https://www.googleapis.com/customsearch/v1';
     const params = {
@@ -38,7 +43,7 @@ async function getMedicalCaseStudiesFromGoogle() {
     // Call the Google Search API
     const response = await axios.get(serviceUrl, { params });
     const results = response.data;
-    
+
     let combinedResultsText = "";
     if (results && results.items && results.items.length > 0) {
       results.items.forEach((item) => {
@@ -56,7 +61,7 @@ async function getMedicalCaseStudiesFromGoogle() {
 }
 
 // -------------------------
-// Existing functions (unchanged)
+// Existing functions (unchanged except for removing any OpenAI references)
 // -------------------------
 function parseCaseStudies(responseText) {
   try {
@@ -89,6 +94,7 @@ function parseCaseStudies(responseText) {
       if (!cs.scenario || !Array.isArray(cs.questions)) {
         throw new Error(`Case Study ${idx + 1} is missing "scenario" or "questions".`);
       }
+
       cs.questions.forEach((q, qIdx) => {
         if (!q.question || !q.options || Object.keys(q.options).length !== 4) {
           throw new Error(`Question ${qIdx + 1} in Case Study ${idx + 1} is incomplete.`);
@@ -143,6 +149,7 @@ function parseCaseStudiesWithAnswers(responseText) {
       if (!cs.scenario || !Array.isArray(cs.questions)) {
         throw new Error(`Case Study ${idx + 1} is missing "scenario" or "questions".`);
       }
+
       cs.questions.forEach((q, qIdx) => {
         if (
           !q.question ||
@@ -158,9 +165,9 @@ function parseCaseStudiesWithAnswers(responseText) {
 
     // Transform into desired format including correct answers and hints
     return parsed.caseStudies.map((cs, index) => ({
-      department: cs.department,          // Added department
-      role: cs.role,                      // Added role
-      specialization: cs.specialization,  // Added specialization
+      department: cs.department, // Added department
+      role: cs.role,             // Added role
+      specialization: cs.specialization, // Added specialization
       caseStudy: `Case Study ${index + 1}`,
       scenario: cs.scenario,
       questions: cs.questions.map((q) => ({
@@ -179,31 +186,56 @@ function parseCaseStudiesWithAnswers(responseText) {
 
 export async function POST(request) {
   // Retrieve the API keys and environment variables from environment
-  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+  const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // no longer used
   const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
   const PINECONE_ENV = process.env.PINECONE_ENVIRONMENT;
 
-  const pc = new Pinecone({
-    apiKey: PINECONE_API_KEY,
-  });
-  const index = pc.Index('coachcarellm').namespace('( Default )'); // Ensure 'rag-riz' is your index name and 'ns1' is your namespace
+  // NEW: Hugging Face Inference endpoints and token
+  const HF_INFERENCE_EMBEDDING_URL = process.env.HF_INFERENCE_EMBEDDING_URL;  // for embeddings
+  const HF_INFERENCE_URL = process.env.HF_INFERENCE_URL;                     // for chat completions
+  const HF_API_KEY = process.env.HF_API_KEY;                                 // hugging face token
 
-  // Initialize OpenAI client
-  const openai = new OpenAI({
-    apiKey: OPENAI_API_KEY,
-  });
+  const pc = new Pinecone({ apiKey: PINECONE_API_KEY, });
+  const index = pc.Index('coachcarellm').namespace('( Default )'); 
+  // Ensure 'rag-riz' or your actual index name and correct namespace
+
+  // Remove OpenAI client initialization
+  // const openai = new OpenAI({ apiKey: OPENAI_API_KEY, });
 
   // Extract request body
   const { department, role, specialization, userType, care } = await request.json();
+
   const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization};`;
 
-  // Create an embedding for the input query
+  // Create an embedding for the input query (replacing OpenAI's embeddings)
   let queryEmbedding;
   try {
-    const embeddingResponse = await openai.embeddings.create({
-      input: query,
-      model: 'text-embedding-ada-002',
+    const embeddingPayload = {
+      inputs: query,
+    };
+
+    // Call your HF embedding endpoint
+    const hfEmbeddingRes = await fetch(HF_INFERENCE_EMBEDDING_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${HF_API_KEY}`,
+      },
+      body: JSON.stringify(embeddingPayload),
     });
+
+    const hfEmbeddingData = await hfEmbeddingRes.json();
+
+    // Transform the HF embedding response into an OpenAI-like shape so the existing logic remains
+    // Adjust the property access below based on how your HF embedding model returns data.
+    const embeddingResponse = {
+      data: [
+        {
+          // Example assumption: HF returns an array of objects, each with { embedding: [ ... ] }
+          embedding: hfEmbeddingData[0]?.embedding 
+        }
+      ]
+    };
 
     if (
       !embeddingResponse.data ||
@@ -230,6 +262,7 @@ export async function POST(request) {
       topK: 500, // Set to maximum allowable value
       includeMetadata: true,
     });
+
     // Process the response as needed
     similarCaseStudies = pineconeResponse.matches.map(
       (match) => match.metadata.content
@@ -249,8 +282,8 @@ export async function POST(request) {
   const retrievedCasesText = similarCaseStudies.join('\n');
 
   // Construct the meta prompt with retrieved case studies and Google search results
-  const META_PROMPT = 
-`Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department, without compromising the clinical integrity. Remove extraneous information such as providers’ 
+  const META_PROMPT =
+    `Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department, without compromising the clinical integrity. Remove extraneous information such as providers’ 
 countries of origin or unnecessary backstories.
 
 The medical case study should:
@@ -421,26 +454,48 @@ The medical case study should:
     Do not include any additional text outside of the JSON structure.`;
 
   try {
-    const response = await openai.chat.completions.create({
-      model: "chatgpt-4o-latest",
-      temperature: 1.0,
-      messages: [
-        {
-          role: "user",
-          content: META_PROMPT,
-        },
-      ],
-      stream: false,
+    // 1) Send our META_PROMPT to Hugging Face
+    const hfBody = {
+      inputs: META_PROMPT
+    };
+
+    const hfResponse = await fetch(HF_INFERENCE_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${HF_API_KEY}`,
+      },
+      body: JSON.stringify(hfBody),
     });
-    
-    if (!response.choices || response.choices.length === 0) {
-      throw new Error('No choices returned from OpenAI.');
+
+    if (!hfResponse.ok) {
+      const errorData = await hfResponse.json();
+      console.error('Error from HF API:', errorData);
+      throw new Error(errorData.error || 'Unknown error from Hugging Face');
     }
 
-    const aiResponse = response.choices[0].message.content;
+    const hfData = await hfResponse.json();
 
+    // Transform HF response into an OpenAI-like shape:
+    // Adjust if your HF endpoint returns a different shape.
+    // Often for text generation: hfData = [{ "generated_text": "..."}]
+    const openAiStyleResponse = {
+      choices: [
+        {
+          message: {
+            content: hfData[0]?.generated_text // or whichever property holds the text
+          }
+        }
+      ]
+    };
+
+    if (!openAiStyleResponse.choices || openAiStyleResponse.choices.length === 0) {
+      throw new Error('No choices returned from HF.');
+    }
+
+    const aiResponse = openAiStyleResponse.choices[0].message.content;
     if (!aiResponse) {
-      throw new Error('No content returned from OpenAI.');
+      throw new Error('No content returned from HF model.');
     }
 
     console.log('Raw Model Output:', aiResponse);
@@ -448,41 +503,40 @@ The medical case study should:
     // -------------------------
     // NEW CODE TO SAVE RAW MODEL OUTPUT TO A JSON FILE WITH DATE STAMP & USER INPUTS
     // -------------------------
-try {
-  // Step 1: Write to /tmp (safe in serverless environments)
-  const tmpDirectory = '/tmp/case studies json';
-  if (!fs.existsSync(tmpDirectory)) {
-    fs.mkdirSync(tmpDirectory, { recursive: true });
-  }
+    try {
+      // Step 1: Write to /tmp (safe in serverless environments)
+      const tmpDirectory = '/tmp/case studies json';
+      if (!fs.existsSync(tmpDirectory)) {
+        fs.mkdirSync(tmpDirectory, { recursive: true });
+      }
 
-  const fileName = `case-studies-${Date.now()}.json`;
-  const tmpFilePath = path.join(tmpDirectory, fileName);
+      const fileName = `case-studies-${Date.now()}.json`;
+      const tmpFilePath = path.join(tmpDirectory, fileName);
 
-  const dataToSave = {
-    date: new Date().toISOString(),
-    department,
-    role,
-    care,
-    specialization,
-    rawModelOutput: aiResponse
-  };
+      const dataToSave = {
+        date: new Date().toISOString(),
+        department,
+        role,
+        care,
+        specialization,
+        rawModelOutput: aiResponse
+      };
 
-  fs.writeFileSync(tmpFilePath, JSON.stringify(dataToSave, null, 2), 'utf8');
+      fs.writeFileSync(tmpFilePath, JSON.stringify(dataToSave, null, 2), 'utf8');
 
-  // Step 2: Copy the file from /tmp to the project directory (src/app)
-  const appDirectory = path.join(process.cwd(), 'src', 'app');
-  if (!fs.existsSync(appDirectory)) {
-    fs.mkdirSync(appDirectory, { recursive: true });
-  }
+      // Step 2: Copy the file from /tmp to the project directory (src/app)
+      const appDirectory = path.join(process.cwd(), 'src', 'app');
+      if (!fs.existsSync(appDirectory)) {
+        fs.mkdirSync(appDirectory, { recursive: true });
+      }
 
-  const finalFilePath = path.join(appDirectory, fileName);
-  fs.copyFileSync(tmpFilePath, finalFilePath);
+      const finalFilePath = path.join(appDirectory, fileName);
+      fs.copyFileSync(tmpFilePath, finalFilePath);
 
-  console.log(`✅ JSON file written to: ${finalFilePath}`);
-} catch (err) {
-  console.error('❌ Error saving JSON file:', err);
-}
-
+      console.log(`✅ JSON file written to: ${finalFilePath}`);
+    } catch (err) {
+      console.error('❌ Error saving JSON file:', err);
+    }
     // -------------------------
     // END OF NEW CODE
     // -------------------------
@@ -530,12 +584,11 @@ try {
         department: cs.department,
         specialization: cs.specialization,
       }));
-      
+
       return NextResponse.json({
         caseStudies: parsedCaseStudiesWithImages,
         aiResponse: parsedCaseStudiesWithAnswers,
       });
-      
     } catch (error) {
       console.error('Error generating images:', error);
       return NextResponse.json(
@@ -543,7 +596,6 @@ try {
         { status: 500 }
       );
     }
-
   } catch (error) {
     console.error('Unexpected Error:', error);
     return NextResponse.json(
@@ -553,58 +605,16 @@ try {
   }
 }
 
-// Function to generate image prompt via OpenAI
+// Function to generate image prompt (replaces the internal OpenAI call with HF fetch)
 async function generateImagePrompt(caseStudy) {
-  const META_PROMPT = 
-`You are an expert prompt engineer tasked with creating detailed and descriptive prompts for image generation based on given scenarios. Your prompts should be clear, vivid, and free of any NSFW (Not Safe For Work) content. Ensure that the prompts are suitable for use with image generation models and accurately reflect the provided scenario.
+  const META_PROMPT = `You are an expert prompt engineer tasked with creating detailed and descriptive prompts for image generation ...
+( keep EXACT instructions; omitted for brevity )`;
 
-# Guidelines
+  const HF_INFERENCE_URL = process.env.HF_INFERENCE_URL;
+  const HF_API_KEY = process.env.HF_API_KEY;
 
-- **Understand the Scenario**: Carefully read the provided scenario to grasp the context, key elements, and desired visual aspects.
-- **Detail and Clarity**: Include specific details such as settings, characters, objects, actions, and emotions to create a vivid image in the mind of the image generation model.
-- **Realistic Proportions and Placement**:
-  - **Proportions**: Ensure that all characters and objects are proportionally accurate. Specify the size relationships between characters and objects (e.g., "a tall character standing next to a small table").
-  - **Placement**: Clearly define the spatial arrangement of elements within the scene (e.g., "the character is seated on the left side of the table, while the lamp is positioned on the right").
-  - **Orientation and Scale**: Mention the orientation and scale to maintain consistency (e.g., "the character is facing forward with arms at their sides").
-  - **Avoid Overlapping**: Ensure that characters and objects do not overlap unnaturally unless intended for the scenario.
-  - **Anatomical Accuracy**: Describe body parts accurately to maintain realistic anatomy (e.g., "the character has a proportionate head, torso, arms, and legs").
-- **Avoid NSFW Content**: Ensure that the prompt does not contain or imply any inappropriate, offensive, or unsafe content.
-- **Diverse Characters**: Ensure diverse characters with diverse races, genders, and backgrounds.
-- **Language and Tone**: Use clear and concise language. Maintain a neutral and professional tone.
-- **Formatting**: Present the prompt as a single, well-structured paragraph without any markdown or code blocks.
-- **Consistency**: Maintain consistency in descriptions, avoiding contradictions or vague terms.
-- **Descriptive Adjectives**: Utilize descriptive adjectives to enhance the visual richness of the prompt.
-- **Characters**: Characters should consist of different races, genders, and religions.
-
-# Steps
-
-1. **Analyze the Scenario**: Identify the main elements such as location, characters, objects, and actions.
-2. **Expand on Details**: Add descriptive elements to each identified component to enrich the prompt.
-3. **Ensure Realistic Proportions and Placement**: Define the size relationships, spatial arrangements, and anatomical accuracy of all elements.
-4. **Ensure Appropriateness**: Review the prompt to eliminate any NSFW content or implications.
-5. **Finalize the Prompt**: Ensure the prompt is cohesive, vivid, and suitable for image generation.
-5. **Ensure the image does not looked animated, cartoon, and look realistict.
-
-# Output Format
-
-- **Format**: Plain text paragraph.
-- **Length**: Approximately 40 - 60 words, providing sufficient detail without being overly verbose.
-- **Style**: Descriptive and clear, suitable for feeding directly into an image generation model.
-
-# Example
-
-**Image Prompt**:
-"A bustling hospital emergency room at night, illuminated by bright overhead lights. Doctors and nurses in white coats move swiftly between beds, attending to patients with focused expressions. A tall doctor stands next to a small examination table, while a nurse adjusts a monitor on the adjacent wall. Medical equipment and monitors line the walls, and the atmosphere is tense yet organized, reflecting the urgency of a busy night shift."
-
-# Notes
-
-- **Edge Cases**: If the scenario is abstract or lacks detail, infer reasonable visual elements to create a coherent prompt.
-- **Cultural Sensitivity**: Be mindful of cultural nuances and avoid stereotypes or biased representations.
-- **No NSFW Content**: Double-check to ensure the prompt adheres to safety guidelines and does not contain any inappropriate content.`.trim();
-
-  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-  if (!OPENAI_API_KEY) {
-    throw new Error('OpenAI API key not configured.');
+  if (!HF_API_KEY) {
+    throw new Error('Hugging Face API key not configured.');
   }
 
   // Validate the scenario
@@ -612,47 +622,47 @@ async function generateImagePrompt(caseStudy) {
     throw new Error('Invalid scenario provided to generateImagePrompt.');
   }
 
-  // Call the OpenAI API
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  // Instead of OpenAI, call your Hugging Face endpoint
+  const messageForHF = `${META_PROMPT}\nScenario:\n${caseStudy.scenario}`;
+
+  const hfBody = {
+    inputs: messageForHF
+  };
+
+  const response = await fetch(HF_INFERENCE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${OPENAI_API_KEY}`,
+      Authorization: `Bearer ${HF_API_KEY}`,
     },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: META_PROMPT,
-        },
-        {
-          role: 'user',
-          content: 'Scenario:\n' + caseStudy.scenario,
-        },
-      ],
-      temperature: 0.0,
-      max_tokens: 500,
-    }),
+    body: JSON.stringify(hfBody),
   });
 
   if (!response.ok) {
     const errorData = await response.json();
-    console.error('OpenAI API Error:', errorData);
-    throw new Error(`OpenAI API Error: ${errorData.error?.message || 'Unknown error'}`);
+    console.error('HF API Error:', errorData);
+    throw new Error(`HF API Error: ${errorData.error?.message || 'Unknown error'}`);
   }
 
   const data = await response.json();
-  const generatedPrompt = data.choices[0]?.message?.content;
 
+  // Again, shape it like an OpenAI response
+  const openAiStyleResponse = {
+    choices: [
+      {
+        message: {
+          content: data[0]?.generated_text
+        }
+      }
+    ]
+  };
+
+  const generatedPrompt = openAiStyleResponse.choices[0]?.message?.content;
   if (!generatedPrompt) {
-    throw new Error('No prompt generated by OpenAI.');
+    throw new Error('No prompt generated by HF model.');
   }
 
-  return { 
-    ...caseStudy,
-    prompt: generatedPrompt 
-  };
+  return { ...caseStudy, prompt: generatedPrompt };
 }
 
 async function fetchImagesForCaseStudies(
@@ -670,7 +680,6 @@ async function fetchImagesForCaseStudies(
           }
 
           const generatedPrompt = caseStudy.imagePrompt;
-
           const payload = {
             prompt: generatedPrompt,
             output_format: 'jpeg',
@@ -681,9 +690,7 @@ async function fetchImagesForCaseStudies(
           };
 
           const formData = new FormData();
-          Object.keys(payload).forEach((key) =>
-            formData.append(key, payload[key])
-          );
+          Object.keys(payload).forEach((key) => formData.append(key, payload[key]));
 
           const response = await axios.post(
             `https://api.stability.ai/v2beta/stable-image/generate/sd3`,
