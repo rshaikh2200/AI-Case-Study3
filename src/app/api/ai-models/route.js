@@ -302,59 +302,58 @@ The medical case study should:
     
     - **Strictly follow the Question Structure Below and make sure the options choices match the correct safety behaviors focused in the question:**
       - **Case Study 1:**
-        - Question 1: Focuses on Peer Checking and Coaching
-        - Question 2: Focuses on Debrief
-        - Question 3: Focuses on ARCC
+        - Question 1: Focuses on Colleague Feedback
+        - Question 2: Focuses on Team Evaluation
+        - Question 3: Focuses on Risk Intervention
     
       **Case Study 2:**
-        - Question 1: Focuses on Validate and Verify
-        - Question 2: Focuses on STAR
-        - Question 3: Focuses on No Distraction Zone
+        - Question 1: Focuses on Validattion and Assessment
+        - Question 2: Focuses on SAFE (Stop-Assess-Focus-Engage)
+        - Question 3: Focuses on Interuption Free Zone
     
       **Case Study 3:**
-        - Question 1: Focuses on Effective Handoffs
-        - Question 2: Focuses on Read and Repeat Back
-        - Question 3: Focuses on Ask Clarifying Questions
+        - Question 1: Focuses on Effective Free Zone
+        - Question 2: Focuses on Clear Communications
+        - Question 3: Focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate)
     
       **Case Study 4:**
-        - Question 1: Focuses on Alphanumeric Language
-        - Question 2: Focuses on SBAR
-        - Question 3: Focuses on STAR
+        - Question 1: Focuses on Clarify Information
+        - Question 2: Focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate)
+        - Question 3: Focuses on SAFE (Stop-Assess-Focus-Engage)
     
-    - **Use the following 11 Safety Behaviors and Definitions:**
+    - **Use the following 10 Safety Behaviors and Definitions:**
     
-        a. Peer Checking and Coaching
-            Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
+        a. Colleague Feedback
+            Definition: Ask your colleagues to review your work and offer assistance in reviewing the work of others. 
     
-        b. Debrief
+        b. Team Evaluation
             Definition: Reflect on what went well with team , what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
       
-        c. ARCC
+        c. Risk Intervention
             Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
     
-        d. Validate and Verify
+        d. Validation Assessment
             Definition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).
     
-        e. STAR
-            Definition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).
+        e. SAFE (Stop-Assess-Focus-Engage)
+            Definition: Stop (pause for 2 seconds to focus on task at hand), Assess (consider action you're about to take), Focus (concentrate and carry out the task), Engage (check to make sure the task was done right and you got the right result).
     
-        f. No Distraction Zone
+        f. Interuption Free Zone
             Definition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like "Stand by" or "Hold on".
     
-        g. Effective Handoffs
-            Definition: Six important principles that make an Effective Handoffs: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
+        g. Effective Care Transtitions
+            Definition: Six important principles that make an Effective Care Transitions: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
+        
+        h. CARE (Communicate-Acknowledge-Repeat-Evaluate)
+             Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
     
-        h. Read and Repeat Back
-            Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
+        i. Clear Communications
+             Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
+        
+        j. Clarifying Information
+           Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
     
-        i. Ask Clarifying Questions
-            Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
-    
-        j. Using Alphanumeric Language
-            Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
-    
-        k. SBAR
-            Definition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions.), Recommendations (what is my recommendation, request, or plan?)
+      
     
     Ensure the following format is strictly followed and output the entire response as valid JSON.
     
