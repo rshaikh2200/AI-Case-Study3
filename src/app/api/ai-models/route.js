@@ -15,7 +15,7 @@ const openai = new OpenAI({
 });
 
 // Hardcoded Hugging Face Inference Endpoint URL for text generation
-const HUGGINGFACE_INFERENCE_URL = 'https://v93n83hwffr0xrvn.us-east-1.aws.endpoints.huggingface.cloud';
+const HUGGINGFACE_INFERENCE_URL = 'https://yjjtfpf4yx44n4tt.us-east-1.aws.endpoints.huggingface.cloud';
 
 // -------------------------
 // NEW FUNCTION: Google Search API integration for Medical Error Case Studies
