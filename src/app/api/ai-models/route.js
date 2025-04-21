@@ -168,7 +168,6 @@ function parseCaseStudiesWithAnswers(responseText) {
     throw new Error('Failed to parse case studies JSON with correct answers. Ensure the model outputs valid JSON.');
   }
 }
-
 export async function POST(request) {
   // Retrieve the API keys and environment variables
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;        // for embeddings
@@ -383,7 +382,9 @@ The medical case study should:
             }
           ]
        }
-        // Repeat for Case Study 2, 3, and 4
+        /* Removed the inline comment:
+           // Repeat for Case Study 2, 3, and 4
+           to avoid invalid JSON */
       ]
     }
     \`\`\`
