@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { Pinecone } from '@pinecone-database/pinecone';
-import { OpenAI } from 'openai';                       // re‐added for embeddings
+import { OpenAI } from 'openai';                       
 import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs';
