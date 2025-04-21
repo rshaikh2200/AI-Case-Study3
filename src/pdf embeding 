@@ -1,0 +1,123 @@
+import os
+import PyPDF2
+import numpy as np
+from pinecone import Pinecone, ServerlessSpec
+from openai import OpenAI
+import tiktoken
+
+# ============ CONFIGURATION ============
+CASE_STUDIES_FOLDER = "case studies"
+
+OPENAI_API_KEY = "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"
+PINECONE_API_KEY = "pcsk_44E2Sa_2hzPA1D4BDf5Fv4iQURYs84Yk4vLPLzhyKZgs2XsXEY8yEhHB3CRdv5KCUvY27x"
+PINECONE_ENVIRONMENT = "us-east-1"
+PINECONE_INDEX_NAME = "coachcarellm"
+
+OPENAI_EMBED_MODEL = "text-embedding-ada-002"
+CHUNK_SIZE = 500 
+CHUNK_OVERLAP = 100
+# ============ END CONFIGURATION ============
+
+def initialize_pinecone():
+    pc = Pinecone(api_key=PINECONE_API_KEY)
+    if PINECONE_INDEX_NAME not in [index["name"] for index in pc.list_indexes()]:
+        pc.create_index(
+            name=PINECONE_INDEX_NAME,
+            dimension=1536,
+            metric='cosine',
+            spec=ServerlessSpec(cloud='aws', region=PINECONE_ENVIRONMENT)
+        )
+    return pc.Index(PINECONE_INDEX_NAME)
+
+def extract_text_from_pdf(pdf_path):
+    text = ""
+    try:
+        with open(pdf_path, "rb") as f:
+            reader = PyPDF2.PdfReader(f)
+            for page in reader.pages:
+                extracted = page.extract_text()
+                if extracted:
+                    text += extracted + "\n"
+    except Exception as e:
+        print(f"Error reading {pdf_path}: {e}")
+    return text
+
+def clean_text(text):
+    text = text.encode('ascii', errors='ignore').decode()
+    return ' '.join(text.split())
+
+def chunk_text(text, chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP):
+    tokenizer = tiktoken.get_encoding("cl100k_base")
+    tokens = tokenizer.encode(text)
+    chunks = []
+    start = 0
+    while start < len(tokens):
+        end = min(start + chunk_size, len(tokens))
+        chunk_tokens = tokens[start:end]
+        chunk_text = tokenizer.decode(chunk_tokens)
+        chunks.append(chunk_text.strip())
+        start += chunk_size - chunk_overlap
+    return chunks
+
+def contains_nan(vector):
+    return np.isnan(vector).any()
+
+def get_embedding(client, text, model=OPENAI_EMBED_MODEL):
+    try:
+        response = client.embeddings.create(input=[text], model=model)
+        return response.data[0].embedding
+    except Exception as e:
+        print(f"Error generating embedding: {e}")
+        return None
+
+def upsert_embeddings_to_pinecone(index, embeddings_data):
+    try:
+        index.upsert(vectors=embeddings_data)
+    except Exception as e:
+        print(f"Error upserting embeddings to Pinecone: {e}")
+
+def main():
+    client = OpenAI(api_key=OPENAI_API_KEY)
+    index = initialize_pinecone()
+
+    for root, dirs, files in os.walk(CASE_STUDIES_FOLDER):
+        for file_name in files:
+            if file_name.lower().endswith(".pdf"):
+                pdf_path = os.path.join(root, file_name)
+                print(f"\nProcessing: {pdf_path}")
+                
+                pdf_text = extract_text_from_pdf(pdf_path)
+                if not pdf_text.strip():
+                    print(f"Warning: No text extracted from {pdf_path}")
+                    continue
+
+                cleaned_text = clean_text(pdf_text)
+                chunks = chunk_text(cleaned_text)
+
+                vectors_to_upsert = []
+                for i, chunk in enumerate(chunks):
+                    embedding_vector = get_embedding(client, chunk)
+                    if embedding_vector is not None:
+                        if contains_nan(embedding_vector):
+                            print(f"\n❌ NaN values detected in chunk {i} of {file_name}:")
+                            print("Text chunk:")
+                            print(chunk)
+                            print("Embedding vector:")
+                            print(embedding_vector)
+                        else:
+                            unique_id = f"{os.path.basename(pdf_path)}-{i}"
+                            metadata = {
+                                "source": pdf_path,
+                                "chunk_index": i,
+                                "text": chunk
+                            }
+                            vectors_to_upsert.append((unique_id, embedding_vector, metadata))
+
+                if vectors_to_upsert:
+                    upsert_embeddings_to_pinecone(index, vectors_to_upsert)
+                    print(f"✅ Upserted {len(vectors_to_upsert)} valid chunks from {file_name}")
+                else:
+                    print(f"⚠️ No valid chunks to upsert from {file_name}")
+
+if __name__ == "__main__":
+    main()
