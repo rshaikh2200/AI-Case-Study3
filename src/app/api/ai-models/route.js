@@ -403,7 +403,7 @@ The medical case study should:
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${HF_API_KEY}`,
+        Authorization: `Bearer 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`,
       },
       body: JSON.stringify(hfBody),
     });
