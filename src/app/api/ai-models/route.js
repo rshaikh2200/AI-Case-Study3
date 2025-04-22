@@ -388,9 +388,7 @@ The medical case study should:
             }
           ]
        }
-        /* Removed the inline comment:
-           // Repeat for Case Study 2, 3, and 4
-           to avoid invalid JSON */
+        // Repeat for Case Study 2, 3, and 4
       ]
     }
     \`\`\`
@@ -404,6 +402,7 @@ The medical case study should:
     Do not include any additional text outside of the JSON structure.`;
 
 
+
   try {
     // ——— MODIFIED: Use Hugging Face endpoint via OpenAI JS client ———
     const caseClient = new OpenAI({
@@ -415,7 +414,7 @@ The medical case study should:
       messages: [{ role: 'user', content: META_PROMPT }],
       stream: false,
       max_tokens: 8192,
-      temperature: 0.5,
+      temperature: 1.0,
     });
     const rawResponseText = completion.choices[0].message.content;
     console.log('Raw Model Output:', rawResponseText);
