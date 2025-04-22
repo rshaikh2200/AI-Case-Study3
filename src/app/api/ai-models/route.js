@@ -406,7 +406,7 @@ The medical case study should:
   try {
     // ——— MODIFIED: Use Hugging Face endpoint via OpenAI JS client ———
     const caseClient = new OpenAI({
-      baseURL: 'https://r1jcpi96ffkbc4b9.us-east-1.aws.endpoints.huggingface.cloud',
+      baseURL: 'https://sv2dgpouukaw19jc.us-east-1.aws.endpoints.huggingface.cloud/v1/',
       apiKey: HF_API_KEY,
     });
     const completion = await caseClient.chat.completions.create({
