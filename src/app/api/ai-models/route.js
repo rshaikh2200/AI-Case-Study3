@@ -14,6 +14,15 @@ const openai = new OpenAI({
 });
 
 
+function fixInvalidCaseStudiesJson(jsonString) {
+  // Merge trailing "caseStudy", "scenario", "questions" keys into preceding object
+  let fixed = jsonString
+    .replace(/\},\s*"caseStudy":/g, ',"caseStudy":')
+    .replace(/\],\s*\{/g, ',{')
+    .replace(/\},\s*\{(?=\s*"department":)/g, '},{');
+  return fixed;
+}
+
 function parseCaseStudies(responseText) {
   try {
     let jsonString = '';
@@ -333,7 +342,9 @@ The medical case study should:
             }
           ]
        }
-        
+        /* Removed the inline comment:
+           // Repeat for Case Study 2, 3, and 4
+           to avoid invalid JSON */
       ]
     }
     \`\`\`
@@ -342,68 +353,6 @@ The medical case study should:
     
     - The JSON is **well-formatted** and **free of any syntax errors**.
     - There are **no comments** (e.g., lines starting with //), **no trailing commas**, and **no additional text** outside the JSON block.
-    - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
-    
-
-    **Example:**
-    
-    \`\`\`json
-    {
-      },
-        "department" : "Operating Room",
-        "role" : "Surgeon",
-        "specialization": "General Surgery"
-        "care": "inpatient"
-    },
-      "caseStudies": [
-        {
-          "caseStudy": "Case Study 1",
-          "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
-          "questions": [
-            {
-              "question": "Whcich EPT practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
-              "options": {
-                "A": "Peer Checking and Coaching",
-                "B": "Debrief",
-                "C": "ARCC",
-                "D": "Validate and Verify"
-              },
-              "correct answer": "D) Validate and Verify",
-              "Hint": "Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?"
-            },
-            {
-              "question": "If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying?",
-              "options": {
-                "A": "STAR",
-                "B": "No Distraction Zone",
-                "C": "ARCC",
-                "D": "Effective Handoffs"
-              },
-              "correct answer": "C) ARCC",
-              "Hint": "Ask a question to gently prompt the other person of potential safety issue"
-            },
-            {
-              "question": "If Dr.Patel, along with the team, had taken a moment after surgery to reflext on the day's task, and discuss what went well or what didn't, whihc EPT practice would they applied?",
-              "options": {
-                "A": "ARCC",
-                "B": "Debrief",
-                "C": "No Distraction Zone",
-                "D": "Read and Repeat Back"
-              },
-              "correct answer": "B) Debrief",
-              "Hint": "3 minute discussion focusing on what went well and areas for improvement."
-            }
-          ]
-        }
-        // Additional case studies...
-      ]
-    }
-    \`\`\`
-    
-    Ensure that:
-    
-    - The JSON is **well-formatted** and **free of any syntax errors**.
-    - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
     - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
     
     Do not include any additional text outside of the JSON structure.`;
@@ -420,7 +369,7 @@ The medical case study should:
       messages: [{ role: 'user', content: META_PROMPT }],
       stream: false,
       max_tokens: 8192,
-      temperature: 1.0,
+      temperature: 0.7,
     });
     const rawResponseText = completion.choices[0].message.content;
     console.log('Raw Model Output:', rawResponseText);
@@ -472,4 +421,3 @@ The medical case study should:
     );
   }
 }
-
