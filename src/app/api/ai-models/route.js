@@ -369,7 +369,7 @@ The medical case study should:
       messages: [{ role: 'user', content: META_PROMPT }],
       stream: false,
       max_tokens: 8192,
-      temperature: 0.0,
+      temperature: 1.0,
     });
     const rawResponseText = completion.choices[0].message.content;
     console.log('Raw Model Output:', rawResponseText);
