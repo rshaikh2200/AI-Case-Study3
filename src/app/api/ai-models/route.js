@@ -312,7 +312,7 @@ The medical case study should:
         - Question 3: Focuses on Interuption Free Zone
     
       **Case Study 3:**
-        - Question 1: Focuses on Effective Free Zone
+        - Question 1: Focuses on Interruption Free Zone
         - Question 2: Focuses on Clear Communications
         - Question 3: Focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate)
     
