@@ -478,13 +478,13 @@ The medical case study should:
 
   try {
     const caseClient = new OpenAI({
-      baseURL: 'https://phhlve4uut2u7rzw.us-east-1.aws.endpoints.huggingface.cloud',
+      baseURL: 'https://kzhygs15r8ecrupx.us-east-1.aws.endpoints.huggingface.cloud',
       apiKey: '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',
     });
     const completion = await caseClient.chat.completions.create({
       model: 'tgi',
       messages: [
-        { role: 'system', content: 'You are a JSON only text generator. Do not ask any clarifying questions or provide any additional commentary. Respond only with valid text and correct JSON format matching the user’s prompt.' },
+        { role: 'system', content: 'You are strictly a JSON only text generator. Do not ask any clarifying questions or provide any additional commentary. Respond only with valid text and strictly follow the JSON format matching the user’s prompt.' },
         { role: 'user',   content: META_PROMPT }
       ],
       stream: false,
