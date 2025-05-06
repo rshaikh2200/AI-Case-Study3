@@ -1,90 +1,56 @@
 import { NextResponse } from 'next/server';
 import dotenv from 'dotenv';
 dotenv.config();
+
 import { Pinecone } from '@pinecone-database/pinecone';
 import { OpenAI } from 'openai';
 import axios from 'axios';
-import FormData from 'form-data';
 import fs from 'fs';
 import path from 'path';
 
-// -------------------------
-// NEW FUNCTION: Google Search API integration for Medical Error Case Studies
-// -------------------------
-async function getMedicalCaseStudiesFromGoogle() {
-  try {
-    // Set your search parameters here – adjust the query and search_depth as needed.
-    const searchTerm = "Case Studies";
-    const searchDepth = 50;
-    const maxResults = 1000;
-    const googleApiKey = process.env.GOOGLE_API_KEY;
-    const googleCseId = process.env.GOOGLE_CSE_ID;
-    if (!googleApiKey || !googleCseId) {
-      throw new Error("Google API key or Custom Search Engine ID not configured.");
-    }
-    
-    // Construct the request URL and parameters
-    const serviceUrl = 'https://www.googleapis.com/customsearch/v1';
-    const params = {
-      q: searchTerm,
-      key: googleApiKey,
-      cx: googleCseId,
-      num: searchDepth,
-      siteSearch: 'https://psnet.ahrq.gov/webmm-case-studies'
-      // Optionally, add a site filter if you wish to target a specific website:
-      // siteSearch: 'jointcommission.org'
-    };
+// Instantiate OpenAI client for embeddings (unchanged)
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
-    // Call the Google Search API
-    const response = await axios.get(serviceUrl, { params });
-    const results = response.data;
-    
-    let combinedResultsText = "";
-    if (results && results.items && results.items.length > 0) {
-      results.items.forEach((item) => {
-        // Combine the link and snippet from each result
-        combinedResultsText += `Source: ${item.link} - ${item.snippet}\n`;
-      });
-    } else {
-      combinedResultsText = "No Google search results found for medical error case studies.";
-    }
-    return combinedResultsText;
-  } catch (error) {
-    console.error("Error in getMedicalCaseStudiesFromGoogle:", error.message);
-    return "Error retrieving Google search results.";
-  }
-}
-
-// -------------------------
-// Existing functions (unchanged)
-// -------------------------
+/**
+ * Extracts and parses case studies JSON from a raw response string.
+ */
 function parseCaseStudies(responseText) {
   try {
-    let jsonString = '';
-
-    // Attempt to parse JSON from code fences
-    const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/i);
-    if (jsonMatch && jsonMatch[1]) {
-      jsonString = jsonMatch[1];
-    } else {
-      // Attempt to parse the entire response as JSON
-      jsonString = responseText;
+    // 1) Extract the first JSON object in the response
+    const match = responseText.match(/\{[\s\S]*\}/);
+    if (!match) {
+      throw new Error('No JSON object found in response');
     }
+    let jsonString = match[0];
 
-    // Remove comments (lines starting with //)
-    jsonString = jsonString.replace(/\/\/.*$/gm, '');
+    jsonString = jsonString
+    // Remove code fences if present
+    .replace(/```json/g, '')
+    .replace(/```/g, '')
+    // Fix unescaped quotes
+    .replace(/(?<!")\\"/g, '\\\\"') // Escape unescaped quotes
+    // Remove trailing commas
+    .replace(/,\s*([}\]])/g, '$1')
 
-    // Remove trailing commas before closing brackets/braces
-    jsonString = jsonString.replace(/,\s*([}\]])/g, '$1');
+    // 3) Escape any unescaped double quotes inside Hint values
+    jsonString = jsonString.replace(
+      /"Hint":\s*"([\s\S]*?)"/g,
+      (_match, hintText) => {
+        const escaped = hintText.replace(/"/g, '\\"');
+        return `"Hint": "${escaped}"`;
+      }
+    );
 
-    // Parse the cleaned JSON string
+    // 4) Parse cleaned JSON string
     const parsed = JSON.parse(jsonString);
 
     if (!parsed.caseStudies || !Array.isArray(parsed.caseStudies)) {
       throw new Error('Invalid JSON structure: Missing "caseStudies" array.');
     }
 
-    // Further validation
+    // 5) Validate structure of each case study
     parsed.caseStudies.forEach((cs, idx) => {
       if (!cs.scenario || !Array.isArray(cs.questions)) {
         throw new Error(`Case Study ${idx + 1} is missing "scenario" or "questions".`);
@@ -96,7 +62,7 @@ function parseCaseStudies(responseText) {
       });
     });
 
-    // Transform into desired format
+    // 6) Return only the necessary fields
     return parsed.caseStudies.map((cs, index) => ({
       caseStudy: `Case Study ${index + 1}`,
       scenario: cs.scenario,
@@ -112,33 +78,38 @@ function parseCaseStudies(responseText) {
   }
 }
 
+/**
+ * Similar to parseCaseStudies, but also returns correct answers and hints.
+ */
 function parseCaseStudiesWithAnswers(responseText) {
   try {
-    let jsonString = '';
-
-    // Attempt to parse JSON from code fences
-    const jsonMatch = responseText.match(/```json\s*([\s\S]*?)\s*```/i);
-    if (jsonMatch && jsonMatch[1]) {
-      jsonString = jsonMatch[1];
-    } else {
-      // Attempt to parse the entire response as JSON
-      jsonString = responseText;
+    // 1) Extract JSON
+    const match = responseText.match(/\{[\s\S]*\}/);
+    if (!match) {
+      throw new Error('No JSON object found in response');
     }
+    let jsonString = match[0];
 
-    // Remove comments (lines starting with //)
-    jsonString = jsonString.replace(/\/\/.*$/gm, '');
+    // 2) Clean up trailing commas
+    
 
-    // Remove trailing commas before closing brackets/braces
-    jsonString = jsonString.replace(/,\s*([}\]])/g, '$1');
+    // 3) Escape unescaped quotes inside hints
+    jsonString = jsonString.replace(
+      /"Hint":\s*"([\s\S]*?)"/g,
+      (_match, hintText) => {
+        const escaped = hintText.replace(/"/g, '\\"');
+        return `"Hint": "${escaped}"`;
+      }
+    );
 
-    // Parse the cleaned JSON string
+    // 4) Parse
     const parsed = JSON.parse(jsonString);
 
     if (!parsed.caseStudies || !Array.isArray(parsed.caseStudies)) {
       throw new Error('Invalid JSON structure: Missing "caseStudies" array.');
     }
 
-    // Further validation
+    // 5) Validate each entry
     parsed.caseStudies.forEach((cs, idx) => {
       if (!cs.scenario || !Array.isArray(cs.questions)) {
         throw new Error(`Case Study ${idx + 1} is missing "scenario" or "questions".`);
@@ -156,11 +127,11 @@ function parseCaseStudiesWithAnswers(responseText) {
       });
     });
 
-    // Transform into desired format including correct answers and hints
+    // 6) Return structured data
     return parsed.caseStudies.map((cs, index) => ({
-      department: cs.department,          // Added department
-      role: cs.role,                      // Added role
-      specialization: cs.specialization,  // Added specialization
+      department: cs.department,
+      role: cs.role,
+      specialization: cs.specialization,
       caseStudy: `Case Study ${index + 1}`,
       scenario: cs.scenario,
       questions: cs.questions.map((q) => ({
@@ -177,49 +148,35 @@ function parseCaseStudiesWithAnswers(responseText) {
   }
 }
 
+/**
+ * API POST handler (rest of your code unchanged)
+ */
 export async function POST(request) {
-  // Retrieve the API keys and environment variables from environment
+  // Retrieve environment variables
   const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
   const PINECONE_API_KEY = process.env.PINECONE_API_KEY;
   const PINECONE_ENV = process.env.PINECONE_ENVIRONMENT;
+  const HF_API_KEY = process.env.HF_API_KEY;
 
-  const pc = new Pinecone({
-    apiKey: PINECONE_API_KEY,
-  });
-  const index = pc.Index('coachcarellm').namespace('( Default )'); // Ensure 'rag-riz' is your index name and 'ns1' is your namespace
-
-  // Initialize OpenAI client
-  const openai = new OpenAI({
-    apiKey: OPENAI_API_KEY,
-  });
+  // Initialize Pinecone
+  const pc = new Pinecone({ apiKey: PINECONE_API_KEY });
+  const index = pc.Index('coachcarellm').namespace('( Default )');
 
   // Extract request body
   const { department, role, specialization, userType, care } = await request.json();
-  const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization};`;
+  const query = `Department: ${department}, Role: ${role}, Specialization: ${specialization}`;
 
   // Create an embedding for the input query
   let queryEmbedding;
   try {
-    const embeddingResponse = await openai.embeddings.create({
-      input: query,
+    const embeddingRes = await openai.embeddings.create({
       model: 'text-embedding-ada-002',
+      input: query,
     });
-
-    if (
-      !embeddingResponse.data ||
-      !Array.isArray(embeddingResponse.data) ||
-      embeddingResponse.data.length === 0
-    ) {
-      throw new Error('Invalid embedding data structure.');
-    }
-
-    queryEmbedding = embeddingResponse.data[0].embedding;
+    queryEmbedding = embeddingRes.data[0].embedding;
   } catch (error) {
-    console.error('Error creating embedding:', error);
-    return NextResponse.json(
-      { error: 'Failed to create embedding for the query.' },
-      { status: 500 }
-    );
+    console.error('Error creating embedding with OpenAI:', error);
+    return NextResponse.json({ error: 'Failed to create embedding.' }, { status: 500 });
   }
 
   // Query Pinecone for similar case studies
@@ -227,30 +184,20 @@ export async function POST(request) {
   try {
     const pineconeResponse = await index.query({
       vector: queryEmbedding,
-      topK: 500, // Set to maximum allowable value
+      topK: 500,
       includeMetadata: true,
     });
-    // Process the response as needed
-    similarCaseStudies = pineconeResponse.matches.map(
-      (match) => match.metadata.content
-    );
+    similarCaseStudies = pineconeResponse.matches.map((m) => m.metadata.content);
   } catch (error) {
     console.error('Error querying Pinecone:', error);
-    return NextResponse.json(
-      { error: 'Failed to retrieve similar case studies from Pinecone.' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to retrieve case studies.' }, { status: 500 });
   }
 
-  // NEW: Retrieve additional case studies scenarios from Google Search API
-  const googleResultsText = await getMedicalCaseStudiesFromGoogle();
-
-  // Combine the Pinecone results and Google search results into one text block
+  // —— ADDED: define retrievedCasesText so template interpolation works —— 
   const retrievedCasesText = similarCaseStudies.join('\n');
 
-  // Construct the meta prompt with retrieved case studies and Google search results
-  const META_PROMPT = 
-`Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department, without compromising the clinical integrity. Remove extraneous information such as providers’ 
+  // Meta prompt (fences & examples removed so this template literal no longer breaks)
+  const META_PROMPT = `Here are real world of medical case studies that include primary active failures that occured: ${retrievedCasesText}. , to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department and that includes a similar primary active failure that occured in the ${retrievedCasesText}, without compromising the clinical integrity. Remove extraneous information such as providers’ 
 countries of origin or unnecessary backstories.
 
 The medical case study should:
@@ -262,7 +209,7 @@ The medical case study should:
   - **Care:** Mention the care level of the role.
 
 - **Medical Case Study Content:**
-  - The case study should only include the scenario and the medical error that occured.
+  - The case study should only include the scenario and the primary active failure that occured.
   - The case studies should not mention country names, staff origins.
   - Use unique patient and medical staff names from various continents (America, Canada, South America, 
     Europe, Asia, Australia) to reflect global diversity.
@@ -270,7 +217,7 @@ The medical case study should:
   - The case study should define medication with quantity with proper units, and proper names without changing the clinical integrity from source  ${retrievedCasesText} case study.
   - Keep the case studies short and concise, and do not mention countries by name or the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
   - The case study should strictly focus on what went wrong. Avoid mentioning any broader communication lapses or the significance of teamwork in preventing the error.
-  - The case study should not mention any error prevention tools and how they the situation lacked the EPT which could have avoided the error.
+  - The case study should not mention any safety behaviors and how they the situation lacked the EPT which could have avoided the error.
   - The case study should  only include the scenario and remove /not include any analysis on what went wrong, how it could have been prevented, and any highlights of the process to fix the issue. 
   - If department is ${department} make sure all the case studies scenario focus on stroke related medical errors and scenarios, but also Make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies
   - For all case studies, make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies.
@@ -287,20 +234,21 @@ The medical case study should:
   - Documentation is typically **electronic**, so do not mention paper order sheets.
   - If you include ARCC, it should be used properly by the person raising the concern, not necessarily by the one providing direct care.
 
-    - **For each case study, create 3 unique multiple-choice questions that:**
-        - Have 4 option choices each.
-        - Debrief is typically a group effort; the question should not reflect debrief being done by a single individual.
-        - Provide the correct answer choice and answer in the format: \\correct answer: C) Validate and Verify\\
-        - Provide the hint in the format: \\Hint: Double-checking and confirming accuracy before proceeding.\\
-        - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the safety behavior to assist the user. The safety behaviors name should not be included in the question.
-        - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error in the case study.
-        - Include clues by using buzzwords or synonyms from the correct answer's definition.
-        -  Do not explicitly mention the prevention tools by name in the question header.
-        - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” or “validate?”).
-          - The question should address ${role} directly and following this example format: If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying
+- **For each case study, create 3 unique multiple-choice questions that:**
+  - Are different for each case study and correspond exactly to the specified safety behavior focus—do not repeat question text or options across case studies.
+  - Have 4 option choices each.
+  - Team Evaluation is a group effort and is done towards the completion of procedure; questions should not imply an individual debrief.
+  - Provide the correct answer choice and answer in the format:  
+    \`correct answer: C) Validate and Verify\`
+  - Provide the hint in the format:  
+    \`Hint: Double-checking and confirming accuracy before proceeding.\`
+  - In the question include specific keywords or buzzwords based on the correct answer choice’s definition; do not name the safety behavior in the question.
+  - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error.
+  - Questions should address ${role} directly in this form:  
+    “If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying”
 
-    
-    - **Strictly follow the Question Structure Below and make sure the options choices match the correct safety behaviors focused in the question:**
+- **Strictly follow the Question Structure Below and ensure the options match the correct safety behaviors:**
+
       - **Case Study 1:**
         - Question 1: Focuses on Colleague Feedback
         - Question 2: Focuses on Team Evaluation
@@ -312,7 +260,7 @@ The medical case study should:
         - Question 3: Focuses on Interuption Free Zone
     
       **Case Study 3:**
-        - Question 1: Focuses on Interruption Free Zone
+        - Question 1: Focuses on Effective Care Transitions
         - Question 2: Focuses on Clear Communications
         - Question 3: Focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate)
     
@@ -357,375 +305,206 @@ The medical case study should:
     
     Ensure the following format is strictly followed and output the entire response as valid JSON.
     
-    \`\`\`json
-    {
-      "caseStudies": [
-        {
-          },
-            "department" : "${department}",
-            "role" : "${role}",
-            "specialization": "${specialization}",
-            "care": "${care}",
-        },
-    
-          "caseStudy": "Case Study 1",
-          "scenario": "Description of the case study scenario.",
-          "questions": [
-            {
-              "question": "Question 1 text",
-              "options": {
-                "A": "Option A",
-                "B": "Option B",
-                "C": "Option C",
-                "D": "Option D"
-              },
-              "correct answer": "C) correct answer",
-              "Hint": "1 sentence sumarized definition of correct answer choice."
-            },
-            {
-              "question": "Question 2 text",
-              "options": {
-                "A": "Option A",
-                "B": "Option B",
-                "C": "Option C",
-                "D": "Option D"
-              },
-              "correct answer": "b) correct answer",
-              "Hint": "1 sentence sumarized definition of correct answer choice."
-            },
-            {
-              "question": "Question 3 text",
-              "options": {
-                "A": "Option A",
-                "B": "Option B",
-                "C": "Option C",
-                "D": "Option D"
-              },
-              "correct answer": "A) correct answer ",
-              "Hint": "1 sentence sumarized definition of correct answer choice."
-            }
-          ]
-       }
-        // Repeat for Case Study 2, 3, and 4
-      ]
-    }
-    \`\`\`
-    
-    Ensure that:
-    
-    - The JSON is **well-formatted** and **free of any syntax errors**.
-    - There are **no comments** (e.g., lines starting with //), **no trailing commas**, and **no additional text** outside the JSON block.
-    - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
-    
-    Do not include any additional text outside of the JSON structure.`;
+     
+     \`\`\`json
+     {
+       "caseStudies": [
+         {
+           },
+             "department" : "${department}",
+             "role" : "${role}",
+             "specialization": "${specialization}",
+             "care": "${care}",
+         },
+     
+           "caseStudy": "Case Study 1",
+           "scenario": "Description of the case study scenario.",
+           "questions": [
+             {
+               "question": "Question 1 text that focuses on colleage feedback safey behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "C) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 2 text that focuses on team evaluation safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "b) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 3 text that focuses on risk intervention safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "A) correct answer ",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             }
+           "caseStudy": "Case Study 2",
+           "scenario": "Description of the case study scenario.",
+           "questions": [
+             {
+               "question": "Question 1 text that focuses on validation assessment safey behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "C) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 2 text that focuses on SAFE (Stop-Assess-Focus-Evaluate) safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "b) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 3 text that focuses on Interuption Free Zone safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "A) correct answer ",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             }
+           "caseStudy": "Case Study 3",
+           "scenario": "Description of the case study scenario.",
+           "questions": [
+             {
+               "question": "Question 1 text that focuses on effective care transitions safey behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "C) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 2 text that focuses on clear communications safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "b) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 3 text that focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate) safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "A) correct answer ",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             }
+               "caseStudy": "Case Study 4",
+           "scenario": "Description of the case study scenario.",
+           "questions": [
+             {
+               "question": "Question 1 text that focuses on clarifying informations safey behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "C) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 2 text that focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate) safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "b) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 3 text that focuses on SAFE (Stop-Assess-Focus-Engage) safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "A) correct answer ",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             }
+           ]
+        }
+       ]
+     }
+   
+     \`\`\`
+     
+     Ensure that:
+     
+     - The JSON is **well-formatted** and **free of any syntax errors**.
+     - There are **no comments** (e.g., lines starting with //), **no trailing commas**, and **no additional text** outside the JSON block.
+     - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
+     
+     Do not include any additional text outside of the JSON structure.`;
 
   try {
-    const response = await openai.chat.completions.create({
-      model: "chatgpt-4o-latest",
-      temperature: 1.0,
-      messages: [
-        {
-          role: "user",
-          content: META_PROMPT,
-        },
-      ],
-      stream: false,
+    const caseClient = new OpenAI({
+      baseURL: 'https://lmnpew6ax7ugnvuj.us-east-2.aws.endpoints.huggingface.cloud',
+      apiKey: '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',
     });
-    
-    if (!response.choices || response.choices.length === 0) {
-      throw new Error('No choices returned from OpenAI.');
-    }
+    const completion = await caseClient.chat.completions.create({
+      model: 'tgi',
+      messages: [
+        { role: 'system', content: 'You are only a strict JSON format text generator. Do not ask any clarifying questions or provide any additional commentary. Respond only with valid text and strictly follow JSON format provided in the user’s prompt.' },
+        { role: 'user',   content: META_PROMPT }
+      ],
+      temperature: 0.0,
+      top_k: 0.3
+    });
+    const rawResponseText = completion.choices[0].message.content;
 
-    const aiResponse = response.choices[0].message.content;
 
-    if (!aiResponse) {
-      throw new Error('No content returned from OpenAI.');
-    }
+    const parsedCaseStudies = parseCaseStudies(rawResponseText);
+    const parsedCaseStudiesWithAnswers = parseCaseStudiesWithAnswers(rawResponseText);
 
-    console.log('Raw Model Output:', aiResponse);
-
-    // -------------------------
-    // NEW CODE TO SAVE RAW MODEL OUTPUT TO A JSON FILE WITH DATE STAMP & USER INPUTS
-    // -------------------------
-try {
-  // Step 1: Write to /tmp (safe in serverless environments)
-  const tmpDirectory = '/tmp/case studies json';
-  if (!fs.existsSync(tmpDirectory)) {
-    fs.mkdirSync(tmpDirectory, { recursive: true });
-  }
-
-  const fileName = `case-studies-${Date.now()}.json`;
-  const tmpFilePath = path.join(tmpDirectory, fileName);
-
-  const dataToSave = {
-    date: new Date().toISOString(),
-    department,
-    role,
-    care,
-    specialization,
-    rawModelOutput: aiResponse
-  };
-
-  fs.writeFileSync(tmpFilePath, JSON.stringify(dataToSave, null, 2), 'utf8');
-
-  // Step 2: Copy the file from /tmp to the project directory (src/app)
-  const appDirectory = path.join(process.cwd(), 'src', 'app');
-  if (!fs.existsSync(appDirectory)) {
-    fs.mkdirSync(appDirectory, { recursive: true });
-  }
-
-  const finalFilePath = path.join(appDirectory, fileName);
-  fs.copyFileSync(tmpFilePath, finalFilePath);
-
-  console.log(`✅ JSON file written to: ${finalFilePath}`);
-} catch (err) {
-  console.error('❌ Error saving JSON file:', err);
-}
-
-    // -------------------------
-    // END OF NEW CODE
-    // -------------------------
-
-    // Parse the AI response using the existing function (without correct answers)
-    const parsedCaseStudies = parseCaseStudies(aiResponse);
-
-    // Parse the AI response using the new function (including correct answers and hints)
-    let parsedCaseStudiesWithAnswers = parseCaseStudiesWithAnswers(aiResponse);
-
-    console.log('Parsed Model Output:', parsedCaseStudiesWithAnswers);
-
-    // Now, generate image prompts for each case study
-    try {
-      // For each case study, generate an image prompt
-      const caseStudiesWithImagePrompts = await Promise.all(
-        parsedCaseStudiesWithAnswers.map(async (caseStudy) => {
-          const { prompt } = await generateImagePrompt(caseStudy);
-          return {
-            ...caseStudy,
-            imagePrompt: prompt,
-          };
-        })
-      );
-
-      // Now, fetch images for case studies
-      const caseStudiesWithImages = await fetchImagesForCaseStudies(caseStudiesWithImagePrompts);
-
-      // Update parsedCaseStudiesWithAnswers with images
-      parsedCaseStudiesWithAnswers = caseStudiesWithImages;
-
-      // Also update parsedCaseStudies (the one without correct answers), if needed
-      // For simplicity, let's update parsedCaseStudies similarly
-      const parsedCaseStudiesWithImages = parsedCaseStudiesWithAnswers.map(cs => ({
-        caseStudy: cs.caseStudy,
-        scenario: cs.scenario,
-        questions: cs.questions.map(q => ({
-          question: q.question,
-          options: q.options,
-          correctAnswer: q.correctAnswer,
-          hint: q.hint,
-        })),
-        imageUrl: cs.imageUrl,
-        role: cs.role,
-        department: cs.department,
-        specialization: cs.specialization,
-      }));
-      
-      return NextResponse.json({
-        caseStudies: parsedCaseStudiesWithImages,
-        aiResponse: parsedCaseStudiesWithAnswers,
-      });
-      
-    } catch (error) {
-      console.error('Error generating images:', error);
-      return NextResponse.json(
-        { error: 'Failed to generate images for case studies.' },
-        { status: 500 }
-      );
-    }
-
+    return NextResponse.json({
+      caseStudies: parsedCaseStudiesWithAnswers,
+      aiResponse: parsedCaseStudiesWithAnswers,
+    });
   } catch (error) {
     console.error('Unexpected Error:', error);
     return NextResponse.json(
       { error: error.message || 'An unexpected error occurred.' },
       { status: 500 }
     );
-  }
-}
-
-// Function to generate image prompt via OpenAI
-async function generateImagePrompt(caseStudy) {
-  const META_PROMPT = 
-`You are an expert prompt engineer tasked with creating detailed and descriptive prompts for image generation based on given scenarios. Your prompts should be clear, vivid, and free of any NSFW (Not Safe For Work) content. Ensure that the prompts are suitable for use with image generation models and accurately reflect the provided scenario.
-
-# Guidelines
-
-- **Understand the Scenario**: Carefully read the provided scenario to grasp the context, key elements, and desired visual aspects.
-- **Detail and Clarity**: Include specific details such as settings, characters, objects, actions, and emotions to create a vivid image in the mind of the image generation model.
-- **Realistic Proportions and Placement**:
-  - **Proportions**: Ensure that all characters and objects are proportionally accurate. Specify the size relationships between characters and objects (e.g., "a tall character standing next to a small table").
-  - **Placement**: Clearly define the spatial arrangement of elements within the scene (e.g., "the character is seated on the left side of the table, while the lamp is positioned on the right").
-  - **Orientation and Scale**: Mention the orientation and scale to maintain consistency (e.g., "the character is facing forward with arms at their sides").
-  - **Avoid Overlapping**: Ensure that characters and objects do not overlap unnaturally unless intended for the scenario.
-  - **Anatomical Accuracy**: Describe body parts accurately to maintain realistic anatomy (e.g., "the character has a proportionate head, torso, arms, and legs").
-- **Avoid NSFW Content**: Ensure that the prompt does not contain or imply any inappropriate, offensive, or unsafe content.
-- **Diverse Characters**: Ensure diverse characters with diverse races, genders, and backgrounds.
-- **Language and Tone**: Use clear and concise language. Maintain a neutral and professional tone.
-- **Formatting**: Present the prompt as a single, well-structured paragraph without any markdown or code blocks.
-- **Consistency**: Maintain consistency in descriptions, avoiding contradictions or vague terms.
-- **Descriptive Adjectives**: Utilize descriptive adjectives to enhance the visual richness of the prompt.
-- **Characters**: Characters should consist of different races, genders, and religions.
-
-# Steps
-
-1. **Analyze the Scenario**: Identify the main elements such as location, characters, objects, and actions.
-2. **Expand on Details**: Add descriptive elements to each identified component to enrich the prompt.
-3. **Ensure Realistic Proportions and Placement**: Define the size relationships, spatial arrangements, and anatomical accuracy of all elements.
-4. **Ensure Appropriateness**: Review the prompt to eliminate any NSFW content or implications.
-5. **Finalize the Prompt**: Ensure the prompt is cohesive, vivid, and suitable for image generation.
-5. **Ensure the image does not looked animated, cartoon, and look realistict.
-
-# Output Format
-
-- **Format**: Plain text paragraph.
-- **Length**: Approximately 40 - 60 words, providing sufficient detail without being overly verbose.
-- **Style**: Descriptive and clear, suitable for feeding directly into an image generation model.
-
-# Example
-
-**Image Prompt**:
-"A bustling hospital emergency room at night, illuminated by bright overhead lights. Doctors and nurses in white coats move swiftly between beds, attending to patients with focused expressions. A tall doctor stands next to a small examination table, while a nurse adjusts a monitor on the adjacent wall. Medical equipment and monitors line the walls, and the atmosphere is tense yet organized, reflecting the urgency of a busy night shift."
-
-# Notes
-
-- **Edge Cases**: If the scenario is abstract or lacks detail, infer reasonable visual elements to create a coherent prompt.
-- **Cultural Sensitivity**: Be mindful of cultural nuances and avoid stereotypes or biased representations.
-- **No NSFW Content**: Double-check to ensure the prompt adheres to safety guidelines and does not contain any inappropriate content.`.trim();
-
-  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-  if (!OPENAI_API_KEY) {
-    throw new Error('OpenAI API key not configured.');
-  }
-
-  // Validate the scenario
-  if (typeof caseStudy.scenario !== 'string' || caseStudy.scenario.trim() === '') {
-    throw new Error('Invalid scenario provided to generateImagePrompt.');
-  }
-
-  // Call the OpenAI API
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${OPENAI_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: META_PROMPT,
-        },
-        {
-          role: 'user',
-          content: 'Scenario:\n' + caseStudy.scenario,
-        },
-      ],
-      temperature: 0.0,
-      max_tokens: 500,
-    }),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error('OpenAI API Error:', errorData);
-    throw new Error(`OpenAI API Error: ${errorData.error?.message || 'Unknown error'}`);
-  }
-
-  const data = await response.json();
-  const generatedPrompt = data.choices[0]?.message?.content;
-
-  if (!generatedPrompt) {
-    throw new Error('No prompt generated by OpenAI.');
-  }
-
-  return { 
-    ...caseStudy,
-    prompt: generatedPrompt 
-  };
-}
-
-async function fetchImagesForCaseStudies(
-  caseStudies,
-  model = 'sd3-large',
-  aspect_ratio = '1:1'
-) {
-  try {
-    const responses = await Promise.all(
-      caseStudies.map(async (caseStudy) => {
-        try {
-          if (!caseStudy.imagePrompt) {
-            console.warn(`No image prompt for ${caseStudy.caseStudy}. Skipping image generation.`);
-            return { ...caseStudy, imageUrl: null };
-          }
-
-          const generatedPrompt = caseStudy.imagePrompt;
-
-          const payload = {
-            prompt: generatedPrompt,
-            output_format: 'jpeg',
-            model,
-            aspect_ratio,
-            width: 356,
-            height: 356,
-          };
-
-          const formData = new FormData();
-          Object.keys(payload).forEach((key) =>
-            formData.append(key, payload[key])
-          );
-
-          const response = await axios.post(
-            `https://api.stability.ai/v2beta/stable-image/generate/sd3`,
-            formData,
-            {
-              validateStatus: undefined,
-              responseType: 'arraybuffer',
-              headers: {
-                Authorization: `Bearer ${process.env.STABILITY_API_KEY}`, // Secure your API key in environment variables
-                Accept: 'image/*',
-              },
-            }
-          );
-
-          if (response.status === 200) {
-            const base64Image = Buffer.from(response.data).toString('base64');
-            return {
-              ...caseStudy,
-              imageUrl: `data:image/jpeg;base64,${base64Image}`,
-            };
-          } else {
-            console.warn(
-              `Failed to generate image for ${caseStudy.caseStudy}. Status: ${response.status}`,
-              response.data
-            );
-            return { ...caseStudy, imageUrl: null };
-          }
-        } catch (error) {
-          if (error.response) {
-            console.error('Stability API Error:', error.response.status, error.response.data);
-          } else if (error.request) {
-            console.error('No response received from Stability API:', error.request);
-          } else {
-            console.error('Error generating image:', error.message);
-          }
-          return { ...caseStudy, imageUrl: null };
-        }
-      })
-    );
-
-    return responses;
-  } catch (error) {
-    console.error('Error in fetchImagesForCaseStudies:', error.message);
-    throw error;
   }
 }
