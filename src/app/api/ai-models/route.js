@@ -260,7 +260,7 @@ The medical case study should:
         - Question 3: Focuses on Interuption Free Zone
     
       **Case Study 3:**
-        - Question 1: Focuses on Effective Free Zone
+        - Question 1: Focuses on Effective Care Transitions
         - Question 2: Focuses on Clear Communications
         - Question 3: Focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate)
     
@@ -478,25 +478,21 @@ The medical case study should:
 
   try {
     const caseClient = new OpenAI({
-      baseURL: 'https://kzhygs15r8ecrupx.us-east-1.aws.endpoints.huggingface.cloud',
+      baseURL: 'https://lmnpew6ax7ugnvuj.us-east-2.aws.endpoints.huggingface.cloud',
       apiKey: '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',
     });
     const completion = await caseClient.chat.completions.create({
       model: 'tgi',
       messages: [
-        { role: 'system', content: 'You are strictly a JSON only text generator. Do not ask any clarifying questions or provide any additional commentary. Respond only with valid text and strictly follow the JSON format matching the user’s prompt.' },
+        { role: 'system', content: 'You are only a strict JSON format text generator. Do not ask any clarifying questions or provide any additional commentary. Respond only with valid text and strictly follow JSON format provided in the user’s prompt.' },
         { role: 'user',   content: META_PROMPT }
       ],
-      stream: false,
-      max_tokens: 8192,
       temperature: 0.0,
+      top_k: 0.3
     });
     const rawResponseText = completion.choices[0].message.content;
 
-    // Save raw output (unchanged)
-    // ... file saving logic ...
 
-    // Parse
     const parsedCaseStudies = parseCaseStudies(rawResponseText);
     const parsedCaseStudiesWithAnswers = parseCaseStudiesWithAnswers(rawResponseText);
 
