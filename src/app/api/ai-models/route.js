@@ -488,7 +488,6 @@ The medical case study should:
         { role: 'user',   content: META_PROMPT }
       ],
       temperature: 0.0,
-      top_k: 0.3
     });
     const rawResponseText = completion.choices[0].message.content;
 
