@@ -249,8 +249,7 @@ export async function POST(request) {
   const retrievedCasesText = similarCaseStudies.join('\n');
 
   // Construct the meta prompt with retrieved case studies and Google search results
-  const META_PROMPT = 
-const META_PROMPT = `Here are real world of medical case studies that include primary active failures that occured: ${retrievedCasesText}. , to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department and that includes a similar primary active failure that occured in the ${retrievedCasesText}, without compromising the clinical integrity. Remove extraneous information such as providers’ 
+  const META_PROMPT =  `Here are real world of medical case studies that include primary active failures that occured: ${retrievedCasesText}. , to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department and that includes a similar primary active failure that occured in the ${retrievedCasesText}, without compromising the clinical integrity. Remove extraneous information such as providers’ 
 countries of origin or unnecessary backstories.
 
 The medical case study should:
