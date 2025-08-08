@@ -250,7 +250,7 @@ export async function POST(request) {
 
   // Construct the meta prompt with retrieved case studies and Google search results
   const META_PROMPT = 
-`Use the medical case study text from ${retrievedCasesText}, to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department, without compromising the clinical integrity. Remove extraneous information such as providers’ 
+const META_PROMPT = `Here are real world of medical case studies that include primary active failures that occured: ${retrievedCasesText}. , to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department and that includes a similar primary active failure that occured in the ${retrievedCasesText}, without compromising the clinical integrity. Remove extraneous information such as providers’ 
 countries of origin or unnecessary backstories.
 
 The medical case study should:
@@ -262,7 +262,7 @@ The medical case study should:
   - **Care:** Mention the care level of the role.
 
 - **Medical Case Study Content:**
-  - The case study should only include the scenario and the medical error that occured.
+  - The case study should only include the scenario and the primary active failure that occured.
   - The case studies should not mention country names, staff origins.
   - Use unique patient and medical staff names from various continents (America, Canada, South America, 
     Europe, Asia, Australia) to reflect global diversity.
@@ -270,7 +270,7 @@ The medical case study should:
   - The case study should define medication with quantity with proper units, and proper names without changing the clinical integrity from source  ${retrievedCasesText} case study.
   - Keep the case studies short and concise, and do not mention countries by name or the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
   - The case study should strictly focus on what went wrong. Avoid mentioning any broader communication lapses or the significance of teamwork in preventing the error.
-  - The case study should not mention any error prevention tools and how they the situation lacked the EPT which could have avoided the error.
+  - The case study should not mention any safety behaviors and how they the situation lacked the EPT which could have avoided the error.
   - The case study should  only include the scenario and remove /not include any analysis on what went wrong, how it could have been prevented, and any highlights of the process to fix the issue. 
   - If department is ${department} make sure all the case studies scenario focus on stroke related medical errors and scenarios, but also Make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies
   - For all case studies, make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies.
@@ -287,138 +287,247 @@ The medical case study should:
   - Documentation is typically **electronic**, so do not mention paper order sheets.
   - If you include ARCC, it should be used properly by the person raising the concern, not necessarily by the one providing direct care.
 
-    - **For each case study, create 3 unique multiple-choice questions that:**
-        - Have 4 option choices each.
-        - Debrief is typically a group effort; the question should not reflect debrief being done by a single individual.
-        - Provide the correct answer choice and answer in the format: \\correct answer: C) Validate and Verify\\
-        - Provide the hint in the format: \\Hint: Double-checking and confirming accuracy before proceeding.\\
-        - In the question include specific key words hints based on the correct answer choice, utilizing the definition of the safety behavior to assist the user. The safety behaviors name should not be included in the question.
-        - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error in the case study.
-        - Include clues by using buzzwords or synonyms from the correct answer's definition.
-        -  Do not explicitly mention the prevention tools by name in the question header.
-        - The question should be straightforward and concise; do not state any buzzwords in the question itself (e.g., using buzzwords like “check” or “validate?”).
-          - The question should address ${role} directly and following this example format: If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying
+- **For each case study, create 3 unique multiple-choice questions that:**
+  - Are different for each case study and correspond exactly to the specified safety behavior focus—do not repeat question text or options across case studies.
+  - Have 4 option choices each.
+  - Team Evaluation is a group effort and is done towards the completion of procedure; questions should not imply an individual debrief.
+  - Provide the correct answer choice and answer in the format:  
+    \`correct answer: C) Validate and Verify\`
+  - Provide the hint in the format:  
+    \`Hint: Double-checking and confirming accuracy before proceeding.\`
+  - In the question include specific keywords or buzzwords based on the correct answer choice’s definition; do not name the safety behavior in the question.
+  - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error.
+  - Questions should address ${role} directly in this form:  
+    “If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying”
 
-    
-    - **Strictly follow the Question Structure Below and make sure the options choices match the correct safety behaviors focused in the question:**
+- **Strictly follow the Question Structure Below and ensure the options match the correct safety behaviors:**
+
       - **Case Study 1:**
-        - Question 1: Focuses on Peer Checking and Coaching
-        - Question 2: Focuses on Debrief
-        - Question 3: Focuses on ARCC
+        - Question 1: Focuses on Colleague Feedback
+        - Question 2: Focuses on Team Evaluation
+        - Question 3: Focuses on Risk Intervention
     
       **Case Study 2:**
-        - Question 1: Focuses on Validate and Verify
-        - Question 2: Focuses on STAR
-        - Question 3: Focuses on No Distraction Zone
+        - Question 1: Focuses on Validattion and Assessment
+        - Question 2: Focuses on SAFE (Stop-Assess-Focus-Engage)
+        - Question 3: Focuses on Interuption Free Zone
     
       **Case Study 3:**
-        - Question 1: Focuses on Effective Handoffs
-        - Question 2: Focuses on Read and Repeat Back
-        - Question 3: Focuses on Ask Clarifying Questions
+        - Question 1: Focuses on Effective Care Transitions
+        - Question 2: Focuses on Clear Communications
+        - Question 3: Focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate)
     
       **Case Study 4:**
-        - Question 1: Focuses on Alphanumeric Language
-        - Question 2: Focuses on SBAR
-        - Question 3: Focuses on STAR
+        - Question 1: Focuses on Clarify Information
+        - Question 2: Focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate)
+        - Question 3: Focuses on SAFE (Stop-Assess-Focus-Engage)
     
-    - **Use the following 11 Safety Behaviors and Definitions:**
+    - **Use the following 10 Safety Behaviors and Definitions:**
     
-        a. Peer Checking and Coaching
-            Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
+        a. Colleague Feedback
+            Definition: Ask your colleagues to review your work and offer assistance in reviewing the work of others. 
     
-        b. Debrief
+        b. Team Evaluation
             Definition: Reflect on what went well with team , what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
       
-        c. ARCC
+        c. Risk Intervention
             Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
     
-        d. Validate and Verify
+        d. Validation Assessment
             Definition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).
     
-        e. STAR
-            Definition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).
+        e. SAFE (Stop-Assess-Focus-Engage)
+            Definition: Stop (pause for 2 seconds to focus on task at hand), Assess (consider action you're about to take), Focus (concentrate and carry out the task), Engage (check to make sure the task was done right and you got the right result).
     
-        f. No Distraction Zone
+        f. Interuption Free Zone
             Definition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like "Stand by" or "Hold on".
     
-        g. Effective Handoffs
-            Definition: Six important principles that make an Effective Handoffs: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
+        g. Effective Care Transtitions
+            Definition: Six important principles that make an Effective Care Transitions: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
+        
+        h. CARE (Communicate-Acknowledge-Repeat-Evaluate)
+             Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
     
-        h. Read and Repeat Back
-            Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
+        i. Clear Communications
+             Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
+        
+        j. Clarifying Information
+           Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
     
-        i. Ask Clarifying Questions
-            Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
-    
-        j. Using Alphanumeric Language
-            Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
-    
-        k. SBAR
-            Definition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions.), Recommendations (what is my recommendation, request, or plan?)
+      
     
     Ensure the following format is strictly followed and output the entire response as valid JSON.
     
-    \`\`\`json
-    {
-      "caseStudies": [
-        {
-          },
-            "department" : "${department}",
-            "role" : "${role}",
-            "specialization": "${specialization}",
-            "care": "${care}",
-        },
-    
-          "caseStudy": "Case Study 1",
-          "scenario": "Description of the case study scenario.",
-          "questions": [
-            {
-              "question": "Question 1 text",
-              "options": {
-                "A": "Option A",
-                "B": "Option B",
-                "C": "Option C",
-                "D": "Option D"
-              },
-              "correct answer": "C) correct answer",
-              "Hint": "1 sentence sumarized definition of correct answer choice."
-            },
-            {
-              "question": "Question 2 text",
-              "options": {
-                "A": "Option A",
-                "B": "Option B",
-                "C": "Option C",
-                "D": "Option D"
-              },
-              "correct answer": "b) correct answer",
-              "Hint": "1 sentence sumarized definition of correct answer choice."
-            },
-            {
-              "question": "Question 3 text",
-              "options": {
-                "A": "Option A",
-                "B": "Option B",
-                "C": "Option C",
-                "D": "Option D"
-              },
-              "correct answer": "A) correct answer ",
-              "Hint": "1 sentence sumarized definition of correct answer choice."
-            }
-          ]
-       }
-        // Repeat for Case Study 2, 3, and 4
-      ]
-    }
-    \`\`\`
-    
-    Ensure that:
-    
-    - The JSON is **well-formatted** and **free of any syntax errors**.
-    - There are **no comments** (e.g., lines starting with //), **no trailing commas**, and **no additional text** outside the JSON block.
-    - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
-    
-    Do not include any additional text outside of the JSON structure.`;
+     
+     \`\`\`json
+     {
+       "caseStudies": [
+         {
+           },
+             "department" : "${department}",
+             "role" : "${role}",
+             "specialization": "${specialization}",
+             "care": "${care}",
+         },
+     
+           "caseStudy": "Case Study 1",
+           "scenario": "Description of the case study scenario.",
+           "questions": [
+             {
+               "question": "Question 1 text that focuses on colleage feedback safey behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "C) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 2 text that focuses on team evaluation safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "b) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 3 text that focuses on risk intervention safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "A) correct answer ",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             }
+           "caseStudy": "Case Study 2",
+           "scenario": "Description of the case study scenario.",
+           "questions": [
+             {
+               "question": "Question 1 text that focuses on validation assessment safey behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "C) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 2 text that focuses on SAFE (Stop-Assess-Focus-Evaluate) safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "b) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 3 text that focuses on Interuption Free Zone safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "A) correct answer ",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             }
+           "caseStudy": "Case Study 3",
+           "scenario": "Description of the case study scenario.",
+           "questions": [
+             {
+               "question": "Question 1 text that focuses on effective care transitions safey behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "C) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 2 text that focuses on clear communications safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "b) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 3 text that focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate) safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "A) correct answer ",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             }
+               "caseStudy": "Case Study 4",
+           "scenario": "Description of the case study scenario.",
+           "questions": [
+             {
+               "question": "Question 1 text that focuses on clarifying informations safey behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "C) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 2 text that focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate) safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "b) correct answer",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             },
+             {
+               "question": "Question 3 text that focuses on SAFE (Stop-Assess-Focus-Engage) safety behavior",
+               "options": {
+                 "A": "Option A",
+                 "B": "Option B",
+                 "C": "Option C",
+                 "D": "Option D"
+               },
+               "correct answer": "A) correct answer ",
+               "Hint": "1 sentence sumarized definition of correct answer choice."
+             }
+           ]
+        }
+       ]
+     }
+   
+     \`\`\`
+     
+     Ensure that:
+     
+     - The JSON is **well-formatted** and **free of any syntax errors**.
+     - There are **no comments** (e.g., lines starting with //), **no trailing commas**, and **no additional text** outside the JSON block.
+     - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
+     
+     Do not include any additional text outside of the JSON structure.`;
 
   try {
     const response = await openai.chat.completions.create({
