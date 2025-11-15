@@ -248,6 +248,7 @@ The medical case study should:
   - **Care:** Mention the care level of the role.
 
 - **Medical Case Study Content:**
+  - The case study should include diverse names from aisa, europe, africa, south america, antartica, europe, and austrilia. 
   - The case study should only include the scenario and the primary active failure that occured.
   - The case studies should not mention country names, staff origins.
   - Keep the case studies short and concise, and do not mention c the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
