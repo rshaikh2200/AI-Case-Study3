@@ -464,21 +464,60 @@ The medical case study should:
 
 
   try {
-    const caseClient = new OpenAI({
-      baseURL: 'https://api.runpod.ai/v2/dqu7topnjpvpaz/runsync',
-      apiKey: process.env.RUNPOD_API_KEY,
-      
-    });
-    const completion = await caseClient.chat.completions.create({
-      model: 'Qwen/Qwen3-30B-A3B-Instruct-2507',
-      messages: [
-        { role: 'system', content: 'You are only a strict JSON format text generator. Do not ask any clarifying questions or provide any additional commentary. Respond only with valid text and strictly follow JSON format provided in the user’s prompt.' },
-        { role: 'user',   content: META_PROMPT }
-      ],
-      temperature: 0.0
-    });
-    const rawResponseText = completion.choices[0].message.content;
+    // Call Runpod's synchronous run endpoint directly using axios.
+    const runpodUrl = 'https://api.runpod.ai/v2/dqu7topnjpvpaz/runsync';
+    const runpodApiKey = process.env.RUNPOD_API_KEY;
+    if (!runpodApiKey) {
+      throw new Error('Missing RUNPOD_API_KEY environment variable');
+    }
 
+    const rpResp = await axios.post(
+      runpodUrl,
+      { input: { prompt: META_PROMPT } },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${runpodApiKey}`,
+        },
+        timeout: 120000,
+      }
+    );
+
+    const respData = rpResp.data;
+
+    // Try to locate the model-generated text inside common Runpod response shapes.
+    function findStringWithBraces(obj) {
+      if (obj == null) return null;
+      if (typeof obj === 'string') {
+        if (obj.includes('{') && obj.includes('}')) return obj;
+        return null;
+      }
+      if (Array.isArray(obj)) {
+        for (const el of obj) {
+          const found = findStringWithBraces(el);
+          if (found) return found;
+        }
+      } else if (typeof obj === 'object') {
+        for (const k of Object.keys(obj)) {
+          const found = findStringWithBraces(obj[k]);
+          if (found) return found;
+        }
+      }
+      return null;
+    }
+
+    // Common Runpod output fields: respData.output, respData.output_text, respData.output[0].generated_text, etc.
+    let rawResponseText =
+      (respData && respData.output && Array.isArray(respData.output) && respData.output.map(o => (typeof o === 'string' ? o : JSON.stringify(o))).join('\n')) ||
+      respData.output_text ||
+      (respData.output && respData.output[0] && (respData.output[0].generated_text || respData.output[0].content || respData.output[0].text)) ||
+      findStringWithBraces(respData) ||
+      JSON.stringify(respData);
+
+    // If rawResponseText is an object stringified and contains escaped newlines, unescape to make parsing easier
+    if (typeof rawResponseText === 'string') {
+      rawResponseText = rawResponseText.replace(/\\n/g, '\n');
+    }
 
     const parsedCaseStudies = parseCaseStudies(rawResponseText);
     const parsedCaseStudiesWithAnswers = parseCaseStudiesWithAnswers(rawResponseText);
@@ -489,6 +528,14 @@ The medical case study should:
     });
   } catch (error) {
     console.error('Unexpected Error:', error);
+    // If the error is an axios HTTP error, surface status and data to help debugging
+    if (error && error.response) {
+      const { status, data } = error.response;
+      return NextResponse.json(
+        { error: `Runpod request failed with status ${status}`, details: data },
+        { status: 502 }
+      );
+    }
     return NextResponse.json(
       { error: error.message || 'An unexpected error occurred.' },
       { status: 500 }
