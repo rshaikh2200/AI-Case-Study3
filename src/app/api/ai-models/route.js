@@ -466,7 +466,7 @@ The medical case study should:
   try {
     const caseClient = new OpenAI({
       baseURL: 'https://api.runpod.ai/v2/dqu7topnjpvpaz/runsync',
-      apiKey: process.env.HF_API_KEY,
+      apiKey: process.env.RUNPOD_API_KEY,
       
     });
     const completion = await caseClient.chat.completions.create({
