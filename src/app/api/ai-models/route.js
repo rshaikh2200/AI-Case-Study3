@@ -248,7 +248,7 @@ The medical case study should:
   - **Care:** Mention the care level of the role.
 
 - **Medical Case Study Content:**
-  - The case study should include diverse names from aisa, europe, africa, south america, antartica, europe, and austrilia. 
+  - The case study should include diverse names and genders for the patient, and staff involved.
   - The case study should only include the scenario and the primary active failure that occured.
   - The case studies should not mention country names, staff origins.
   - Keep the case studies short and concise, and do not mention c the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
@@ -464,110 +464,20 @@ The medical case study should:
 
 
   try {
-    // Call Runpod's synchronous run endpoint directly using axios.
-    const runpodUrl = 'https://api.runpod.ai/v2/dqu7topnjpvpaz/run';
-    const runpodApiKey = process.env.RUNPOD_API_KEY;
-    if (!runpodApiKey) {
-      throw new Error('Missing RUNPOD_API_KEY environment variable');
-    }
+    const caseClient = new OpenAI({
+      baseURL: 'https://nqqc6zsswwz09vw9.us-east-2.aws.endpoints.huggingface.cloud/v1/',
+      apiKey: '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',
+    });
+    const completion = await caseClient.chat.completions.create({
+      model: 'Qwen/Qwen3-30B-A3B-Instruct-2507',
+      messages: [
+        { role: 'system', content: 'You are only a strict JSON format text generator. Do not ask any clarifying questions or provide any additional commentary. Respond only with valid text and strictly follow JSON format provided in the user’s prompt.' },
+        { role: 'user',   content: META_PROMPT }
+      ],
+      temperature: 0.0
+    });
+    const rawResponseText = completion.choices[0].message.content;
 
-    const rpResp = await axios.post(
-      runpodUrl,
-      { input: { prompt: META_PROMPT } },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${runpodApiKey}`,
-        },
-      }
-    );
-
-    let respData = rpResp.data;
-
-    // If Runpod returns an id and a non-final status (e.g., IN_QUEUE), poll for completion.
-    const runId = respData && respData.id;
-    const isFinal = (d) => d && (d.status === 'COMPLETED' || d.status === 'SUCCEEDED' || d.status === 'FINISHED' || d.status === 'FAILED');
-
-    if (runId && !isFinal(respData)) {
-      const maxMs = 120000; // 2 minutes
-      const intervalMs = 3000; // 3s
-      const start = Date.now();
-
-      // Prepare candidate endpoints to poll. Try the runsync/id path first, then the base path with id.
-      const pollEndpoints = [
-        `${runpodUrl}/${runId}`,
-        `${runpodUrl.replace('/runsync', '')}/${runId}`,
-        `https://api.runpod.ai/v2/${runId}`,
-      ];
-
-      let finished = false;
-      let lastErr = null;
-
-      while (Date.now() - start < maxMs && !finished) {
-        for (const ep of pollEndpoints) {
-          try {
-            const pollResp = await axios.get(ep, {
-              headers: { Authorization: `Bearer ${runpodApiKey}` },
-              timeout: 15000,
-            });
-            respData = pollResp.data;
-            if (isFinal(respData)) {
-              finished = true;
-              break;
-            }
-          } catch (e) {
-            lastErr = e;
-            // try next endpoint
-          }
-        }
-
-        if (!finished) {
-          await new Promise((res) => setTimeout(res, intervalMs));
-        }
-      }
-
-      if (!finished) {
-        console.error('Runpod polling timed out', { runId, lastErr });
-        return NextResponse.json(
-          { error: 'Runpod job did not finish in time', runId, status: respData?.status || 'UNKNOWN' },
-          { status: 202 }
-        );
-      }
-    }
-
-    // Try to locate the model-generated text inside common Runpod response shapes.
-    function findStringWithBraces(obj) {
-      if (obj == null) return null;
-      if (typeof obj === 'string') {
-        if (obj.includes('{') && obj.includes('}')) return obj;
-        return null;
-      }
-      if (Array.isArray(obj)) {
-        for (const el of obj) {
-          const found = findStringWithBraces(el);
-          if (found) return found;
-        }
-      } else if (typeof obj === 'object') {
-        for (const k of Object.keys(obj)) {
-          const found = findStringWithBraces(obj[k]);
-          if (found) return found;
-        }
-      }
-      return null;
-    }
-
-    // Common Runpod output fields: respData.output, respData.output_text, respData.output[0].generated_text, etc.
-    let rawResponseText =
-      (respData && respData.output && Array.isArray(respData.output) && respData.output.map(o => (typeof o === 'string' ? o : JSON.stringify(o))).join('\n')) ||
-      respData.output_text ||
-      (respData.output && respData.output[0] && (respData.output[0].generated_text || respData.output[0].content || respData.output[0].text)) ||
-      findStringWithBraces(respData) ||
-      JSON.stringify(respData);
-
-    // If rawResponseText is an object stringified and contains escaped newlines, unescape to make parsing easier
-    if (typeof rawResponseText === 'string') {
-      rawResponseText = rawResponseText.replace(/\\n/g, '\n');
-    }
 
     const parsedCaseStudies = parseCaseStudies(rawResponseText);
     const parsedCaseStudiesWithAnswers = parseCaseStudiesWithAnswers(rawResponseText);
@@ -578,18 +488,9 @@ The medical case study should:
     });
   } catch (error) {
     console.error('Unexpected Error:', error);
-    // If the error is an axios HTTP error, surface status and data to help debugging
-    if (error && error.response) {
-      const { status, data } = error.response;
-      return NextResponse.json(
-        { error: `Runpod request failed with status ${status}`, details: data },
-        { status: 502 }
-      );
-    }
     return NextResponse.json(
       { error: error.message || 'An unexpected error occurred.' },
       { status: 500 }
     );
   }
 }
-
