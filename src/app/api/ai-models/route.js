@@ -465,7 +465,8 @@ The medical case study should:
   try {
     const caseClient = new OpenAI({
       baseURL: 'https://nqqc6zsswwz09vw9.us-east-2.aws.endpoints.huggingface.cloud/v1/',
-      apiKey: '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',
+      apiKey: process.env.HF_API_KEY,
+      
     });
     const completion = await caseClient.chat.completions.create({
       model: 'Qwen/Qwen3-30B-A3B-Instruct-2507',
@@ -493,3 +494,4 @@ The medical case study should:
     );
   }
 }
+
