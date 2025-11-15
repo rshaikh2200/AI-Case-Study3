@@ -464,7 +464,7 @@ The medical case study should:
 
   try {
     const caseClient = new OpenAI({
-      baseURL: 'https://nqqc6zsswwz09vw9.us-east-2.aws.endpoints.huggingface.cloud/v1/',
+      baseURL: 'https://api.runpod.ai/v2/dqu7topnjpvpaz/run',
       apiKey: process.env.HF_API_KEY,
       
     });
