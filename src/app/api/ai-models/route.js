@@ -483,7 +483,58 @@ The medical case study should:
       }
     );
 
-    const respData = rpResp.data;
+    let respData = rpResp.data;
+
+    // If Runpod returns an id and a non-final status (e.g., IN_QUEUE), poll for completion.
+    const runId = respData && respData.id;
+    const isFinal = (d) => d && (d.status === 'COMPLETED' || d.status === 'SUCCEEDED' || d.status === 'FINISHED' || d.status === 'FAILED');
+
+    if (runId && !isFinal(respData)) {
+      const maxMs = 120000; // 2 minutes
+      const intervalMs = 3000; // 3s
+      const start = Date.now();
+
+      // Prepare candidate endpoints to poll. Try the runsync/id path first, then the base path with id.
+      const pollEndpoints = [
+        `${runpodUrl}/${runId}`,
+        `${runpodUrl.replace('/runsync', '')}/${runId}`,
+        `https://api.runpod.ai/v2/${runId}`,
+      ];
+
+      let finished = false;
+      let lastErr = null;
+
+      while (Date.now() - start < maxMs && !finished) {
+        for (const ep of pollEndpoints) {
+          try {
+            const pollResp = await axios.get(ep, {
+              headers: { Authorization: `Bearer ${runpodApiKey}` },
+              timeout: 15000,
+            });
+            respData = pollResp.data;
+            if (isFinal(respData)) {
+              finished = true;
+              break;
+            }
+          } catch (e) {
+            lastErr = e;
+            // try next endpoint
+          }
+        }
+
+        if (!finished) {
+          await new Promise((res) => setTimeout(res, intervalMs));
+        }
+      }
+
+      if (!finished) {
+        console.error('Runpod polling timed out', { runId, lastErr });
+        return NextResponse.json(
+          { error: 'Runpod job did not finish in time', runId, status: respData?.status || 'UNKNOWN' },
+          { status: 202 }
+        );
+      }
+    }
 
     // Try to locate the model-generated text inside common Runpod response shapes.
     function findStringWithBraces(obj) {
