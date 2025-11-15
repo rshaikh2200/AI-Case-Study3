@@ -465,7 +465,7 @@ The medical case study should:
 
   try {
     // Call Runpod's synchronous run endpoint directly using axios.
-    const runpodUrl = 'https://api.runpod.ai/v2/dqu7topnjpvpaz/runsync';
+    const runpodUrl = 'https://api.runpod.ai/v2/dqu7topnjpvpaz/run';
     const runpodApiKey = process.env.RUNPOD_API_KEY;
     if (!runpodApiKey) {
       throw new Error('Missing RUNPOD_API_KEY environment variable');
@@ -479,7 +479,6 @@ The medical case study should:
           'Content-Type': 'application/json',
           Authorization: `Bearer ${runpodApiKey}`,
         },
-        timeout: 120000,
       }
     );
 
