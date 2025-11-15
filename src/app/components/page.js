@@ -418,7 +418,7 @@ export default function Home() {
         userID,
         fullName,
         language,
-        userType, // still saved, even though no dropdown
+        userType, // still saved, even though no dropdown is displayed
         department,
         role,
         specialization,
@@ -1388,6 +1388,12 @@ export default function Home() {
       'Physican Associate': [
         'Radiology'
       ],
+      // Added new roles
+      'Medical Assistant': ['Radiology'],
+      'Certified Medical Assistant': ['Radiology'],
+      'Back Office Coordinator': ['Radiology'],
+      'Certified Clinical Medical Assistant': ['Radiology'],
+      'Registered Medical Assistant': ['Radiology'],
     },
     'Stroke Center': {
       'Physician': [
@@ -1396,15 +1402,18 @@ export default function Home() {
       'Nurse Practitioner': [
         'Neurology'
       ],
-      
       'Registered Nurse': [
         'Neurology'
       ],
-
-       'Medical Assistance': [
+      'Medical Assistance': [
         'Neurology'
       ],
-      
+      // Added new roles
+      'Medical Assistant': ['Neurology'],
+      'Certified Medical Assistant': ['Neurology'],
+      'Back Office Coordinator': ['Neurology'],
+      'Certified Clinical Medical Assistant': ['Neurology'],
+      'Registered Medical Assistant': ['Neurology'],
     },
     'Operating Room': {
       'Surgeon': [
@@ -1431,6 +1440,12 @@ export default function Home() {
         'Neurosurgery',
         'Cardiothoracic Surgery'
       ],
+      // Added new roles
+      'Medical Assistant': ['General Surgery'],
+      'Certified Medical Assistant': ['General Surgery'],
+      'Back Office Coordinator': ['General Surgery'],
+      'Certified Clinical Medical Assistant': ['General Surgery'],
+      'Registered Medical Assistant': ['General Surgery'],
     },
     Transplant: {
       'Surgeon': [
@@ -1451,6 +1466,41 @@ export default function Home() {
         'Pediatric Transplant',
         'Abdominal Transplant'
       ],
+      // Added new roles
+      'Medical Assistant': ['Kidney Transplant'],
+      'Certified Medical Assistant': ['Kidney Transplant'],
+      'Back Office Coordinator': ['Kidney Transplant'],
+      'Certified Clinical Medical Assistant': ['Kidney Transplant'],
+      'Registered Medical Assistant': ['Kidney Transplant'],
+    },
+    // New departments
+    'Family Medicine Clinic': {
+      'Medical Assistant': ['Family Medicine'],
+      'Certified Medical Assistant': ['Family Medicine'],
+      'Back Office Coordinator': ['Family Medicine'],
+      'Certified Clinical Medical Assistant': ['Family Medicine'],
+      'Registered Medical Assistant': ['Family Medicine'],
+    },
+    'Medical Billing': {
+      'Medical Assistant': ['Billing'],
+      'Certified Medical Assistant': ['Billing'],
+      'Back Office Coordinator': ['Billing'],
+      'Certified Clinical Medical Assistant': ['Billing'],
+      'Registered Medical Assistant': ['Billing'],
+    },
+    'Pediatric Clinic': {
+      'Medical Assistant': ['Pediatrics'],
+      'Certified Medical Assistant': ['Pediatrics'],
+      'Back Office Coordinator': ['Pediatrics'],
+      'Certified Clinical Medical Assistant': ['Pediatrics'],
+      'Registered Medical Assistant': ['Pediatrics'],
+    },
+    'OB/GYN Clinic': {
+      'Medical Assistant': ['OB/GYN'],
+      'Certified Medical Assistant': ['OB/GYN'],
+      'Back Office Coordinator': ['OB/GYN'],
+      'Certified Clinical Medical Assistant': ['OB/GYN'],
+      'Registered Medical Assistant': ['OB/GYN'],
     },
   };
 
@@ -1688,19 +1738,18 @@ return (
                   <div className="bg-blue-50 rounded-xl p-6 text-center flex-shrink-0 w-full md:w-64">
                     <div className="score-circle relative w-32 h-32 mx-auto mb-4">
                       <div className="absolute inset-0 rounded-full bg-blue-100"></div>
-                      <div 
-                        className={`absolute inset-0 rounded-full transition-all duration-500 ease-in-out
-                        ${totalScore >= 90 ? 'bg-green-500' : 
-                          totalScore >= 70 ? 'bg-blue-500' : 'bg-red-500'}`}
+                      <div
+                        className={`absolute inset-0 rounded-full transition-all duration-500 ease-in-out ${
+                          totalScore >= 90 ? 'bg-green-500' : totalScore >= 70 ? 'bg-blue-500' : 'bg-red-500'
+                        }`}
                         style={{
                           clipPath: `polygon(50% 50%, 50% 0%, ${
                             50 + 50 * Math.sin(((totalScore / 100) * 360 * Math.PI) / 180)
                           }% ${
                             50 - 50 * Math.cos(((totalScore / 100) * 360 * Math.PI) / 180)
-                          }%, ${totalScore > 25 ? '0% 0%, 0% 100%, 100% 100%' : ''})` 
+                          }%, ${totalScore > 25 ? '0% 0%, 0% 100%, 100% 100%' : ''})`
                         }}
-                      >
-                      </div>
+                      ></div>
                       <div className="absolute inset-4 bg-white rounded-full flex items-center justify-center">
                         <span className="text-3xl font-bold">{totalScore}%</span>
                       </div>
@@ -2112,7 +2161,7 @@ return (
                     <div className="flex">
                       <div className="flex-shrink-0">
                         <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                         </svg>
                       </div>
                       <div className="ml-3">
