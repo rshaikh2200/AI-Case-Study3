@@ -18,57 +18,86 @@ const openai = new OpenAI({
  */
 function parseCaseStudies(responseText) {
   try {
-    // 1) Extract the first JSON object in the response
-    const match = responseText.match(/\{[\s\S]*\}/);
-    if (!match) {
+    // Robustly extract the JSON block between the first { and the last }
+    const firstBrace = responseText.indexOf('{');
+    const lastBrace = responseText.lastIndexOf('}');
+    if (firstBrace === -1 || lastBrace === -1) {
       throw new Error('No JSON object found in response');
     }
-    let jsonString = match[0];
+    let jsonString = responseText.slice(firstBrace, lastBrace + 1);
 
-    jsonString = jsonString
-    // Remove code fences if present
-    .replace(/```json/g, '')
-    .replace(/```/g, '')
-    // Fix unescaped quotes
-    .replace(/(?<!")\\"/g, '\\\\"') // Escape unescaped quotes
-    // Remove trailing commas
-    .replace(/,\s*([}\]])/g, '$1')
+    // Remove code fences and extraneous backticks
+    jsonString = jsonString.replace(/```json|```/g, '');
 
-    // 3) Escape any unescaped double quotes inside Hint values
-    jsonString = jsonString.replace(
-      /"Hint":\s*"([\s\S]*?)"/g,
-      (_match, hintText) => {
-        const escaped = hintText.replace(/"/g, '\\"');
-        return `"Hint": "${escaped}"`;
-      }
-    );
+    // Normalize whitespace/newlines that may break JSON
+    jsonString = jsonString.replace(/\r?\n/g, ' ').replace(/\s{2,}/g, ' ');
 
-    // 4) Parse cleaned JSON string
-    const parsed = JSON.parse(jsonString);
+    // Remove trailing commas before } or ]
+    jsonString = jsonString.replace(/,\s*([}\]])/g, '$1');
+
+    // Replace smart quotes with straight quotes
+    jsonString = jsonString.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
+
+    // Attempt to parse
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonString);
+    } catch (parseErr) {
+      console.error('Primary JSON.parse failed, attempting relaxed fixes', parseErr.message);
+      // Try escaping unescaped quotes inside Hint fields
+      jsonString = jsonString.replace(/"Hint"\s*:\s*"([^\"]*?)"/g, (_m, txt) => {
+        return `"Hint": "${txt.replace(/"/g, '\\"')}"`;
+      });
+      // Retry parse
+      parsed = JSON.parse(jsonString);
+    }
 
     if (!parsed.caseStudies || !Array.isArray(parsed.caseStudies)) {
       throw new Error('Invalid JSON structure: Missing "caseStudies" array.');
     }
 
-    // 5) Validate structure of each case study
-    parsed.caseStudies.forEach((cs, idx) => {
-      if (!cs.scenario || !Array.isArray(cs.questions)) {
-        throw new Error(`Case Study ${idx + 1} is missing "scenario" or "questions".`);
+    // Normalize and validate each case study but be tolerant of minor variations
+    const normalized = parsed.caseStudies.map((cs, idx) => {
+      const item = { ...cs };
+
+      // Some models incorrectly put the scenario text in `caseStudy` instead of `scenario`.
+      if ((!item.scenario || item.scenario === '') && item.caseStudy && item.caseStudy.length > 80) {
+        item.scenario = item.caseStudy;
+        item.caseStudy = `Case Study ${idx + 1}`;
       }
-      cs.questions.forEach((q, qIdx) => {
-        if (!q.question || !q.options || Object.keys(q.options).length !== 4) {
-          throw new Error(`Question ${qIdx + 1} in Case Study ${idx + 1} is incomplete.`);
+
+      // Ensure questions is an array
+      if (!Array.isArray(item.questions)) {
+        item.questions = [];
+      }
+
+      // Normalize question option structures
+      item.questions = item.questions.map((q) => {
+        const question = { ...q };
+        // Some outputs may supply options as an object or as an array
+        if (question.options && !Array.isArray(question.options) && typeof question.options === 'object') {
+          question.options = Object.entries(question.options).map(([k, v]) => ({ key: k, label: v }));
+        } else if (Array.isArray(question.options)) {
+          // convert array to key/label pairs (A,B,C,D)
+          const letters = ['A', 'B', 'C', 'D'];
+          question.options = question.options.map((opt, i) => ({ key: letters[i] || String(i), label: opt }));
+        } else {
+          question.options = [];
         }
+
+        return question;
       });
+
+      return item;
     });
 
-    // 6) Return only the necessary fields
-    return parsed.caseStudies.map((cs, index) => ({
+    // Return simplified structure used by the frontend
+    return normalized.map((cs, index) => ({
       caseStudy: `Case Study ${index + 1}`,
-      scenario: cs.scenario,
+      scenario: cs.scenario || cs.caseStudy || '',
       questions: cs.questions.map((q) => ({
-        question: q.question,
-        options: Object.entries(q.options).map(([key, label]) => ({ key, label })),
+        question: q.question || q.prompt || '',
+        options: (q.options || []).map((o) => ({ key: o.key || o.label?.[0] || '', label: o.label || '' })),
       })),
     }));
   } catch (error) {
@@ -83,64 +112,74 @@ function parseCaseStudies(responseText) {
  */
 function parseCaseStudiesWithAnswers(responseText) {
   try {
-    // 1) Extract JSON
-    const match = responseText.match(/\{[\s\S]*\}/);
-    if (!match) {
+    // Extract JSON block robustly
+    const firstBrace = responseText.indexOf('{');
+    const lastBrace = responseText.lastIndexOf('}');
+    if (firstBrace === -1 || lastBrace === -1) {
       throw new Error('No JSON object found in response');
     }
-    let jsonString = match[0];
+    let jsonString = responseText.slice(firstBrace, lastBrace + 1);
 
-    // 2) Clean up trailing commas
-    
+    jsonString = jsonString.replace(/```json|```/g, '').replace(/\r?\n/g, ' ').replace(/\s{2,}/g, ' ');
+    jsonString = jsonString.replace(/,\s*([}\]])/g, '$1');
+    jsonString = jsonString.replace(/[“”]/g, '"').replace(/[‘’]/g, "'");
 
-    // 3) Escape unescaped quotes inside hints
-    jsonString = jsonString.replace(
-      /"Hint":\s*"([\s\S]*?)"/g,
-      (_match, hintText) => {
-        const escaped = hintText.replace(/"/g, '\\"');
-        return `"Hint": "${escaped}"`;
-      }
-    );
-
-    // 4) Parse
-    const parsed = JSON.parse(jsonString);
+    let parsed;
+    try {
+      parsed = JSON.parse(jsonString);
+    } catch (parseErr) {
+      // Try escaping quotes in Hint fields then reparse
+      jsonString = jsonString.replace(/"Hint"\s*:\s*"([^\"]*?)"/g, (_m, txt) => `"Hint": "${txt.replace(/"/g, '\\"')}"`);
+      parsed = JSON.parse(jsonString);
+    }
 
     if (!parsed.caseStudies || !Array.isArray(parsed.caseStudies)) {
       throw new Error('Invalid JSON structure: Missing "caseStudies" array.');
     }
 
-    // 5) Validate each entry
-    parsed.caseStudies.forEach((cs, idx) => {
-      if (!cs.scenario || !Array.isArray(cs.questions)) {
-        throw new Error(`Case Study ${idx + 1} is missing "scenario" or "questions".`);
+    // Normalize each case study
+    return parsed.caseStudies.map((cs, index) => {
+      const item = { ...cs };
+      if ((!item.scenario || item.scenario === '') && item.caseStudy && item.caseStudy.length > 80) {
+        item.scenario = item.caseStudy;
+        item.caseStudy = `Case Study ${index + 1}`;
       }
-      cs.questions.forEach((q, qIdx) => {
-        if (
-          !q.question ||
-          !q.options ||
-          Object.keys(q.options).length !== 4 ||
-          !q['correct answer'] ||
-          !q['Hint']
-        ) {
-          throw new Error(`Question ${qIdx + 1} in Case Study ${idx + 1} is incomplete.`);
-        }
-      });
-    });
 
-    // 6) Return structured data
-    return parsed.caseStudies.map((cs, index) => ({
-      department: cs.department,
-      role: cs.role,
-      specialization: cs.specialization,
-      caseStudy: `Case Study ${index + 1}`,
-      scenario: cs.scenario,
-      questions: cs.questions.map((q) => ({
-        question: q.question,
-        options: Object.entries(q.options).map(([key, label]) => ({ key, label })),
-        correctAnswer: q['correct answer'],
-        hint: q['Hint'],
-      })),
-    }));
+      item.questions = Array.isArray(item.questions) ? item.questions : [];
+
+      const questions = item.questions.map((q) => {
+        const question = { ...q };
+
+        // Normalize options: object -> array of {key,label}
+        if (question.options && typeof question.options === 'object' && !Array.isArray(question.options)) {
+          question.options = Object.entries(question.options).map(([k, v]) => ({ key: k, label: v }));
+        } else if (Array.isArray(question.options)) {
+          const letters = ['A', 'B', 'C', 'D'];
+          question.options = question.options.map((opt, i) => ({ key: letters[i] || String(i), label: opt }));
+        } else {
+          question.options = [];
+        }
+
+        const correctAnswer = question['correct answer'] || question.correctAnswer || '';
+        const hint = question.Hint || question.hint || '';
+
+        return {
+          question: question.question || '',
+          options: question.options.map((o) => ({ key: o.key, label: o.label })),
+          correctAnswer,
+          hint,
+        };
+      });
+
+      return {
+        department: item.department || '',
+        role: item.role || '',
+        specialization: item.specialization || '',
+        caseStudy: `Case Study ${index + 1}`,
+        scenario: item.scenario || '',
+        questions,
+      };
+    });
   } catch (error) {
     console.error('Error parsing JSON response with answers:', error.message);
     console.error('Received Response:', responseText);
@@ -197,7 +236,7 @@ export async function POST(request) {
   const retrievedCasesText = similarCaseStudies.join('\n');
 
   // Meta prompt (fences & examples removed so this template literal no longer breaks)
-  const META_PROMPT = `Here are real world of medical case studies that include primary active failures that occured: ${retrievedCasesText}. , to write 4 similar medical case studies (250 words) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department and that includes a similar primary active failure that occured in the ${retrievedCasesText}, without compromising the clinical integrity. Remove extraneous information such as providers’ 
+  const META_PROMPT = `Here are real world example medical case studies which includes a primary active failures that has occured: ${retrievedCasesText}. , write 4 similar medical case studies (250 words each) that are tailored towards a ${role} specializing in ${specialization} working in the ${department} department and  includes a  primary active failure, without compromising the clinical integrity.  
 countries of origin or unnecessary backstories.
 
 The medical case study should:
@@ -211,31 +250,14 @@ The medical case study should:
 - **Medical Case Study Content:**
   - The case study should only include the scenario and the primary active failure that occured.
   - The case studies should not mention country names, staff origins.
-  - Use unique patient and medical staff names from various continents (America, Canada, South America, 
-    Europe, Asia, Australia) to reflect global diversity.
-  - The case study should include proper age for the patients. 
-  - The case study should define medication with quantity with proper units, and proper names without changing the clinical integrity from source  ${retrievedCasesText} case study.
-  - Keep the case studies short and concise, and do not mention countries by name or the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
+  - Keep the case studies short and concise, and do not mention c the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
   - The case study should strictly focus on what went wrong. Avoid mentioning any broader communication lapses or the significance of teamwork in preventing the error.
-  - The case study should not mention any safety behaviors and how they the situation lacked the EPT which could have avoided the error.
-  - The case study should  only include the scenario and remove /not include any analysis on what went wrong, how it could have been prevented, and any highlights of the process to fix the issue. 
-  - If department is ${department} make sure all the case studies scenario focus on stroke related medical errors and scenarios, but also Make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies
-  - For all case studies, make sure the clinical scenario and clinical integretity remains similar to the original  ${retrievedCasesText} case studies.
+  - The case study should not mention any safety behaviors. 
+  - For all case studies, make sure the clinical scenario are clincally accurate and reflect real world practices.
 
-  - **Incorporate the following feedback into the case studies and questions without altering any other instructions or logic:**
-  - If ${role} equals registered nurse, ensure nurses do not write medication orders; they may administer medications, and if there is a concern from another nurse, that nurse would apply ARCC (not the one administering).
-  - Ensure correct usage and spelling of \\mmHg\\ and other units.
-  - If ${role} equals Nurse Practictioner or Medical Aisstant,  they typically write medication orders rather than administer them; they may have a peer check their order electronically before finalizing.
-  - Use **unique names** for the patient and provider; avoid any duplicate names.
-  - For **medication allegeries**, reflect a more appropriate and clinical accurate reactions.
-  - Make sure the case study follow clinical integrity when describing when a patient should take a certain medication, or timely adminstration of medication.
-  - make sure certain medication should be administered via a pump if it’s an infusion (not via injection), this should follow the clinical integrity.
-  - Correct and make sure there is no misspelling in Medication Nmaes, and Procedures. 
-  - Documentation is typically **electronic**, so do not mention paper order sheets.
-  - If you include ARCC, it should be used properly by the person raising the concern, not necessarily by the one providing direct care.
 
 - **For each case study, create 3 unique multiple-choice questions that:**
-  - Are different for each case study and correspond exactly to the specified safety behavior focus—do not repeat question text or options across case studies.
+  - Are different for each case study and correspond exactly to the specified error prevention tool focus—do not repeat question text or options across case studies.
   - Have 4 option choices each.
   - Team Evaluation is a group effort and is done towards the completion of procedure; questions should not imply an individual debrief.
   - Provide the correct answer choice and answer in the format:  
@@ -247,239 +269,203 @@ The medical case study should:
   - Questions should address ${role} directly in this form:  
     “If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying”
 
-- **Strictly follow the Question Structure Below and ensure the options match the correct safety behaviors:**
-
-      - **Case Study 1:**
-        - Question 1: Focuses on Colleague Feedback
-        - Question 2: Focuses on Team Evaluation
-        - Question 3: Focuses on Risk Intervention
-    
-      **Case Study 2:**
-        - Question 1: Focuses on Validattion and Assessment
-        - Question 2: Focuses on SAFE (Stop-Assess-Focus-Engage)
-        - Question 3: Focuses on Interuption Free Zone
-    
-      **Case Study 3:**
-        - Question 1: Focuses on Effective Care Transitions
-        - Question 2: Focuses on Clear Communications
-        - Question 3: Focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate)
-    
-      **Case Study 4:**
-        - Question 1: Focuses on Clarify Information
-        - Question 2: Focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate)
-        - Question 3: Focuses on SAFE (Stop-Assess-Focus-Engage)
-    
-    - **Use the following 10 Safety Behaviors and Definitions:**
-    
-        a. Colleague Feedback
-            Definition: Ask your colleagues to review your work and offer assistance in reviewing the work of others. 
-    
-        b. Team Evaluation
-            Definition: Reflect on what went well with team , what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
+  - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
+      - **Question Structure**
       
-        c. Risk Intervention
-            Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
+        **Case Study 1:**
+        - Question 1: Focuses on Peer Checking and Coaching
+        - Question 2: Focuses on Debrief
+        - Question 3: Focuses on ARCC
     
-        d. Validation Assessment
-            Definition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).
+        **Case Study 2:**
+        - Question 1: Focuses on Validate and Verify
+        - Question 2: Focuses on STAR
+        - Question 3: Focuses on No Distraction Zone
     
-        e. SAFE (Stop-Assess-Focus-Engage)
-            Definition: Stop (pause for 2 seconds to focus on task at hand), Assess (consider action you're about to take), Focus (concentrate and carry out the task), Engage (check to make sure the task was done right and you got the right result).
+        **Case Study 3:**
+        - Question 1: Focuses on Effective Handoffs
+        - Question 2: Focuses on Read and Repeat Back
+        - Question 3: Focuses on Ask Clarifying Questions
     
-        f. Interuption Free Zone
-            Definition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like "Stand by" or "Hold on".
+        **Case Study 4:**
+        - Question 1: Focuses on Alphanumeric Language
+        - Question 2: Focuses on SBAR
+        - Question 3: Focuses on STAR
     
-        g. Effective Care Transtitions
-            Definition: Six important principles that make an Effective Care Transitions: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
-        
-        h. CARE (Communicate-Acknowledge-Repeat-Evaluate)
-             Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
+    - **Use the following 11 Error Prevention Tools and Definitions:**
     
-        i. Clear Communications
-             Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
-        
-        j. Clarifying Information
-           Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
+    a. Peer Checking and Coaching
+        Definition: Peer Check (Ask your colleagues to review your work and offer assistance in reviewing the work of others). Peer Coach (coach to reinforce: celebrate it publicly when someone does something correctly, coach to correct: correct someone (privately when possible) when something is done incorrectly.)
     
-      
+    b. Debrief
+        Definition: Reflect on what went well with team , what didn't, how to improve, and who will follow through. All team members should freely speak up. A debrief typically lasts only 3 minutes.
+    
+    c. ARCC
+        Definition: Ask a question to gently prompt the other person of potential safety issue, Request a change to make sure the person is fully aware of the risk. Voice a Concern if the person is resistant. Use the Chain of command if the possibility of patient harm persists.
+    
+    d. Validate and Verify
+        Definition: An internal Check (Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?). Verify (check with an independent qualified source).
+    
+    e. STAR
+        Definition: Stop (pause for 2 seconds to focus on task at hand), Think (consider action you're about to take), Act (concentrate and carry out the task), Review (check to make sure the task was done right and you got the right result).
+    
+    f. No Distraction Zone
+        Definition: 1) Avoid interrupting others while they are performing critical tasks 2) Avoid distractions while completing critical tasks: Use phrases like "Stand by" or "Hold on".
+    
+    g. Effective Handoffs
+        Definition: Six important principles that make an Effective Handoffs: Standardized and streamlined, Distraction-Free Environment, Face-to-face/bedside (interactive), Acknowledgments/repeat backs, Verbal with written/ printed information, Opportunity for questions/clarification.
+    
+    h. Read and Repeat Back
+        Definition: 1) Sender communicates information to receiver, 2) receiver listens or writes down the information and reads/repeats it back as written or heard to the sender. 3) Sender then acknowledges the accuracy of the read-back by stating "that's correct". If not correct the sender repeats/clarifies the communication beginning the three steps again.
+    
+    i. Ask Clarifying Questions
+        Definition: Requesting Additional information, and expressing concerns to avoid misunderstandings.
+    
+    j. Using Alphanumeric Language
+        Definition: Consists of using clear letters and numbers in communication such as replacing fifteen with one-five, and using phonetic alphabet letters instead of Latin alphabet.
+    
+    k. SBAR
+        Definition: Situation (what is the situation, patient or project?), Background (what is important to communicate including problems and precautions?), Assessment (what is my assessment of the situation, problems, and precautions.), Recommendations (what is my recommendation, request, or plan?)
     
     Ensure the following format is strictly followed and output the entire response as valid JSON.
     
-     
-     \`\`\`json
-     {
-       "caseStudies": [
-         {
-           },
-             "department" : "${department}",
-             "role" : "${role}",
-             "specialization": "${specialization}",
-             "care": "${care}",
-         },
-     
-           "caseStudy": "Case Study 1",
-           "scenario": "Description of the case study scenario.",
-           "questions": [
-             {
-               "question": "Question 1 text that focuses on colleage feedback safey behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "C) correct answer",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             },
-             {
-               "question": "Question 2 text that focuses on team evaluation safety behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "b) correct answer",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             },
-             {
-               "question": "Question 3 text that focuses on risk intervention safety behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "A) correct answer ",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             }
-           "caseStudy": "Case Study 2",
-           "scenario": "Description of the case study scenario.",
-           "questions": [
-             {
-               "question": "Question 1 text that focuses on validation assessment safey behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "C) correct answer",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             },
-             {
-               "question": "Question 2 text that focuses on SAFE (Stop-Assess-Focus-Evaluate) safety behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "b) correct answer",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             },
-             {
-               "question": "Question 3 text that focuses on Interuption Free Zone safety behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "A) correct answer ",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             }
-           "caseStudy": "Case Study 3",
-           "scenario": "Description of the case study scenario.",
-           "questions": [
-             {
-               "question": "Question 1 text that focuses on effective care transitions safey behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "C) correct answer",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             },
-             {
-               "question": "Question 2 text that focuses on clear communications safety behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "b) correct answer",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             },
-             {
-               "question": "Question 3 text that focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate) safety behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "A) correct answer ",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             }
-               "caseStudy": "Case Study 4",
-           "scenario": "Description of the case study scenario.",
-           "questions": [
-             {
-               "question": "Question 1 text that focuses on clarifying informations safey behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "C) correct answer",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             },
-             {
-               "question": "Question 2 text that focuses on CARE (Communicate-Acknowledge-Repeat-Evaluate) safety behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "b) correct answer",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             },
-             {
-               "question": "Question 3 text that focuses on SAFE (Stop-Assess-Focus-Engage) safety behavior",
-               "options": {
-                 "A": "Option A",
-                 "B": "Option B",
-                 "C": "Option C",
-                 "D": "Option D"
-               },
-               "correct answer": "A) correct answer ",
-               "Hint": "1 sentence sumarized definition of correct answer choice."
-             }
-           ]
+    \`\`\`json
+    {
+      "caseStudies": [
+        {
+          },
+            "department" : "${department}",
+            "role" : "${role}",
+            "specialization": "${specialization}",
+            "care": "${care}",
+        },
+    
+          "caseStudy": "Case Study 1",
+          "scenario": "Description of the case study scenario.",
+          "questions": [
+            {
+              "question": "Question 1 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "C) correct answer",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            },
+            {
+              "question": "Question 2 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "b) correct answer",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            },
+            {
+              "question": "Question 3 text",
+              "options": {
+                "A": "Option A",
+                "B": "Option B",
+                "C": "Option C",
+                "D": "Option D"
+              },
+              "correct answer": "A) correct answer ",
+              "Hint": "1 sentence sumarized definition of correct answer choice."
+            }
+          ]
+       }
+        // Repeat for Case Study 2, 3, and 4
+      ]
+    }
+    \`\`\`
+    
+    Ensure that:
+    
+    - The JSON is **well-formatted** and **free of any syntax errors**.
+    - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
+    - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
+    
+    Do not include any additional text outside of the JSON structure.
+    
+    **Ensure that:**
+    
+    - Each **Error Prevention Tool** is used **exactly once** across all case studies and questions.
+    - **No repetition** of the same **Error Prevention Tool** occurs within the same case study or across different case studies.
+    - All **case studies** are **unique** and focus on **distinct Error Prevention Tools**.
+    - The **Question Structure** is strictly followed to ensure consistency and adherence to the specified guidelines.
+    
+    **Example:**
+    
+    \`\`\`json
+    {
+      },
+        "department" : "Operating Room",
+        "role" : "Surgeon",
+        "specialization": "General Surgery"
+        "care": "inpatient"
+    },
+      "caseStudies": [
+        {
+          "caseStudy": "Case Study 1",
+          "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
+          "questions": [
+            {
+              "question": "Whcich EPT practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
+              "options": {
+                "A": "Peer Checking and Coaching",
+                "B": "Debrief",
+                "C": "ARCC",
+                "D": "Validate and Verify"
+              },
+              "correct answer": "D) Validate and Verify",
+              "Hint": "Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?"
+            },
+            {
+              "question": "If Dr. Patel would have stopped the line to address concerns immediately, which Error Prevention Tool that focuses on stopping and addressing concerns would he be applying?",
+              "options": {
+                "A": "STAR",
+                "B": "No Distraction Zone",
+                "C": "ARCC",
+                "D": "Effective Handoffs"
+              },
+              "correct answer": "C) ARCC",
+              "Hint": "Ask a question to gently prompt the other person of potential safety issue"
+            },
+            {
+              "question": "If Dr.Patel, along with the team, had taken a moment after surgery to reflext on the day's task, and discuss what went well or what didn't, whihc EPT practice would they applied?",
+              "options": {
+                "A": "ARCC",
+                "B": "Debrief",
+                "C": "No Distraction Zone",
+                "D": "Read and Repeat Back"
+              },
+              "correct answer": "B) Debrief",
+              "Hint": "3 minute discussion focusing on what went well and areas for improvement."
+            }
+          ]
         }
-       ]
-     }
-   
-     \`\`\`
-     
-     Ensure that:
-     
-     - The JSON is **well-formatted** and **free of any syntax errors**.
-     - There are **no comments** (e.g., lines starting with //), **no trailing commas**, and **no additional text** outside the JSON block.
-     - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
-     
-     Do not include any additional text outside of the JSON structure.`;
+        // Additional case studies...
+      ]
+    }
+    \`\`\`
+    
+    Ensure that:
+    
+    - The JSON is **well-formatted** and **free of any syntax errors**.
+    - There are **no comments** (e.g., lines starting with \`//\`), **no trailing commas**, and **no additional text** outside the JSON block.
+    - The JSON is enclosed within \`\`\`json and \`\`\` code fences.
+    
+    Do not include any additional text outside of the JSON structure.`;
+
 
   try {
     const caseClient = new OpenAI({
       baseURL: 'https://nqqc6zsswwz09vw9.us-east-2.aws.endpoints.huggingface.cloud/v1/',
-      apiKey: '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',
+      apiKey: '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',
     });
     const completion = await caseClient.chat.completions.create({
       model: 'Qwen/Qwen3-30B-A3B-Instruct-2507',
@@ -487,8 +473,7 @@ The medical case study should:
         { role: 'system', content: 'You are only a strict JSON format text generator. Do not ask any clarifying questions or provide any additional commentary. Respond only with valid text and strictly follow JSON format provided in the user’s prompt.' },
         { role: 'user',   content: META_PROMPT }
       ],
-      temperature: 0.0,
-      top_k: 0.3
+      temperature: 0.0
     });
     const rawResponseText = completion.choices[0].message.content;
 
