@@ -465,7 +465,7 @@ The medical case study should:
 
   try {
     const caseClient = new OpenAI({
-      baseURL: 'https://nqqc6zsswwz09vw9.us-east-2.aws.endpoints.huggingface.cloud/v1/',
+      baseURL: 'https://bmb0zjsmvv8l6w-8000.proxy.runpod.net/v1',
       apiKey: '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',
     });
     const completion = await caseClient.chat.completions.create({
