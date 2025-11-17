@@ -466,7 +466,7 @@ The medical case study should:
   try {
     const caseClient = new OpenAI({
       baseURL: 'https://bmb0zjsmvv8l6w-8000.proxy.runpod.net/v1',
-      apiKey: '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',
+      apiKey: 'process.env.HF_API_KEY',
     });
     const completion = await caseClient.chat.completions.create({
       model: 'Qwen/Qwen3-30B-A3B-Instruct-2507',
