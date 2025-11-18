@@ -390,6 +390,66 @@ The medical case study should:
       ]
     }
     \`\`\`
+
+     **Ensure that:**
+    
+    - Each **Error Prevention Tool** is used **exactly once** across all case studies and questions.
+    - **No repetition** of the same **Error Prevention Tool** occurs within the same case study or across different case studies.
+    - All **case studies** are **unique** and focus on **distinct Error Prevention Tools**.
+    - The **Question Structure** is strictly followed to ensure consistency and adherence to the specified guidelines.
+    
+    **Example:**
+    
+    \`\`\`json
+    {
+      },
+        "department" : "Operating Room",
+        "role" : "Surgeon",
+        "specialization": "General Surgery"
+        "care": "inpatient"
+    },
+      "caseStudies": [
+        {
+          "caseStudy": "Case Study 1",
+          "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
+          "questions": [
+            {
+              "question": "Whcich EPT practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
+              "options": {
+                "A": "Peer Checking and Coaching",
+                "B": "Debrief",
+                "C": "ARCC",
+                "D": "Validate and Verify"
+              },
+              "correct answer": "D) Validate and Verify",
+              "Hint": "Does this make sense to me?, Is it right, based on what I know?, Is this what I expected?, Does this information "fit in with my past experience or other information I may have at this time?"
+            },
+            {
+              "question": "Before documenting an elevated blood pressure and notifying the provider, Dr.Brent should have taken an extra moment to double-check the reading against expected standards. This step is an example of stopping to __ information before acting. ",
+              "options": {
+                "A": "Debrief",
+                "B": "Validate and Verify",
+                "C": "Peer Check",
+                "D": "Ask Clarifying Questions"
+              },
+              "correct answer": "C) ARCC",
+              "Hint": "Ask a question to gently prompt the other person of potential safety issue"
+            },
+            {
+              "question": "If the Orthopedic Surgeon Dr. Brent had paused briefly before taking the patient's blood pressure to focus on proper positioning and whether the patient had used the restroom before, it could have prevented the inaccurate reading.  ",
+              "options": {
+                "A": "True",
+                "B": "False",
+              },
+              "correct answer": "B) True",
+              "Hint": "Pause and Refocus."
+            }
+          ]
+        }
+        // Additional case studies...
+      ]
+    }
+    \`\`\`
     
     Ensure that:
     
