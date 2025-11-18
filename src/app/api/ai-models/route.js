@@ -354,7 +354,7 @@ The medical case study should:
           "scenario": "Description of the case study scenario.",
           "questions": [
             {
-              "question": "Question 1 text",
+              "question": "Multiple choice question text",
               "options": {
                 "A": "Option A",
                 "B": "Option B",
@@ -365,7 +365,7 @@ The medical case study should:
               "Hint": "1 sentence sumarized definition of correct answer choice."
             },
             {
-              "question": "Question 2 text",
+              "question": "Fill in the blank Question text",
               "options": {
                 "A": "Option A",
                 "B": "Option B",
@@ -376,7 +376,7 @@ The medical case study should:
               "Hint": "1 sentence sumarized definition of correct answer choice."
             },
             {
-              "question": "Question 3 text",
+              "question": "True or False Question text",
               "options": {
                 "A": "Option A",
                 "B": "Option B",
