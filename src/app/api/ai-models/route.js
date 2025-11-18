@@ -259,7 +259,7 @@ The medical case study should:
   - The primary active failure for each case study should be unique and clinically accurate
   
   
- - ** For all case studies and question they should focus on the following accurate blood pressure reading technique using the structure below:
+ - ** Each Case Study should strictly focus on the following only 2 accurate blood pressure reading technique each and follow the structure below strictly:
        -Case Study 1: Ask Patient to use bathroom when rooming full bladder adds 10 mm hg &  Uncross legs crossed legs add 2-8 mm hg
        -Case Study 2: Support black and legs unsupported back and legs add 6.5 hg & Abstain from conversation talking or active listening adds 10 mm hg
        -Case Study 3: Place cuff on bare arm cuff over clothing adds 5-50 mm hg & Correct size cuff  to small of a cuff adds 2-10 mm hg
@@ -268,7 +268,7 @@ The medical case study should:
 
 - **For each case study, create 3 unique multiple-choice questions that:**
   - Are different for each case study and correspond exactly to the specified error prevention tool focus—do not repeat question text or options across case studies.
-  - Include various questions types, such as True/False, Fill in the Blank, and Multiple Choice questions. 
+  - For each case study various questions types, such as True/False, Fill in the Blank, and Multiple Choice questions not only multiple choice questions. 
   - Team Evaluation is a group effort and is done towards the completion of procedure; questions should not imply an individual debrief.
   - Provide the correct answer choice and answer in the format:  
     \`correct answer: C) Validate and Verify\`
@@ -380,8 +380,6 @@ The medical case study should:
               "options": {
                 "A": "Option A",
                 "B": "Option B",
-                "C": "Option C",
-                "D": "Option D"
               },
               "correct answer": "A) correct answer ",
               "Hint": "1 sentence sumarized definition of correct answer choice."
