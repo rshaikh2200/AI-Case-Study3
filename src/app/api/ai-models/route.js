@@ -449,7 +449,7 @@ The medical case study should:
             }
           ]
         }
-        // Additional case studies...
+         // Repeat for Case Study 2, 3, and 4
       ]
     }
     \`\`\`
