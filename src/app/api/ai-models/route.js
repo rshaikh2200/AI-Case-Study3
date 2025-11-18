@@ -475,7 +475,7 @@ The medical case study should:
   try {
     const caseClient = new OpenAI({
       baseURL: 'https://iahra2f5kh723g61.us-east-2.aws.endpoints.huggingface.cloud/v1/',
-      apiKey: 'process.env.HF_API_KEY',
+      apiKey: process.env.HF_API_KEY,
     });
     const completion = await caseClient.chat.completions.create({
       model: 'Qwen/Qwen3-30B-A3B-Instruct-2507',
