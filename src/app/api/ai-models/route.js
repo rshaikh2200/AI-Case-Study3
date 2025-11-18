@@ -276,7 +276,7 @@ The medical case study should:
     \`Hint: Double-checking and confirming accuracy before proceeding.\`
   - In the question include specific keywords or buzzwords based on the correct answer choice’s definition; do not name the safety behavior in the question.
   - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error.
-  - Questions should address ${role} directly in this form:   
+  - Questions should be asked and address from the perspective of the role. Here is a example:   
     “If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying”
 
   - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
