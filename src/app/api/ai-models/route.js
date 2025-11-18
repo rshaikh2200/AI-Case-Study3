@@ -268,7 +268,8 @@ The medical case study should:
 
 - **For each case study, create 3 unique multiple-choice questions that:**
   - Are different for each case study and correspond exactly to the specified error prevention tool focus—do not repeat question text or options across case studies.
-  - For each case study various questions types, such as True/False, Fill in the Blank, and Multiple Choice questions not only multiple choice questions. 
+  - 
+  - For each case study various questions types, such as True/False, Fill in the Blank, and Multiple Choice questions not only multiple choice questions, how every each question should still focus on the EPT and follow the question structure given below. 
   - Team Evaluation is a group effort and is done towards the completion of procedure; questions should not imply an individual debrief.
   - Provide the correct answer choice and answer in the format:  
     \`correct answer: C) Validate and Verify\`
@@ -276,7 +277,7 @@ The medical case study should:
     \`Hint: Double-checking and confirming accuracy before proceeding.\`
   - In the question include specific keywords or buzzwords based on the correct answer choice’s definition; do not name the safety behavior in the question.
   - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error.
-  - Questions should address ${role} directly in this form:  
+  - Questions should address ${role} directly in this form using the name and not role (example: The Medical Assistant): Correct Example:   
     “If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying”
 
   - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
@@ -354,7 +355,7 @@ The medical case study should:
           "scenario": "Description of the case study scenario.",
           "questions": [
             {
-              "question": "Multiple choice question text",
+              "question": "Multiple choice question text that focuses on EPT.",
               "options": {
                 "A": "Option A",
                 "B": "Option B",
@@ -365,7 +366,7 @@ The medical case study should:
               "Hint": "1 sentence sumarized definition of correct answer choice."
             },
             {
-              "question": "Fill in the blank Question text",
+              "question": "Fill in the blank Question text that focuses on EPT.",
               "options": {
                 "A": "Option A",
                 "B": "Option B",
@@ -376,7 +377,7 @@ The medical case study should:
               "Hint": "1 sentence sumarized definition of correct answer choice."
             },
             {
-              "question": "True or False Question text",
+              "question": "True or False Question text that focuses on EPT.",
               "options": {
                 "A": "Option A",
                 "B": "Option B",
