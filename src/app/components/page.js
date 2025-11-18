@@ -1503,7 +1503,7 @@ export default function Home() {
       'Registered Medical Assistant': ['OB/GYN'],
     },
     'Primary Care Clinic': {
-      'Medical Assistant': ['Primary Clinic'],
+      'Medical Assistant': ['Primary Care'],
     },
   };
 
