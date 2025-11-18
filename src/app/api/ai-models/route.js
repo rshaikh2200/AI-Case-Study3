@@ -269,7 +269,7 @@ The medical case study should:
 - **For each case study, create 3 unique multiple-choice questions that:**
   - Are different for each case study and correspond exactly to the specified error prevention tool focus—do not repeat question text or options across case studies.
   - 
-  - For each case study various questions types, such as True/False, Fill in the Blank, and Multiple Choice questions not only multiple choice questions, how every each question should still focus on the EPT and follow the question structure given below. 
+  - For each case study various questions types, such as True/False, Fill in the Blank, and Multiple Choice questions not only multiple choice questions. 
   - Team Evaluation is a group effort and is done towards the completion of procedure; questions should not imply an individual debrief.
   - Provide the correct answer choice and answer in the format:  
     \`correct answer: C) Validate and Verify\`
@@ -398,6 +398,8 @@ The medical case study should:
     - **No repetition** of the same **Error Prevention Tool** occurs within the same case study or across different case studies.
     - All **case studies** are **unique** and focus on **distinct Error Prevention Tools**.
     - The **Question Structure** is strictly followed to ensure consistency and adherence to the specified guidelines.
+
+    ** Use the following examples for case study and questions as reference for how to structure and format the case studies and questions **
     
     **Example:**
     
