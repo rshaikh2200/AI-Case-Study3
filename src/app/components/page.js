@@ -1502,6 +1502,9 @@ export default function Home() {
       'Certified Clinical Medical Assistant': ['OB/GYN'],
       'Registered Medical Assistant': ['OB/GYN'],
     },
+    'Primary Care Clinic': {
+      'Medical Assistant': ['Primary Clinic'],
+    },
   };
 
   // Departments for the dropdown (no longer filtered by userType)
