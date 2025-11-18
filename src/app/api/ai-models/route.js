@@ -255,6 +255,15 @@ The medical case study should:
   - The case study should strictly focus on what went wrong. Avoid mentioning any broader communication lapses or the significance of teamwork in preventing the error.
   - The case study should not mention any safety behaviors. 
   - For all case studies, make sure the clinical scenario are clincally accurate and reflect real world practices.
+  
+ - ** For all case studies and questions focuse sorely on  blood pressure skill, encoporate these 7 best practices of accurat blood pressure reading: **
+       -1) Ask Patient to use bathroom when rooming full bladder adds 10 mm hg 
+       -2) Uncross legs crossed legs add 2-8 mm hg
+       -3) Support black and legs unsupported back and legs add 6.5 hg
+       -4) Abstain from conversation talking or active listening adds 10 mm hg
+       -5) Place cuff on bare arm cuff over clothing adds 5-50 mm hg
+       -6) Correct size cuff  to small of a cuff adds 2-10 mm hg
+       -7) Position arm supported at heart level unsupported arm adds 10 mm hg
 
 
 - **For each case study, create 3 unique multiple-choice questions that:**
@@ -465,7 +474,7 @@ The medical case study should:
 
   try {
     const caseClient = new OpenAI({
-      baseURL: 'https://bmb0zjsmvv8l6w-8000.proxy.runpod.net/v1',
+      baseURL: 'https://iahra2f5kh723g61.us-east-2.aws.endpoints.huggingface.cloud/v1/',
       apiKey: 'process.env.HF_API_KEY',
     });
     const completion = await caseClient.chat.completions.create({
