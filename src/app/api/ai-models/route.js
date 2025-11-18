@@ -255,6 +255,8 @@ The medical case study should:
   - The case study should strictly focus on what went wrong. Avoid mentioning any broader communication lapses or the significance of teamwork in preventing the error.
   - The case study should not mention any safety behaviors. 
   - For all case studies, make sure the clinical scenario are clincally accurate and reflect real world practices.
+  - The case studies should not specific state the primary active failures such as "The primary active failure was the failure to follow seven best practices for accurate blood pressure measurement, including not asking the patient to empty her bladder, placing the cuff over clothing, allowing crossed legs, unsupported back, unsupported arm, talking during measurement, and using a cuff over clothing."
+  
   
  - ** For all case studies and questions focuse sorely on  blood pressure skill, encoporate these 7 best practices of accurat blood pressure reading: **
        -1) Ask Patient to use bathroom when rooming full bladder adds 10 mm hg 
