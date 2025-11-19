@@ -274,12 +274,14 @@ The medical case study should:
     \`correct answer: C) Validate and Verify\`
   - Provide the hint in the format:  
     \`Hint: Double-checking and confirming accuracy before proceeding.\`
+  - Use the Error Prevention Tool and There definitions correctly in the questions and answer making sure the question, answer hints and wording in the questions all correctly correspond to the EPT and its definition and dont overlap with other definitions. 
+  - In the question instead of using wording like EPT use the full form Error Prevention Tool
   - In the question include specific keywords or buzzwords based on the correct answer choice’s definition; do not name the safety behavior in the question.
   - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error.
   - Questions should be asked and address from the perspective of the role. Here is a example:   
     “If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying”
 
-  - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
+  - **All questions and Answers should Strictly follow the structure below and make sure the options choices matchs the correct error prevention tool focused in the question:**
       - **Question Structure**
       
         **Case Study 1:**
