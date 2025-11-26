@@ -4,7 +4,6 @@ dotenv.config();
 
 import { Pinecone } from '@pinecone-database/pinecone';
 import { OpenAI } from 'openai';
-import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 
@@ -249,9 +248,10 @@ The medical case study should:
 
 - **Medical Case Study Content:**
   - The case study should include diverse names and genders for the patient, and staff involved.
+  - **IMPORTANT: When referring to staff members by their role, ALWAYS use the format "Name, a [Role]" (e.g., "Erica, a Medical Assistant" or "Dr. Smith, a Surgeon"). Never refer to staff as just "Medical Assistant" or "the Medical Assistant" - always include their name first, followed by their role.**
   - The case study should only include the scenario and the primary active failure that occured.
   - The case studies should not mention country names, staff origins.
-  - Keep the case studies short and concise, and do not mention c the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
+  - Keep the case studies short and concise, and do not mention  the team's review of the situation. Also do not include or refer to incident reviews, analysis, or describe which error prevention approach was attempted or missing.
   - The case study should strictly focus on what went wrong. Avoid mentioning any broader communication lapses or the significance of teamwork in preventing the error.
   - The case study should not mention any safety behaviors. 
   - For all case studies, make sure the clinical scenario are clincally accurate and reflect real world practices.
@@ -269,19 +269,17 @@ The medical case study should:
 - **For each case study, create 3 unique multiple-choice questions that:**
   - Are different for each case study and correspond exactly to the specified error prevention tool focus—do not repeat question text or options across case studies.
   - Team Evaluation is a group effort and is done towards the completion of procedure; questions should not imply an individual debrief.
-  - The question should address the name directly and not as "Medical Assistant or Role. 
+  - **IMPORTANT: The question should address staff members by their actual name (e.g., "Erica" or "Dr. Smith"), NOT by their role (e.g., "Medical Assistant" or "the Medical Assistant"). Always use the format "Name, a [Role]" when first introducing them, then refer to them by name only in subsequent references.**
   - Provide the correct answer choice and answer in the format:  
     \`correct answer: C) Validate and Verify\`
   - Provide the hint in the format:  
     \`Hint: Double-checking and confirming accuracy before proceeding.\`
-  - Use the Error Prevention Tool and There definitions correctly in the questions and answer making sure the question, answer hints and wording in the questions all correctly correspond to the EPT and its definition and dont overlap with other definitions. 
-  - In the question instead of using wording like EPT use the full form Error Prevention Tool
   - In the question include specific keywords or buzzwords based on the correct answer choice’s definition; do not name the safety behavior in the question.
   - Each question should strictly focus on the assigned safety behavior and how it could have been applied to prevent the error.
   - Questions should be asked and address from the perspective of the role. Here is a example:   
     “If Dr. Patel would have stopped the line to address concerns immediately, which Safety Behavior that focuses on stopping and addressing concerns would he be applying”
 
-  - **All questions and Answers should Strictly follow the structure below and make sure the options choices matchs the correct error prevention tool focused in the question:**
+  - **Strictly follow the Question Structure Below and make sure the options choices matchs the correct error prevention tool focused in the question:**
       - **Question Structure**
       
         **Case Study 1:**
@@ -303,6 +301,14 @@ The medical case study should:
         -  Multiple Choice Question 1: Focuses on Alphanumeric Language
         -  Multiple Choice Question 2: Focuses on SBAR
         - Fill in the Blank Question 3: Focuses on STAR
+
+  - **CRITICAL: True or False Question Format - MUST FOLLOW THIS EXACT STRUCTURE:**
+    - True/False questions MUST be worded in the following format:
+      "If [Staff Name] had applied the [specific the error prevention tool] method, it could have prevented [the specific error that occurred]."
+    - Then provide options: "A) True" and "B) False"
+    - Example: "If the Orthopedic Surgeon Dr. Brent had paused briefly before taking the patient's blood pressure to focus on proper positioning and whether the patient had used the restroom before, it could have prevented the inaccurate reading. Dr. Bent would be applying the STAR method to prevent the error. "
+    - DO NOT use formats like: "The Medical Assistant did not ensure... This could have been prevented by... This behavior is known as: a) true b) false"
+    - Always use the "If [Name] had [action]... it could have prevented [error]" format, then state the error prevention practice name, then ask True/False
     
     - **Use the following 11 Error Prevention Tools and Definitions:**
     
@@ -356,7 +362,7 @@ The medical case study should:
           "scenario": "Description of the case study scenario.",
           "questions": [
             {
-              "question": "Multiple choice question text that focuses on EPT.",
+              "question": "Multiple choice question text that focuses on error prevention practice.",
               "options": {
                 "A": "Option A",
                 "B": "Option B",
@@ -367,7 +373,7 @@ The medical case study should:
               "Hint": "1 sentence sumarized definition of correct answer choice."
             },
             {
-              "question": "Fill in the blank Question text that focuses on EPT.",
+              "question": "Fill in the blank Question text that focuses on error prevention practice.",
               "options": {
                 "A": "Option A",
                 "B": "Option B",
@@ -378,7 +384,7 @@ The medical case study should:
               "Hint": "1 sentence sumarized definition of correct answer choice."
             },
             {
-              "question": "True or False Question text that focuses on EPT.",
+              "question": "True or False Question text that focuses on error prevention practice.",
               "options": {
                 "A": "Option A",
                 "B": "Option B",
@@ -418,7 +424,7 @@ The medical case study should:
           "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
           "questions": [
             {
-              "question": "Whcich EPT practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
+              "question": "Which error prevention practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
               "options": {
                 "A": "Peer Checking and Coaching",
                 "B": "Debrief",
@@ -440,12 +446,12 @@ The medical case study should:
               "Hint": "Ask a question to gently prompt the other person of potential safety issue"
             },
             {
-              "question": "If the Orthopedic Surgeon Dr. Brent had paused briefly before taking the patient's blood pressure to focus on proper positioning and whether the patient had used the restroom before, it could have prevented the inaccurate reading.  ",
+              "question": "If the Orthopedic Surgeon Dr. Brent had paused briefly before taking the patient's blood pressure to focus on proper positioning and whether the patient had used the restroom before, it could have prevented the inaccurate reading. Dr. Bent would be applying the STAR method to prevent the error.",
               "options": {
                 "A": "True",
                 "B": "False",
               },
-              "correct answer": "B) True",
+              "correct answer": "A) True",
               "Hint": "Pause and Refocus."
             }
              {
@@ -453,7 +459,7 @@ The medical case study should:
           "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
           "questions": [
             {
-              "question": "Whcich EPT practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
+              "question": "Which error prevention practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
               "options": {
                 "A": "Peer Checking and Coaching",
                 "B": "Debrief",
@@ -475,7 +481,7 @@ The medical case study should:
               "Hint": "Ask a question to gently prompt the other person of potential safety issue"
             },
             {
-              "question": "If the Orthopedic Surgeon Dr. Brent had paused briefly before taking the patient's blood pressure to focus on proper positioning and whether the patient had used the restroom before, it could have prevented the inaccurate reading.  ",
+              "question": "If the Orthopedic Surgeon Dr. Brent had paused briefly before taking the patient's blood pressure to focus on proper positioning and whether the patient had used the restroom before, it could have prevented the inaccurate reading. Dr. Bent would be applying the STAR method to prevent the error.",
               "options": {
                 "A": "True",
                 "B": "False",
@@ -488,7 +494,7 @@ The medical case study should:
           "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
           "questions": [
             {
-              "question": "Whcich EPT practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
+              "question": "Which error prevention practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
               "options": {
                 "A": "Peer Checking and Coaching",
                 "B": "Debrief",
@@ -510,7 +516,7 @@ The medical case study should:
               "Hint": "Ask a question to gently prompt the other person of potential safety issue"
             },
             {
-              "question": "If the Orthopedic Surgeon Dr. Brent had paused briefly before taking the patient's blood pressure to focus on proper positioning and whether the patient had used the restroom before, it could have prevented the inaccurate reading.  ",
+              "question": "If the Orthopedic Surgeon Dr. Brent had paused briefly before taking the patient's blood pressure to focus on proper positioning and whether the patient had used the restroom before, it could have prevented the inaccurate reading. Dr. Bent would be applying the STAR method to prevent the error.",
               "options": {
                 "A": "True",
                 "B": "False",
@@ -523,7 +529,7 @@ The medical case study should:
           "scenario": "Mr. Nitesh Patel, a 65 year old patient underwent a total knee replacement surgery for severe osteoarthritis. During the procedure, Brent Keeling a respected orthopedic surgeon noted difficulty in exposing the joint due to significant scarring from the patient's previous knee surgeries. Towards the end of the procedure, the patient complained of numbness and weakness in the foot. Postoperative imaging revealed a stretch injury to the common personeal nerve.",
           "questions": [
             {
-              "question": "Whcich EPT practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
+              "question": "Which error prevention practice that involves verifying with a qualified internal source, could have helped Dr. Patel avoid this mix up?",
               "options": {
                 "A": "Peer Checking and Coaching",
                 "B": "Debrief",
@@ -545,7 +551,7 @@ The medical case study should:
               "Hint": "Ask a question to gently prompt the other person of potential safety issue"
             },
             {
-              "question": "If the Orthopedic Surgeon Dr. Brent had paused briefly before taking the patient's blood pressure to focus on proper positioning and whether the patient had used the restroom before, it could have prevented the inaccurate reading.  ",
+              "question": "If the Orthopedic Surgeon Dr. Brent had paused briefly before taking the patient's blood pressure to focus on proper positioning and whether the patient had used the restroom before, it could have prevented the inaccurate reading. Dr. Bent would be applying the STAR method to prevent the error.",
               "options": {
                 "A": "True",
                 "B": "False",
@@ -570,7 +576,7 @@ The medical case study should:
 
   try {
     const caseClient = new OpenAI({
-      baseURL: 'https://yqyg66cx8mpv55pm.us-east-2.aws.endpoints.huggingface.cloud/v1/',
+      baseURL: 'https://fx0j6paf4y9sjlhd.us-east-2.aws.endpoints.huggingface.cloud/v1/',
       apiKey: process.env.HF_API_KEY,
     });
     const completion = await caseClient.chat.completions.create({
@@ -587,8 +593,22 @@ The medical case study should:
     const parsedCaseStudies = parseCaseStudies(rawResponseText);
     const parsedCaseStudiesWithAnswers = parseCaseStudiesWithAnswers(rawResponseText);
 
+    const parsedCaseStudiesFormatted = parsedCaseStudiesWithAnswers.map(cs => ({
+      caseStudy: cs.caseStudy,
+      scenario: cs.scenario,
+      questions: cs.questions.map(q => ({
+        question: q.question,
+        options: q.options,
+        correctAnswer: q.correctAnswer,
+        hint: q.hint,
+      })),
+      role: cs.role,
+      department: cs.department,
+      specialization: cs.specialization,
+    }));
+    
     return NextResponse.json({
-      caseStudies: parsedCaseStudiesWithAnswers,
+      caseStudies: parsedCaseStudiesFormatted,
       aiResponse: parsedCaseStudiesWithAnswers,
     });
   } catch (error) {
