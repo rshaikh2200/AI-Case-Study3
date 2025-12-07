@@ -580,7 +580,7 @@ The medical case study should:
       apiKey: process.env.HF_API_KEY,
     });
     const completion = await caseClient.chat.completions.create({
-      model: 'https://fm8vizgo0fsaunlm.us-east-2.aws.endpoints.huggingface.cloud/v1/',
+      model: 'rshaikh22/Qwen3_30B_Instruct_CQA_Medical',
       messages: [
         { role: 'system', content: 'You are only a strict JSON format text generator. Do not ask any clarifying questions or provide any additional commentary. Respond only with valid text and strictly follow JSON format provided in the user’s prompt.' },
         { role: 'user',   content: META_PROMPT }
