@@ -19,7 +19,7 @@ export async function POST(request) {
 
     // Initialize OpenAI client for Qwen3_30B_Medical model
     const medicalClient = new OpenAI({
-      baseURL: 'https://yqyg66cx8mpv55pm.us-east-2.aws.endpoints.huggingface.cloud/v1/',
+      baseURL: 'https://fm8vizgo0fsaunlm.us-east-2.aws.endpoints.huggingface.cloud/v1/',
       apiKey: process.env.HF_API_KEY,
     });
 
@@ -49,7 +49,7 @@ export async function POST(request) {
         try {
           // Call the Qwen3_30B_Medical model with streaming enabled
           const stream = await medicalClient.chat.completions.create({
-            model: 'rshaikh22/Qwen3_30B_Medical',
+            model: 'rshaikh22/Qwen3_30B_Instruct_CQA_Medical',
             messages: allMessages,
             temperature: 0.7,
             max_tokens: 1000,
