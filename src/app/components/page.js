@@ -198,6 +198,13 @@ export default function Home() {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [audioError, setAudioError] = useState('');
   
+  // Video-related states
+  const [videos, setVideos] = useState([]);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
+  const [videoError, setVideoError] = useState('');
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  
   // Question and scoring states
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [feedbackMessages, setFeedbackMessages] = useState({});
@@ -504,6 +511,220 @@ export default function Home() {
     }
   };
 
+  // Function to generate videos for all case studies
+  const generateVideos = async (caseStudiesData) => {
+    setIsVideoLoading(true);
+    setVideoError('');
+    try {
+      const response = await fetch('/api/video-models', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          caseStudies: caseStudiesData,
+          department,
+          role,
+          specialization,
+          care,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to generate videos');
+      }
+
+      const data = await response.json();
+      if (data.success && data.videos) {
+        setVideos(data.videos);
+        // Start polling for video completion
+        pollVideoStatus(data.videos);
+      } else {
+        throw new Error('Invalid response from video generation API');
+      }
+    } catch (error) {
+      console.error('Error generating videos:', error);
+      setVideoError(error.message || 'Failed to generate videos. Videos may not be available.');
+      // Don't block the UI if video generation fails
+    } finally {
+      setIsVideoLoading(false);
+    }
+  };
+
+  // Function to poll video status and download when all are completed
+  const pollVideoStatus = (videosData) => {
+    const maxAttempts = 60; // Poll for up to 5 minutes (60 * 5 seconds)
+    let attempts = 0;
+    const pollInterval = 5000; // Check every 5 seconds
+    let pollingActive = true;
+
+    const checkAndDownload = async () => {
+      if (!pollingActive) return;
+      
+      attempts++;
+      
+      try {
+        // Check status of all videos
+        const statusChecks = await Promise.all(
+          videosData.map(async (video) => {
+            if (!video.videoId) return null;
+            
+            try {
+              const response = await fetch(
+                `/api/video-models?videoId=${video.videoId}&caseStudyIndex=${video.caseStudyIndex}`
+              );
+              const data = await response.json();
+              
+              if (data.success && data.video) {
+                return {
+                  ...video,
+                  status: data.video.status,
+                  progress: data.video.progress,
+                };
+              }
+            } catch (error) {
+              console.error(`Error checking status for video ${video.videoId}:`, error);
+            }
+            return video;
+          })
+        );
+
+        // Update videos state with latest status
+        const updatedVideos = statusChecks.filter(v => v !== null);
+        setVideos(updatedVideos);
+
+        // Check if all videos are completed
+        const videosWithIds = updatedVideos.filter((v) => v.videoId);
+        const allCompleted = videosWithIds.length > 0 && videosWithIds.every(
+          (v) => v.status === 'completed'
+        );
+
+        console.log(`Poll attempt ${attempts}: ${videosWithIds.length} videos with IDs, ${videosWithIds.filter(v => v.status === 'completed').length} completed`);
+
+        if (allCompleted && videosWithIds.length > 0) {
+          console.log(`All ${videosWithIds.length} videos completed! Downloading...`);
+          pollingActive = false; // Stop polling
+          await downloadAllVideos(videosWithIds);
+          return; // Stop polling
+        }
+
+        // If not all completed and haven't exceeded max attempts, continue polling
+        if (attempts < maxAttempts && !allCompleted && pollingActive) {
+          setTimeout(checkAndDownload, pollInterval);
+        } else if (attempts >= maxAttempts) {
+          console.warn('Max polling attempts reached. Some videos may not be ready.');
+          pollingActive = false;
+        }
+      } catch (error) {
+        console.error('Error polling video status:', error);
+        if (attempts < maxAttempts && pollingActive) {
+          setTimeout(checkAndDownload, pollInterval);
+        }
+      }
+    };
+
+    // Start polling after initial delay
+    setTimeout(checkAndDownload, pollInterval);
+  };
+
+  // Function to download all videos to filesystem
+  const downloadAllVideos = async (videosData) => {
+    try {
+      console.log('Starting download of all videos...', videosData);
+      const response = await fetch('/api/video-models/download', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ videos: videosData }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Download failed:', errorData);
+        throw new Error(errorData.error || 'Failed to download videos');
+      }
+
+      const data = await response.json();
+      console.log('Download response:', data);
+      if (data.success) {
+        console.log(`Successfully downloaded ${data.downloaded} videos to ai_videos folder`);
+        if (data.errors && data.errors.length > 0) {
+          console.warn('Some videos failed to download:', data.errors);
+        }
+      } else {
+        console.error('Download was not successful:', data);
+      }
+    } catch (error) {
+      console.error('Error downloading videos:', error);
+      console.error('Error stack:', error.stack);
+    }
+  };
+
+  // Function to fetch and display video for a specific case study
+  const handleWatchVideo = async (caseStudyIndex) => {
+    try {
+      const videoData = videos.find((v) => v.caseStudyIndex === caseStudyIndex);
+      
+      if (!videoData) {
+        setVideoError('Video not available for this case study.');
+        return;
+      }
+
+      if (videoData.error) {
+        setVideoError(videoData.error);
+        return;
+      }
+
+      if (!videoData.videoId) {
+        setVideoError('Video ID not available.');
+        return;
+      }
+
+      // Check video status
+      const response = await fetch(
+        `/api/video-models?videoId=${videoData.videoId}&caseStudyIndex=${caseStudyIndex}`
+      );
+      const data = await response.json();
+      
+      if (!data.success || !data.video) {
+        setVideoError('Failed to retrieve video status.');
+        return;
+      }
+
+      const video = data.video;
+
+      // If video is completed, get the content URL
+      if (video.status === 'completed') {
+        const videoUrl = `/api/video-models/content?videoId=${videoData.videoId}`;
+        setSelectedVideo({
+          url: videoUrl,
+          caseStudyIndex: caseStudyIndex,
+          status: 'completed',
+        });
+        setIsVideoModalOpen(true);
+        setVideoError(''); // Clear any previous errors
+      } else if (video.status === 'queued' || video.status === 'processing') {
+        // Video is still processing
+        setSelectedVideo({
+          url: null,
+          caseStudyIndex: caseStudyIndex,
+          status: video.status,
+          progress: video.progress || 0,
+        });
+        setIsVideoModalOpen(true);
+        setVideoError('Video is still processing. It will play automatically when ready.');
+        
+        // Poll for video completion (optional - can be done client-side)
+        // For now, user can close and reopen to check status
+      } else if (video.error) {
+        setVideoError(`Video generation failed: ${video.error.message || 'Unknown error'}`);
+      } else {
+        setVideoError(`Video status: ${video.status}. Please try again later.`);
+      }
+    } catch (error) {
+      console.error('Error fetching video:', error);
+      setVideoError('Failed to load video.');
+    }
+  };
+
   // Function to get Workflow ID
   const getWorkflowID = (caseIndex, questionIndex) => {
     let count = 1; // Start from 1 because 'Take Assessment' is at index 0
@@ -593,6 +814,9 @@ export default function Home() {
       setWorkflowData(workflows);
 
       await saveAiResponse(); // Save AI response
+
+      // Generate videos for all case studies
+      await generateVideos(caseStudies);
 
       setShowSafetyStatement(false);
       setShowCaseStudies(true);
@@ -1504,6 +1728,10 @@ export default function Home() {
     },
     'Primary Care Clinic': {
       'Medical Assistant': ['Primary Care'],
+      'Certified Medical Assistant': ['Primary Care'],
+      'Back Office Coordinator': ['Primary Care'],
+      'Certified Clinical Medical Assistant': ['Primary Care'],
+      'Registered Medical Assistant': ['Primary Care'],
     },
   };
 
@@ -2142,6 +2370,20 @@ return (
                         </>
                       )}
                     </button>
+                    
+                    <button
+                      type="button"
+                      className={`flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors
+                        ${isVideoLoading ? 'bg-gray-200 text-gray-600 cursor-wait' : 
+                          'bg-white text-green-700 hover:bg-green-50 border border-green-300'}`}
+                      onClick={() => handleWatchVideo(currentCaseStudyIndex)}
+                      disabled={isVideoLoading || !videos.find((v) => v.caseStudyIndex === currentCaseStudyIndex)}
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      Watch Video
+                    </button>
                   </div>
                 </div>
               </div>
@@ -2170,6 +2412,33 @@ return (
                       <div className="ml-3">
                         <p className="text-sm text-red-700">{audioError}</p>
                       </div>
+                    </div>
+                  </div>
+                )}
+
+                {videoError && (
+                  <div className="mb-4 bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-md">
+                    <div className="flex">
+                      <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div className="ml-3">
+                        <p className="text-sm text-yellow-700">{videoError}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {isVideoLoading && (
+                  <div className="mb-4 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-md">
+                    <div className="flex items-center">
+                      <svg className="animate-spin h-5 w-5 text-blue-400 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <p className="text-sm text-blue-700">Generating videos for case studies...</p>
                     </div>
                   </div>
                 )}
@@ -2337,6 +2606,83 @@ return (
           date={new Date().toLocaleDateString()}
           onPrint={handlePrintCertificate}
         />
+      )}
+
+      {/* Video Modal */}
+      {isVideoModalOpen && selectedVideo && (
+        <Dialog
+          open={isVideoModalOpen}
+          onClose={() => {
+            setIsVideoModalOpen(false);
+            setSelectedVideo(null);
+            setVideoError('');
+          }}
+          maxWidth="lg"
+          fullWidth
+          PaperProps={{
+            className: "bg-black rounded-xl overflow-hidden",
+          }}
+        >
+          <div className="relative bg-black">
+            <div className="absolute top-4 right-4 z-10">
+              <button
+                onClick={() => {
+                  setIsVideoModalOpen(false);
+                  setSelectedVideo(null);
+                  setVideoError('');
+                }}
+                className="text-white hover:text-gray-300 transition-colors bg-black/50 rounded-full p-2"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="p-4">
+              <h3 className="text-white text-xl font-bold mb-4">
+                Case Study {selectedVideo.caseStudyIndex !== undefined ? selectedVideo.caseStudyIndex + 1 : currentCaseStudyIndex + 1} Video
+              </h3>
+              
+              {selectedVideo.url && selectedVideo.status === 'completed' ? (
+                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                  <video
+                    controls
+                    autoPlay
+                    className="absolute top-0 left-0 w-full h-full rounded-lg"
+                    style={{ maxHeight: '720px' }}
+                  >
+                    <source src={selectedVideo.url} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              ) : selectedVideo.status === 'queued' || selectedVideo.status === 'processing' ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <svg className="animate-spin h-12 w-12 text-white mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <p className="text-white text-lg mb-2">
+                    Video is {selectedVideo.status === 'queued' ? 'queued' : 'processing'}...
+                  </p>
+                  {selectedVideo.progress !== undefined && (
+                    <p className="text-white text-sm">
+                      Progress: {selectedVideo.progress}%
+                    </p>
+                  )}
+                  <p className="text-white text-sm mt-4 text-center max-w-md">
+                    The video will play automatically when ready. You can close this window and check back later.
+                  </p>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <p className="text-white text-lg">Video not available.</p>
+                  {selectedVideo.status && (
+                    <p className="text-white text-sm mt-2">Status: {selectedVideo.status}</p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </Dialog>
       )}
     </div>
   </>
