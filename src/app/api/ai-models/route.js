@@ -576,7 +576,7 @@ The medical case study should:
 
   try {
     const caseClient = new OpenAI({
-      baseURL: 'https://a27hr4r0iqo9vlw4.us-east-2.aws.endpoints.huggingface.cloud/v1/',
+      baseURL: 'https://api.friendli.ai/dedicated',
       apiKey: process.env.HF_API_KEY,
     });
     const completion = await caseClient.chat.completions.create({
