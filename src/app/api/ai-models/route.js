@@ -619,6 +619,7 @@ The medical case study should:
     );
   }
 }
+}
 
 
     // Now, generate image prompts for each case study
