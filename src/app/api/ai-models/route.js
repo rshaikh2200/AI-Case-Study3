@@ -619,7 +619,7 @@ The medical case study should:
     );
   }
 }
-}
+
 
 
     // Now, generate image prompts for each case study
@@ -858,4 +858,5 @@ async function fetchImagesForCaseStudies(
     console.error('Error in fetchImagesForCaseStudies:', error.message);
     throw error;
   }
+}
 }
