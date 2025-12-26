@@ -619,6 +619,69 @@ The medical case study should:
     );
   }
 }
+
+
+    // Now, generate image prompts for each case study
+    try {
+      // For each case study, generate an image prompt
+      const caseStudiesWithImagePrompts = await Promise.all(
+        parsedCaseStudiesWithAnswers.map(async (caseStudy) => {
+          const { prompt } = await generateImagePrompt(caseStudy);
+          return {
+            ...caseStudy,
+            imagePrompt: prompt,
+          };
+        })
+      );
+
+      // Now, fetch images for case studies
+      const caseStudiesWithImages = await fetchImagesForCaseStudies(caseStudiesWithImagePrompts);
+
+      // Update parsedCaseStudiesWithAnswers with images
+      parsedCaseStudiesWithAnswers = caseStudiesWithImages;
+
+      // Also update parsedCaseStudies (the one without correct answers), if needed
+      // For simplicity, let's update parsedCaseStudies similarly
+      const parsedCaseStudiesWithImages = parsedCaseStudiesWithAnswers.map(cs => ({
+        caseStudy: cs.caseStudy,
+        scenario: cs.scenario,
+        questions: cs.questions.map(q => ({
+          question: q.question,
+          options: q.options,
+          correctAnswer: q.correctAnswer,  // Correctly access the property
+          hint: q.hint,                    // Correctly access the property
+        })),
+        imageUrl: cs.imageUrl,  // Include the image URL if it's available
+        role: cs.role,
+        department: cs.department,
+        specialization: cs.specialization,
+      }));
+      
+
+      return NextResponse.json({
+        caseStudies: parsedCaseStudiesWithImages,
+        aiResponse: parsedCaseStudiesWithAnswers,
+      });
+      
+      
+
+    } catch (error) {
+      console.error('Error generating images:', error);
+      return NextResponse.json(
+        { error: 'Failed to generate images for case studies.' },
+        { status: 500 }
+      );
+    }
+
+  } catch (error) {
+    console.error('Unexpected Error:', error);
+    return NextResponse.json(
+      { error: error.message || 'An unexpected error occurred.' },
+      { status: 500 }
+    );
+  }
+}
+
 // Function to generate image prompt via OpenAI
 async function generateImagePrompt(caseStudy) {
   const META_PROMPT = `
