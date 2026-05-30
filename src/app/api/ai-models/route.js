@@ -591,7 +591,7 @@ The medical case study should:
 
 
     const parsedCaseStudies = parseCaseStudies(rawResponseText);
-    const parsedCaseStudiesWithAnswers = parseCaseStudiesWithAnswers(rawResponseText);
+    let parsedCaseStudiesWithAnswers = parseCaseStudiesWithAnswers(rawResponseText);
 
     const parsedCaseStudiesFormatted = parsedCaseStudiesWithAnswers.map(cs => ({
       caseStudy: cs.caseStudy,
@@ -611,14 +611,7 @@ The medical case study should:
       caseStudies: parsedCaseStudiesFormatted,
       aiResponse: parsedCaseStudiesWithAnswers,
     });
-  } catch (error) {
-    console.error('Unexpected Error:', error);
-    return NextResponse.json(
-      { error: error.message || 'An unexpected error occurred.' },
-      { status: 500 }
-    );
-  }
-}
+
   // Now, generate image prompts for each case study
     try {
       // For each case study, generate an image prompt
@@ -857,3 +850,4 @@ async function fetchImagesForCaseStudies(
     throw error;
   }
 }
+
